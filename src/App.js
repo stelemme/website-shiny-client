@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Routes, Route } from "react-router-dom"
 
 // mui imports
@@ -10,28 +9,27 @@ import Topbar from "./scenes/global/Topbar"
 import Home from "./scenes/home"
 import Login from "./scenes/login"
 import CustomSidebar from "./scenes/global/Sidebar";
-import OngoingCounters from "./scenes/counters-ongoing";
-import CompletedCounters from "./scenes/counters-completed";
+import Counters from "./scenes/counters";
+import CountersAll from "./scenes/counters-all";
 
 // Firebase imports
 import { useAuth } from "./hooks/useAuth";
 
 function App() {
   const {login} = useAuth()
-  const [isSidebar, setIsSidebar] = useState(true);
   
   const ConditionalRender = () => {
     if (login) {
       return (
         <div className="app">
-          <CustomSidebar isSidebar={isSidebar} />
+          <CustomSidebar />
           <main className="content">
-            <Topbar setIsSidebar={setIsSidebar} />
+            <Topbar />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/auth" element={<Login />} />
-              <Route path="/ongoing-counters" element={<OngoingCounters />} />
-              <Route path="/completed-counters" element={<CompletedCounters />} />
+              <Route path="/counters" element={<Counters />} />
+              <Route path="/counters-all" element={<CountersAll />} />
             </Routes>
           </main>
         </div>

@@ -60,7 +60,7 @@ export default function CustomSidebar() {
   };
 
   return (
-    <Box style={{ display: 'flex', height: '100%', minHeight: '400px'}}>
+    <Box style={{ display: 'flex', minHeight: '400px'}}>
       <Sidebar
         transitionDuration="0"
         collapsed={isCollapsed}
@@ -115,15 +115,15 @@ export default function CustomSidebar() {
               {isCollapsed ? "Counter" : "Counter  Application"} 
             </Typography>
             <Item
-              title="Ongoing Counters"
-              to="/ongoing-counters"
+              title="Your Counters"
+              to="/counters"
               icon={<CalculateOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />    
             <Item
-              title="Completed Counters"
-              to="/completed-counters"
+              title="All Counters"
+              to="/counters-all"
               icon={<CalculateIcon />}
               selected={selected}
               setSelected={setSelected}
