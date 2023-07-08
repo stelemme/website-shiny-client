@@ -60,7 +60,7 @@ export default function CustomSidebar() {
   };
 
   return (
-    <Box style={{ display: 'flex', minHeight: '400px'}}>
+    <Box display='flex' minHeight='400px'>
       <Sidebar
         transitionDuration="0"
         collapsed={isCollapsed}

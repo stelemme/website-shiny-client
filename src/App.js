@@ -11,6 +11,7 @@ import Login from "./scenes/login"
 import CustomSidebar from "./scenes/global/Sidebar";
 import Counters from "./scenes/counters";
 import CountersAll from "./scenes/counters-all";
+import Counter from "./scenes/counter";
 
 // Firebase imports
 import { useAuth } from "./hooks/useAuth";
@@ -29,6 +30,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/auth" element={<Login />} />
               <Route path="/counters" element={<Counters />} />
+              <Route path="/counters/:counterId" element={<Counter />} />
               <Route path="/counters-all" element={<CountersAll />} />
             </Routes>
           </main>

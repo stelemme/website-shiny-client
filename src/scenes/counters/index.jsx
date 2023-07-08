@@ -5,11 +5,12 @@ import { Box, Grid, Typography } from "@mui/material";
 import Header from "../../components/Header";
 import CounterCard from "../../components/CounterCard";
 
+
 const data = [
-  { id: 1, name: "Alcremie", game: "red", count: 5 },
-  { id: 2, name: "Dynamax Adventures", game: "sword", count: 100 },
-  { id: 3, name: "Bulbasaur", game: "yellow", count: 1000 },
-  { id: 4, name: "Route 14", game: "black-2", count: 55555 },
+  { _id: { $oid: "64a6744a8ed915943a525921" }, name: "Alcremie", game: "red", count: 5 },
+  { _id: { $oid: "64a6744a8ed915943a525922" }, name: "Dynamax Adventures", game: "sword", count: 100 },
+  { _id: { $oid: "64a6744a8ed915943a525923" }, name: "Bulbasaur", game: "yellow", count: 1000 },
+  { _id: { $oid: "64a6744a8ed915943a525924" }, name: "Route 14", game: "black-2", count: 55555 },
 ];
 
 export default function Counters() {
@@ -41,8 +42,9 @@ export default function Counters() {
             </Typography>
             {data.map((counter) => {
               return (
-                <div key={counter.id} style={{ marginBottom: "20px" }}>
+                <div key={counter._id.$oid} style={{ marginBottom: "20px" }}>
                   <CounterCard
+                    id={counter._id.$oid}
                     name={counter.name}
                     gameSprite={counter.game}
                     count={counter.count}
@@ -63,8 +65,21 @@ export default function Counters() {
             </Typography>
             {data.map((counter) => {
               return (
-                <div key={counter.id} style={{ marginBottom: "20px" }}>
+                <div key={counter._id.$oid} style={{ marginBottom: "20px" }}>
                   <CounterCard
+                    id={counter._id.$oid}
+                    name={counter.name}
+                    gameSprite={counter.game}
+                    count={counter.count}
+                  />
+                </div>
+              );
+            })}
+            {data.map((counter) => {
+              return (
+                <div key={counter._id.$oid} style={{ marginBottom: "20px" }}>
+                  <CounterCard
+                    id={counter._id.$oid}
                     name={counter.name}
                     gameSprite={counter.game}
                     count={counter.count}

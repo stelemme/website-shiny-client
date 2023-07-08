@@ -1,10 +1,13 @@
+import { useNavigate } from 'react-router-dom';
+
 // mui imports
 import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../theme";
 
-export default function CounterCard({ gameSprite, name, count }) {
+export default function CounterCard({ id, gameSprite, name, count }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const navigate = useNavigate();
 
   return (
     <Box
@@ -12,7 +15,7 @@ export default function CounterCard({ gameSprite, name, count }) {
       width="100%"
       backgroundColor={colors.primary[400]}
       borderRadius="5px"
-      onClick={() => console.log("test")}
+      onClick={() => navigate(`/counters/${id}`)}
       sx={{
         "&:hover": {
           cursor: "pointer",
