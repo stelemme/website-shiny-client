@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 
 // mui imports
@@ -71,6 +71,15 @@ export default function Counter() {
   const { counterId } = useParams();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [backgroundColor, setBackgroundColor] = useState(colors.primary[400]);
+
+  const handleCountClick = () => {
+    setBackgroundColor(colors.primary[900]);
+    console.log("count")
+    setTimeout(() => {
+      setBackgroundColor(colors.primary[400]);
+    }, 200);
+  };
 
   return (
     <Box maxWidth="420px" mx="auto" my="20px">
@@ -80,20 +89,14 @@ export default function Counter() {
         {/* CONTENT */}
         <Box display="flex" justifyContent="space-between" mb="20px">
           <Box display="flex" gap="20px">
-            <Box
-              display="inline-flex"
-              alignItems="center"
-            >
+            <Box display="inline-flex" alignItems="center">
               <img
                 alt=""
                 src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/games/${data.sprite.game}.png`}
                 height="33px"
               />
             </Box>
-            <Box
-              display="inline-flex"
-              alignItems="center"
-            >
+            <Box display="inline-flex" alignItems="center">
               <img
                 alt=""
                 src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/${data.sprite.dir}/${data.sprite.pokemon}.png`}
@@ -117,12 +120,21 @@ export default function Counter() {
           </Box>
         </Box>
         <Box
-          height="300px"
+          minHeight="300px"
           borderRadius="30px"
-          backgroundColor={colors.primary[400]}
+          backgroundColor={backgroundColor}
           display="flex"
           justifyContent="center"
           alignItems="center"
+          onClick={handleCountClick}
+          sx={{
+            "@media (hover: hover)": {
+              "&:hover": {
+                cursor: "pointer",
+                backgroundColor: colors.primary[900],
+              },
+            },
+          }}
         >
           <Typography fontSize={80} fontWeight={"bold"}>
             +1
