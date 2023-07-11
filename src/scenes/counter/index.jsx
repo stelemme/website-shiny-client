@@ -8,6 +8,10 @@ import { tokens } from "../../theme";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+import ReplyTwoToneIcon from "@mui/icons-material/ReplyTwoTone";
+
+// Components
+import DeleteDialog from "../../components/DeleteDialog";
 
 // Hooks
 import useAxios from "../../hooks/useAxios";
@@ -22,13 +26,14 @@ export default function Counter() {
   const navigate = useNavigate();
   const { username } = useAuth();
   const [backgroundColor, setBackgroundColor] = useState(colors.primary[400]);
-  
+  const [openDelete, setOpenDelete] = useState(false);
+
   const { response: data, loading } = useAxios({
     method: "get",
     url: `/counters/${counterId}`,
   });
 
-  const [count, setCount] = useState(undefined)
+  const [count, setCount] = useState(undefined);
 
   useEffect(() => {
     if (data) {
@@ -39,28 +44,46 @@ export default function Counter() {
   const handleCountClick = () => {
     setBackgroundColor(colors.primary[900]);
 
-    axios["patch"](`/counters/${counterId}`)
+    axios["patch"](`/counters/${counterId}?action=add`)
       .then((res) => {
         setCount(res.data.counter.totalEncounters);
       })
       .catch((err) => {
         console.log(err);
-      }) 
+      });
 
     setTimeout(() => {
       setBackgroundColor(colors.primary[400]);
     }, 200);
   };
 
+  const handleUndoClick = () => {
+    axios["patch"](`/counters/${counterId}?action=undo`)
+      .then((res) => {
+        setCount(res.data.counter.totalEncounters);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const handleDeleteClick = () => {
     axios["delete"](`/counters/${counterId}`)
       .then((res) => {
         console.log(res.data);
-        navigate(-1)
+        navigate(-1);
       })
       .catch((err) => {
         console.log(err);
-      })    
+      });
+  };
+
+  const handleDeleteClose = () => {
+    setOpenDelete(false)
+  }
+
+  const handleDeleteOpen = () => {
+    setOpenDelete(true);
   };
 
   return (
@@ -77,17 +100,23 @@ export default function Counter() {
             <Typography variant="h3" color={colors.grey[100]} fontWeight="bold">
               {data.counter.name.toUpperCase()}
             </Typography>
-            <Box ml="10px" display="flex">
-              <IconButton onClick={() => console.log("shiny button")}>
-                <AutoAwesomeIcon />
-              </IconButton>
-              <IconButton onClick={() => console.log("edit button")}>
-                <EditRoundedIcon />
-              </IconButton>
-              <IconButton onClick={handleDeleteClick}>
-                <DeleteRoundedIcon />
-              </IconButton>
-            </Box>
+            {username === data.counter.trainer && (
+              <Box ml="10px" display="flex">
+                <IconButton onClick={() => console.log("shiny button")}>
+                  <AutoAwesomeIcon />
+                </IconButton>
+                <IconButton onClick={() => console.log("edit button")}>
+                  <EditRoundedIcon />
+                </IconButton>
+                <IconButton onClick={handleDeleteOpen}>
+                  <DeleteRoundedIcon />
+                </IconButton>
+                <IconButton onClick={handleUndoClick}>
+                  <ReplyTwoToneIcon />
+                </IconButton>
+                <DeleteDialog open={openDelete} handleDeleteClick={handleDeleteClick} handleDeleteClose={handleDeleteClose} title={"Counter"} />
+              </Box>
+            )}
           </Box>
           {/* CONTENT */}
           <Box display="flex" justifyContent="space-between" mb="20px">
@@ -113,11 +142,11 @@ export default function Counter() {
               justifyContent="center"
               border="1px solid"
               borderRadius="4px"
-              width="90px"
-              minWidth="90px"
+              width="125px"
+              minWidth="125px"
               mx="10px"
             >
-              <Typography fontWeight={"bold"} variant="h5">
+              <Typography fontWeight={"bold"} variant="h3">
                 {count}
               </Typography>
             </Box>
@@ -140,7 +169,7 @@ export default function Counter() {
             }}
           >
             <Typography fontSize={80} fontWeight={"bold"}>
-              +1
+              +{data.counter.increment}
             </Typography>
           </Box>
         </Box>
