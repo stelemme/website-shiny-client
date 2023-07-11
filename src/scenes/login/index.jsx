@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// mui imports
+// Mui
 import { Box, TextField, Button, Typography } from '@mui/material';
 
-// Firebase imports
+// Firebase
 import { auth } from "../../utils/firebase";
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { signOut } from 'firebase/auth';

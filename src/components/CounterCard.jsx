@@ -1,13 +1,18 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 // mui imports
 import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../theme";
 
-export default function CounterCard({ id, gameSprite, name, count }) {
+export default function CounterCard({ id, gameSprite, name, count, trainer }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
+
+  let trainerHeight = "100%"
+  if (trainer) {
+    trainerHeight = "50"
+  }
 
   return (
     <Box
@@ -39,10 +44,15 @@ export default function CounterCard({ id, gameSprite, name, count }) {
           />
         </Box>
         {/* COUNTER NAME */}
-        <Box flexGrow={1} display="flex" alignItems="center" ml="15px">
-          <Typography fontWeight={"bold"} variant="h5" align="left">
-            {name}
+        <Box flexGrow={1} ml="15px">
+          <Typography fontWeight={"bold"} color={colors.grey[400]}>
+            {trainer}
           </Typography>
+          <Box display="flex" alignItems="center" height={trainerHeight}>
+            <Typography fontWeight={"bold"} variant="h5" align="left">
+              {name}
+            </Typography>
+          </Box>
         </Box>
         {/* COUNT */}
         <Box

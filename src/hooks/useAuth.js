@@ -6,7 +6,7 @@ import { onAuthStateChanged } from "firebase/auth";
 
 export const useAuth = () => {
   const [login, setLogin] = useState(false)
-  const [username, setUsername] = useState("")
+  const [username, setUsername] = useState(undefined)
 
   useEffect(() => onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -14,7 +14,7 @@ export const useAuth = () => {
       setUsername(auth.currentUser.displayName)
     } else {
       setLogin(false)
-      setUsername("")
+      setUsername(undefined)
     }
   }), []
   );

@@ -1,36 +1,46 @@
-// mui imports
+// Mui
 import { Box, Grid, Typography } from "@mui/material";
 
-// Components imports
+// Components
 import Header from "../../components/Header";
 import CounterCard from "../../components/CounterCard";
 
-
-const data = [
-  { _id: { $oid: "64a6744a8ed915943a525921" }, name: "Alcremie", game: "red", count: 5 },
-  { _id: { $oid: "64a6744a8ed915943a525922" }, name: "Dynamax Adventures", game: "sword", count: 100 },
-  { _id: { $oid: "64a6744a8ed915943a525923" }, name: "Bulbasaur", game: "yellow", count: 1000 },
-  { _id: { $oid: "64a6744a8ed915943a525924" }, name: "Route 14", game: "black-2", count: 55555 },
-];
+// Hooks
+import useAxios from "../../hooks/useAxios";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function Counters() {
+  const { username } = useAuth();
+
+  const {
+    response: uncompletedCounters,
+    loading: uncompletedLoading,
+  } = useAxios({
+    method: "get",
+    url: `/counters?trainer=${username}&completed=false&preview=true`,
+  });
+
+  const {
+    response: completedCounters,
+    loading: completedLoading,
+  } = useAxios({
+    method: "get",
+    url: `/counters?trainer=${username}&completed=true&preview=true`,
+  });
+
   return (
-    <Box
-      maxWidth={{ lg: "840px", xs: "420px" }}
-      mx="auto"
-      my="20px"
-    >
+    <Box maxWidth={{ lg: "840px", xs: "420px" }} mx="auto" my="20px">
       <Box display="flex" flexDirection="column" mx="20px">
         {/* HEADER */}
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Header
-            title="COUNTERS"
+            title="YOUR COUNTERS"
             subtitle="Here you can find all counters owned by you."
           />
         </Box>
 
         {/* CARDS */}
-        <Grid container spacing={"20px"}>
+        {username && !uncompletedLoading && !completedLoading && (<Grid container spacing={"20px"}>
           {/* ONGOING CARDS */}
           <Grid item lg={6} xs={12} maxWidth="400px">
             <Typography
@@ -40,20 +50,19 @@ export default function Counters() {
             >
               ONGOING COUNTERS
             </Typography>
-            {data.map((counter) => {
+            {uncompletedCounters?.counters?.map((counter) => {
               return (
-                <div key={counter._id.$oid} style={{ marginBottom: "20px" }}>
+                <div key={counter._id} style={{ marginBottom: "20px" }}>
                   <CounterCard
-                    id={counter._id.$oid}
+                    id={counter._id}
                     name={counter.name}
-                    gameSprite={counter.game}
-                    count={counter.count}
+                    gameSprite={counter.sprite.game}
+                    count={counter.totalEncounters}
                   />
                 </div>
               );
             })}
           </Grid>
-
           {/* COMPLETED CARDS */}
           <Grid item lg={6} xs={12} maxWidth="400px">
             <Typography
@@ -63,32 +72,20 @@ export default function Counters() {
             >
               COMPLETED COUNTERS
             </Typography>
-            {data.map((counter) => {
+            {completedCounters?.counters?.map((counter) => {
               return (
-                <div key={counter._id.$oid} style={{ marginBottom: "20px" }}>
+                <div key={counter._id} style={{ marginBottom: "20px" }}>
                   <CounterCard
-                    id={counter._id.$oid}
+                    id={counter._id}
                     name={counter.name}
-                    gameSprite={counter.game}
-                    count={counter.count}
-                  />
-                </div>
-              );
-            })}
-            {data.map((counter) => {
-              return (
-                <div key={counter._id.$oid} style={{ marginBottom: "20px" }}>
-                  <CounterCard
-                    id={counter._id.$oid}
-                    name={counter.name}
-                    gameSprite={counter.game}
-                    count={counter.count}
+                    gameSprite={counter.sprite.game}
+                    count={counter.totalEncounters}
                   />
                 </div>
               );
             })}
           </Grid>
-        </Grid>
+        </Grid>)}
       </Box>
     </Box>
   );
