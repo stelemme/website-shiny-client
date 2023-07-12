@@ -75,6 +75,7 @@ export default function Login() {
         <ConditionalRender/>
         <form onSubmit={handleSubmit} >
           <TextField
+            color="secondary"
             label="Email"
             type="email"
             value={email}
@@ -85,6 +86,7 @@ export default function Login() {
             autoComplete="email"
           />
           <TextField
+            color="secondary"
             label="Password"
             type="password"
             value={password}

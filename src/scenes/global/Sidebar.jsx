@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { sidebarToggle } from "../../atoms";
 
@@ -10,21 +10,22 @@ import { Sidebar, Menu, MenuItem, menuClasses } from "react-pro-sidebar";
 import { tokens } from "../../theme";
 import { Box, Typography, useTheme, IconButton } from "@mui/material";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import CalculateOutlinedIcon from '@mui/icons-material/CalculateOutlined';
-import CalculateIcon from '@mui/icons-material/Calculate';
-import CatchingPokemonSharpIcon from '@mui/icons-material/CatchingPokemonSharp';
+import CalculateOutlinedIcon from "@mui/icons-material/CalculateOutlined";
+import CalculateIcon from "@mui/icons-material/Calculate";
+import CatchingPokemonSharpIcon from "@mui/icons-material/CatchingPokemonSharp";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import LibraryAddOutlinedIcon from "@mui/icons-material/LibraryAddOutlined";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
-  const  setToggled = useSetRecoilState(sidebarToggle);
+  const setToggled = useSetRecoilState(sidebarToggle);
 
   return (
     <MenuItem
       rootStyles={{
-        ['.' + menuClasses.active]: {
+        ["." + menuClasses.active]: {
           backgroundColor: colors.primary[900],
         },
       }}
@@ -35,7 +36,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
       onClick={() => {
         setSelected(title);
         navigate(to);
-        setToggled(false)
+        setToggled(false);
       }}
       icon={icon}
     >
@@ -45,22 +46,34 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 };
 
 export default function CustomSidebar() {
+  const domains = {
+    "": "Home",
+    counters: "Your Counters",
+    all: "All Counters",
+    create: "Add a Counter",
+    pokedex: "Pokedex",
+  };
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [selected, setSelected] = useState("Home");
+  const [selected, setSelected] = useState(
+    domains[
+      window.location.href.substring(window.location.href.lastIndexOf("/") + 1)
+    ]
+  );
   const [toggled, setToggled] = useRecoilState(sidebarToggle);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const menuItemStyles = {
     button: {
-      '&:hover': {
+      "&:hover": {
         backgroundColor: colors.primary[900],
       },
-    }
+    },
   };
 
   return (
-    <Box display='flex' minHeight='400px'>
+    <Box display="flex" minHeight="400px">
       <Sidebar
         transitionDuration="0"
         collapsed={isCollapsed}
@@ -87,7 +100,8 @@ export default function CustomSidebar() {
                   ml="15px"
                 >
                   <Typography
-                    variant="h3" color={colors.grey[100]}
+                    variant="h3"
+                    color={colors.grey[100]}
                     fontWeight="bold"
                   >
                     Shiny Data
@@ -112,7 +126,7 @@ export default function CustomSidebar() {
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
             >
-              {isCollapsed ? "Counter" : "Counter  Application"} 
+              {isCollapsed ? "Counter" : "Counter  Application"}
             </Typography>
             <Item
               title="Your Counters"
@@ -120,11 +134,18 @@ export default function CustomSidebar() {
               icon={<CalculateOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-            />    
+            />
             <Item
               title="All Counters"
-              to="/counters-all"
+              to="/counters/all"
               icon={<CalculateIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Add a Counter"
+              to="/counters/create"
+              icon={<LibraryAddOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
@@ -133,7 +154,7 @@ export default function CustomSidebar() {
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
             >
-              {isCollapsed ? "Info" : "Information"} 
+              {isCollapsed ? "Info" : "Information"}
             </Typography>
             <Item
               title="Pokédex"
@@ -141,7 +162,7 @@ export default function CustomSidebar() {
               icon={<CatchingPokemonSharpIcon />}
               selected={selected}
               setSelected={setSelected}
-            /> 
+            />
           </Box>
         </Menu>
       </Sidebar>

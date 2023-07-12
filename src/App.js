@@ -12,6 +12,7 @@ import CustomSidebar from "./scenes/global/Sidebar";
 import Counters from "./scenes/counters";
 import CountersAll from "./scenes/counters-all";
 import Counter from "./scenes/counter";
+import CreateCounters from "./scenes/counters-create";
 
 // Firebase imports
 import { useAuth } from "./hooks/useAuth";
@@ -30,8 +31,9 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/auth" element={<Login />} />
               <Route path="/counters" element={<Counters />} />
+              <Route path="/counters/all" element={<CountersAll />} />
+              <Route path="/counters/create" element={<CreateCounters />} />
               <Route path="/counters/:counterId" element={<Counter />} />
-              <Route path="/counters-all" element={<CountersAll />} />
             </Routes>
           </main>
         </div>
