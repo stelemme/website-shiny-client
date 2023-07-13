@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 // Mui
@@ -12,6 +12,7 @@ import {
   RadioGroup,
   Radio,
   Button,
+  FormLabel,
 } from "@mui/material";
 
 // Components
@@ -38,14 +39,22 @@ export default function CreateCounters() {
     totalEncounters: 0,
     increment: 1,
     pokemonCheck: true,
+    method: {
+      shinyCharm: false,
+    },
   };
 
   const [data, setData] = useState(initialState);
   const [gameId, setGameId] = useState(undefined);
+  const [shinyCharmCheck, setShinyCharmCheck] = useState(false);
   const [locationsList, setLocationsList] = useState(undefined);
   const [methodsList, setMethodsList] = useState(undefined);
   const [methodCatList, setMethodCatList] = useState(undefined);
   const [pokemonsList, setPokemonsList] = useState(undefined);
+
+  const [clearMethod, setClearMethod] = useState("method");
+
+  console.log(data);
 
   useEffect(() => {
     setData((prevState) => {
@@ -66,20 +75,17 @@ export default function CreateCounters() {
   }, [gameId]);
 
   const handleSubmit = (event) => {
-    event.preventDefault()
+    event.preventDefault();
 
     axios["post"](`/counters`, data)
-        .then((res) => {
-          console.log(res.data)
-          navigate(`/counters/${res.data.counter._id}`)
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      .then((res) => {
+        console.log(res.data);
+        navigate(`/counters/${res.data.counter._id}`);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
-
-  console.log(data)
-
 
   return (
     <Box maxWidth="420px" mx="auto" my="20px">
@@ -98,14 +104,18 @@ export default function CreateCounters() {
           <Autocomplete
             autoHighlight
             onChange={(e, value, reason) => {
-              if (reason === "clear") {
-                setData(initialState);
-                setGameId(undefined);
-                setLocationsList(undefined);
-                setMethodsList(undefined);
-                setMethodCatList(undefined);
-                setPokemonsList(undefined);
-              } else if (reason === "selectOption") {
+              setData(initialState);
+              setGameId(undefined);
+              setShinyCharmCheck(false);
+              setLocationsList(undefined);
+              setMethodsList(undefined);
+              setMethodCatList(undefined);
+              setPokemonsList(undefined);
+
+              setClearMethod((prevState) =>
+                prevState === "method" ? "clearMethod" : "method"
+              );
+              if (reason === "selectOption") {
                 setData((prevState) => {
                   return {
                     ...prevState,
@@ -120,6 +130,7 @@ export default function CreateCounters() {
                   };
                 });
                 setGameId(value._id);
+                setShinyCharmCheck(value.shinyCharm);
                 setLocationsList(value.locations);
                 setMethodsList(value.methods);
               }
@@ -190,19 +201,18 @@ export default function CreateCounters() {
             disabled={!pokemonsList || !data.pokemonCheck}
             autoHighlight
             onChange={(e, value, reason) => {
-              if (reason === "clear") {
-                setData((prevState) => {
-                  const { name, pokedexNo, types, sprite, ...updatedData } =
-                    prevState;
-                  const updatedSprites = { ...sprite };
-                  delete updatedSprites.pokemon;
+              setData((prevState) => {
+                const { name, pokedexNo, types, sprite, ...updatedData } =
+                  prevState;
+                const updatedSprites = { ...sprite };
+                delete updatedSprites.pokemon;
 
-                  return {
-                    ...updatedData,
-                    sprite: updatedSprites,
-                  };
-                });
-              } else if (reason === "selectOption") {
+                return {
+                  ...updatedData,
+                  sprite: updatedSprites,
+                };
+              });
+              if (reason === "selectOption") {
                 axios["get"](`/pokedex?name=${value}`)
                   .then((res) => {
                     setData((prevState) => {
@@ -243,12 +253,11 @@ export default function CreateCounters() {
             disabled={!locationsList}
             autoHighlight
             onChange={(e, value, reason) => {
-              if (reason === "clear") {
-                setData((prevState) => {
-                  const { location, ...rest } = prevState;
-                  return rest;
-                });
-              } else if (reason === "selectOption") {
+              setData((prevState) => {
+                const { location, ...rest } = prevState;
+                return rest;
+              });
+              if (reason === "selectOption") {
                 setData((prevState) => {
                   return { ...prevState, ...{ location: value } };
                 });
@@ -266,33 +275,85 @@ export default function CreateCounters() {
             )}
           />
 
+          {/* SHINYCHARM */}
+          {shinyCharmCheck && (
+            <FormControl sx={{ mb: "5px" }}>
+              <FormLabel>ShinyCharm</FormLabel>
+              <RadioGroup
+                row
+                value={data.method.shinyCharm}
+                onChange={(e, value) => {
+                  setClearMethod((prevState) =>
+                    prevState === "method" ? "clearMethod" : "method"
+                  );
+                  setMethodCatList(undefined);
+                  setData((prevState) => {
+                    return {
+                      ...prevState,
+                      ...{
+                        method: {
+                          shinyCharm: JSON.parse(value),
+                        },
+                      },
+                    };
+                  });
+                }}
+              >
+                <FormControlLabel
+                  value={false}
+                  control={<Radio color="secondary" />}
+                  label="Not Obtained"
+                />
+                <FormControlLabel
+                  value={true}
+                  control={<Radio color="secondary" />}
+                  label="Obtained"
+                />
+              </RadioGroup>
+            </FormControl>
+          )}
+
           {/* METHODS */}
           <Autocomplete
-            key={methodsList}
+            key={clearMethod}
             disabled={!methodsList}
             autoHighlight
             onChange={(e, value, reason) => {
-              if (reason === "clear") {
-                setMethodCatList(undefined);
+              setMethodCatList(undefined);
+              setData((prevState) => {
+                const { method, ...updatedData } = prevState;
+                const updatedMethod = { ...method };
+                delete updatedMethod.name;
+                delete updatedMethod.function;
+                delete updatedMethod.odds;
+                delete updatedMethod.rolls;
+                delete updatedMethod.charmRolls;
+                delete updatedMethod.category;
+
+                return {
+                  ...updatedData,
+                  method: updatedMethod,
+                };
+              });
+              if (reason === "selectOption") {
                 setData((prevState) => {
-                  const { method, ...rest } = prevState;
-                  return rest;
-                });
-              } else if (reason === "selectOption") {
-                setData((prevState) => {
+                  if (value.categories.length > 0) {
+                    setMethodCatList(value.categories);
+                  }
+
+                  delete value._id;
+                  delete value.categories;
+
                   return {
                     ...prevState,
                     ...{
                       method: {
-                        name: value.name,
-                        odds: value.odds,
+                        ...prevState.method,
+                        ...value,
                       },
                     },
                   };
                 });
-                if (value.subCategories.length > 0) {
-                  setMethodCatList(value.subCategories);
-                }
               }
             }}
             sx={{ mb: "20px" }}
@@ -314,8 +375,18 @@ export default function CreateCounters() {
             disabled={!methodCatList}
             autoHighlight
             onChange={(e, value, reason) => {
-              if (reason === "clear") {
-              } else if (reason === "selectOption") {
+              if (reason === "selectOption") {
+                setData((prevState) => {
+                  return {
+                    ...prevState,
+                    ...{
+                      method: {
+                        ...prevState.method,
+                        category: value,
+                      },
+                    },
+                  };
+                });
               }
             }}
             sx={{ mb: "20px" }}
@@ -356,7 +427,7 @@ export default function CreateCounters() {
             color="neutral"
             fullWidth
             sx={{ mb: "10px" }}
-            style={{ color: 'white' }}
+            style={{ color: "white" }}
           >
             Submit
           </Button>

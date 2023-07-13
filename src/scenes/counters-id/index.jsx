@@ -11,7 +11,7 @@ import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import ReplyTwoToneIcon from "@mui/icons-material/ReplyTwoTone";
 
 // Components
-import DeleteDialog from "../../components/DeleteDialog";
+import CustomDialog from "../../components/CustomDialog";
 
 // Hooks
 import useAxios from "../../hooks/useAxios";
@@ -27,8 +27,9 @@ export default function Counter() {
   const { username } = useAuth();
   const [backgroundColor, setBackgroundColor] = useState(colors.primary[400]);
   const [openDelete, setOpenDelete] = useState(false);
+  const [openShiny, setOpenShiny] = useState(false);
 
-  const { response: data, loading } = useAxios({
+  const { response: data } = useAxios({
     method: "get",
     url: `/counters/${counterId}`,
   });
@@ -67,11 +68,30 @@ export default function Counter() {
       });
   };
 
+  const handleShinyClick = () => {
+    axios["patch"](`/counters/${counterId}?action=shiny`)
+      .then((res) => {
+        console.log(res.data);
+        navigate("/counters");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleShinyClose = () => {
+    setOpenShiny(false);
+  };
+
+  const handleShinyOpen = () => {
+    setOpenShiny(true);
+  };
+
   const handleDeleteClick = () => {
     axios["delete"](`/counters/${counterId}`)
       .then((res) => {
         console.log(res.data);
-        navigate(-1);
+        navigate("/counters");
       })
       .catch((err) => {
         console.log(err);
@@ -79,8 +99,8 @@ export default function Counter() {
   };
 
   const handleDeleteClose = () => {
-    setOpenDelete(false)
-  }
+    setOpenDelete(false);
+  };
 
   const handleDeleteOpen = () => {
     setOpenDelete(true);
@@ -102,19 +122,39 @@ export default function Counter() {
             </Typography>
             {username === data.counter.trainer && (
               <Box ml="10px" display="flex">
-                <IconButton onClick={() => console.log("shiny button")}>
-                  <AutoAwesomeIcon />
-                </IconButton>
-                <IconButton onClick={() => console.log("edit button")}>
-                  <EditRoundedIcon />
-                </IconButton>
+                {!data.counter.completed && (
+                  <IconButton onClick={handleShinyOpen}>
+                    <AutoAwesomeIcon />
+                  </IconButton>
+                )}
+                <CustomDialog
+                  open={openShiny}
+                  handleClick={handleShinyClick}
+                  handleClose={handleShinyClose}
+                  title={"Did you get a Shiny Pokémon?"}
+                  action={"Caught"}
+                />
+                {!data.counter.completed && (
+                  <IconButton onClick={() => console.log("edit button")}>
+                    <EditRoundedIcon />
+                  </IconButton>
+                )}
+
                 <IconButton onClick={handleDeleteOpen}>
                   <DeleteRoundedIcon />
                 </IconButton>
-                <IconButton onClick={handleUndoClick}>
-                  <ReplyTwoToneIcon />
-                </IconButton>
-                <DeleteDialog open={openDelete} handleDeleteClick={handleDeleteClick} handleDeleteClose={handleDeleteClose} title={"Counter"} />
+                {!data.counter.completed && (
+                  <IconButton onClick={handleUndoClick}>
+                    <ReplyTwoToneIcon />
+                  </IconButton>
+                )}
+                <CustomDialog
+                  open={openDelete}
+                  handleClick={handleDeleteClick}
+                  handleClose={handleDeleteClose}
+                  title={"Do you want to delete this Counter?"}
+                  action={"Delete"}
+                />
               </Box>
             )}
           </Box>
@@ -125,14 +165,14 @@ export default function Counter() {
                 <img
                   alt=""
                   src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/games/${data.counter.sprite.game}.png`}
-                  height="33px"
+                  height="40px"
                 />
               </Box>
               <Box display="inline-flex" alignItems="center">
                 <img
                   alt=""
                   src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/${data.counter.sprite.dir}/${data.counter.sprite.pokemon}.png`}
-                  height="33px"
+                  height="40px"
                 />
               </Box>
             </Box>
@@ -146,7 +186,7 @@ export default function Counter() {
               minWidth="125px"
               mx="10px"
             >
-              <Typography fontWeight={"bold"} variant="h3">
+              <Typography fontWeight={"bold"} variant="h2">
                 {count}
               </Typography>
             </Box>
@@ -158,13 +198,20 @@ export default function Counter() {
             display="flex"
             justifyContent="center"
             alignItems="center"
-            onClick={handleCountClick}
+            onClick={
+              username === data.counter.trainer && !data.counter.completed
+                ? handleCountClick
+                : undefined
+            }
             sx={{
               "@media (hover: hover)": {
-                "&:hover": {
-                  cursor: "pointer",
-                  backgroundColor: colors.primary[900],
-                },
+                ...(username === data.counter.trainer &&
+                  !data.counter.completed && {
+                    "&:hover": {
+                      cursor: "pointer",
+                      backgroundColor: colors.primary[900],
+                    },
+                  }),
               },
             }}
           >

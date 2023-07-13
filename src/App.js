@@ -11,7 +11,7 @@ import Login from "./scenes/login"
 import CustomSidebar from "./scenes/global/Sidebar";
 import Counters from "./scenes/counters";
 import CountersAll from "./scenes/counters-all";
-import Counter from "./scenes/counter";
+import Counter from "./scenes/counters-id";
 import CreateCounters from "./scenes/counters-create";
 
 // Firebase imports

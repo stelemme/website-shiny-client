@@ -1,39 +1,40 @@
 // Mui
 import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
 
-export default function DeleteDialog({
+export default function CustomDialog({
   open,
-  handleDeleteClick,
-  handleDeleteClose,
+  handleClick,
+  handleClose,
   title,
+  action,
 }) {
   return (
     <Dialog
       open={open}
-      onClose={handleDeleteClose}
-      aria-labelledby="alert-dialog-delete"
+      onClose={handleClose}
+      aria-labelledby="alert-dialog"
       sx={{
         maxWidth: "440px",
-        mx: "auto"
+        mx: "auto",
       }}
     >
       <DialogTitle
-        id="alert-dialog-delete"
+        id="alert-dialog"
         variant="h4"
         color="secondary"
         sx={{ mt: "10px" }}
       >
-        {`Do you want to delete this ${title}?`}
+        {title}
       </DialogTitle>
       <DialogActions
-        style={{ justifyContent: "center", gap: "30px" }}
+        style={{ justifyContent: "center", gap: "20px" }}
         sx={{ mb: "20px" }}
       >
         <Button
           variant="contained"
           color="neutral"
           style={{ color: "white" }}
-          onClick={handleDeleteClose}
+          onClick={handleClose}
         >
           Cancel
         </Button>
@@ -41,10 +42,10 @@ export default function DeleteDialog({
           variant="contained"
           color="neutral"
           style={{ color: "white" }}
-          onClick={handleDeleteClick}
+          onClick={handleClick}
           autoFocus
         >
-          Delete
+          {action}
         </Button>
       </DialogActions>
     </Dialog>
