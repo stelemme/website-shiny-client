@@ -10,16 +10,14 @@ import useAxios from "../../hooks/useAxios";
 
 export default function Counters() {
   const {
-    response: uncompletedCounters,
-    loading: uncompletedLoading
+    response: uncompletedCounters
   } = useAxios({
     method: "get",
     url: `/counters?completed=false&preview=true`,
   });
 
   const {
-    response: completedCounters,
-    loading: completedLoading
+    response: completedCounters
   } = useAxios({
     method: "get",
     url: `/counters?completed=true&preview=true`,
@@ -37,7 +35,7 @@ export default function Counters() {
         </Box>
 
         {/* CARDS */}
-        {!uncompletedLoading && !completedLoading && (<Grid container spacing={"20px"}>
+        <Grid container spacing={"20px"}>
           {/* ONGOING CARDS */}
           <Grid item lg={6} xs={12} maxWidth="400px">
             <Typography
@@ -47,7 +45,7 @@ export default function Counters() {
             >
               ONGOING COUNTERS
             </Typography>
-            {uncompletedCounters?.counters?.map((counter) => {
+            {uncompletedCounters?.counters.length > 0 ? uncompletedCounters?.counters.map((counter) => {
               return (
                 <div key={counter._id} style={{ marginBottom: "20px" }}>
                   <CounterCard
@@ -59,7 +57,11 @@ export default function Counters() {
                   />
                 </div>
               );
-            })}
+            }) : (
+              <Typography>
+                No Counters Found
+              </Typography>
+            )}
           </Grid>
           {/* COMPLETED CARDS */}
           <Grid item lg={6} xs={12} maxWidth="400px">
@@ -70,7 +72,7 @@ export default function Counters() {
             >
               COMPLETED COUNTERS
             </Typography>
-            {completedCounters?.counters?.map((counter) => {
+            {completedCounters?.counters.length > 0 ? completedCounters?.counters.map((counter) => {
               return (
                 <div key={counter._id} style={{ marginBottom: "20px" }}>
                   <CounterCard
@@ -82,9 +84,13 @@ export default function Counters() {
                   />
                 </div>
               );
-            })}
+            }) : (
+              <Typography>
+                No Counters Found
+              </Typography>
+            )}
           </Grid>
-        </Grid>)}
+        </Grid>
       </Box>
     </Box>
   );

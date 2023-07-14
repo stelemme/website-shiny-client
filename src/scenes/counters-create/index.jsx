@@ -13,6 +13,8 @@ import {
   Radio,
   Button,
   FormLabel,
+  Grid,
+  InputAdornment,
 } from "@mui/material";
 
 // Components
@@ -38,6 +40,8 @@ export default function CreateCounters() {
     encounters: [],
     totalEncounters: 0,
     increment: 1,
+    lowerTimeThreshold: 0,
+    upperTimeThreshold: 200,
     pokemonCheck: true,
     method: {
       shinyCharm: false,
@@ -402,25 +406,83 @@ export default function CreateCounters() {
           />
 
           {/* INCREMENT */}
-          <TextField
-            sx={{ mb: "20px" }}
-            value={data.increment}
-            type="number"
-            fullWidth
-            required
-            color="secondary"
-            label="Increment"
-            onChange={(e) => {
-              if (e.target.value > 0) {
-                setData((prevState) => {
-                  return {
-                    ...prevState,
-                    ...{ increment: e.target.value },
-                  };
-                });
-              }
-            }}
-          />
+          <Grid container spacing={"10px"}>
+            <Grid item xs={4}>
+              <TextField
+                sx={{ mb: "20px" }}
+                value={data.increment}
+                type="number"
+                fullWidth
+                required
+                color="secondary"
+                label="Increment"
+                onChange={(e) => {
+                  if (e.target.value > 0) {
+                    setData((prevState) => {
+                      return {
+                        ...prevState,
+                        ...{ increment: e.target.value },
+                      };
+                    });
+                  }
+                }}
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <TextField
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="start">sec</InputAdornment>
+                  ),
+                }}
+                sx={{ mb: "20px" }}
+                value={data.lowerTimeThreshold}
+                type="number"
+                fullWidth
+                required
+                color="secondary"
+                label="Lower Threshold"
+                onChange={(e) => {
+                  if (e.target.value >= 0) {
+                    setData((prevState) => {
+                      return {
+                        ...prevState,
+                        ...{ lowerTimeThreshold: e.target.value },
+                      };
+                    });
+                  }
+                }}
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <TextField
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="start">sec</InputAdornment>
+                  ),
+                }}
+                sx={{ mb: "20px" }}
+                value={data.upperTimeThreshold}
+                type="number"
+                fullWidth
+                required
+                color="secondary"
+                label="Upper Threshold"
+                onChange={(e) => {
+                  if (e.target.value >= 0) {
+                    setData((prevState) => {
+                      return {
+                        ...prevState,
+                        ...{ upperTimeThreshold: e.target.value },
+                      };
+                    });
+                  }
+                }}
+              />
+            </Grid>
+          </Grid>
+
+          {/* SUBMIT */}
           <Button
             type="submit"
             variant="contained"
