@@ -97,7 +97,7 @@ export default function CreateCounters() {
         {/* HEADER */}
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Header
-            title="CREATE COUNTER"
+            title="CREATE A COUNTER"
             subtitle="Here you can create a new counter."
           />
         </Box>

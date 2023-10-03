@@ -49,7 +49,7 @@ export default function CounterCard({ id, gameSprite, name, count, trainer }) {
             {trainer}
           </Typography>
           <Box display="flex" alignItems="center" height={trainerHeight}>
-            <Typography fontWeight={"bold"} variant="h5" align="left">
+            <Typography fontWeight={"bold"} variant="h5" align="left" >
               {name}
             </Typography>
           </Box>

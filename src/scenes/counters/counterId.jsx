@@ -184,7 +184,7 @@ export default function Counter() {
   return (
     <Box maxWidth="420px" mx="auto" my="20px">
       {data && (
-        <Box display="flex" flexDirection="column" mx="20px">
+        <Box display="flex" flexDirection="column" mx="20px" >
           {/* HEADER */}
           <Box
             mb="20px"
@@ -233,13 +233,20 @@ export default function Counter() {
               </Box>
             )}
           </Box>
-          {/* CONTENT */}
+          {/* IMAGES + COUNT */}
           <Box display="flex" justifyContent="space-between" mb="20px">
             <Box display="flex" gap="20px">
               <Box display="inline-flex" alignItems="center">
                 <img
                   alt=""
                   src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/games/${data.counter.sprite.game}.png`}
+                  height="40px"
+                />
+              </Box>
+              <Box display="inline-flex" alignItems="center">
+                <img
+                  alt=""
+                  src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon/${data.counter.sprite.dir}/${data.counter.sprite.pokemon}.png`}
                   height="40px"
                 />
               </Box>
@@ -266,6 +273,8 @@ export default function Counter() {
               </Typography>
             </Box>
           </Box>
+
+          {/* COUNT BUTTON */}
           <Box
             minHeight="300px"
             borderRadius="30px"
@@ -295,6 +304,8 @@ export default function Counter() {
               +{data.counter.increment}
             </Typography>
           </Box>
+
+          {/* STATS */}
           <Grid container>
             <Grid item xs={6}>
               <Typography fontWeight={"bold"}>Shiny Hunting Method</Typography>

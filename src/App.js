@@ -10,9 +10,12 @@ import Home from "./scenes/home"
 import Login from "./scenes/login"
 import CustomSidebar from "./scenes/global/Sidebar";
 import Counters from "./scenes/counters";
-import CountersAll from "./scenes/counters-all";
-import Counter from "./scenes/counters-id";
-import CreateCounters from "./scenes/counters-create";
+import CountersAll from "./scenes/counters/all";
+import Counter from "./scenes/counters/counterId";
+import CreateCounters from "./scenes/counters/create";
+import Pokédex from "./scenes/pokedex";
+import PokédexRegional from "./scenes/pokedex/regional";
+import GameId from "./scenes/pokedex/gameId";
 
 // Firebase imports
 import { useAuth } from "./hooks/useAuth";
@@ -34,6 +37,9 @@ function App() {
               <Route path="/counters/all" element={<CountersAll />} />
               <Route path="/counters/create" element={<CreateCounters />} />
               <Route path="/counters/:counterId" element={<Counter />} />
+              <Route path="/pokedex" element={<Pokédex />} />
+              <Route path="/pokedex/regional" element={<PokédexRegional />} />
+              <Route path="/pokedex/regional/:gameId" element={<GameId />} />
             </Routes>
           </main>
         </div>

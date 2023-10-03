@@ -12,9 +12,9 @@ import { Box, Typography, useTheme, IconButton } from "@mui/material";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import CalculateOutlinedIcon from "@mui/icons-material/CalculateOutlined";
 import CalculateIcon from "@mui/icons-material/Calculate";
-import CatchingPokemonSharpIcon from "@mui/icons-material/CatchingPokemonSharp";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import LibraryAddOutlinedIcon from "@mui/icons-material/LibraryAddOutlined";
+import CatchingPokemonTwoToneIcon from '@mui/icons-material/CatchingPokemonTwoTone';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -157,9 +157,16 @@ export default function CustomSidebar() {
               {isCollapsed ? "Info" : "Information"}
             </Typography>
             <Item
-              title="Pokédex"
+              title="National Pokédex"
               to="/pokedex"
-              icon={<CatchingPokemonSharpIcon />}
+              icon={<CatchingPokemonTwoToneIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Regional Pokédex"
+              to="/pokedex/regional"
+              icon={<CatchingPokemonTwoToneIcon />}
               selected={selected}
               setSelected={setSelected}
             />
