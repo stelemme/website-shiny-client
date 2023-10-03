@@ -1,3 +1,5 @@
+import useAxios from "axios-hooks";
+
 // mui imports
 import { Box, Grid, Typography } from "@mui/material";
 
@@ -5,14 +7,37 @@ import { Box, Grid, Typography } from "@mui/material";
 import Header from "../../components/Header"
 import GameCard from "../../components/GameCard"
 
-// Hooks
-import useAxios from "../../hooks/useAxios";
-
 export default function PokedexRegional() {
-  const { response: games } = useAxios({
-    method: "get",
-    url: `/game?action=select`,
-  });
+  const [{ data: games, loading: gamesLoading, error: gamesError }] =
+    useAxios(`/game?action=select`);
+
+    if (gamesLoading) {
+      return (
+        <Box maxWidth={{ lg: "840px", md: "630px", sm: "420px", xs: "310px" }}
+        mx="auto"
+        my="20px">
+          <Box display="flex" flexDirection="column" mx="20px">
+            {/* HEADER */}
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Header
+                title="POKEDEX"
+                subtitle="Welcome to the national Pokédex!"
+              />
+            </Box>
+            <Typography
+              variant="h5"
+              style={{ marginBottom: "20px" }}
+            >
+              Loading ...
+            </Typography>
+          </Box>
+        </Box>
+      );
+    }
 
   return (
     <Box maxWidth={{ lg: "840px", md: "630px", sm: "420px", xs: "310px" }} mx="auto" my="20px">

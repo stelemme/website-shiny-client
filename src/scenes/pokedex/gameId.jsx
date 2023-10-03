@@ -1,4 +1,6 @@
 import { useParams } from "react-router-dom";
+import useAxios from "axios-hooks";
+
 
 // mui imports
 import { Box, Grid, Typography } from "@mui/material";
@@ -7,21 +9,42 @@ import { Box, Grid, Typography } from "@mui/material";
 import Header from "../../components/Header";
 import PokedexCard from "../../components/PokedexCard";
 
-// Hooks
-import useAxios from "../../hooks/useAxios";
-
 export default function GameId() {
   const { gameId } = useParams();
 
-  const { response: pokedex } = useAxios({
-    method: "get",
-    url: `/pokedex?game=${gameId}`,
-  });
+  const [{ data: pokedex, loading: pokedexLoading, error: pokedexError }] =
+    useAxios(`/pokedex?game=${gameId}`);
 
-  const { response: game } = useAxios({
-    method: "get",
-    url: `/game/${gameId}?action=dir`,
-  });
+  const [{ data: game, loading: gameLoading, error: gameError }] =
+    useAxios(`/game/${gameId}?action=dir`);
+
+    if (pokedexLoading || gameLoading) {
+      return (
+        <Box maxWidth={{ lg: "840px", md: "630px", sm: "420px", xs: "310px" }}
+        mx="auto"
+        my="20px">
+          <Box display="flex" flexDirection="column" mx="20px">
+            {/* HEADER */}
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Header
+                title="POKEDEX"
+                subtitle="Welcome to the national Pokédex!"
+              />
+            </Box>
+            <Typography
+              variant="h5"
+              style={{ marginBottom: "20px" }}
+            >
+              Loading ...
+            </Typography>
+          </Box>
+        </Box>
+      );
+    }
 
   return (
     <Box
