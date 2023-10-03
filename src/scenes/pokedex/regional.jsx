@@ -28,9 +28,7 @@ export default function PokedexRegional() {
             games?.game.map((game) => {
               return (
                 <Grid key={game._id} item lg={3} md={4} sm={6} xs={6}>
-                  <div style={{ marginBottom: "20px" }}>
                     <GameCard id={game._id} name={game.name} gen={game.gen} sprite={game.sprite}/>
-                  </div>
                 </Grid>
               );
             })

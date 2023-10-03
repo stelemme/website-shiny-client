@@ -37,7 +37,7 @@ export default function PokedexCard({ id, pokedexNo, name, sprite, dir }) {
     >
       <Box>
         {/* GAME IMAGE */}
-        <LazyLoad offset={300}>
+        <LazyLoad height={"100%"} offset={300}>
           <Box
             display="inline-flex"
             width="100%"

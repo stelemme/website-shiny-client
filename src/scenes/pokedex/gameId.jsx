@@ -48,7 +48,6 @@ export default function GameId() {
             pokedex?.pokedex.map((pokemon) => {
               return (
                 <Grid key={pokemon._id} item lg={3} md={4} sm={6} xs={6}>
-                  <div style={{ marginBottom: "20px" }}>
                     <PokedexCard
                       id={pokemon._id}
                       name={pokemon.name}
@@ -56,7 +55,6 @@ export default function GameId() {
                       sprite={pokemon.sprite}
                       dir={game.game.dir}
                     />
-                  </div>
                 </Grid>
               );
             })
