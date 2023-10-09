@@ -9,9 +9,9 @@ export default function CounterCard({ id, gameSprite, name, count, trainer }) {
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
 
-  let trainerHeight = "100%"
+  let trainerHeight = "100%";
   if (trainer) {
-    trainerHeight = "50"
+    trainerHeight = "50";
   }
 
   return (
@@ -44,12 +44,23 @@ export default function CounterCard({ id, gameSprite, name, count, trainer }) {
           />
         </Box>
         {/* COUNTER NAME */}
-        <Box flexGrow={1} ml="15px">
+        <Box flexGrow={1} mx="15px">
           <Typography fontWeight={"bold"} color={colors.grey[400]}>
             {trainer}
           </Typography>
-          <Box display="flex" alignItems="center" height={trainerHeight}>
-            <Typography fontWeight={"bold"} variant="h5" align="left" >
+          <Box display="flex" alignItems="center" height={trainerHeight} >
+            <Typography
+              fontWeight={"bold"}
+              variant="h5"
+              align="left"
+              sx={{
+                minHeight: { trainerHeight },
+                display: "-webkit-box",
+                overflow: "hidden",
+                WebkitBoxOrient: "vertical",
+                WebkitLineClamp: 1,
+              }}
+            >
               {name}
             </Typography>
           </Box>

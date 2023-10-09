@@ -93,10 +93,16 @@ export default function Counter() {
 
   const handleCountClick = () => {
     setBackgroundColor(colors.primary[900]);
+    setCount((prevState) => {
+      return prevState + data.counter.increment;
+    });
+
+    setTimeout(() => {
+      setBackgroundColor(colors.primary[400]);
+    }, 200);
 
     axios["patch"](`/counters/${counterId}?action=add`)
       .then((res) => {
-        setCount(res.data.counter.totalEncounters);
         setOdds(
           calculateOdds(
             res.data.counter.method.odds,
@@ -127,16 +133,14 @@ export default function Counter() {
       .catch((err) => {
         console.log(err);
       });
-
-    setTimeout(() => {
-      setBackgroundColor(colors.primary[400]);
-    }, 200);
   };
 
   const handleUndoClick = () => {
+    setCount((prevState) => {
+      return prevState - data.counter.increment;
+    });
     axios["patch"](`/counters/${counterId}?action=undo`)
       .then((res) => {
-        setCount(res.data.counter.totalEncounters);
       })
       .catch((err) => {
         console.log(err);
@@ -246,13 +250,6 @@ export default function Counter() {
               <Box display="inline-flex" alignItems="center">
                 <img
                   alt=""
-                  src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon/${data.counter.sprite.dir}/${data.counter.sprite.pokemon}.png`}
-                  height="40px"
-                />
-              </Box>
-              <Box display="inline-flex" alignItems="center">
-                <img
-                  alt=""
                   src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/${data.counter.sprite.dir}/${data.counter.sprite.pokemon}.png`}
                   height="40px"
                 />
@@ -289,7 +286,7 @@ export default function Counter() {
                 : undefined
             }
             sx={{
-              "@media (hover: hover)": {
+              "@media (min-width: 768px)": {
                 ...(username === data.counter.trainer &&
                   !data.counter.completed && {
                     "&:hover": {

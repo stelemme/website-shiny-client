@@ -1,5 +1,10 @@
-import { createContext, useState, useMemo } from "react";
+import { createContext, useState, useMemo, useEffect } from "react";
 import { createTheme } from "@mui/material/styles"
+import axios from "axios";
+
+// Hooks
+import { useAuth } from "./hooks/useAuth";
+import useAxios from "axios-hooks";
 
 // color design tokens
 export const tokens = (mode) => ({
@@ -128,39 +133,39 @@ export const themeSettings = (mode) => {
       mode: mode,
       ...(mode === "dark"
         ? {
-            // palette values for dark mode
-            primary: {
-              main: colors.primary[500],
-            },
-            secondary: {
-              main: "#FFFFFF",
-            },
-            neutral: {
-              dark: colors.grey[700],
-              main: colors.grey[500],
-              light: colors.grey[100],
-            },
-            background: {
-              default: colors.primary[500],
-            },
-          }
+          // palette values for dark mode
+          primary: {
+            main: colors.primary[500],
+          },
+          secondary: {
+            main: "#FFFFFF",
+          },
+          neutral: {
+            dark: colors.grey[700],
+            main: colors.grey[500],
+            light: colors.grey[100],
+          },
+          background: {
+            default: colors.primary[500],
+          },
+        }
         : {
-            // palette values for light mode
-            primary: {
-              main: "#fcfcfc",
-            },
-            secondary: {
-              main: "#000000",
-            },
-            neutral: {
-              dark: colors.grey[700],
-              main: colors.grey[500],
-              light: colors.grey[100],
-            },
-            background: {
-              default: "#fcfcfc",
-            },
-          }),
+          // palette values for light mode
+          primary: {
+            main: "#fcfcfc",
+          },
+          secondary: {
+            main: "#000000",
+          },
+          neutral: {
+            dark: colors.grey[700],
+            main: colors.grey[500],
+            light: colors.grey[100],
+          },
+          background: {
+            default: "#fcfcfc",
+          },
+        }),
     },
     typography: {
       fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
@@ -195,20 +200,49 @@ export const themeSettings = (mode) => {
 
 // context for color mode
 export const ColorModeContext = createContext({
-  toggleColorMode: () => {},
+  toggleColorMode: () => { },
 });
 
 export const useMode = () => {
+  const { username } = useAuth();
+
+  const [
+    {
+      data: user,
+    }
+  ] = useAxios(`/user?user=${username}&action=colorMode`);
+
   const [mode, setMode] = useState("light");
 
-  const colorMode = useMemo(
-    () => ({
+  useEffect(() => {
+    if (user?.user) {
+      setMode(user.user.colorMode);
+    }
+  }, [user]);
+
+  const toggleColorMode = () => {
+    setMode((prev) => (prev === "light" ? "dark" : "light"));
+
+    axios
+      .patch(`/user?user=${username}&action=colorMode`)
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const colorMode = useMemo(() => {
+    if (username) {
+      return {
+        toggleColorMode: toggleColorMode,
+      };
+    }
+    return {
       toggleColorMode: () =>
-        setMode((prev) => (prev === "light" ? "dark" : "light")),
-    }),
-    []
-  );
+        setMode((prev) => (prev === "light" ? "dark" : "light"))
+    }
+  }, [username]);
 
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
+
   return [theme, colorMode];
 };

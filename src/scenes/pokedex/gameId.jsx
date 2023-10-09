@@ -1,6 +1,4 @@
 import { useParams } from "react-router-dom";
-import useAxios from "axios-hooks";
-
 
 // mui imports
 import { Box, Grid, Typography } from "@mui/material";
@@ -8,6 +6,9 @@ import { Box, Grid, Typography } from "@mui/material";
 // Components imports
 import Header from "../../components/Header";
 import PokedexCard from "../../components/PokedexCard";
+
+//Hooks
+import useAxios from "axios-hooks";
 
 export default function GameId() {
   const { gameId } = useParams();

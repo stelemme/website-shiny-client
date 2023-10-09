@@ -1,11 +1,12 @@
-import useAxios from "axios-hooks";
-
 // mui imports
 import { Box, Grid, Typography } from "@mui/material";
 
 // Components imports
 import Header from "../../components/Header";
 import PokedexCard from "../../components/PokedexCard";
+
+// Hooks
+import useAxios from "axios-hooks";
 
 export default function Pokédex() {
   const [{ data: pokedex, loading: pokedexLoading, error: pokedexError }] =

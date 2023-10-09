@@ -1,11 +1,12 @@
-import useAxios from "axios-hooks";
-
 // mui imports
 import { Box, Grid, Typography } from "@mui/material";
 
 // Components imports
 import Header from "../../components/Header"
 import GameCard from "../../components/GameCard"
+
+// Hooks
+import useAxios from "axios-hooks";
 
 export default function PokedexRegional() {
   const [{ data: games, loading: gamesLoading, error: gamesError }] =

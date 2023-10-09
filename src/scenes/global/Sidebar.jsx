@@ -73,7 +73,7 @@ export default function CustomSidebar() {
   };
 
   return (
-    <Box display="flex" minHeight="400px">
+    <Box display="flex" minHeight="400px" >
       <Sidebar
         transitionDuration="0"
         collapsed={isCollapsed}
@@ -81,9 +81,11 @@ export default function CustomSidebar() {
         toggled={toggled}
         customBreakPoint="900px"
         backgroundColor={colors.primary[400]}
+        rootStyles={{
+          borderWidth: "0px",
+        }}
       >
         <Menu iconShape="square" menuItemStyles={menuItemStyles}>
-          <Box>
             <MenuItem
               onClick={() => setIsCollapsed(!isCollapsed)}
               icon={isCollapsed && !toggled ? <MenuOutlinedIcon /> : undefined}
@@ -170,7 +172,6 @@ export default function CustomSidebar() {
               selected={selected}
               setSelected={setSelected}
             />
-          </Box>
         </Menu>
       </Sidebar>
     </Box>

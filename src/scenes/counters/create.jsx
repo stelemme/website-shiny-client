@@ -58,7 +58,7 @@ export default function CreateCounters() {
 
   const [clearMethod, setClearMethod] = useState("method");
 
-  console.log(data);
+  console.log(data)
 
   useEffect(() => {
     setData((prevState) => {
@@ -341,12 +341,10 @@ export default function CreateCounters() {
               });
               if (reason === "selectOption") {
                 setData((prevState) => {
-                  if (value.categories.length > 0) {
+                  console.log(value.categories?.length)
+                  if (value.categories?.length > 0) {
                     setMethodCatList(value.categories);
                   }
-
-                  delete value._id;
-                  delete value.categories;
 
                   return {
                     ...prevState,
