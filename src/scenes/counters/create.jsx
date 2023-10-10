@@ -46,6 +46,8 @@ export default function CreateCounters() {
     method: {
       shinyCharm: false,
     },
+    startDate: new Date(),
+    endDate: new Date()
   };
 
   const [data, setData] = useState(initialState);
@@ -121,11 +123,13 @@ export default function CreateCounters() {
               );
               if (reason === "selectOption") {
                 setData((prevState) => {
+                  console.log(value)
                   return {
                     ...prevState,
                     ...{
                       game: value.name,
                       gen: value.gen,
+                      gameSort: value.sort,
                       sprite: {
                         game: value.sprite,
                         dir: value.dir,

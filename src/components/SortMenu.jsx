@@ -28,52 +28,52 @@ export default function SortMenu({open, anchorEl, handleClose}) {
     >
       <MenuItem onClick={handleClick("gameAsc")}>
         <ListItemIcon>
-          <ArrowDownwardIcon />
+          <ArrowUpwardIcon />
         </ListItemIcon>
         <Typography fontWeight={"bold"}>Game</Typography>
       </MenuItem>
       <MenuItem onClick={handleClick("gameDesc")}>
         <ListItemIcon>
-          <ArrowUpwardIcon />
+          <ArrowDownwardIcon />
         </ListItemIcon>
         <Typography fontWeight={"bold"}>Game</Typography>
       </MenuItem>
       <Divider />
       <MenuItem onClick={handleClick("pokedexNoAsc")}>
         <ListItemIcon>
-          <ArrowDownwardIcon />
+          <ArrowUpwardIcon />
         </ListItemIcon>
         <Typography fontWeight={"bold"}>Pokédex Number</Typography>
       </MenuItem>
       <MenuItem onClick={handleClick("pokedexNoDesc")}>
         <ListItemIcon>
-          <ArrowUpwardIcon />
+          <ArrowDownwardIcon />
         </ListItemIcon>
         <Typography fontWeight={"bold"}>Pokédex Number</Typography>
       </MenuItem>
       <Divider />
       <MenuItem onClick={handleClick("newest")}>
         <ListItemIcon>
-          <ArrowDownwardIcon />
+          <ArrowUpwardIcon />
         </ListItemIcon>
         <Typography fontWeight={"bold"}>Newest First</Typography>
       </MenuItem>
       <MenuItem onClick={handleClick("oldest")}>
         <ListItemIcon>
-          <ArrowUpwardIcon />
+          <ArrowDownwardIcon />
         </ListItemIcon>
         <Typography fontWeight={"bold"}>Oldest First</Typography>
       </MenuItem>
       <Divider />
       <MenuItem onClick={handleClick("encAsc")}>
         <ListItemIcon>
-          <ArrowDownwardIcon />
+          <ArrowUpwardIcon />
         </ListItemIcon>
         <Typography fontWeight={"bold"}>Most Encounters</Typography>
       </MenuItem>
       <MenuItem onClick={handleClick("encDesc")}>
         <ListItemIcon>
-          <ArrowUpwardIcon />
+          <ArrowDownwardIcon />
         </ListItemIcon>
         <Typography fontWeight={"bold"}>Least Encounters</Typography>
       </MenuItem>

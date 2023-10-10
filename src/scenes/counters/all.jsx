@@ -35,8 +35,8 @@ export default function Counters() {
         const response = await axios.get(
           `/user?user=${username}&action=counterSort`
         );
-        setOngoingSort(response.data.user.ongoingCounterSort);
-        setCompletedSort(response.data.user.completedCounterSort);
+        setOngoingSort(response.data.user.ongoingCounterSortAll);
+        setCompletedSort(response.data.user.completedCounterSortAll);
       } catch (error) {
         console.error(error);
       }
@@ -86,7 +86,7 @@ export default function Counters() {
     if (typeof sortString === "string") {
       setOngoingSort(sortString);
       axios
-        .patch(`/user?user=${username}&ongoingCounterSort=${sortString}`)
+        .patch(`/user?user=${username}&ongoingCounterSortAll=${sortString}`)
         .catch((err) => {
           console.log(err);
         });
@@ -98,7 +98,7 @@ export default function Counters() {
     if (typeof sortString === "string") {
       setCompletedSort(sortString);
       axios
-        .patch(`/user?user=${username}&completedCounterSort=${sortString}`)
+        .patch(`/user?user=${username}&completedCounterSortAll=${sortString}`)
         .catch((err) => {
           console.log(err);
         });
