@@ -16,6 +16,9 @@ import CreateCounters from "./scenes/counters/create";
 import Pokédex from "./scenes/pokedex";
 import PokédexRegional from "./scenes/pokedex/regional";
 import GameId from "./scenes/pokedex/gameId";
+import Shiny from "./scenes/shiny";
+import CreateShiny from "./scenes/shiny/create";
+import CreateFromCounter from "./scenes/shiny/counterId";
 
 // Firebase imports
 import { useAuth } from "./hooks/useAuth";
@@ -33,6 +36,9 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/auth" element={<Login />} />
+              <Route path="/shiny" element={<Shiny />} />
+              <Route path="/shiny/create" element={<CreateShiny />} />
+              <Route path="/shiny/create/:counterId" element={<CreateFromCounter />} />
               <Route path="/counters" element={<Counters />} />
               <Route path="/counters/all" element={<CountersAll />} />
               <Route path="/counters/create" element={<CreateCounters />} />

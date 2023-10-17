@@ -4,14 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../theme";
 
-export default function CounterCard({
-  id,
-  gameSprite,
-  name,
-  count,
-  trainer,
-  query = null,
-}) {
+export default function ShinyCard({ id, name, gameSprite, dir, monSprite, trainer}) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
@@ -21,19 +14,14 @@ export default function CounterCard({
     trainerHeight = "50";
   }
 
+
   return (
     <Box
-      p="15px"
+      p="10px"
       width="100%"
       backgroundColor={colors.primary[400]}
       borderRadius="5px"
-      onClick={() => {
-        if (query) {
-          navigate(`/counters/${id}${query}`);
-        } else {
-          navigate(`/counters/${id}`);
-        }
-      }}
+      onClick={() => navigate(`/counters/${id}`)}
       sx={{
         "&:hover": {
           cursor: "pointer",
@@ -41,7 +29,7 @@ export default function CounterCard({
         },
       }}
     >
-      <Box display="flex" justifyContent="space-between">
+      <Box display="flex" justifyContent="space-between" alignItems="center">
         {/* GAME IMAGE */}
         <Box
           display="inline-flex"
@@ -61,7 +49,7 @@ export default function CounterCard({
           <Typography fontWeight={"bold"} color={colors.grey[400]}>
             {trainer}
           </Typography>
-          <Box display="flex" alignItems="center" height={trainerHeight}>
+          <Box display="flex" alignItems="center" height={trainerHeight} >
             <Typography
               fontWeight={"bold"}
               variant="h5"
@@ -71,28 +59,27 @@ export default function CounterCard({
                 display: "-webkit-box",
                 overflow: "hidden",
                 WebkitBoxOrient: "vertical",
-                WebkitLineClamp: 1,
+                WebkitLineClamp: 2,
               }}
             >
               {name}
             </Typography>
           </Box>
         </Box>
-        {/* COUNT */}
+
+        {/* SHINY SPRITE */}
         <Box
           display="flex"
           alignItems="center"
           justifyContent="center"
-          border="1px solid"
-          borderRadius="4px"
-          width="65px"
-          minWidth="65px"
         >
-          <Typography fontWeight={"bold"} variant="h5">
-            {count}
-          </Typography>
+          <img
+            alt=""
+            src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/${dir}/${monSprite}.png`}
+            height="80px"
+          />
         </Box>
       </Box>
     </Box>
-  );
+  )
 }

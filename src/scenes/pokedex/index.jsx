@@ -9,7 +9,7 @@ import PokedexCard from "../../components/PokedexCard";
 import useAxios from "axios-hooks";
 
 export default function Pokédex() {
-  const [{ data: pokedex, loading: pokedexLoading, error: pokedexError }] =
+  const [{ data: pokedex, loading: pokedexLoading }] =
     useAxios(`/pokedex?action=forms`);
 
   if (pokedexLoading) {

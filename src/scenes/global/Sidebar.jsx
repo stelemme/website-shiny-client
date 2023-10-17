@@ -14,7 +14,8 @@ import CalculateOutlinedIcon from "@mui/icons-material/CalculateOutlined";
 import CalculateIcon from "@mui/icons-material/Calculate";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import LibraryAddOutlinedIcon from "@mui/icons-material/LibraryAddOutlined";
-import CatchingPokemonTwoToneIcon from '@mui/icons-material/CatchingPokemonTwoTone';
+import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone";
+import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -48,10 +49,12 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 export default function CustomSidebar() {
   const domains = {
     "": "Home",
+    shiny: "Your Shinies",
     counters: "Your Counters",
     all: "All Counters",
     create: "Add a Counter",
-    pokedex: "Pokedex",
+    pokedex: "National Pokédex",
+    regional: "Regional Pokédex",
   };
 
   const theme = useTheme();
@@ -73,107 +76,130 @@ export default function CustomSidebar() {
   };
 
   return (
-    <Box display="flex" minHeight="400px" >
-      <Sidebar
-        transitionDuration="0"
-        collapsed={isCollapsed}
-        onBackdropClick={() => setToggled(false)}
-        toggled={toggled}
-        customBreakPoint="900px"
-        backgroundColor={colors.primary[400]}
-        rootStyles={{
-          borderWidth: "0px",
-        }}
-      >
-        <Menu iconShape="square" menuItemStyles={menuItemStyles}>
-            <MenuItem
-              onClick={() => setIsCollapsed(!isCollapsed)}
-              icon={isCollapsed && !toggled ? <MenuOutlinedIcon /> : undefined}
-              style={{
-                margin: "10px 0 20px 0",
-                color: colors.grey[100],
-              }}
+    <Sidebar
+      transitionDuration="0"
+      collapsed={isCollapsed}
+      onBackdropClick={() => setToggled(false)}
+      toggled={toggled}
+      customBreakPoint="900px"
+      backgroundColor={colors.primary[400]}
+      rootStyles={{
+        borderWidth: "0px",
+        top: 0,
+        bottom: 0,
+      }}
+    >
+      <Menu iconShape="square" menuItemStyles={menuItemStyles}>
+        <MenuItem
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          icon={isCollapsed && !toggled ? <MenuOutlinedIcon /> : undefined}
+          style={{
+            margin: "10px 0 20px 0",
+            color: colors.grey[100],
+          }}
+        >
+          {!isCollapsed && (
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
             >
-              {!isCollapsed && (
-                <Box
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                  ml="15px"
+              <Box display="flex" gap="15px">
+                <img src="/logo192.png" alt="logo" width="30px" />
+                <Typography
+                  variant="h3"
+                  color={colors.grey[100]}
+                  fontWeight="bold"
                 >
-                  <Typography
-                    variant="h3"
-                    color={colors.grey[100]}
-                    fontWeight="bold"
-                  >
-                    Shiny Data
-                  </Typography>
-                  {!toggled && (
-                    <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
-                      <MenuOutlinedIcon />
-                    </IconButton>
-                  )}
-                </Box>
+                  Shiny Data
+                </Typography>
+              </Box>
+              {!toggled && (
+                <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
+                  <MenuOutlinedIcon />
+                </IconButton>
               )}
-            </MenuItem>
-            <Item
-              title="Home"
-              to="/"
-              icon={<HomeOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Typography
-              variant="h6"
-              color={colors.grey[300]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              {isCollapsed ? "Counter" : "Counter  Application"}
-            </Typography>
-            <Item
-              title="Your Counters"
-              to="/counters"
-              icon={<CalculateOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="All Counters"
-              to="/counters/all"
-              icon={<CalculateIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Add a Counter"
-              to="/counters/create"
-              icon={<LibraryAddOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Typography
-              variant="h6"
-              color={colors.grey[300]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              {isCollapsed ? "Info" : "Information"}
-            </Typography>
-            <Item
-              title="National Pokédex"
-              to="/pokedex"
-              icon={<CatchingPokemonTwoToneIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Regional Pokédex"
-              to="/pokedex/regional"
-              icon={<CatchingPokemonTwoToneIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-        </Menu>
-      </Sidebar>
-    </Box>
+            </Box>
+          )}
+        </MenuItem>
+        <Item
+          title="Home"
+          to="/"
+          icon={<HomeOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Typography
+          variant="h6"
+          color={colors.grey[300]}
+          sx={{ m: "15px 0 5px 20px" }}
+        >
+          {isCollapsed ? "Shiny" : "Shiny  Application"}
+        </Typography>
+        <Item
+          title="Shinies"
+          to="/shiny"
+          icon={<AutoAwesomeOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Item
+          title="Add a Shiny"
+          to="/shiny/create"
+          icon={<LibraryAddOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Typography
+          variant="h6"
+          color={colors.grey[300]}
+          sx={{ m: "15px 0 5px 20px" }}
+        >
+          {isCollapsed ? "Counter" : "Counter  Application"}
+        </Typography>
+        <Item
+          title="Your Counters"
+          to="/counters"
+          icon={<CalculateOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Item
+          title="All Counters"
+          to="/counters/all"
+          icon={<CalculateIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Item
+          title="Add a Counter"
+          to="/counters/create"
+          icon={<LibraryAddOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Typography
+          variant="h6"
+          color={colors.grey[300]}
+          sx={{ m: "15px 0 5px 20px" }}
+        >
+          {isCollapsed ? "Info" : "Information"}
+        </Typography>
+        <Item
+          title="National Pokédex"
+          to="/pokedex"
+          icon={<CatchingPokemonTwoToneIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Item
+          title="Regional Pokédex"
+          to="/pokedex/regional"
+          icon={<CatchingPokemonTwoToneIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+      </Menu>
+    </Sidebar>
   );
 }

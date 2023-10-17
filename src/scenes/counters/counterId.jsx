@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
+import { format } from "date-fns";
 
 // Mui
 import {
@@ -12,6 +13,8 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
+  TextField,
+  Divider,
 } from "@mui/material";
 import { tokens } from "../../theme";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
@@ -24,57 +27,24 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import CustomDialog from "../../components/CustomDialog";
 
 // Functions
-import meanTimeDifference from "../../functions/meanTimeDifference";
-import methodHunts from "../../functions/methodHunts";
+import {
+  calculateMeanEncounterTime,
+  calculateProb,
+  calculatePercentage,
+  calculateDateDifference,
+  calculateEncountersPerDay,
+  formatTime,
+} from "../../functions/statFunctions";
 
 // Hooks
-import useAxios from "../../hooks/useAxios";
 import { useAuth } from "../../hooks/useAuth";
 
 axios.defaults.baseURL = process.env.REACT_APP_PUBLIC_BACKEND;
 
-const calculateOdds = (
-  odds,
-  rolls,
-  shinyCharm,
-  charmRolls,
-  totalEncounters,
-  methodFunction = null
-) => {
-  if (methodFunction) {
-    return methodHunts(methodFunction, totalEncounters, shinyCharm);
-  } else {
-    return Math.round(
-      (1 - ((odds - 1) / odds) ** (rolls + (shinyCharm ? charmRolls : 0))) ** -1
-    );
-  }
-};
-
-const calculatePercentage = (
-  encounters,
-  odds,
-  rolls,
-  shinyCharm,
-  charmRolls,
-  methodFunction
-) => {
-  const newOdds = calculateOdds(
-    odds,
-    rolls,
-    shinyCharm,
-    charmRolls,
-    encounters,
-    methodFunction
-  );
-  return ((1 - ((newOdds - 1) / newOdds) ** encounters) * 100).toFixed(2);
-};
-
-const calculateDateDifference = (endDate, startDate) => {
-  return Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
-};
-
 export default function Counter() {
   const { counterId } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [completed, setCompleted] = useState(false);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
@@ -83,73 +53,124 @@ export default function Counter() {
   const [openDelete, setOpenDelete] = useState(false);
   const [openShiny, setOpenShiny] = useState(false);
   const [openInfo, setOpenInfo] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [openDateEdit, setOpenDateEdit] = useState(false);
 
-  const { response: data } = useAxios({
-    method: "get",
-    url: `/counters/${counterId}`,
-  });
-
+  const [data, setData] = useState(undefined);
+  const [hasData, setHasData] = useState(false);
   const [count, setCount] = useState(undefined);
+  const [countEdit, setCountEdit] = useState(undefined);
   const [odds, setOdds] = useState(undefined);
   const [percentage, setPercentage] = useState(undefined);
   const [timeDifference, setTimeDifference] = useState(undefined);
   const [startDate, setStartDate] = useState(undefined);
   const [endDate, setEndDate] = useState(undefined);
+  const [startDateEdit, setStartDateEdit] = useState(undefined);
+  const [endDateEdit, setEndDateEdit] = useState(undefined);
   const [dateDifference, setDateDifference] = useState(undefined);
 
+  const [lastCount, setLastCount] = useState(undefined);
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const [encountersToday, setEncountersToday] = useState(0);
+
+  useEffect(() => {
+    const completedValue = searchParams.get("completed");
+    setCompleted(completedValue);
+    if (completed) {
+      const fetchCounterData = async () => {
+        try {
+          const res = await axios.get(`/shiny/${counterId}`);
+          setData(res.data.shiny);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      fetchCounterData();
+    } else {
+      const fetchCounterData = async () => {
+        try {
+          const res = await axios.get(`/counters/${counterId}`);
+          setData(res.data.counter);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      fetchCounterData();
+    }
+  }, [completed]);
+
+  /* DATA FETCHING */
   useEffect(() => {
     if (data) {
-      setCount(data.counter.totalEncounters);
+      if (!hasData) {
+        setCount(data.totalEncounters);
+        setCountEdit(data.totalEncounters);
+        setEncountersToday(calculateEncountersPerDay(data.encounters));
+        setHasData(true);
+      }
       setOdds(
-        calculateOdds(
-          data.counter.method.odds,
-          data.counter.method.rolls,
-          data.counter.method.shinyCharm,
-          data.counter.method?.charmRolls,
-          data.counter.totalEncounters,
-          data.counter.method?.function
+        calculateProb(
+          data.method.odds,
+          data.method.rolls,
+          data.method.shinyCharm,
+          data.method?.charmRolls,
+          data.totalEncounters,
+          data.method?.function
         )
       );
       setPercentage(
         calculatePercentage(
-          data.counter.totalEncounters,
-          data.counter.method.odds,
-          data.counter.method.rolls,
-          data.counter.method.shinyCharm,
-          data.counter.method?.charmRolls,
-          data.counter.method?.function
+          data.totalEncounters,
+          data.method.odds,
+          data.method.rolls,
+          data.method.shinyCharm,
+          data.method?.charmRolls,
+          data.method?.function
         )
       );
       setTimeDifference(
-        data.counter.encounters.length > 1
-          ? meanTimeDifference(
-              data.counter.encounters,
-              data.counter.upperTimeThreshold,
-              data.counter.lowerTimeThreshold
-            )
-          : "00:00:00"
+        calculateMeanEncounterTime(
+          data.encounters,
+          data.upperTimeThreshold,
+          data.lowerTimeThreshold,
+          data.increment
+        )
       );
-      if (data.counter.startDate) {
-        setStartDate(new Date(data.counter.startDate).toLocaleDateString());
+      if (data.startDate) {
+        setStartDate(new Date(data.startDate).toLocaleDateString());
+        setStartDateEdit(
+          format(new Date(data.startDate), "yyyy-MM-dd")
+        );
       }
-      if (data.counter.endDate) {
-        setEndDate(new Date(data.counter.endDate).toLocaleDateString());
+      if (data.endDate) {
+        setEndDate(new Date(data.endDate).toLocaleDateString());
+        setEndDateEdit(format(new Date(data.endDate), "yyyy-MM-dd"));
       }
-      if (data.counter.startDate && data.counter.endDate) {
+      if (data.startDate && data.endDate) {
         setDateDifference(
           calculateDateDifference(
-            new Date(data.counter.endDate),
-            new Date(data.counter.startDate)
+            new Date(data.endDate),
+            new Date(data.startDate)
           )
         );
       }
+      setLastCount(
+        new Date(data.encounters[data.encounters.length - 1])
+      );
     }
-  }, [data]);
+  }, [data, hasData]);
 
+  /* COUNTER CLICK */
   const handleCountClick = () => {
     setBackgroundColor(colors.primary[900]);
     setCount((prevState) => {
-      return prevState + data.counter.increment;
+      return prevState + data.increment;
+    });
+    setCountEdit((prevState) => {
+      return prevState + data.increment;
+    });
+    setEncountersToday((prevState) => {
+      return prevState + data.increment;
     });
 
     setTimeout(() => {
@@ -158,120 +179,170 @@ export default function Counter() {
 
     axios["patch"](`/counters/${counterId}?action=add`)
       .then((res) => {
-        setOdds(
-          calculateOdds(
-            res.data.counter.method.odds,
-            res.data.counter.method.rolls,
-            res.data.counter.method.shinyCharm,
-            res.data.counter.method?.charmRolls,
-            res.data.counter.totalEncounters,
-            res.data.counter.method?.function
-          )
-        );
-        setPercentage(
-          calculatePercentage(
-            res.data.counter.totalEncounters,
-            res.data.counter.method.odds,
-            res.data.counter.method.rolls,
-            res.data.counter.method.shinyCharm,
-            res.data.counter.method?.charmRolls,
-            res.data.counter.method?.function
-          )
-        );
-        setTimeDifference(
-          res.data.counter.encounters.length > 1
-            ? meanTimeDifference(
-                res.data.counter.encounters,
-                res.data.counter.upperTimeThreshold,
-                res.data.counter.lowerTimeThreshold
-              )
-            : "00:00:00"
-        );
-        setEndDate(new Date(res.data.counter.endDate).toLocaleDateString());
-        if (data.counter.startDate) {
-          setDateDifference(
-            calculateDateDifference(
-              new Date(res.data.counter.endDate),
-              new Date(res.data.counter.startDate)
-            )
-          );
-        }
+        setData(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
+  /* COUNTER UNDO */
   const handleUndoClick = () => {
     setCount((prevState) => {
-      return prevState - data.counter.increment;
+      return prevState - data.increment;
+    });
+    setCountEdit((prevState) => {
+      return prevState - data.increment;
+    });
+    setEncountersToday((prevState) => {
+      return prevState - data.increment;
     });
     axios["patch"](`/counters/${counterId}?action=undo`)
       .then((res) => {
-        setOdds(
-          calculateOdds(
-            res.data.counter.method.odds,
-            res.data.counter.method.rolls,
-            res.data.counter.method.shinyCharm,
-            res.data.counter.method?.charmRolls,
-            res.data.counter.totalEncounters,
-            res.data.counter.method?.function
-          )
-        );
-        setPercentage(
-          calculatePercentage(
-            res.data.counter.totalEncounters,
-            res.data.counter.method.odds,
-            res.data.counter.method.rolls,
-            res.data.counter.method.shinyCharm,
-            res.data.counter.method?.charmRolls,
-            res.data.counter.method?.function
-          )
-        );
-        setTimeDifference(
-          res.data.counter.encounters.length > 1
-            ? meanTimeDifference(
-                res.data.counter.encounters,
-                res.data.counter.upperTimeThreshold,
-                res.data.counter.lowerTimeThreshold
-              )
-            : "00:00:00"
-        );
-        setEndDate(new Date(res.data.counter.endDate).toLocaleDateString());
-        if (data.counter.startDate) {
-          setDateDifference(
-            calculateDateDifference(
-              new Date(res.data.counter.endDate),
-              new Date(res.data.counter.startDate)
-            )
-          );
-        }
+        setData(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
+  /* COMPLETE THE COUNTER */
   const handleShinyClick = () => {
-    axios["patch"](`/counters/${counterId}?action=shiny`)
+    navigate(`/shiny/create/${counterId}`);
+  };
+
+  /* DELETE THE COUNTER */
+  const handleDeleteClick = () => {
+    if (completed) {
+      axios["delete"](`/shiny/${counterId}`)
       .then((res) => {
-        console.log(res.data);
         navigate("/counters");
       })
       .catch((err) => {
         console.log(err);
+      });
+    } else {
+      axios["delete"](`/counters/${counterId}`)
+      .then((res) => {
+        navigate("/counters");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
+  };
+
+  /* EDIT THE COUNTER */
+  const handleEditClick = () => {
+    let data = JSON.stringify({
+      count: countEdit,
+    });
+
+    let config = {
+      method: "patch",
+      maxBodyLength: Infinity,
+      url: `/counters/${counterId}?action=encounterEdit`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios
+      .request(config)
+      .then((res) => {
+        console.log(res.data);
+        setCount(countEdit);
+        setOpenEdit(false);
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
-  const handleDeleteClick = () => {
-    axios["delete"](`/counters/${counterId}`)
+  const handleDateEditClick = () => {
+    let data = JSON.stringify({
+      startDate: startDateEdit,
+      endDate: endDateEdit,
+    });
+
+    let config = {
+      method: "patch",
+      maxBodyLength: Infinity,
+      url: `/counters/${counterId}?action=dateEdit`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios
+      .request(config)
       .then((res) => {
-        console.log(res.data);
-        navigate("/counters");
+        setStartDate(new Date(res.data.startDate).toLocaleDateString());
+        setEndDate(new Date(res.data.endDate).toLocaleDateString());
+        setOpenDateEdit(false);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        console.log(error);
       });
+  };
+
+  /* TIMER */
+  const intervalRef = useRef(null);
+
+  useEffect(() => {
+    const updateElapsedTime = () => {
+      const difference = Math.floor((new Date() - lastCount) / 1000);
+      setElapsedTime(difference);
+    };
+
+    intervalRef.current = setInterval(updateElapsedTime, 1000);
+
+    return () => {
+      clearInterval(intervalRef.current);
+    };
+  }, [lastCount]);
+
+  useEffect(() => {
+    return () => {
+      clearInterval(intervalRef.current);
+    };
+  }, []);
+
+  const timeDisplay = () => {
+    if (!completed) {
+      return (
+        <Box>
+          <Typography fontWeight={"bold"}>Last Encounter Time</Typography>
+          <Typography>
+            {lastCount ? lastCount.toLocaleTimeString() : undefined}
+          </Typography>
+          <Typography>
+            {elapsedTime ? formatTime(elapsedTime) : "Undefined"}
+          </Typography>
+        </Box>
+      );
+    } else {
+      return null;
+    }
+  };
+
+  const encountersTodayDisplay = () => {
+    if (!completed) {
+      return (
+        <Box>
+          <Typography>
+            <Box sx={{ fontWeight: "bold" }} component="span">
+              Encounters Today:
+            </Box>{" "}
+            {encountersToday}
+          </Typography>
+        </Box>
+      );
+    } else {
+      return null;
+    }
   };
 
   return (
@@ -286,41 +357,62 @@ export default function Counter() {
             alignItems="center"
           >
             <Typography variant="h3" color={colors.grey[100]} fontWeight="bold">
-              {data.counter.name.toUpperCase()}
+              {data.name.toUpperCase()}
             </Typography>
-            {username === data.counter.trainer && (
+            {username === data.trainer && (
               <Box ml="10px" display="flex">
-                {!data.counter.completed && (
-                  <IconButton onClick={() => setOpenShiny(true)}>
-                    <AutoAwesomeIcon />
-                  </IconButton>
-                )}
+                {!completed && <IconButton onClick={() => setOpenShiny(true)}>
+                  <AutoAwesomeIcon />
+                </IconButton>}
                 <CustomDialog
                   open={openShiny}
                   handleClick={handleShinyClick}
                   handleClose={() => setOpenShiny(false)}
-                  title={"Did you get a Shiny Pokémon?"}
+                  title={"Shiny Encounter"}
+                  content={"Did you get a Shiny Pokémon?"}
                   action={"Caught"}
                 />
-                {!data.counter.completed && (
-                  <IconButton onClick={() => console.log("edit button")}>
-                    <EditRoundedIcon />
-                  </IconButton>
-                )}
-
+                {!completed && <IconButton onClick={() => setOpenEdit(true)}>
+                  <EditRoundedIcon />
+                </IconButton>}
+                <CustomDialog
+                  open={openEdit}
+                  handleClick={handleEditClick}
+                  handleClose={() => {
+                    setOpenEdit(false);
+                    setCountEdit(count);
+                  }}
+                  title={"Edit Encounters"}
+                  content={
+                    <Box>
+                      <Typography mb="15px">
+                        Edit the total amount of encounters in the inputfield
+                        below.
+                      </Typography>
+                      <TextField
+                        color="secondary"
+                        fullWidth
+                        label="Total Encounters"
+                        type="number"
+                        value={countEdit}
+                        onChange={(e) => setCountEdit(parseInt(e.target.value))}
+                      ></TextField>
+                    </Box>
+                  }
+                  action={"Edit"}
+                />
                 <IconButton onClick={() => setOpenDelete(true)}>
                   <DeleteRoundedIcon />
                 </IconButton>
-                {!data.counter.completed && (
-                  <IconButton onClick={handleUndoClick}>
-                    <ReplyTwoToneIcon />
-                  </IconButton>
-                )}
+                {!completed && <IconButton onClick={handleUndoClick}>
+                  <ReplyTwoToneIcon />
+                </IconButton>}
                 <CustomDialog
                   open={openDelete}
                   handleClick={handleDeleteClick}
                   handleClose={() => setOpenDelete(false)}
-                  title={"Do you want to delete this Counter?"}
+                  title={"Delete Counter"}
+                  content={"Do you want to delete this Counter?"}
                   action={"Delete"}
                 />
               </Box>
@@ -332,14 +424,14 @@ export default function Counter() {
               <Box display="inline-flex" alignItems="center">
                 <img
                   alt=""
-                  src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/games/${data.counter.sprite.game}.png`}
+                  src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/games/${data.sprite.game}.png`}
                   height="40px"
                 />
               </Box>
               <Box display="inline-flex" alignItems="center">
                 <img
                   alt=""
-                  src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/${data.counter.sprite.dir}/${data.counter.sprite.pokemon}.png`}
+                  src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/${data.sprite.dir}/${data.sprite.pokemon}.png`}
                   height="40px"
                 />
               </Box>
@@ -355,7 +447,7 @@ export default function Counter() {
               mx="10px"
             >
               <Typography fontWeight={"bold"} variant="h2">
-                {count}
+                +{data.increment}
               </Typography>
             </Box>
           </Box>
@@ -370,14 +462,14 @@ export default function Counter() {
             alignItems="center"
             mb="20px"
             onClick={
-              username === data.counter.trainer && !data.counter.completed
+              username === data.trainer && !completed
                 ? handleCountClick
                 : undefined
             }
             sx={{
               "@media (min-width: 768px)": {
-                ...(username === data.counter.trainer &&
-                  !data.counter.completed && {
+                ...(username === data.trainer &&
+                  !completed && {
                     "&:hover": {
                       cursor: "pointer",
                       backgroundColor: colors.primary[900],
@@ -387,7 +479,7 @@ export default function Counter() {
             }}
           >
             <Typography fontSize={80} fontWeight={"bold"}>
-              +{data.counter.increment}
+              {count}
             </Typography>
           </Box>
 
@@ -395,15 +487,18 @@ export default function Counter() {
           <Grid container>
             <Grid item xs={6}>
               <Typography fontWeight={"bold"}>Shiny Hunting Method</Typography>
-              <Typography>{data.counter.method.name}</Typography>
+              <Typography>{data.method.name}</Typography>
               <Typography fontStyle={"italic"}>
-                {data.counter.method.category}
+                {data.method.category}
               </Typography>
+              {encountersTodayDisplay()}
               <Box display="flex" alignItems="center" height="21px">
                 <Typography fontWeight={"bold"}>Extra Information</Typography>
                 <IconButton size="small" onClick={() => setOpenInfo(true)}>
                   <InfoOutlinedIcon fontSize="inherit" />
                 </IconButton>
+
+                {/* DIALOG */}
                 <Dialog open={openInfo} onClose={() => setOpenInfo(false)}>
                   <DialogTitle fontWeight={"bold"} variant="h4">
                     Counter Information
@@ -411,19 +506,113 @@ export default function Counter() {
                   <DialogContent>
                     <img
                       alt=""
-                      src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/${data.counter.sprite.dir}/${data.counter.sprite.pokemon}.png`}
-                      width="250px"
+                      src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/${data.sprite.dir}/${data.sprite.pokemon}.png`}
+                      width="240px"
                       style={{ imageRendering: "pixelated" }}
                     />
-                    <Grid container width={"250px"}>
-                      <Grid item xs={12}>
-                        <Typography fontWeight={"bold"}>Trainer</Typography>
-                        <Typography>{data.counter.trainer}</Typography>
+                    <Grid container width={"240px"}>
+                      <Grid item xs={12} mb={"5px"}>
+                        <Divider />
                       </Grid>
-                      <Grid item xs={5}>
+                      <Grid item xs={12} container>
+                        <Grid item xs={4}>
+                          <Typography fontWeight={"bold"}>Trainer</Typography>
+                          <Typography>{data.trainer}</Typography>
+                        </Grid>
+                        <Grid item xs={8}>
+                          <Typography fontWeight={"bold"} textAlign={"right"}>
+                            Shiny Hunting Method
+                          </Typography>
+                          <Typography textAlign={"right"}>
+                            {data.method.name}
+                          </Typography>
+                          <Typography fontStyle={"italic"} textAlign={"right"}>
+                            {data.method.category}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                      <Grid item xs={12} mb={"5px"}>
+                        <Divider />
+                      </Grid>
+                      <Grid
+                        item
+                        xs={6.5}
+                        display="flex"
+                        alignItems="center"
+                        height="21px"
+                      >
                         <Typography fontWeight={"bold"}>
                           Start & End Date
                         </Typography>
+                        {username === data.trainer && (
+                          <Box>
+                            <IconButton
+                              size="small"
+                              onClick={() => {
+                                setOpenDateEdit(true);
+                              }}
+                            >
+                              <EditRoundedIcon fontSize="inherit" />
+                            </IconButton>
+                            <CustomDialog
+                              open={openDateEdit}
+                              handleClick={handleDateEditClick}
+                              handleClose={() => {
+                                setOpenDateEdit(false);
+                                setStartDateEdit(
+                                  format(
+                                    new Date(data.startDate),
+                                    "yyyy-MM-dd"
+                                  )
+                                );
+                                setEndDateEdit(
+                                  format(
+                                    new Date(data.endDate),
+                                    "yyyy-MM-dd"
+                                  )
+                                );
+                              }}
+                              title={"Edit Start & End Date"}
+                              content={
+                                <Box>
+                                  <Typography mb={"15px"}>
+                                    Edit the start & end date in the inputfields
+                                    below.
+                                  </Typography>
+                                  <TextField
+                                    color="secondary"
+                                    fullWidth
+                                    label="Start Date"
+                                    type="date"
+                                    value={startDateEdit}
+                                    onChange={(e) =>
+                                      setStartDateEdit(e.target.value)
+                                    }
+                                    style={{ marginBottom: "15px" }}
+                                  />
+                                  <TextField
+                                    color="secondary"
+                                    fullWidth
+                                    label="End Date"
+                                    type="date"
+                                    value={endDateEdit}
+                                    onChange={(e) =>
+                                      setEndDateEdit(e.target.value)
+                                    }
+                                  />
+                                </Box>
+                              }
+                              action={"Edit"}
+                            />
+                          </Box>
+                        )}
+                      </Grid>
+                      <Grid item xs={5.5}>
+                        <Typography fontWeight={"bold"} textAlign={"right"}>
+                          Shiny Probability
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={5}>
                         <Typography>
                           {startDate ? startDate : "Undefined"}
                         </Typography>
@@ -433,12 +622,12 @@ export default function Counter() {
                         <Typography fontWeight={"bold"}>
                           Days hunting
                         </Typography>
-                        <Typography>{dateDifference} Days</Typography>
+                        <Typography>
+                          {dateDifference}{" "}
+                          {dateDifference === 1 ? "day" : "days"}{" "}
+                        </Typography>
                       </Grid>
                       <Grid item xs={7}>
-                        <Typography fontWeight={"bold"} textAlign={"right"}>
-                          Shiny Probability
-                        </Typography>
                         <Typography textAlign={"right"}>1/{odds}</Typography>
                         <Typography textAlign={"right"}>
                           {percentage}%
@@ -447,7 +636,24 @@ export default function Counter() {
                           Mean Encounter Time
                         </Typography>
                         <Typography textAlign={"right"}>
-                          {timeDifference}
+                          {timeDifference
+                            ? new Date(timeDifference * 1000)
+                                .toISOString()
+                                .slice(11, 19)
+                            : "Undefined"}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={7}>
+                        {timeDisplay()}
+                      </Grid>
+                      <Grid item xs={5}>
+                        <Typography fontWeight={"bold"} textAlign={"right"}>
+                          Total Time
+                        </Typography>
+                        <Typography textAlign={"right"}>
+                          {timeDifference
+                            ? formatTime(Math.round(timeDifference * count))
+                            : "Undefined"}
                         </Typography>
                       </Grid>
                     </Grid>
@@ -455,6 +661,7 @@ export default function Counter() {
                 </Dialog>
               </Box>
             </Grid>
+
             <Grid item xs={6}>
               <Typography fontWeight={"bold"} textAlign={"right"}>
                 Shiny Probability
@@ -464,7 +671,11 @@ export default function Counter() {
               <Typography fontWeight={"bold"} textAlign={"right"}>
                 Mean Encounter Time
               </Typography>
-              <Typography textAlign={"right"}>{timeDifference}</Typography>
+              <Typography textAlign={"right"}>
+                {timeDifference
+                  ? new Date(timeDifference * 1000).toISOString().slice(11, 19)
+                  : "Undefined"}
+              </Typography>
             </Grid>
           </Grid>
         </Box>

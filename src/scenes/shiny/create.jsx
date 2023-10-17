@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { format } from "date-fns";
 
 // Mui
 import {
@@ -14,11 +15,20 @@ import {
   Button,
   FormLabel,
   Grid,
-  InputAdornment,
+  FormGroup,
+  Checkbox,
 } from "@mui/material";
 
 // Components
 import Header from "../../components/Header";
+
+// Functions
+import {
+  calculateMeanEncounterTime,
+  calculateProb,
+  calculatePercentage,
+  calculateDateDifference,
+} from "../../functions/statFunctions";
 
 // Hooks
 import useAxios from "../../hooks/useAxios";
@@ -26,7 +36,35 @@ import { useAuth } from "../../hooks/useAuth";
 
 axios.defaults.baseURL = process.env.REACT_APP_PUBLIC_BACKEND;
 
-export default function CreateCounters() {
+const natures = [
+  "Adamant",
+  "Bashful",
+  "Bold",
+  "Brave",
+  "Calm",
+  "Careful",
+  "Docile",
+  "Gentle",
+  "Hardy",
+  "Hasty",
+  "Impish",
+  "Jolly",
+  "Lax",
+  "Lonely",
+  "Mild",
+  "Modest",
+  "Naive",
+  "Naughty",
+  "Quiet",
+  "Quirky",
+  "Rash",
+  "Relaxed",
+  "Sassy",
+  "Serious",
+  "Timid",
+];
+
+export default function CreateShiny() {
   const { username } = useAuth();
   const navigate = useNavigate();
   const { response: games } = useAxios({
@@ -34,7 +72,7 @@ export default function CreateCounters() {
     url: `/game?action=form`,
   });
 
-  const initialState = {
+  let initialState = {
     trainer: username,
     encounters: [],
     totalEncounters: 0,
@@ -45,7 +83,13 @@ export default function CreateCounters() {
       shinyCharm: false,
     },
     startDate: new Date(),
-    endDate: new Date()
+    endDate: new Date(),
+    evolutions: [],
+    forms: [],
+    nickname: "",
+    IRLLocation: "",
+    level: 1,
+    gender: "genderless",
   };
 
   const [data, setData] = useState(initialState);
@@ -55,10 +99,12 @@ export default function CreateCounters() {
   const [methodsList, setMethodsList] = useState(undefined);
   const [methodCatList, setMethodCatList] = useState(undefined);
   const [pokemonsList, setPokemonsList] = useState(undefined);
+  const [ballList, setBallList] = useState(undefined);
 
   const [clearMethod, setClearMethod] = useState("method");
+  const [genderCheck, setGenderCheck] = useState(false);
 
-  console.log(data)
+  console.log(data);
 
   useEffect(() => {
     setData((prevState) => {
@@ -78,17 +124,61 @@ export default function CreateCounters() {
     }
   }, [gameId]);
 
+  useEffect(() => {
+    if (data.stats) {
+      axios
+        .post(`/shiny`, data)
+        .then((res) => {
+          console.log(res.data);
+          navigate(`/shiny/${res.data.shiny._id}`);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [data]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
+    
+    const newStats = {
+      probability: calculateProb(
+        data.method.odds,
+        data.method.rolls,
+        data.method.shinyCharm,
+        data.method?.charmRolls,
+        data.totalEncounters,
+        data.method?.function
+      ),
+      percentage: calculatePercentage(
+        data.totalEncounters,
+        data.method.odds,
+        data.method.rolls,
+        data.method.shinyCharm,
+        data.method?.charmRolls,
+        data.method?.function
+      ),
+      meanEncounterTime: calculateMeanEncounterTime(
+        data.encounters,
+        data.upperTimeThreshold,
+        data.lowerTimeThreshold,
+        data.increment
+      ),
+      daysHunting: calculateDateDifference(data.endDate, data.startDate),
+      totalHuntTime: Math.round(
+        calculateMeanEncounterTime(
+          data.encounters,
+          data.upperTimeThreshold,
+          data.lowerTimeThreshold,
+          data.increment
+        ) * data.totalEncounters
+      ),
+    };
 
-    axios["post"](`/counters`, data)
-      .then((res) => {
-        console.log(res.data);
-        navigate(`/counters/${res.data.counter._id}`);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    setData((prevState) => ({
+      ...prevState,
+      stats: newStats,
+    }));
   };
 
   return (
@@ -97,8 +187,8 @@ export default function CreateCounters() {
         {/* HEADER */}
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Header
-            title="CREATE A COUNTER"
-            subtitle="Here you can create a new counter."
+            title="ADD A NEW SHINY"
+            subtitle="Here you can add a new shiny pokémon."
           />
         </Box>
 
@@ -115,13 +205,14 @@ export default function CreateCounters() {
               setMethodsList(undefined);
               setMethodCatList(undefined);
               setPokemonsList(undefined);
+              setBallList(undefined);
+              setGenderCheck(false);
 
               setClearMethod((prevState) =>
                 prevState === "method" ? "clearMethod" : "method"
               );
               if (reason === "selectOption") {
                 setData((prevState) => {
-                  console.log(value)
                   return {
                     ...prevState,
                     ...{
@@ -139,6 +230,7 @@ export default function CreateCounters() {
                 setShinyCharmCheck(value.shinyCharm);
                 setLocationsList(value.locations);
                 setMethodsList(value.methods);
+                setBallList(value.balls);
               }
             }}
             sx={{ mb: "20px" }}
@@ -164,11 +256,52 @@ export default function CreateCounters() {
                 return {
                   ...updatedData,
                   sprite: updatedSprites,
+                  gender: "genderless",
                 };
               });
+              setGenderCheck(false);
               if (reason === "selectOption") {
                 axios["get"](`/pokedex?name=${value}`)
                   .then((res) => {
+                    if (res.data.pokedex[0].gender === "100:0") {
+                      setData((prevState) => {
+                        return {
+                          ...prevState,
+                          ...{
+                            gender: "male",
+                          },
+                        };
+                      });
+                    } else if (res.data.pokedex[0].gender === "0:100") {
+                      setData((prevState) => {
+                        return {
+                          ...prevState,
+                          ...{
+                            gender: "female",
+                          },
+                        };
+                      });
+                    } else if (res.data.pokedex[0].gender === "Genderless") {
+                      setGenderCheck(false)
+                      setData((prevState) => {
+                        return {
+                          ...prevState,
+                          ...{
+                            gender: "genderless",
+                          },
+                        };
+                      });
+                    } else {
+                      setGenderCheck(true);
+                      setData((prevState) => {
+                        return {
+                          ...prevState,
+                          ...{
+                            gender: "male",
+                          },
+                        };
+                      });
+                    }
                     setData((prevState) => {
                       return {
                         ...prevState,
@@ -200,6 +333,36 @@ export default function CreateCounters() {
               />
             )}
           />
+
+          {/* GENDER */}
+          <FormControl sx={{ mb: "5px" }} disabled={!genderCheck}>
+            <FormLabel focused={false}>Gender</FormLabel>
+            <RadioGroup
+              row
+              value={data.gender}
+              onChange={(e) => {
+                setData((prevState) => {
+                  return {
+                    ...prevState,
+                    ...{
+                      gender: e.target.value,
+                    },
+                  };
+                });
+              }}
+            >
+              <FormControlLabel
+                value={"male"}
+                control={<Radio color="secondary" />}
+                label="Male"
+              />
+              <FormControlLabel
+                value={"female"}
+                control={<Radio color="secondary" />}
+                label="Female"
+              />
+            </RadioGroup>
+          </FormControl>
 
           {/* LOCATIONS */}
           <Autocomplete
@@ -291,7 +454,6 @@ export default function CreateCounters() {
               });
               if (reason === "selectOption") {
                 setData((prevState) => {
-                  console.log(value.categories?.length)
                   if (value.categories?.length > 0) {
                     setMethodCatList(value.categories);
                   }
@@ -353,82 +515,240 @@ export default function CreateCounters() {
             )}
           />
 
-          {/* INCREMENT */}
+          {/* BALL */}
           <Grid container spacing={"10px"}>
-            <Grid item xs={4}>
-              <TextField
-                sx={{ mb: "20px" }}
-                value={data.increment}
-                type="number"
-                fullWidth
-                required
-                color="secondary"
-                label="Increment"
-                onChange={(e) => {
-                  if (e.target.value > 0) {
+            <Grid item xs={6}>
+              <Autocomplete
+                key={ballList}
+                disabled={!ballList}
+                autoHighlight
+                onChange={(e, value, reason) => {
+                  setData((prevState) => {
+                    const { ball, ...updatedData } = prevState;
+                    delete updatedData.sprite.ball;
+
+                    return {
+                      ...updatedData,
+                    };
+                  });
+                  if (reason === "selectOption") {
                     setData((prevState) => {
                       return {
                         ...prevState,
-                        ...{ increment: e.target.value },
+                        ...{
+                          sprite: {
+                            ...prevState.sprite,
+                            ball: value.sprite,
+                          },
+                          ball: value.name,
+                        },
+                      };
+                    });
+                  }
+                }}
+                sx={{ mb: "10px" }}
+                options={ballList ? ballList : []}
+                getOptionLabel={(option) => option.name}
+                renderInput={(params) => (
+                  <TextField
+                    required
+                    color="secondary"
+                    {...params}
+                    label="Ball"
+                  />
+                )}
+              />
+            </Grid>
+
+            {/* NATURE */}
+            <Grid item xs={6}>
+              <Autocomplete
+                autoHighlight
+                onChange={(e, value, reason) => {
+                  setData((prevState) => {
+                    const { nature, ...updatedData } = prevState;
+
+                    return {
+                      ...updatedData,
+                    };
+                  });
+                  if (reason === "selectOption") {
+                    setData((prevState) => {
+                      return {
+                        ...prevState,
+                        ...{
+                          nature: value,
+                        },
+                      };
+                    });
+                  }
+                }}
+                sx={{ mb: "10px" }}
+                options={natures}
+                renderInput={(params) => (
+                  <TextField
+                    required
+                    color="secondary"
+                    {...params}
+                    label="Nature"
+                  />
+                )}
+              />
+            </Grid>
+
+            {/* IRL LOCATION */}
+            <Grid item xs={8}>
+              <TextField
+                required
+                color="secondary"
+                label="IRL Location"
+                fullWidth
+                value={data.IRLLocation}
+                sx={{ mb: "10px" }}
+                onChange={(e) => {
+                  setData((prevState) => {
+                    return {
+                      ...prevState,
+                      ...{
+                        IRLLocation: e.target.value,
+                      },
+                    };
+                  });
+                }}
+              />
+            </Grid>
+
+            {/* LEVEL */}
+            <Grid item xs={4}>
+              <TextField
+                required
+                color="secondary"
+                label="Level"
+                type="number"
+                fullWidth
+                value={data.level}
+                sx={{ mb: "10px" }}
+                onChange={(e) => {
+                  if (
+                    parseInt(e.target.value) <= 100 &&
+                    parseInt(e.target.value) > 0
+                  ) {
+                    setData((prevState) => {
+                      return {
+                        ...prevState,
+                        ...{
+                          level: parseInt(e.target.value),
+                        },
                       };
                     });
                   }
                 }}
               />
             </Grid>
-            <Grid item xs={4}>
+
+            {/* START DATE */}
+            <Grid item xs={8}>
               <TextField
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="start">sec</InputAdornment>
-                  ),
-                }}
-                sx={{ mb: "20px" }}
-                value={data.lowerTimeThreshold}
-                type="number"
-                fullWidth
+                key={data.startDate}
+                disabled={!data.startDate}
                 required
                 color="secondary"
-                label="Lower Threshold"
+                label="Start Date"
+                type={data.startDate ? "date" : "text"}
+                fullWidth
+                value={
+                  data.startDate ? format(data.startDate, "yyyy-MM-dd") : ""
+                }
+                sx={{ mb: "20px" }}
                 onChange={(e) => {
-                  if (e.target.value >= 0) {
-                    setData((prevState) => {
-                      return {
-                        ...prevState,
-                        ...{ lowerTimeThreshold: e.target.value },
-                      };
-                    });
-                  }
+                  setData((prevState) => {
+                    return {
+                      ...prevState,
+                      ...{
+                        startDate: new Date(e.target.value),
+                      },
+                    };
+                  });
                 }}
               />
             </Grid>
             <Grid item xs={4}>
-              <TextField
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="start">sec</InputAdornment>
-                  ),
-                }}
-                sx={{ mb: "20px" }}
-                value={data.upperTimeThreshold}
-                type="number"
-                fullWidth
-                required
-                color="secondary"
-                label="Upper Threshold"
-                onChange={(e) => {
-                  if (e.target.value >= 0) {
-                    setData((prevState) => {
-                      return {
-                        ...prevState,
-                        ...{ upperTimeThreshold: e.target.value },
-                      };
-                    });
-                  }
-                }}
-              />
+              <Box mt="8px" ml="2px">
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        color="secondary"
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setData((prevState) => {
+                              return {
+                                ...prevState,
+                                ...{
+                                  startDate: undefined,
+                                },
+                              };
+                            });
+                          } else {
+                            setData((prevState) => {
+                              return {
+                                ...prevState,
+                                ...{
+                                  startDate: new Date(),
+                                },
+                              };
+                            });
+                          }
+                        }}
+                      />
+                    }
+                    label={"Undefined"}
+                  />
+                </FormGroup>
+              </Box>
             </Grid>
           </Grid>
+
+          {/* END DATE */}
+          <TextField
+            required
+            color="secondary"
+            label="End Date"
+            type="date"
+            fullWidth
+            value={format(data.endDate, "yyyy-MM-dd")}
+            sx={{ mb: "20px" }}
+            onChange={(e) => {
+              setData((prevState) => {
+                return {
+                  ...prevState,
+                  ...{
+                    endDate: new Date(e.target.value),
+                  },
+                };
+              });
+            }}
+          />
+
+          {/* NICKNAME */}
+          <TextField
+            required
+            color="secondary"
+            label="Nickname"
+            fullWidth
+            value={data.nickname}
+            sx={{ mb: "20px" }}
+            onChange={(e) => {
+              setData((prevState) => {
+                return {
+                  ...prevState,
+                  ...{
+                    nickname: e.target.value,
+                  },
+                };
+              });
+            }}
+          />
 
           {/* SUBMIT */}
           <Button

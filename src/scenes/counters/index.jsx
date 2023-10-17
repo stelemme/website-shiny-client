@@ -51,7 +51,7 @@ export default function Counters() {
     const fetchOngoingData = async () => {
       try {
         const response = await axios.get(
-          `/counters?trainer=${username}&completed=false&preview=true&sort=${ongoingSort}`
+          `/counters?trainer=${username}&preview=true&sort=${ongoingSort}`
         );
         setOngoingCounters(response.data);
         setOngoingCountersLoading(false)
@@ -69,7 +69,7 @@ export default function Counters() {
     const fetchCompletedData = async () => {
       try {
         const response = await axios.get(
-          `/counters?trainer=${username}&completed=true&preview=true&sort=${completedSort}`
+          `/shiny?trainer=${username}&preview=true&sort=${completedSort}&action=counters`
         );
         setCompletedCounters(response.data);
         setCompletedCountersLoading(false)
@@ -141,7 +141,7 @@ export default function Counters() {
       )
     } else {
       return (
-        completedCounters?.counters.map((counter) => {
+        completedCounters?.shiny.map((counter) => {
           return (
             <div key={counter._id} style={{ marginBottom: "20px" }}>
               <CounterCard
@@ -149,6 +149,7 @@ export default function Counters() {
                 name={counter.name}
                 gameSprite={counter.sprite.game}
                 count={counter.totalEncounters}
+                query={"?completed=true"}
               />
             </div>
           );
