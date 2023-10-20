@@ -1,4 +1,14 @@
-export default function methodHunts(methodFunction, totalEncounters, shinyCharm=false) {
+export default function methodHunts(
+  methodFunction,
+  totalEncounters = 0,
+  shinyCharm = false,
+  lure = false,
+  chainMatters = false,
+  letsGoChain = 0,
+  researchLevel = null,
+  svOutbreak=null,
+  svSparklingPower=null,
+) {
   let rolls = 1
   switch (methodFunction) {
     case "pokeradar-gen4":
@@ -45,16 +55,16 @@ export default function methodHunts(methodFunction, totalEncounters, shinyCharm=
         39: 164,
         40: 328,
       }
-    
+
       if (totalEncounters > 40) {
         rolls = 328
       } else {
         rolls = rollsCollection[totalEncounters]
       }
-    
-      return Math.round((1 - (65535/65536) ** rolls) ** -1)
+
+      return Math.round((1 - (65535 / 65536) ** rolls) ** -1)
     case "pokeradar-gen6":
-      if (totalEncounters <= 40 ) {
+      if (totalEncounters <= 40) {
         return Math.round(8100 - totalEncounters * 200)
       } else {
         return 100
@@ -103,7 +113,7 @@ export default function methodHunts(methodFunction, totalEncounters, shinyCharm=
         39: 200,
         40: 99,
       }
-    
+
       if (totalEncounters > 40) {
         return 99
       } else {
@@ -117,7 +127,24 @@ export default function methodHunts(methodFunction, totalEncounters, shinyCharm=
         rolls += 2
       }
 
-      return Math.round((1 - (4095/4096) ** rolls) ** -1)
+      return Math.round((1 - (4095 / 4096) ** rolls) ** -1)
+    case "letsgospawn":
+      if (lure) {
+        rolls += 1
+      }
+      if (shinyCharm) {
+        rolls += 2
+      }
+      if (chainMatters) {
+        if (letsGoChain > 30) {
+          rolls += 11
+        } else if (letsGoChain > 20) {
+          rolls += 7
+        } else if (letsGoChain > 10) {
+          rolls += 3
+        }
+      }
+      return Math.round((1 - (4095 / 4096) ** rolls) ** -1)
     case "sos-chain-sm":
       let chainSosSm = (totalEncounters % 256)
 
@@ -132,7 +159,7 @@ export default function methodHunts(methodFunction, totalEncounters, shinyCharm=
         rolls += 4
       }
 
-      return Math.round((1 - (4095/4096) ** rolls) ** -1)
+      return Math.round((1 - (4095 / 4096) ** rolls) ** -1)
     case "sos-chain":
       if (shinyCharm) {
         rolls += 2
@@ -144,7 +171,50 @@ export default function methodHunts(methodFunction, totalEncounters, shinyCharm=
       } else if (totalEncounters > 10) {
         rolls += 4
       }
-      return Math.round((1 - (4095/4096) ** rolls) ** -1)
+      return Math.round((1 - (4095 / 4096) ** rolls) ** -1)
+    case "arceus-spawn":
+    case "arceus-mass-outbreak":
+    case "arceus-massive-mass-outbreak":
+      if (shinyCharm) {
+        rolls += 3
+      }
+
+      if (methodFunction === "arceus-mass-outbreak") {
+        rolls += 25
+      } else if (methodFunction === "arceus-massive-mass-outbreak") {
+        rolls += 12
+      }
+
+      if (researchLevel === "10") {
+        rolls += 1
+      } else if (researchLevel === "perfect") {
+        rolls += 3
+      }
+
+      return Math.round((1 - (4095 / 4096) ** rolls) ** -1)
+    case "sv-spawn":
+    case "sv-outbreak":
+      if (shinyCharm) {
+        rolls += 3
+      }
+
+      if (methodFunction === "sv-outbreak") {
+        if (svOutbreak === "30") {
+          rolls += 1
+        } else if (svOutbreak === "60") {
+          rolls += 2
+        }
+      }
+
+      if (svSparklingPower === "1") {
+        rolls += 1
+      } else if (svSparklingPower === "2") {
+        rolls += 2
+      } else if (svSparklingPower === "3") {
+        rolls += 3
+      }
+
+      return Math.round((1 - (4095 / 4096) ** rolls) ** -1)
     default:
       console.log("Something went wrong calculating the method function.")
   }

@@ -179,7 +179,7 @@ export default function Counter() {
 
     axios["patch"](`/counters/${counterId}?action=add`)
       .then((res) => {
-        setData(res.data);
+        setData(res.data.counter);
       })
       .catch((err) => {
         console.log(err);
@@ -199,7 +199,7 @@ export default function Counter() {
     });
     axios["patch"](`/counters/${counterId}?action=undo`)
       .then((res) => {
-        setData(res.data);
+        setData(res.data.counter);
       })
       .catch((err) => {
         console.log(err);
@@ -345,6 +345,8 @@ export default function Counter() {
     }
   };
 
+  console.log(data)
+
   return (
     <Box maxWidth="420px" mx="auto" my="20px">
       {data && (
@@ -413,6 +415,7 @@ export default function Counter() {
                   handleClose={() => setOpenDelete(false)}
                   title={"Delete Counter"}
                   content={"Do you want to delete this Counter?"}
+                  warning={"Deleting this counter will delete ALL the counter data forever!"}
                   action={"Delete"}
                 />
               </Box>

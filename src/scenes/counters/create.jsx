@@ -103,7 +103,7 @@ export default function CreateCounters() {
         </Box>
 
         {/* FORM */}
-        <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+        <form autoComplete="off" onSubmit={handleSubmit}>
           {/* GAMES */}
           <Autocomplete
             autoHighlight
@@ -322,7 +322,7 @@ export default function CreateCounters() {
           />
 
           {/* METHODS SUBCATEGORY*/}
-          <Autocomplete
+          {methodCatList && <Autocomplete
             key={methodCatList}
             disabled={!methodCatList}
             autoHighlight
@@ -351,7 +351,7 @@ export default function CreateCounters() {
                 label="Method Category"
               />
             )}
-          />
+          />}
 
           {/* INCREMENT */}
           <Grid container spacing={"10px"}>

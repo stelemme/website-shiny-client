@@ -39,8 +39,11 @@ export function calculatePercentage(encounters, odds, rolls, shinyCharm, charmRo
 };
 
 export function calculateDateDifference(endDate, startDate) {
-  if (endDate === startDate) {
+  if (endDate === startDate || endDate < startDate) {
     return 1
+  } 
+  if (startDate === null) {
+    return null
   }
   return Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
 };

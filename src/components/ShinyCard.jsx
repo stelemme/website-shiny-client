@@ -21,7 +21,7 @@ export default function ShinyCard({ id, name, gameSprite, dir, monSprite, traine
       width="100%"
       backgroundColor={colors.primary[400]}
       borderRadius="5px"
-      onClick={() => navigate(`/counters/${id}`)}
+      onClick={() => navigate(`/shiny/${id}`)}
       sx={{
         "&:hover": {
           cursor: "pointer",
@@ -75,7 +75,7 @@ export default function ShinyCard({ id, name, gameSprite, dir, monSprite, traine
         >
           <img
             alt=""
-            src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/${dir}/${monSprite}.png`}
+            src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-all-home/${monSprite}.png`}
             height="80px"
           />
         </Box>

@@ -24,11 +24,10 @@ import Header from "../../components/Header";
 
 // Functions
 import {
-  calculateMeanEncounterTime,
   calculateProb,
-  calculatePercentage,
   calculateDateDifference,
 } from "../../functions/statFunctions";
+import methodHunts from "../../functions/methodHunts";
 
 // Hooks
 import useAxios from "../../hooks/useAxios";
@@ -82,7 +81,7 @@ export default function CreateShiny() {
     method: {
       shinyCharm: false,
     },
-    startDate: new Date(),
+    startDate: null,
     endDate: new Date(),
     evolutions: [],
     forms: [],
@@ -100,6 +99,7 @@ export default function CreateShiny() {
   const [methodCatList, setMethodCatList] = useState(undefined);
   const [pokemonsList, setPokemonsList] = useState(undefined);
   const [ballList, setBallList] = useState(undefined);
+  const [groupList, setGroupList] = useState(undefined);
 
   const [clearMethod, setClearMethod] = useState("method");
   const [genderCheck, setGenderCheck] = useState(false);
@@ -140,7 +140,7 @@ export default function CreateShiny() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    
+
     const newStats = {
       probability: calculateProb(
         data.method.odds,
@@ -150,35 +150,569 @@ export default function CreateShiny() {
         data.totalEncounters,
         data.method?.function
       ),
-      percentage: calculatePercentage(
-        data.totalEncounters,
-        data.method.odds,
-        data.method.rolls,
-        data.method.shinyCharm,
-        data.method?.charmRolls,
-        data.method?.function
-      ),
-      meanEncounterTime: calculateMeanEncounterTime(
-        data.encounters,
-        data.upperTimeThreshold,
-        data.lowerTimeThreshold,
-        data.increment
-      ),
       daysHunting: calculateDateDifference(data.endDate, data.startDate),
-      totalHuntTime: Math.round(
-        calculateMeanEncounterTime(
-          data.encounters,
-          data.upperTimeThreshold,
-          data.lowerTimeThreshold,
-          data.increment
-        ) * data.totalEncounters
-      ),
     };
 
-    setData((prevState) => ({
-      ...prevState,
-      stats: newStats,
-    }));
+    if (data.method.function) {
+      switch (data.method.function) {
+        case "letsgospawn":
+          setData((prevState) => ({
+            ...prevState,
+            stats: {
+              ...newStats,
+              probability: methodHunts(
+                data.method.function,
+                0,
+                data.method.shinyCharm,
+                data.method.lure,
+                data.method.chainMatters,
+                data.method.letsGoChain
+              ),
+            },
+          }));
+          break;
+        case "sos-chain":
+        case "sos-chain-sm":
+          setData((prevState) => ({
+            ...prevState,
+            stats: {
+              ...newStats,
+              probability: methodHunts(
+                data.method.function,
+                data.method.sosChain,
+                data.method.shinyCharm
+              ),
+            },
+          }));
+          break;
+        case "pokeradar-gen4":
+        case "pokeradar-gen6":
+        case "pokeradar-gen8":
+          setData((prevState) => ({
+            ...prevState,
+            stats: {
+              ...newStats,
+              probability: methodHunts(
+                data.method.function,
+                data.method.radarChain,
+                data.method.shinyCharm
+              ),
+            },
+          }));
+          break;
+        case "arceus-spawn":
+        case "arceus-mass-outbreak":
+        case "arceus-massive-mass-outbreak":
+          setData((prevState) => ({
+            ...prevState,
+            stats: {
+              ...newStats,
+              probability: methodHunts(
+                data.method.function,
+                0,
+                data.method.shinyCharm,
+                false,
+                false,
+                0,
+                data.method.researchLevel
+              ),
+            },
+          }));
+          break;
+        case "sv-spawn":
+        case "sv-outbreak":
+          setData((prevState) => ({
+            ...prevState,
+            stats: {
+              ...newStats,
+              probability: methodHunts(
+                data.method.function,
+                0,
+                data.method.shinyCharm,
+                false,
+                false,
+                0,
+                null,
+                data.method?.svOutbreak,
+                data.method.svOutbreakDisplay
+              ),
+            },
+          }));
+          break;
+        default:
+          console.log("Failed");
+      }
+    } else {
+      setData((prevState) => ({
+        ...prevState,
+        stats: newStats,
+      }));
+    }
+  };
+
+  const groupDisplay = () => {
+    if (
+      data.method.function === "pokeradar-gen4" ||
+      data.method.function === "pokeradar-gen6" ||
+      data.method.function === "pokeradar-gen8"
+    ) {
+      return (
+        <Box>
+          <FormControl sx={{ mb: "5px", mr: "5px" }}>
+            <FormLabel focused={false}>Caught Multiple Shinies?</FormLabel>
+            <RadioGroup
+              row
+              value={data.method.group}
+              onChange={(e, value) => {
+                if (JSON.parse(value)) {
+                  axios["get"](`shiny?group=true`)
+                    .then((res) => {
+                      setGroupList(["New Group", ...res.data.groups]);
+                      setData((prevState) => {
+                        return {
+                          ...prevState,
+                          ...{
+                            method: {
+                              ...prevState.method,
+                              group: JSON.parse(value),
+                            },
+                            group: `${username}-${
+                              data.name
+                            }-${data.endDate.toLocaleDateString()}`,
+                          },
+                        };
+                      });
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                    });
+                } else {
+                  setData((prevState) => {
+                    return {
+                      ...prevState,
+                      ...{
+                        method: {
+                          ...prevState.method,
+                          group: JSON.parse(value),
+                        },
+                      },
+                    };
+                  });
+                }
+              }}
+            >
+              <FormControlLabel
+                value={false}
+                control={<Radio color="secondary" />}
+                label="No"
+              />
+              <FormControlLabel
+                value={true}
+                control={<Radio color="secondary" />}
+                label="Yes"
+              />
+            </RadioGroup>
+          </FormControl>
+          <Autocomplete
+            required
+            key={groupList}
+            disabled={!groupList}
+            autoHighlight
+            onChange={(e, value, reason) => {
+              if (reason === "selectOption") {
+                if (value === "New Group") {
+                  setData((prevState) => {
+                    return {
+                      ...prevState,
+                      ...{
+                        group: `${username}-${
+                          data.name
+                        }-${data.endDate.toLocaleDateString()}`,
+                      },
+                    };
+                  });
+                } else {
+                  setData((prevState) => {
+                    return {
+                      ...prevState,
+                      ...{
+                        group: value,
+                      },
+                    };
+                  });
+                }
+              }
+            }}
+            sx={{ mb: "20px" }}
+            options={groupList ? groupList : []}
+            renderInput={(params) => (
+              <TextField required color="secondary" {...params} label="Group" />
+            )}
+          />
+        </Box>
+      );
+    } else {
+      return null;
+    }
+  };
+
+  const pokeradarDisplay = () => {
+    if (
+      data.method.function === "pokeradar-gen4" ||
+      data.method.function === "pokeradar-gen6" ||
+      data.method.function === "pokeradar-gen8"
+    ) {
+      return (
+        <TextField
+          fullWidth
+          sx={{ mb: "20px" }}
+          label="Chain Length"
+          required
+          type="number"
+          color="secondary"
+          onChange={(e) => {
+            if (parseInt(e.target.value) > 0) {
+              setData((prevState) => {
+                return {
+                  ...prevState,
+                  ...{
+                    method: {
+                      ...prevState.method,
+                      radarChain: parseInt(e.target.value),
+                    },
+                  },
+                };
+              });
+            }
+          }}
+        ></TextField>
+      );
+    } else {
+      return null;
+    }
+  };
+
+  const letsGoSpawnDisplay = () => {
+    if (data.method.function === "letsgospawn") {
+      return (
+        <Box>
+          <FormControl sx={{ mb: "5px", mr: "5px" }}>
+            <FormLabel focused={false}>Lure</FormLabel>
+            <RadioGroup
+              row
+              value={data.method.lure}
+              onChange={(e, value) => {
+                setData((prevState) => {
+                  return {
+                    ...prevState,
+                    ...{
+                      method: {
+                        ...prevState.method,
+                        lure: JSON.parse(value),
+                      },
+                    },
+                  };
+                });
+              }}
+            >
+              <FormControlLabel
+                value={true}
+                control={<Radio color="secondary" />}
+                label="Active"
+              />
+              <FormControlLabel
+                value={false}
+                control={<Radio color="secondary" />}
+                label="Not Active"
+              />
+            </RadioGroup>
+          </FormControl>
+          <FormControl sx={{ mb: "5px" }}>
+            <FormLabel focused={false}>Chain Matters?</FormLabel>
+            <RadioGroup
+              row
+              value={data.method.chainMatters}
+              onChange={(e, value) => {
+                setData((prevState) => {
+                  return {
+                    ...prevState,
+                    ...{
+                      method: {
+                        ...prevState.method,
+                        chainMatters: JSON.parse(value),
+                      },
+                    },
+                  };
+                });
+              }}
+            >
+              <FormControlLabel
+                value={false}
+                control={<Radio color="secondary" />}
+                label="False"
+              />
+              <FormControlLabel
+                value={true}
+                control={<Radio color="secondary" />}
+                label="True"
+              />
+            </RadioGroup>
+          </FormControl>
+          <TextField
+            fullWidth
+            sx={{ mb: "20px" }}
+            label="Chain Length"
+            required
+            disabled={!data.method.chainMatters}
+            type="number"
+            color="secondary"
+            onChange={(e) => {
+              if (parseInt(e.target.value) > 0) {
+                setData((prevState) => {
+                  return {
+                    ...prevState,
+                    ...{
+                      method: {
+                        ...prevState.method,
+                        letsGoChain: parseInt(e.target.value),
+                      },
+                    },
+                  };
+                });
+              }
+            }}
+          ></TextField>
+        </Box>
+      );
+    } else {
+      return null;
+    }
+  };
+
+  const sosDisplay = () => {
+    if (
+      data.method.function === "sos-chain" ||
+      data.method.function === "sos-chain-sm"
+    ) {
+      return (
+        <Box>
+          <TextField
+            fullWidth
+            sx={{ mb: "20px" }}
+            label="Chain Length"
+            required
+            type="number"
+            color="secondary"
+            onChange={(e) => {
+              if (parseInt(e.target.value) > 0) {
+                setData((prevState) => {
+                  return {
+                    ...prevState,
+                    ...{
+                      method: {
+                        ...prevState.method,
+                        sosChain: parseInt(e.target.value),
+                      },
+                    },
+                  };
+                });
+              }
+            }}
+          ></TextField>
+        </Box>
+      );
+    } else {
+      return null;
+    }
+  };
+
+  const laDisplay = () => {
+    if (
+      data.method.function === "arceus-spawn" ||
+      data.method.function === "arceus-mass-outbreak" ||
+      data.method.function === "arceus-massive-mass-outbreak"
+    ) {
+      return (
+        <FormControl sx={{ mb: "5px", mr: "5px" }}>
+          <FormLabel focused={false}>Research Level</FormLabel>
+          <RadioGroup
+            row
+            value={data.method.researchLevel}
+            onChange={(e, value) => {
+              setData((prevState) => {
+                return {
+                  ...prevState,
+                  ...{
+                    method: {
+                      ...prevState.method,
+                      researchLevel: value,
+                    },
+                  },
+                };
+              });
+            }}
+          >
+            <FormControlLabel
+              value={"0"}
+              control={<Radio color="secondary" />}
+              label="Level 0-9"
+            />
+            <FormControlLabel
+              value={"10"}
+              control={<Radio color="secondary" />}
+              label="Level 10"
+            />
+            <FormControlLabel
+              value={"perfect"}
+              control={<Radio color="secondary" />}
+              label="Perfect Level"
+            />
+          </RadioGroup>
+        </FormControl>
+      );
+    } else {
+      return null;
+    }
+  };
+
+  const svSpawnDisplay = () => {
+    if (data.method.function === "sv-spawn") {
+      return (
+        <Box>
+          <FormControl sx={{ mb: "5px", mr: "5px" }}>
+            <FormLabel focused={false}>Sparkling Power</FormLabel>
+            <RadioGroup
+              row
+              value={data.method.svSparklingPower}
+              onChange={(e, value) => {
+                setData((prevState) => {
+                  return {
+                    ...prevState,
+                    ...{
+                      method: {
+                        ...prevState.method,
+                        svSparklingPower: value,
+                      },
+                    },
+                  };
+                });
+              }}
+            >
+              <FormControlLabel
+                value={"0"}
+                control={<Radio color="secondary" />}
+                label="Level 0"
+              />
+              <FormControlLabel
+                value={"1"}
+                control={<Radio color="secondary" />}
+                label="Level 1"
+              />
+              <FormControlLabel
+                value={"2"}
+                control={<Radio color="secondary" />}
+                label="Level 2"
+              />
+              <FormControlLabel
+                value={"3"}
+                control={<Radio color="secondary" />}
+                label="Level 3"
+              />
+            </RadioGroup>
+          </FormControl>
+        </Box>
+      );
+    } else {
+      return null;
+    }
+  };
+
+  const svOutbreakDisplay = () => {
+    if (data.method.function === "sv-outbreak") {
+      return (
+        <Box>
+          <FormControl sx={{ mb: "5px", mr: "5px" }}>
+            <FormLabel focused={false}>Outbreak</FormLabel>
+            <RadioGroup
+              row
+              value={data.method.svOutbreak}
+              onChange={(e, value) => {
+                setData((prevState) => {
+                  return {
+                    ...prevState,
+                    ...{
+                      method: {
+                        ...prevState.method,
+                        svOutbreak: value,
+                      },
+                    },
+                  };
+                });
+              }}
+            >
+              <FormControlLabel
+                value={"0"}
+                control={<Radio color="secondary" />}
+                label="No Outbreak"
+              />
+              <FormControlLabel
+                value={"30"}
+                control={<Radio color="secondary" />}
+                label="30-59 Cleared"
+              />
+              <FormControlLabel
+                value={"60"}
+                control={<Radio color="secondary" />}
+                label="60+ Cleared"
+              />
+            </RadioGroup>
+          </FormControl>
+          <FormControl sx={{ mb: "5px", mr: "5px" }}>
+            <FormLabel focused={false}>Sparkling Power</FormLabel>
+            <RadioGroup
+              row
+              value={data.method.svSparklingPower}
+              onChange={(e, value) => {
+                setData((prevState) => {
+                  return {
+                    ...prevState,
+                    ...{
+                      method: {
+                        ...prevState.method,
+                        svSparklingPower: value,
+                      },
+                    },
+                  };
+                });
+              }}
+            >
+              <FormControlLabel
+                value={"0"}
+                control={<Radio color="secondary" />}
+                label="Level 0"
+              />
+              <FormControlLabel
+                value={"1"}
+                control={<Radio color="secondary" />}
+                label="Level 1"
+              />
+              <FormControlLabel
+                value={"2"}
+                control={<Radio color="secondary" />}
+                label="Level 2"
+              />
+              <FormControlLabel
+                value={"3"}
+                control={<Radio color="secondary" />}
+                label="Level 3"
+              />
+            </RadioGroup>
+          </FormControl>
+        </Box>
+      );
+    } else {
+      return null;
+    }
   };
 
   return (
@@ -193,7 +727,7 @@ export default function CreateShiny() {
         </Box>
 
         {/* FORM */}
-        <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+        <form autoComplete="off" onSubmit={handleSubmit}>
           {/* GAMES */}
           <Autocomplete
             autoHighlight
@@ -244,7 +778,6 @@ export default function CreateShiny() {
           {/* POKEMONS */}
           <Autocomplete
             key={pokemonsList}
-            disabled={!pokemonsList}
             autoHighlight
             onChange={(e, value, reason) => {
               setData((prevState) => {
@@ -282,7 +815,7 @@ export default function CreateShiny() {
                         };
                       });
                     } else if (res.data.pokedex[0].gender === "Genderless") {
-                      setGenderCheck(false)
+                      setGenderCheck(false);
                       setData((prevState) => {
                         return {
                           ...prevState,
@@ -437,6 +970,7 @@ export default function CreateShiny() {
             autoHighlight
             onChange={(e, value, reason) => {
               setMethodCatList(undefined);
+              setGroupList(undefined);
               setData((prevState) => {
                 const { method, ...updatedData } = prevState;
                 const updatedMethod = { ...method };
@@ -446,6 +980,15 @@ export default function CreateShiny() {
                 delete updatedMethod.rolls;
                 delete updatedMethod.charmRolls;
                 delete updatedMethod.category;
+                delete updatedMethod.lure;
+                delete updatedMethod.chainMatters;
+                delete updatedMethod.letsGoChain;
+                delete updatedMethod.sosChain;
+                delete updatedMethod.radarChain;
+                delete updatedMethod.researchLevel;
+                delete updatedMethod.svOutbreak;
+                delete updatedMethod.svSparklingPower;
+                delete updatedMethod.group;
 
                 return {
                   ...updatedData,
@@ -457,7 +1000,88 @@ export default function CreateShiny() {
                   if (value.categories?.length > 0) {
                     setMethodCatList(value.categories);
                   }
-
+                  if (value?.function === "letsgospawn") {
+                    return {
+                      ...prevState,
+                      ...{
+                        method: {
+                          ...prevState.method,
+                          ...value,
+                          lure: true,
+                          chainMatters: false,
+                          letsGoChain: 0,
+                        },
+                      },
+                    };
+                  } else if (
+                    value?.function === "sos-chain" ||
+                    value?.function === "sos-chain-sm"
+                  ) {
+                    return {
+                      ...prevState,
+                      ...{
+                        method: {
+                          ...prevState.method,
+                          ...value,
+                          sosChain: 0,
+                        },
+                      },
+                    };
+                  } else if (
+                    value?.function === "pokeradar-gen4" ||
+                    value?.function === "pokeradar-gen6" ||
+                    value?.function === "pokeradar-gen8"
+                  ) {
+                    return {
+                      ...prevState,
+                      ...{
+                        method: {
+                          ...prevState.method,
+                          ...value,
+                          radarChain: 0,
+                          group: false,
+                        },
+                      },
+                    };
+                  } else if (
+                    value?.function === "arceus-spawn" ||
+                    value?.function === "arceus-mass-outbreak" ||
+                    value?.function === "arceus-massive-mass-outbreak"
+                  ) {
+                    return {
+                      ...prevState,
+                      ...{
+                        method: {
+                          ...prevState.method,
+                          ...value,
+                          researchLevel: "10",
+                        },
+                      },
+                    };
+                  } else if (value?.function === "sv-spawn") {
+                    return {
+                      ...prevState,
+                      ...{
+                        method: {
+                          ...prevState.method,
+                          ...value,
+                          svSparklingPower: "0",
+                        },
+                      },
+                    };
+                  } else if (value?.function === "sv-outbreak") {
+                    return {
+                      ...prevState,
+                      ...{
+                        method: {
+                          ...prevState.method,
+                          ...value,
+                          svOutbreak: "0",
+                          svSparklingPower: "0",
+                        },
+                      },
+                    };
+                  }
                   return {
                     ...prevState,
                     ...{
@@ -484,36 +1108,46 @@ export default function CreateShiny() {
           />
 
           {/* METHODS SUBCATEGORY*/}
-          <Autocomplete
-            key={methodCatList}
-            disabled={!methodCatList}
-            autoHighlight
-            onChange={(e, value, reason) => {
-              if (reason === "selectOption") {
-                setData((prevState) => {
-                  return {
-                    ...prevState,
-                    ...{
-                      method: {
-                        ...prevState.method,
-                        category: value,
+          {methodCatList && (
+            <Autocomplete
+              key={methodCatList}
+              disabled={!methodCatList}
+              autoHighlight
+              onChange={(e, value, reason) => {
+                if (reason === "selectOption") {
+                  setData((prevState) => {
+                    return {
+                      ...prevState,
+                      ...{
+                        method: {
+                          ...prevState.method,
+                          category: value,
+                        },
                       },
-                    },
-                  };
-                });
-              }
-            }}
-            sx={{ mb: "20px" }}
-            options={methodCatList ? methodCatList : []}
-            renderInput={(params) => (
-              <TextField
-                required
-                color="secondary"
-                {...params}
-                label="Method Category"
-              />
-            )}
-          />
+                    };
+                  });
+                }
+              }}
+              sx={{ mb: "20px" }}
+              options={methodCatList ? methodCatList : []}
+              renderInput={(params) => (
+                <TextField
+                  required
+                  color="secondary"
+                  {...params}
+                  label="Method Category"
+                />
+              )}
+            />
+          )}
+
+          {/* METHODS EXTRA DATA*/}
+          {pokeradarDisplay()}
+          {letsGoSpawnDisplay()}
+          {sosDisplay()}
+          {laDisplay()}
+          {svSpawnDisplay()}
+          {svOutbreakDisplay()}
 
           {/* BALL */}
           <Grid container spacing={"10px"}>
@@ -657,18 +1291,22 @@ export default function CreateShiny() {
                 type={data.startDate ? "date" : "text"}
                 fullWidth
                 value={
-                  data.startDate ? format(data.startDate, "yyyy-MM-dd") : ""
+                  data.startDate instanceof Date
+                    ? format(data.startDate, "yyyy-MM-dd")
+                    : ""
                 }
                 sx={{ mb: "20px" }}
                 onChange={(e) => {
-                  setData((prevState) => {
-                    return {
-                      ...prevState,
-                      ...{
-                        startDate: new Date(e.target.value),
-                      },
-                    };
-                  });
+                  if (!isNaN(new Date(e.target.value))) {
+                    setData((prevState) => {
+                      return {
+                        ...prevState,
+                        ...{
+                          startDate: new Date(e.target.value),
+                        },
+                      };
+                    });
+                  }
                 }}
               />
             </Grid>
@@ -679,6 +1317,7 @@ export default function CreateShiny() {
                     control={
                       <Checkbox
                         color="secondary"
+                        defaultChecked
                         onChange={(e) => {
                           if (e.target.checked) {
                             setData((prevState) => {
@@ -716,23 +1355,28 @@ export default function CreateShiny() {
             label="End Date"
             type="date"
             fullWidth
-            value={format(data.endDate, "yyyy-MM-dd")}
+            value={
+              data.endDate instanceof Date
+                ? format(data.endDate, "yyyy-MM-dd")
+                : ""
+            }
             sx={{ mb: "20px" }}
             onChange={(e) => {
-              setData((prevState) => {
-                return {
-                  ...prevState,
-                  ...{
-                    endDate: new Date(e.target.value),
-                  },
-                };
-              });
+              if (!isNaN(new Date(e.target.value))) {
+                setData((prevState) => {
+                  return {
+                    ...prevState,
+                    ...{
+                      endDate: new Date(e.target.value),
+                    },
+                  };
+                });
+              }
             }}
           />
 
           {/* NICKNAME */}
           <TextField
-            required
             color="secondary"
             label="Nickname"
             fullWidth
@@ -749,6 +1393,8 @@ export default function CreateShiny() {
               });
             }}
           />
+
+          {groupDisplay()}
 
           {/* SUBMIT */}
           <Button

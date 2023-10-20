@@ -307,7 +307,7 @@ export default function CreateFromCounter() {
         </Box>
 
         {/* FORM */}
-        <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+        <form autoComplete="off" onSubmit={handleSubmit}>
           {/* GAMES */}
           <TextField
             sx={{ mb: "20px" }}
@@ -664,7 +664,6 @@ export default function CreateFromCounter() {
 
           {/* NICKNAME */}
           <TextField
-            required
             color="secondary"
             label="Nickname"
             fullWidth

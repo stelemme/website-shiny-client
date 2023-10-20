@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 
 // Mui
 import { Box, Grid, Typography, IconButton } from "@mui/material";
@@ -12,6 +11,7 @@ import SortMenu from "../../components/SortMenu";
 
 // Hooks
 import { useAuth } from "../../hooks/useAuth";
+import useAxios from "axios-hooks";
 
 export default function Counters() {
   const { username } = useAuth();
@@ -20,146 +20,66 @@ export default function Counters() {
   const [anchorElCompleted, setAnchorElCompleted] = useState(null);
   const openFilterCompleted = Boolean(anchorElCompleted);
 
-  const [ongoingSort, setOngoingSort] = useState(null);
-  const [ongoingCounters, setOngoingCounters] = useState(null);
-  const [ongoingCountersLoading, setOngoingCountersLoading] = useState(true);
+  const [ongoingCounters, setOngoingCounters] = useState();
+  const [completedCounters, setCompletedCounters] = useState();
 
-  const [completedSort, setCompletedSort] = useState(null);
-  const [completedCounters, setCompletedCounters] = useState(null);
-  const [completedCountersLoading, setCompletedCountersLoading] =
-    useState(true);
+  const [{ data: userData, loading: userDataLoading }] = useAxios(
+    `/user?user=${username}&action=counterSort`
+  );
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get(
-          `/user?user=${username}&action=counterSort`
-        );
-        setOngoingSort(response.data.user.ongoingCounterSort);
-        setCompletedSort(response.data.user.completedCounterSort);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    if (username) {
-      fetchUserData();
-    }
-  }, [username]);
+  const [{ data: ongoingCountersData, loading: ongoingCountersLoading }] =
+    useAxios(
+      `/counters?trainer=${username}&preview=true&sort=${userData?.user.ongoingCounterSort}`
+    );
+
+  const [{ data: completedCountersData, loading: completedCountersLoading }] =
+    useAxios(
+      `/shiny?trainer=${username}&preview=counter&sort=${userData?.user.completedCounterSort}&action=counters`
+    );
 
   useEffect(() => {
-    setOngoingCountersLoading(true)
-    const fetchOngoingData = async () => {
-      try {
-        const response = await axios.get(
-          `/counters?trainer=${username}&preview=true&sort=${ongoingSort}`
-        );
-        setOngoingCounters(response.data);
-        setOngoingCountersLoading(false)
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    if (ongoingSort) {
-      fetchOngoingData();
+    if (!ongoingCountersLoading) {
+      setOngoingCounters(ongoingCountersData.counters);
     }
-  }, [ongoingSort]);
+  }, [ongoingCountersData, ongoingCountersLoading]);
 
   useEffect(() => {
-    setCompletedCountersLoading(true)
-    const fetchCompletedData = async () => {
-      try {
-        const response = await axios.get(
-          `/shiny?trainer=${username}&preview=true&sort=${completedSort}&action=counters`
-        );
-        setCompletedCounters(response.data);
-        setCompletedCountersLoading(false)
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    if (completedSort) {
-      fetchCompletedData();
+    if (!completedCountersLoading) {
+      setCompletedCounters(completedCountersData.shiny);
     }
-  }, [completedSort]);
+  }, [completedCountersData, completedCountersLoading]);
 
-  const handleOngoingClose = (sortString) => {
-    if (typeof sortString === "string") {
-      setOngoingSort(sortString)
-      axios
-        .patch(`/user?user=${username}&ongoingCounterSort=${sortString}`)
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-    setAnchorElOngoing(null);
-  };
-
-  const handleCompletedClose = (sortString) => {
-    if (typeof sortString === "string") {
-      setCompletedSort(sortString)
-      axios
-        .patch(`/user?user=${username}&completedCounterSort=${sortString}`)
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-
-    setAnchorElCompleted(null);
-  };
-
-  const OngoingCountersDisplay = () => {
-    if (ongoingCountersLoading) {
+  const CountersDisplay = ({ data, loading, isCompleted }) => {
+    if (loading) {
       return (
         <Typography variant="h5" style={{ marginBottom: "20px" }}>
-            Loading ...
-          </Typography>
-      )
+          Loading ...
+        </Typography>
+      );
     } else {
-      return (
-        ongoingCounters?.counters.map((counter) => {
-          return (
-            <div key={counter._id} style={{ marginBottom: "20px" }}>
-              <CounterCard
-                id={counter._id}
-                name={counter.name}
-                gameSprite={counter.sprite.game}
-                count={counter.totalEncounters}
-              />
-            </div>
-          );
-        })
-      )
+      return data?.map((item) => {
+        return (
+          <div key={item._id} style={{ marginBottom: "20px" }}>
+            <CounterCard
+              id={item._id}
+              name={item.name}
+              gameSprite={item.sprite.game}
+              count={item.totalEncounters}
+              trainer={item.trainer}
+              query={isCompleted ? "?completed=true" : ""}
+            />
+          </div>
+        );
+      });
     }
-  }
-
-  const CompletedCountersDisplay = () => {
-    if (completedCountersLoading) {
-      return (
-        <Typography variant="h5" style={{ marginBottom: "20px" }}>
-            Loading ...
-          </Typography>
-      )
-    } else {
-      return (
-        completedCounters?.shiny.map((counter) => {
-          return (
-            <div key={counter._id} style={{ marginBottom: "20px" }}>
-              <CounterCard
-                id={counter._id}
-                name={counter.name}
-                gameSprite={counter.sprite.game}
-                count={counter.totalEncounters}
-                query={"?completed=true"}
-              />
-            </div>
-          );
-        })
-      )
-    }
-  }
+  };
 
   return (
-    <Box maxWidth={{ lg: "840px", xs: "420px" }} mx="auto" my="20px">
+    <Box
+      maxWidth={{ lg: "840px", md: "630px", sm: "420px" }}
+      mx="auto"
+      my="20px"
+    >
       <Box display="flex" flexDirection="column" mx="20px">
         {/* HEADER */}
         <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -188,10 +108,19 @@ export default function Counters() {
               <SortMenu
                 open={openFilterOngoing}
                 anchorEl={anchorElOngoing}
-                handleClose={handleOngoingClose}
+                setAnchorEl={setAnchorElOngoing}
+                data={ongoingCounters}
+                setData={setOngoingCounters}
+                username={username}
+                sortKey="ongoingCounterSort"
+                options={["game", "pokedexNo", "date", "encounters"]}
               />
             </Box>
-            {OngoingCountersDisplay()}
+            <CountersDisplay
+              data={ongoingCounters}
+              loading={ongoingCountersLoading && userDataLoading}
+              isCompleted={false}
+            />
           </Grid>
           {/* COMPLETED CARDS */}
           <Grid item lg={6} xs={12} maxWidth="400px">
@@ -212,10 +141,19 @@ export default function Counters() {
               <SortMenu
                 open={openFilterCompleted}
                 anchorEl={anchorElCompleted}
-                handleClose={handleCompletedClose}
+                setAnchorEl={setAnchorElCompleted}
+                data={completedCounters}
+                setData={setCompletedCounters}
+                username={username}
+                sortKey="completedCounterSort"
+                options={["game", "pokedexNo", "date", "encounters"]}
               />
             </Box>
-            {CompletedCountersDisplay()}
+            <CountersDisplay
+              data={completedCounters}
+              loading={completedCountersLoading && userDataLoading}
+              isCompleted={true}
+            />
           </Grid>
         </Grid>
       </Box>

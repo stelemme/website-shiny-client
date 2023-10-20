@@ -1,5 +1,14 @@
 // Mui
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import {
+  Box,
+  Alert,
+  AlertTitle,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
 
 export default function CustomDialog({
   open,
@@ -8,6 +17,7 @@ export default function CustomDialog({
   title,
   action,
   content,
+  warning,
 }) {
   return (
     <Dialog
@@ -15,7 +25,7 @@ export default function CustomDialog({
       onClose={handleClose}
       aria-labelledby="alert-dialog"
       maxWidth="xs"
-      fullWidth 
+      fullWidth
     >
       <DialogTitle
         id="alert-dialog"
@@ -26,7 +36,13 @@ export default function CustomDialog({
         {title}
       </DialogTitle>
       <DialogContent>
-        {content}
+        <Box mb="10px">{content}</Box>
+        {warning && (
+          <Alert severity="error">
+            <AlertTitle>ATTENTION</AlertTitle>
+            {warning}
+          </Alert>
+        )}
       </DialogContent>
       <DialogActions
         style={{ justifyContent: "right", gap: "10px" }}
