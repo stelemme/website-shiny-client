@@ -11,6 +11,7 @@ export default function CounterCard({
   count,
   trainer,
   query = null,
+  bgColor = 400,
 }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -25,7 +26,7 @@ export default function CounterCard({
     <Box
       p="15px"
       width="100%"
-      backgroundColor={colors.primary[400]}
+      backgroundColor={colors.primary[bgColor]}
       borderRadius="5px"
       onClick={() => {
         if (query) {
@@ -45,33 +46,31 @@ export default function CounterCard({
         {/* GAME IMAGE */}
         <Box
           display="inline-flex"
-          width="90px"
-          minWidth="90px"
+          width={(window.innerWidth < 400) ? "60px" : "90px"}
+          minWidth={(window.innerWidth < 400) ? "60px" : "90px"}
           justifyContent="center"
           alignItems="center"
         >
           <img
             alt=""
             src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/games/${gameSprite}.png`}
-            height="33px"
+            height={(window.innerWidth < 400) ? "22px" : "33px"}
           />
         </Box>
         {/* COUNTER NAME */}
-        <Box flexGrow={1} mx="15px">
+        <Box flexGrow={1} mx="15px" overflow="hidden">
           <Typography fontWeight={"bold"} color={colors.grey[400]}>
             {trainer}
           </Typography>
-          <Box display="flex" alignItems="center" height={trainerHeight}>
+          <Box display="flex" alignItems="center" height={trainerHeight} >
             <Typography
               fontWeight={"bold"}
               variant="h5"
               align="left"
               sx={{
-                minHeight: { trainerHeight },
-                display: "-webkit-box",
                 overflow: "hidden",
-                WebkitBoxOrient: "vertical",
-                WebkitLineClamp: 1,
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
               }}
             >
               {name}

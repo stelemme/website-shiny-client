@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../theme";
 
-export default function ShinyCard({ id, name, gameSprite, dir, monSprite, trainer}) {
+export default function ShinyCard({ id, name, gameSprite, dir, monSprite, trainer, bgColor='400', imgSize="80px"}) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ export default function ShinyCard({ id, name, gameSprite, dir, monSprite, traine
     <Box
       p="10px"
       width="100%"
-      backgroundColor={colors.primary[400]}
+      backgroundColor={colors.primary[bgColor]}
       borderRadius="5px"
       onClick={() => navigate(`/shiny/${id}`)}
       sx={{
@@ -33,19 +33,19 @@ export default function ShinyCard({ id, name, gameSprite, dir, monSprite, traine
         {/* GAME IMAGE */}
         <Box
           display="inline-flex"
-          width="90px"
-          minWidth="90px"
+          width={(window.innerWidth < 400) ? "60px" : "90px"}
+          minWidth={(window.innerWidth < 400) ? "60px" : "90px"}
           justifyContent="center"
           alignItems="center"
         >
           <img
             alt=""
             src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/games/${gameSprite}.png`}
-            height="33px"
+            height={(window.innerWidth < 400) ? "22px" : "33px"}
           />
         </Box>
         {/* COUNTER NAME */}
-        <Box flexGrow={1} mx="15px">
+        <Box flexGrow={1} mx="15px" overflow="hidden">
           <Typography fontWeight={"bold"} color={colors.grey[400]}>
             {trainer}
           </Typography>
@@ -55,11 +55,9 @@ export default function ShinyCard({ id, name, gameSprite, dir, monSprite, traine
               variant="h5"
               align="left"
               sx={{
-                minHeight: { trainerHeight },
-                display: "-webkit-box",
                 overflow: "hidden",
-                WebkitBoxOrient: "vertical",
-                WebkitLineClamp: 2,
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
               }}
             >
               {name}
@@ -76,7 +74,7 @@ export default function ShinyCard({ id, name, gameSprite, dir, monSprite, traine
           <img
             alt=""
             src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-all-home/${monSprite}.png`}
-            height="80px"
+            height={imgSize}
           />
         </Box>
       </Box>

@@ -9,7 +9,7 @@ import GameCard from "../../components/GameCard"
 import useAxios from "axios-hooks";
 
 export default function PokedexRegional() {
-  const [{ data: games, loading: gamesLoading, error: gamesError }] =
+  const [{ data: games, loading: gamesLoading }] =
     useAxios(`/game?action=select`);
 
     if (gamesLoading) {

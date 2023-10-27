@@ -87,7 +87,7 @@ export default function CreateShiny() {
     forms: [],
     nickname: "",
     IRLLocation: "",
-    level: 1,
+    level: null,
     gender: "genderless",
   };
 
@@ -185,6 +185,27 @@ export default function CreateShiny() {
             },
           }));
           break;
+        case "ultra-wormhole":
+          setData((prevState) => ({
+            ...prevState,
+            stats: {
+              ...newStats,
+              probability: methodHunts(
+                data.method.function,
+                0,
+                data.method.shinyCharm,
+                false,
+                false,
+                0,
+                null,
+                null,
+                null,
+                data.method.wormholeType,
+                data.method.wormholeDistance
+              ),
+            },
+          }));
+          break;
         case "pokeradar-gen4":
         case "pokeradar-gen6":
         case "pokeradar-gen8":
@@ -234,7 +255,7 @@ export default function CreateShiny() {
                 0,
                 null,
                 data.method?.svOutbreak,
-                data.method.svOutbreakDisplay
+                data.method.svSparklingPower
               ),
             },
           }));
@@ -287,7 +308,9 @@ export default function CreateShiny() {
                       console.log(err);
                     });
                 } else {
+                  setGroupList(undefined)
                   setData((prevState) => {
+                    delete prevState.group;
                     return {
                       ...prevState,
                       ...{
@@ -512,6 +535,81 @@ export default function CreateShiny() {
                       method: {
                         ...prevState.method,
                         sosChain: parseInt(e.target.value),
+                      },
+                    },
+                  };
+                });
+              }
+            }}
+          ></TextField>
+        </Box>
+      );
+    } else {
+      return null;
+    }
+  };
+
+  const ultraWormholeDisplay = () => {
+    if (data.method.function === "ultra-wormhole") {
+      return (
+        <Box>
+          <FormControl sx={{ mb: "5px", mr: "5px" }}>
+            <FormLabel focused={false}>Wormhole Type</FormLabel>
+            <RadioGroup
+              row
+              value={data.method.wormholeType}
+              onChange={(e, value) => {
+                setData((prevState) => {
+                  return {
+                    ...prevState,
+                    ...{
+                      method: {
+                        ...prevState.method,
+                        wormholeType: JSON.parse(value),
+                      },
+                    },
+                  };
+                });
+              }}
+            >
+              <FormControlLabel
+                value={0}
+                control={<Radio color="secondary" />}
+                label="Type 1"
+              />
+              <FormControlLabel
+                value={1}
+                control={<Radio color="secondary" />}
+                label="Type 2"
+              />
+              <FormControlLabel
+                value={2}
+                control={<Radio color="secondary" />}
+                label="Type 3"
+              />
+              <FormControlLabel
+                value={3}
+                control={<Radio color="secondary" />}
+                label="Type 4"
+              />
+            </RadioGroup>
+          </FormControl>
+          <TextField
+            fullWidth
+            sx={{ mb: "20px" }}
+            label="Light Years"
+            required
+            type="number"
+            color="secondary"
+            onChange={(e) => {
+              if (parseInt(e.target.value) > 0) {
+                setData((prevState) => {
+                  return {
+                    ...prevState,
+                    ...{
+                      method: {
+                        ...prevState.method,
+                        wormholeDistance: parseInt(e.target.value),
                       },
                     },
                   };
@@ -989,6 +1087,8 @@ export default function CreateShiny() {
                 delete updatedMethod.svOutbreak;
                 delete updatedMethod.svSparklingPower;
                 delete updatedMethod.group;
+                delete updatedMethod.wormholeDistance;
+                delete updatedMethod.wormholeType;
 
                 return {
                   ...updatedData,
@@ -1024,6 +1124,20 @@ export default function CreateShiny() {
                           ...prevState.method,
                           ...value,
                           sosChain: 0,
+                        },
+                      },
+                    };
+                  } else if (
+                    value?.function === "ultra-wormhole" 
+                  ) {
+                    return {
+                      ...prevState,
+                      ...{
+                        method: {
+                          ...prevState.method,
+                          ...value,
+                          wormholeDistance: null,
+                          wormholeType: 0,
                         },
                       },
                     };
@@ -1132,7 +1246,6 @@ export default function CreateShiny() {
               options={methodCatList ? methodCatList : []}
               renderInput={(params) => (
                 <TextField
-                  required
                   color="secondary"
                   {...params}
                   label="Method Category"
@@ -1148,6 +1261,7 @@ export default function CreateShiny() {
           {laDisplay()}
           {svSpawnDisplay()}
           {svOutbreakDisplay()}
+          {ultraWormholeDisplay()}
 
           {/* BALL */}
           <Grid container spacing={"10px"}>
@@ -1283,7 +1397,6 @@ export default function CreateShiny() {
             {/* START DATE */}
             <Grid item xs={8}>
               <TextField
-                key={data.startDate}
                 disabled={!data.startDate}
                 required
                 color="secondary"

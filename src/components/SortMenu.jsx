@@ -105,7 +105,7 @@ export default function SortMenu({
 
   return (
     <Menu
-      id="basic-menu"
+      id="sort-menu"
       anchorEl={anchorEl}
       open={open}
       onClose={handleClose}

@@ -22,6 +22,18 @@ import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import ReplyTwoToneIcon from "@mui/icons-material/ReplyTwoTone";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
+
+// Recharts
+import {
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  BarChart,
+  ResponsiveContainer,
+} from "recharts";
 
 // Components
 import CustomDialog from "../../components/CustomDialog";
@@ -34,6 +46,7 @@ import {
   calculateDateDifference,
   calculateEncountersPerDay,
   formatTime,
+  formatEncounterData,
 } from "../../functions/statFunctions";
 
 // Hooks
@@ -43,18 +56,23 @@ axios.defaults.baseURL = process.env.REACT_APP_PUBLIC_BACKEND;
 
 export default function Counter() {
   const { counterId } = useParams();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [completed, setCompleted] = useState(false);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
   const { username } = useAuth();
   const [backgroundColor, setBackgroundColor] = useState(colors.primary[400]);
+  const [backgroundColorSearchLevel, setBackgroundColorSearchLevel] = useState(
+    colors.primary[400]
+  );
   const [openDelete, setOpenDelete] = useState(false);
   const [openShiny, setOpenShiny] = useState(false);
   const [openInfo, setOpenInfo] = useState(false);
+  const [openGraph, setOpenGraph] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openDateEdit, setOpenDateEdit] = useState(false);
+  const [openSearchLevelEdit, setOpenSearchLevelEdit] = useState(false);
 
   const [data, setData] = useState(undefined);
   const [hasData, setHasData] = useState(false);
@@ -68,6 +86,9 @@ export default function Counter() {
   const [startDateEdit, setStartDateEdit] = useState(undefined);
   const [endDateEdit, setEndDateEdit] = useState(undefined);
   const [dateDifference, setDateDifference] = useState(undefined);
+
+  const [searchLevel, setSearchLevel] = useState(0);
+  const [searchLevelEdit, setSearchLevelEdit] = useState(0);
 
   const [lastCount, setLastCount] = useState(undefined);
   const [elapsedTime, setElapsedTime] = useState(0);
@@ -97,7 +118,9 @@ export default function Counter() {
       };
       fetchCounterData();
     }
-  }, [completed]);
+  }, [completed, counterId, searchParams]);
+
+  console.log(data)
 
   /* DATA FETCHING */
   useEffect(() => {
@@ -107,6 +130,12 @@ export default function Counter() {
         setCountEdit(data.totalEncounters);
         setEncountersToday(calculateEncountersPerDay(data.encounters));
         setHasData(true);
+        if (data.method.function === "dexnav") {
+          setSearchLevel(data.method.searchLevel ? data.method.searchLevel : 0);
+          setSearchLevelEdit(
+            data.method.searchLevel ? data.method.searchLevel : 0
+          );
+        }
       }
       setOdds(
         calculateProb(
@@ -115,7 +144,8 @@ export default function Counter() {
           data.method.shinyCharm,
           data.method?.charmRolls,
           data.totalEncounters,
-          data.method?.function
+          data.method?.function,
+          data.method?.searchLevel
         )
       );
       setPercentage(
@@ -138,9 +168,7 @@ export default function Counter() {
       );
       if (data.startDate) {
         setStartDate(new Date(data.startDate).toLocaleDateString());
-        setStartDateEdit(
-          format(new Date(data.startDate), "yyyy-MM-dd")
-        );
+        setStartDateEdit(format(new Date(data.startDate), "yyyy-MM-dd"));
       }
       if (data.endDate) {
         setEndDate(new Date(data.endDate).toLocaleDateString());
@@ -154,9 +182,7 @@ export default function Counter() {
           )
         );
       }
-      setLastCount(
-        new Date(data.encounters[data.encounters.length - 1])
-      );
+      setLastCount(new Date(data.encounters[data.encounters.length - 1]));
     }
   }, [data, hasData]);
 
@@ -215,20 +241,20 @@ export default function Counter() {
   const handleDeleteClick = () => {
     if (completed) {
       axios["delete"](`/shiny/${counterId}`)
-      .then((res) => {
-        navigate("/counters");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        .then((res) => {
+          navigate("/counters");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       axios["delete"](`/counters/${counterId}`)
-      .then((res) => {
-        navigate("/counters");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        .then((res) => {
+          navigate("/counters");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
@@ -282,6 +308,56 @@ export default function Counter() {
         setStartDate(new Date(res.data.startDate).toLocaleDateString());
         setEndDate(new Date(res.data.endDate).toLocaleDateString());
         setOpenDateEdit(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  /* SEARCH LEVEL CLICK */
+  const handleSearchLevelClick = () => {
+    setBackgroundColorSearchLevel(colors.primary[900]);
+    setSearchLevel((prevState) => {
+      return prevState + 1;
+    });
+    setSearchLevelEdit((prevState) => {
+      return prevState + 1;
+    });
+
+    setTimeout(() => {
+      setBackgroundColorSearchLevel(colors.primary[400]);
+    }, 200);
+
+    axios["patch"](`/counters/${counterId}?action=addSearchLevel`)
+      .then((res) => {
+        setData(res.data.counter);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleSearchLevelEditClick = () => {
+    let data = JSON.stringify({
+      searchLevel: searchLevelEdit,
+    });
+
+    let config = {
+      method: "patch",
+      maxBodyLength: Infinity,
+      url: `/counters/${counterId}?action=searchLevelEdit`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios
+      .request(config)
+      .then((res) => {
+        console.log(res.data);
+        setSearchLevel(searchLevelEdit);
+        setOpenSearchLevelEdit(false);
       })
       .catch((error) => {
         console.log(error);
@@ -345,7 +421,78 @@ export default function Counter() {
     }
   };
 
-  console.log(data)
+  const dexnavDisplay = () => {
+    if (data.method.function === "dexnav") {
+      return (
+        <Box
+          display="flex"
+          gap="10px"
+          alignContent="center"
+          height="40px"
+          mb={"20px"}
+        >
+          <Box
+            width="100%"
+            minHeight="40px"
+            borderRadius="10px"
+            backgroundColor={backgroundColorSearchLevel}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            onClick={
+              username === data.trainer && !completed
+                ? handleSearchLevelClick
+                : undefined
+            }
+            sx={{
+              "@media (min-width: 768px)": {
+                ...(username === data.trainer &&
+                  !completed && {
+                    "&:hover": {
+                      cursor: "pointer",
+                      backgroundColor: colors.primary[900],
+                    },
+                  }),
+              },
+            }}
+          >
+            <Typography fontSize={20} fontWeight={"bold"}>
+              {`Search Level: ${searchLevel}`}
+            </Typography>
+          </Box>
+          <IconButton onClick={() => setOpenSearchLevelEdit(true)}>
+            <EditRoundedIcon></EditRoundedIcon>
+          </IconButton>
+          <CustomDialog
+            open={openSearchLevelEdit}
+            handleClick={handleSearchLevelEditClick}
+            handleClose={() => {
+              setOpenSearchLevelEdit(false);
+            }}
+            title={"Edit Search Level"}
+            content={
+              <Box>
+                <Typography mb="15px">
+                  Edit the Search Level in the field below.
+                </Typography>
+                <TextField
+                  color="secondary"
+                  fullWidth
+                  label="Search Level"
+                  type="number"
+                  value={searchLevelEdit}
+                  onChange={(e) => setSearchLevelEdit(parseInt(e.target.value))}
+                ></TextField>
+              </Box>
+            }
+            action={"Edit"}
+          />
+        </Box>
+      );
+    } else {
+      return null;
+    }
+  };
 
   return (
     <Box maxWidth="420px" mx="auto" my="20px">
@@ -363,9 +510,11 @@ export default function Counter() {
             </Typography>
             {username === data.trainer && (
               <Box ml="10px" display="flex">
-                {!completed && <IconButton onClick={() => setOpenShiny(true)}>
-                  <AutoAwesomeIcon />
-                </IconButton>}
+                {!completed && (
+                  <IconButton onClick={() => setOpenShiny(true)}>
+                    <AutoAwesomeIcon />
+                  </IconButton>
+                )}
                 <CustomDialog
                   open={openShiny}
                   handleClick={handleShinyClick}
@@ -374,9 +523,11 @@ export default function Counter() {
                   content={"Did you get a Shiny Pokémon?"}
                   action={"Caught"}
                 />
-                {!completed && <IconButton onClick={() => setOpenEdit(true)}>
-                  <EditRoundedIcon />
-                </IconButton>}
+                {!completed && (
+                  <IconButton onClick={() => setOpenEdit(true)}>
+                    <EditRoundedIcon />
+                  </IconButton>
+                )}
                 <CustomDialog
                   open={openEdit}
                   handleClick={handleEditClick}
@@ -406,16 +557,20 @@ export default function Counter() {
                 <IconButton onClick={() => setOpenDelete(true)}>
                   <DeleteRoundedIcon />
                 </IconButton>
-                {!completed && <IconButton onClick={handleUndoClick}>
-                  <ReplyTwoToneIcon />
-                </IconButton>}
+                {!completed && (
+                  <IconButton onClick={handleUndoClick}>
+                    <ReplyTwoToneIcon />
+                  </IconButton>
+                )}
                 <CustomDialog
                   open={openDelete}
                   handleClick={handleDeleteClick}
                   handleClose={() => setOpenDelete(false)}
                   title={"Delete Counter"}
                   content={"Do you want to delete this Counter?"}
-                  warning={"Deleting this counter will delete ALL the counter data forever!"}
+                  warning={
+                    "Deleting this counter will delete ALL the counter data forever!"
+                  }
                   action={"Delete"}
                 />
               </Box>
@@ -485,6 +640,7 @@ export default function Counter() {
               {count}
             </Typography>
           </Box>
+          {dexnavDisplay()}
 
           {/* STATS */}
           <Grid container>
@@ -512,6 +668,9 @@ export default function Counter() {
                       src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/${data.sprite.dir}/${data.sprite.pokemon}.png`}
                       width="240px"
                       style={{ imageRendering: "pixelated" }}
+                      onError={(e) => {
+                        e.target.src = `https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-all-home/${data.sprite.pokemon}.png`;
+                      }}
                     />
                     <Grid container width={"240px"}>
                       <Grid item xs={12} mb={"5px"}>
@@ -563,16 +722,10 @@ export default function Counter() {
                               handleClose={() => {
                                 setOpenDateEdit(false);
                                 setStartDateEdit(
-                                  format(
-                                    new Date(data.startDate),
-                                    "yyyy-MM-dd"
-                                  )
+                                  format(new Date(data.startDate), "yyyy-MM-dd")
                                 );
                                 setEndDateEdit(
-                                  format(
-                                    new Date(data.endDate),
-                                    "yyyy-MM-dd"
-                                  )
+                                  format(new Date(data.endDate), "yyyy-MM-dd")
                                 );
                               }}
                               title={"Edit Start & End Date"}
@@ -623,7 +776,7 @@ export default function Counter() {
                           {endDate ? endDate : "Undefined"}
                         </Typography>
                         <Typography fontWeight={"bold"}>
-                          Days hunting
+                          {completed ? "Days Hunted" : "Days Hunting"}
                         </Typography>
                         <Typography>
                           {dateDifference}{" "}
@@ -655,11 +808,75 @@ export default function Counter() {
                         </Typography>
                         <Typography textAlign={"right"}>
                           {timeDifference
-                            ? formatTime(Math.round(timeDifference * count))
+                            ? formatTime(
+                                Math.round(timeDifference * count),
+                                false
+                              )
                             : "Undefined"}
                         </Typography>
                       </Grid>
                     </Grid>
+                  </DialogContent>
+                </Dialog>
+              </Box>
+              <Box display="flex" alignItems="center" height="21px">
+                <Typography fontWeight={"bold"}>Encounter Graph</Typography>
+                <IconButton size="small" onClick={() => setOpenGraph(true)}>
+                  <AssessmentOutlinedIcon fontSize="inherit" />
+                </IconButton>
+
+                {/* DIALOG */}
+                <Dialog
+                  open={openGraph}
+                  onClose={() => setOpenGraph(false)}
+                  fullWidth
+                >
+                  <DialogTitle fontWeight={"bold"} variant="h4">
+                    Encounter Graph
+                  </DialogTitle>
+                  <DialogContent width="100%">
+                    <ResponsiveContainer
+                      width="100%"
+                      height={window.innerWidth < 500 ? 300 : 400}
+                    >
+                      <BarChart
+                        data={formatEncounterData(data.encounters)}
+                        margin={{
+                          top: 0,
+                          right: 0,
+                          bottom: -15,
+                          left: 5,
+                        }}
+                      >
+                        <XAxis
+                          dataKey="date"
+                          scale="time"
+                          type="number"
+                          domain={[dataMin => dataMin, () => new Date(data.endDate).getTime()]}
+                          tick={false}
+                          axisLine={{ stroke: colors.primary[200] }}
+                          tickLine={{ stroke: colors.primary[200] }}
+                        />
+                        <YAxis
+                          dataKey="value"
+                          width={25}
+                          tick={{ fill: colors.grey[100] }}
+                          axisLine={{ stroke: colors.primary[200] }}
+                          tickLine={{ stroke: colors.primary[200] }}
+                        />
+                        <CartesianGrid stroke={colors.primary[200]} />
+                        <Tooltip
+                          labelStyle={{ color: "black" }}
+                          labelFormatter={(value) => {
+                            return `${new Date(value).toLocaleDateString()}`;
+                          }}
+                        />
+                        <Bar
+                          dataKey="value"
+                          fill={colors.redAccent[500]}
+                        />
+                      </BarChart>
+                    </ResponsiveContainer>
                   </DialogContent>
                 </Dialog>
               </Box>

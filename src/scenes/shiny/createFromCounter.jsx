@@ -76,7 +76,7 @@ export default function CreateFromCounter() {
     forms: [],
     nickname: "",
     IRLLocation: "",
-    level: 1,
+    level: null,
     gender: "genderless",
   };
 
@@ -195,7 +195,8 @@ export default function CreateFromCounter() {
         data.method.shinyCharm,
         data.method?.charmRolls,
         data.totalEncounters,
-        data.method?.function
+        data.method?.function,
+        data.method?.searchLevel
       ),
       percentage: calculatePercentage(
         data.totalEncounters,
@@ -203,7 +204,8 @@ export default function CreateFromCounter() {
         data.method.rolls,
         data.method.shinyCharm,
         data.method?.charmRolls,
-        data.method?.function
+        data.method?.function,
+        data.method?.searchLevel
       ),
       meanEncounterTime: calculateMeanEncounterTime(
         data.encounters,
@@ -227,22 +229,22 @@ export default function CreateFromCounter() {
       switch (data.method.function) {
         case "pokeradar-gen4":
           chainLimit = 40;
-          break
+          break;
         case "pokeradar-gen6":
           chainLimit = 40;
-          break
+          break;
         case "pokeradar-gen8":
           chainLimit = 40;
-          break
+          break;
         case "chainfishing":
           chainLimit = 20;
-          break
+          break;
         case "sos-chain-sm":
           chainLimit = 30;
-          break
+          break;
         case "sos-chain":
           chainLimit = 30;
-          break
+          break;
         default:
           console.log(chainLimit);
       }
@@ -264,7 +266,7 @@ export default function CreateFromCounter() {
                   data.method.rolls,
                   data.method.shinyCharm,
                   data.method?.charmRolls,
-                  data.method?.function
+                  data.method?.function,
                 ),
               },
             },
@@ -281,7 +283,7 @@ export default function CreateFromCounter() {
               },
               stats: {
                 ...newStats,
-                percentage: 0
+                percentage: 0,
               },
             },
           };
@@ -477,7 +479,6 @@ export default function CreateFromCounter() {
             value={data.method.category}
             key={data.method.category}
             label="Method Category"
-            required
           ></TextField>
 
           {/* BALL */}
@@ -614,7 +615,6 @@ export default function CreateFromCounter() {
             {/* START DATE */}
             <Grid item xs={6}>
               <TextField
-                key={data.startDate}
                 disabled={!data.startDate}
                 required
                 color="secondary"
@@ -626,14 +626,16 @@ export default function CreateFromCounter() {
                 }
                 sx={{ mb: "20px" }}
                 onChange={(e) => {
-                  setData((prevState) => {
-                    return {
-                      ...prevState,
-                      ...{
-                        startDate: new Date(e.target.value),
-                      },
-                    };
-                  });
+                  if (!isNaN(new Date(e.target.value))) {
+                    setData((prevState) => {
+                      return {
+                        ...prevState,
+                        ...{
+                          startDate: new Date(e.target.value),
+                        },
+                      };
+                    });
+                  }
                 }}
               />
             </Grid>
@@ -649,14 +651,16 @@ export default function CreateFromCounter() {
                 value={data.endDate ? format(data.endDate, "yyyy-MM-dd") : ""}
                 sx={{ mb: "20px" }}
                 onChange={(e) => {
-                  setData((prevState) => {
-                    return {
-                      ...prevState,
-                      ...{
-                        endDate: new Date(e.target.value),
-                      },
-                    };
-                  });
+                  if (!isNaN(new Date(e.target.value))) {
+                    setData((prevState) => {
+                      return {
+                        ...prevState,
+                        ...{
+                          endDate: new Date(e.target.value),
+                        },
+                      };
+                    });
+                  }
                 }}
               />
             </Grid>

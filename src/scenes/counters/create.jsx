@@ -309,7 +309,7 @@ export default function CreateCounters() {
               }
             }}
             sx={{ mb: "20px" }}
-            options={methodsList ? methodsList : []}
+            options={methodsList ? methodsList.filter(option => option.countable !== false) : []}
             getOptionLabel={(option) => option.name}
             renderInput={(params) => (
               <TextField
@@ -345,7 +345,6 @@ export default function CreateCounters() {
             options={methodCatList ? methodCatList : []}
             renderInput={(params) => (
               <TextField
-                required
                 color="secondary"
                 {...params}
                 label="Method Category"

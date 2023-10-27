@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -10,9 +10,18 @@ import {
   IconButton,
   Grid,
   Divider,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  FormGroup,
+  FormControlLabel,
+  Checkbox,
+  Button,
 } from "@mui/material";
 import { tokens } from "../../theme";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import EditRoundedIcon from "@mui/icons-material/EditRounded";
 
 // Components
 import CustomDialog from "../../components/CustomDialog";
@@ -30,12 +39,26 @@ export default function ShinyId() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
+  const [evolutions, setEvolutions] = useState(undefined);
+  const [evolutionsEdit, setEvolutionsEdit] = useState([]);
+  const [forms, setForms] = useState(undefined);
+  const [formsEdit, setFormsEdit] = useState([]);
+  const [data, setData] = useState(undefined);
 
   const [openDelete, setOpenDelete] = useState(false);
+  const [openEvolutionEdit, setOpenEvolutionEdit] = useState(false);
 
-  const [{ data }] = useAxios(`/shiny/${shinyId}?action=noEncounters`);
+  const [{ data: shinyData }] = useAxios(
+    `/shiny/${shinyId}?action=noEncounters`
+  );
 
-  console.log(data);
+  console.log(shinyData);
+
+  useEffect(() => {
+    if (shinyData) {
+      setData(shinyData.shiny);
+    }
+  }, [shinyData]);
 
   /* DELETE THE SHINY */
   const handleDeleteClick = () => {
@@ -46,6 +69,35 @@ export default function ShinyId() {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  /* EDIT THE SHINY */
+  const handleEvolutionsEdit = () => {
+    let data = JSON.stringify({
+      evolutions: evolutionsEdit,
+      forms: formsEdit,
+    });
+
+    let config = {
+      method: "patch",
+      maxBodyLength: Infinity,
+      url: `/shiny/${shinyId}?action=evolutionsEdit`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios
+      .request(config)
+      .then((res) => {
+        setData(res.data.shiny);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    setOpenEvolutionEdit(false);
   };
 
   const InfoDisplay = ({ infoCat, infoName, xs1 = 5.5, xs2 = 6.5 }) => {
@@ -61,6 +113,54 @@ export default function ShinyId() {
     );
   };
 
+  const CheckboxDisplay = ({ data, name, state, setState }) => {
+    if (!data || data.length === 0) {
+      return (
+        <Grid item xs={12}>
+          <Typography variant="h5" fontWeight="bold">
+            {name}
+          </Typography>
+          <Typography>{`No ${name} Found`}</Typography>
+        </Grid>
+      );
+    } else {
+      return (
+        <Box mb="10px">
+          <Typography variant="h5" fontWeight="bold">
+            {name}
+          </Typography>
+          <FormGroup>
+            {data?.map((item) => {
+              return (
+                <FormControlLabel
+                  key={item._id}
+                  control={
+                    <Checkbox
+                      color="secondary"
+                      checked={state.some(
+                        (checkedItem) => checkedItem._id === item._id
+                      )}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setState((prevState) => [...prevState, item]);
+                        } else {
+                          setState((prevState) =>
+                            prevState.filter((value) => value._id !== item._id)
+                          );
+                        }
+                      }}
+                    />
+                  }
+                  label={item.name}
+                />
+              );
+            })}
+          </FormGroup>
+        </Box>
+      );
+    }
+  };
+
   return (
     <Box maxWidth={{ sm: "420px" }} mx="auto" my="20px">
       {data && (
@@ -73,9 +173,9 @@ export default function ShinyId() {
             alignItems="center"
           >
             <Typography variant="h3" color={colors.grey[100]} fontWeight="bold">
-              {data.shiny.name.toUpperCase()}
+              {data.name.toUpperCase()}
             </Typography>
-            {username === data.shiny.trainer && (
+            {username === data.trainer && (
               <Box ml="10px" display="flex">
                 <IconButton onClick={() => setOpenDelete(true)}>
                   <DeleteRoundedIcon />
@@ -104,13 +204,16 @@ export default function ShinyId() {
               <div style={{ position: "relative" }}>
                 <img
                   alt=""
-                  src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/${data.shiny.sprite.dir}/${data.shiny.sprite.pokemon}.png`}
+                  src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/${data.sprite.dir}/${data.sprite.pokemon}.png`}
                   width="100%"
                   style={{ imageRendering: "pixelated" }}
+                  onError={(e) => {
+                    e.target.src = `https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-all-home/${data.sprite.pokemon}.png`;
+                  }}
                 />
                 <img
                   alt=""
-                  src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/balls/pixel/${data.shiny.sprite.ball}.png`}
+                  src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/balls/pixel/${data.sprite.ball}.png`}
                   style={{
                     imageRendering: "pixelated",
                     position: "absolute",
@@ -124,9 +227,12 @@ export default function ShinyId() {
             <Grid item xs={6}>
               <img
                 alt=""
-                src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon/${data.shiny.sprite.dir}/${data.shiny.sprite.pokemon}.png`}
+                src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon/${data.sprite.dir}/${data.sprite.pokemon}.png`}
                 width="100%"
                 style={{ imageRendering: "pixelated" }}
+                onError={(e) => {
+                  e.target.src = `https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon/gen-all-home/${data.sprite.pokemon}.png`;
+                }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -136,11 +242,142 @@ export default function ShinyId() {
               <Box width={"100%"} display="flex" justifyContent="center">
                 <img
                   alt=""
-                  src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/games/${data.shiny.sprite.game}.png`}
+                  src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/games/${data.sprite.game}.png`}
                   height="50px"
                 />
               </Box>
             </Grid>
+            <Grid item xs={12}>
+              <Divider />
+            </Grid>
+            <Grid item xs={12}>
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                height="21px"
+              >
+                <Typography variant="h5" fontWeight={"bold"}>
+                  EVOLUTIONS & FORMS
+                </Typography>
+                {username === data.trainer && (
+                  <IconButton
+                    size="small"
+                    onClick={() => {
+                      axios["get"](
+                        `/pokedex?name=${data.name}&evolutions=true&game=${data.game}`
+                      ).then((res) => {
+                        setEvolutions(res.data.evolutions);
+                        setForms(res.data.forms);
+                      });
+                      setOpenEvolutionEdit(true);
+                    }}
+                  >
+                    <EditRoundedIcon />
+                  </IconButton>
+                )}
+                <Dialog
+                  open={openEvolutionEdit}
+                  onClose={() => setOpenEvolutionEdit(false)}
+                >
+                  <DialogTitle fontWeight={"bold"} variant="h4">
+                    Edit Evolutions & Forms
+                  </DialogTitle>
+                  <DialogContent>
+                    <CheckboxDisplay
+                      data={evolutions}
+                      name={"Evolutions"}
+                      state={evolutionsEdit}
+                      setState={setEvolutionsEdit}
+                    />
+                    <CheckboxDisplay
+                      data={forms}
+                      name={"Forms"}
+                      state={formsEdit}
+                      setState={setFormsEdit}
+                    />
+                  </DialogContent>
+                  <DialogActions
+                    style={{ justifyContent: "right", gap: "10px" }}
+                    sx={{ mb: "15px", mr: "15px" }}
+                  >
+                    <Button
+                      variant="contained"
+                      color="neutral"
+                      style={{ color: "white" }}
+                      onClick={() => setOpenEvolutionEdit(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="neutral"
+                      style={{ color: "white" }}
+                      onClick={handleEvolutionsEdit}
+                      autoFocus
+                    >
+                      Edit
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </Box>
+            </Grid>
+            {data.evolutions.length > 0 && (
+              <Grid item xs={12} container>
+                {data.evolutions.map((item) => {
+                  return (
+                    <Grid item xs={6} key={item._id}>
+                      <img
+                        alt=""
+                        src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/${data.sprite.dir}/${item.sprite}.png`}
+                        width="50%"
+                        style={{ imageRendering: "pixelated" }}
+                        onError={(e) => {
+                          e.target.src = `https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-all-home/${item.sprite}.png`;
+                        }}
+                      />
+                      <img
+                        alt=""
+                        src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon/${data.sprite.dir}/${item.sprite}.png`}
+                        width="50%"
+                        style={{ imageRendering: "pixelated" }}
+                        onError={(e) => {
+                          e.target.src = `https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon/gen-all-home/${item.sprite}.png`;
+                        }}
+                      />
+                    </Grid>
+                  );
+                })}
+              </Grid>
+            )}
+            {data.forms.length > 0 && (
+              <Grid item xs={12} container>
+                {data.forms.map((item) => {
+                  return (
+                    <Grid item xs={6} key={item._id}>
+                      <img
+                        alt=""
+                        src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/${data.sprite.dir}/${item.sprite}.png`}
+                        width="50%"
+                        style={{ imageRendering: "pixelated" }}
+                        onError={(e) => {
+                          e.target.src = `https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-all-home/${item.sprite}.png`;
+                        }}
+                      />
+                      <img
+                        alt=""
+                        src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon/${data.sprite.dir}/${item.sprite}.png`}
+                        width="50%"
+                        style={{ imageRendering: "pixelated" }}
+                        onError={(e) => {
+                          e.target.src = `https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-all-home/${item.sprite}.png`;
+                        }}
+                      />
+                    </Grid>
+                  );
+                })}
+              </Grid>
+            )}
             <Grid item xs={12}>
               <Divider />
             </Grid>
@@ -152,49 +389,47 @@ export default function ShinyId() {
             <Grid item xs={6}>
               <InfoDisplay
                 infoCat={"Dex No."}
-                infoName={`#${data.shiny.pokedexNo}`}
+                infoName={`#${data.pokedexNo}`}
               />
-              <InfoDisplay infoCat={"Pokémon"} infoName={data.shiny.name} />
-              <InfoDisplay infoCat={"Nature"} infoName={data.shiny.nature} />
+              <InfoDisplay infoCat={"Pokémon"} infoName={data.name} />
+              <InfoDisplay infoCat={"Nature"} infoName={data.nature} />
               <InfoDisplay
                 infoCat={"Gender"}
                 infoName={
-                  data.shiny.gender === "male"
+                  data.gender === "male"
                     ? "♂"
-                    : data.shiny.gender === "female"
+                    : data.gender === "female"
                     ? "♀"
                     : "-"
                 }
               />
               <InfoDisplay
                 infoCat={"Level Caught"}
-                infoName={`lvl. ${data.shiny.level}`}
+                infoName={`lvl. ${data.level}`}
               />
               <InfoDisplay
                 infoCat={"Nickname"}
-                infoName={data.shiny.nickname ? data.shiny.nickname : "-"}
+                infoName={data.nickname ? data.nickname : "-"}
               />
             </Grid>
             <Grid item xs={6}>
               <InfoDisplay
                 infoCat={"Encounters"}
-                infoName={data.shiny.totalEncounters}
+                infoName={data.totalEncounters}
               />
               <InfoDisplay
                 infoCat={"Probability"}
-                infoName={`1/${data.shiny.stats.probability}`}
+                infoName={`1/${data.stats.probability}`}
               />
               <InfoDisplay
                 infoCat={"Percentage"}
                 infoName={
-                  data.shiny.stats.percentage
-                    ? `${data.shiny.stats.percentage}%`
-                    : "-"
+                  data.stats.percentage ? `${data.stats.percentage}%` : "-"
                 }
               />
               <InfoDisplay
                 infoCat={"Date Caught"}
-                infoName={new Date(data.shiny.endDate).toLocaleDateString()}
+                infoName={new Date(data.endDate).toLocaleDateString()}
               />
             </Grid>
 
@@ -203,47 +438,43 @@ export default function ShinyId() {
                 xs1={2.75}
                 xs2={9.25}
                 infoCat={"Game"}
-                infoName={data.shiny.game}
+                infoName={data.game}
               />
               <InfoDisplay
                 xs1={2.75}
                 xs2={9.25}
                 infoCat={"Generation"}
-                infoName={data.shiny.gen}
+                infoName={data.gen}
               />
               <InfoDisplay
                 xs1={2.75}
                 xs2={9.25}
                 infoCat={"Method"}
-                infoName={data.shiny.method.name}
+                infoName={data.method.name}
               />
               <InfoDisplay
                 xs1={2.75}
                 xs2={9.25}
                 infoCat={"Category"}
-                infoName={
-                  data.shiny.method.catergory
-                    ? data.shiny.method.catergory
-                    : "-"
-                }
+                infoName={data.method.category ? data.method.category : "-"}
               />
               <InfoDisplay
                 xs1={2.75}
                 xs2={9.25}
                 infoCat={"Location"}
-                infoName={data.shiny.location}
+                infoName={data.location}
               />
               <InfoDisplay
                 xs1={2.75}
                 xs2={9.25}
                 infoCat={"IRL Location"}
-                infoName={data.shiny.IRLLocation}
+                infoName={data.IRLLocation}
               />
             </Grid>
             <Grid item xs={12}>
               <Divider />
             </Grid>
-            {data.shiny.stats.meanEncounterTime && (
+            {data.stats.meanEncounterTime && (
               <Grid item xs={12} container spacing={2}>
                 <Grid item xs={12}>
                   <Typography variant="h5" fontWeight={"bold"}>
@@ -253,32 +484,29 @@ export default function ShinyId() {
                 <Grid item xs={6}>
                   <InfoDisplay
                     infoCat={"Start Date"}
-                    infoName={new Date(
-                      data.shiny.startDate
-                    ).toLocaleDateString()}
+                    infoName={new Date(data.startDate).toLocaleDateString()}
                   />
                   <InfoDisplay
                     infoCat={"End Date"}
-                    infoName={new Date(data.shiny.endDate).toLocaleDateString()}
+                    infoName={new Date(data.endDate).toLocaleDateString()}
                   />
                   <InfoDisplay
                     infoCat={"Days Hunted"}
-                    infoName={`${data.shiny.stats.daysHunting} days`}
+                    infoName={`${data.stats.daysHunting} days`}
                   />
                 </Grid>
                 <Grid item xs={6}>
                   <InfoDisplay
                     infoCat={"Mean Enc. Time"}
-                    infoName={new Date(
-                      data.shiny.stats.meanEncounterTime * 1000
-                    )
+                    infoName={new Date(data.stats.meanEncounterTime * 1000)
                       .toISOString()
                       .slice(11, 19)}
                   />
                   <InfoDisplay
                     infoCat={"Total Time"}
                     infoName={formatTime(
-                      Math.round(data.shiny.stats.totalHuntTime)
+                      Math.round(data.stats.totalHuntTime),
+                      false
                     )}
                   />
                 </Grid>

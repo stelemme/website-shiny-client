@@ -52,23 +52,22 @@ export default function Counters() {
   const CountersDisplay = ({ data, loading, isCompleted }) => {
     if (loading) {
       return (
-        <Typography variant="h5" style={{ marginBottom: "20px" }}>
-          Loading ...
-        </Typography>
+        <Grid item xs={12}>
+          <Typography variant="h5">Loading ...</Typography>
+        </Grid>
       );
     } else {
       return data?.map((item) => {
         return (
-          <div key={item._id} style={{ marginBottom: "20px" }}>
+          <Grid item lg={6} xs={12} key={item._id}>
             <CounterCard
               id={item._id}
               name={item.name}
               gameSprite={item.sprite.game}
               count={item.totalEncounters}
-              trainer={item.trainer}
               query={isCompleted ? "?completed=true" : ""}
             />
-          </div>
+          </Grid>
         );
       });
     }
@@ -90,71 +89,68 @@ export default function Counters() {
         </Box>
 
         {/* CARDS */}
+        {/* ONGOING CARDS */}
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          mb="10px"
+        >
+          <Typography variant="h4" fontWeight={"bold"}>
+            ONGOING COUNTERS
+          </Typography>
+          <IconButton onClick={(e) => setAnchorElOngoing(e.currentTarget)}>
+            <SortIcon style={{ transform: "scaleX(-1)" }} />
+          </IconButton>
+          <SortMenu
+            open={openFilterOngoing}
+            anchorEl={anchorElOngoing}
+            setAnchorEl={setAnchorElOngoing}
+            data={ongoingCounters}
+            setData={setOngoingCounters}
+            username={username}
+            sortKey="ongoingCounterSort"
+            options={["game", "pokedexNo", "date", "encounters"]}
+          />
+        </Box>
         <Grid container spacing={"20px"}>
-          {/* ONGOING CARDS */}
-          <Grid item lg={6} xs={12} maxWidth="400px">
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              mb="10px"
-            >
-              <Typography variant="h4" fontWeight={"bold"}>
-                ONGOING COUNTERS
-              </Typography>
-              <IconButton onClick={(e) => setAnchorElOngoing(e.currentTarget)}>
-                <SortIcon style={{ transform: "scaleX(-1)" }} />
-              </IconButton>
-              <SortMenu
-                open={openFilterOngoing}
-                anchorEl={anchorElOngoing}
-                setAnchorEl={setAnchorElOngoing}
-                data={ongoingCounters}
-                setData={setOngoingCounters}
-                username={username}
-                sortKey="ongoingCounterSort"
-                options={["game", "pokedexNo", "date", "encounters"]}
-              />
-            </Box>
-            <CountersDisplay
-              data={ongoingCounters}
-              loading={ongoingCountersLoading && userDataLoading}
-              isCompleted={false}
-            />
-          </Grid>
-          {/* COMPLETED CARDS */}
-          <Grid item lg={6} xs={12} maxWidth="400px">
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              mb="10px"
-            >
-              <Typography variant="h4" fontWeight={"bold"}>
-                COMPLETED COUNTERS
-              </Typography>
-              <IconButton
-                onClick={(e) => setAnchorElCompleted(e.currentTarget)}
-              >
-                <SortIcon style={{ transform: "scaleX(-1)" }} />
-              </IconButton>
-              <SortMenu
-                open={openFilterCompleted}
-                anchorEl={anchorElCompleted}
-                setAnchorEl={setAnchorElCompleted}
-                data={completedCounters}
-                setData={setCompletedCounters}
-                username={username}
-                sortKey="completedCounterSort"
-                options={["game", "pokedexNo", "date", "encounters"]}
-              />
-            </Box>
-            <CountersDisplay
-              data={completedCounters}
-              loading={completedCountersLoading && userDataLoading}
-              isCompleted={true}
-            />
-          </Grid>
+          <CountersDisplay
+            data={ongoingCounters}
+            loading={ongoingCountersLoading || userDataLoading}
+            isCompleted={false}
+          />
+        </Grid>
+        {/* COMPLETED CARDS */}
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          mb="10px"
+          mt="20px"
+        >
+          <Typography variant="h4" fontWeight={"bold"}>
+            COMPLETED COUNTERS
+          </Typography>
+          <IconButton onClick={(e) => setAnchorElCompleted(e.currentTarget)}>
+            <SortIcon style={{ transform: "scaleX(-1)" }} />
+          </IconButton>
+          <SortMenu
+            open={openFilterCompleted}
+            anchorEl={anchorElCompleted}
+            setAnchorEl={setAnchorElCompleted}
+            data={completedCounters}
+            setData={setCompletedCounters}
+            username={username}
+            sortKey="completedCounterSort"
+            options={["game", "pokedexNo", "date", "encounters"]}
+          />
+        </Box>
+        <Grid container spacing={"20px"}>
+          <CountersDisplay
+            data={completedCounters}
+            loading={completedCountersLoading || userDataLoading}
+            isCompleted={true}
+          />
         </Grid>
       </Box>
     </Box>

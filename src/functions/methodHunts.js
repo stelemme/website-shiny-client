@@ -6,8 +6,11 @@ export default function methodHunts(
   chainMatters = false,
   letsGoChain = 0,
   researchLevel = null,
-  svOutbreak=null,
-  svSparklingPower=null,
+  svOutbreak = null,
+  svSparklingPower = null,
+  wormholeType = null,
+  wormholeDistance = null,
+  searchLevel = null
 ) {
   let rolls = 1
   switch (methodFunction) {
@@ -128,6 +131,43 @@ export default function methodHunts(
       }
 
       return Math.round((1 - (4095 / 4096) ** rolls) ** -1)
+    case "dexnav":
+      let n = 1
+      let n1 = 1
+      let level = searchLevel
+      let dexNavLevel = 0.0
+
+      if (shinyCharm) {
+        n += 2
+        n1 += 2
+      }
+
+      if (totalEncounters === 50) {
+        n += 5
+      } else if (totalEncounters === 100) {
+        n += 10
+      }
+
+      if (level > 200) {
+        dexNavLevel += level - 200
+        level = 200
+      }
+      if (level > 100) {
+        dexNavLevel += (level * 2) - 200
+        level = 100
+      }
+      if (level > 0) {
+        dexNavLevel += level * 6
+      }
+
+      const oddsDexNav = Math.ceil(dexNavLevel * 0.01) / 10000
+
+      const endOdds = Math.round((0.04 * (1 - ((1 - oddsDexNav) ** (n + 4)))
+        + 0.04 * ((1 - oddsDexNav) ** (n + 4)) * (1 - ((4095 / 4096) ** n1))
+        + 0.96 * (1 - ((1 - oddsDexNav) ** n))
+        + 0.96 * ((1 - oddsDexNav) ** n) * (1 - ((4095 / 4096) ** n1))) ** -1)
+
+      return endOdds
     case "letsgospawn":
       if (lure) {
         rolls += 1
@@ -172,6 +212,26 @@ export default function methodHunts(
         rolls += 4
       }
       return Math.round((1 - (4095 / 4096) ** rolls) ** -1)
+    case "ultra-wormhole":
+      let d = 0
+      let ultraWormholeOdds = 0
+
+      if (1000 <= wormholeDistance <= 5000) {
+        d = Math.floor((wormholeDistance / 500) - 1)
+      } else if (wormholeDistance > 5000) {
+        d = 9
+      }
+
+      if (wormholeType === 0) {
+        ultraWormholeOdds = (1 * 0.01) ** -1
+      } else if (wormholeType === 1 && wormholeDistance >= 1000) {
+        ultraWormholeOdds = ((1 + d) * 0.01) ** -1
+      } else if (wormholeType === 2 && wormholeDistance >= 1000) {
+        ultraWormholeOdds = ((1 + 2 * d) * 0.01) ** -1
+      } else if (wormholeType === 3 && wormholeDistance >= 2500) {
+        ultraWormholeOdds = (4 * d * 0.01) ** -1
+      }
+      return Math.round(ultraWormholeOdds)
     case "arceus-spawn":
     case "arceus-mass-outbreak":
     case "arceus-massive-mass-outbreak":
@@ -195,7 +255,7 @@ export default function methodHunts(
     case "sv-spawn":
     case "sv-outbreak":
       if (shinyCharm) {
-        rolls += 3
+        rolls += 2
       }
 
       if (methodFunction === "sv-outbreak") {

@@ -5,4 +5,9 @@ const sidebarToggle = atom({
   default: false,
 })
 
-export { sidebarToggle }
+const sidebarCollapse = atom({
+  key: 'sidebarCollapse',
+  default: false,
+})
+
+export { sidebarToggle, sidebarCollapse }

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { sidebarToggle } from "../../atoms";
+import { sidebarToggle, sidebarCollapse } from "../../atoms";
 
 // Sidebar Pro imports
 import { Sidebar, Menu, MenuItem, menuClasses } from "react-pro-sidebar";
@@ -16,6 +16,9 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import LibraryAddOutlinedIcon from "@mui/icons-material/LibraryAddOutlined";
 import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone";
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
+import TableChartOutlinedIcon from '@mui/icons-material/TableChartOutlined';
+import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
+import AssessmentIcon from '@mui/icons-material/Assessment';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -49,10 +52,13 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 export default function CustomSidebar() {
   const domains = {
     "": "Home",
-    shiny: "Your Shinies",
+    shiny: "Shiny Pokémon",
+    table: "Shiny Data Table",
     counters: "Your Counters",
     all: "All Counters",
     create: "Add a Counter",
+    stats: "Shiny Stats",
+    counter: "Counter Stats",
     pokedex: "National Pokédex",
     regional: "Regional Pokédex",
   };
@@ -65,7 +71,7 @@ export default function CustomSidebar() {
     ]
   );
   const [toggled, setToggled] = useRecoilState(sidebarToggle);
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useRecoilState(sidebarCollapse);
 
   const menuItemStyles = {
     button: {
@@ -85,8 +91,8 @@ export default function CustomSidebar() {
       backgroundColor={colors.primary[400]}
       rootStyles={{
         borderWidth: "0px",
-        top: 0,
-        bottom: 0,
+        position: 'fixed',
+        height: '100%',
       }}
     >
       <Menu iconShape="square" menuItemStyles={menuItemStyles}>
@@ -137,9 +143,16 @@ export default function CustomSidebar() {
           {isCollapsed ? "Shiny" : "Shiny  Application"}
         </Typography>
         <Item
-          title="Shinies"
+          title="Shiny Pokémon"
           to="/shiny"
           icon={<AutoAwesomeOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Item
+          title="Shiny Data Table"
+          to="/shiny/table"
+          icon={<TableChartOutlinedIcon />}
           selected={selected}
           setSelected={setSelected}
         />
@@ -175,6 +188,27 @@ export default function CustomSidebar() {
           title="Add a Counter"
           to="/counters/create"
           icon={<LibraryAddOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Typography
+          variant="h6"
+          color={colors.grey[300]}
+          sx={{ m: "15px 0 5px 20px" }}
+        >
+          {isCollapsed ? "Stats" : "Statistics"}
+        </Typography>
+        <Item
+          title="Shiny Stats"
+          to="/stats"
+          icon={<AssessmentOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Item
+          title="Counter Stats"
+          to="/stats/counter"
+          icon={<AssessmentIcon />}
           selected={selected}
           setSelected={setSelected}
         />

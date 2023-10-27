@@ -1,21 +1,31 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // mui imports
 import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../theme";
 
-export default function GameCard({ id, gen, name, sprite }) {
+export default function GameCard({ id, gen, name, sprite, bgColor=400 }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
+  const [imageSrc, setImageSrc] = useState(null);
 
-  const imageUrl = `https://raw.githubusercontent.com/stelemme/database-pokemon/main/games-square/${sprite}.png`;
+  useEffect(() => {
+    import(`../assets/games/${sprite}.png`)
+      .then((module) => {
+        setImageSrc(module.default);
+      })
+      .catch((error) => {
+        console.error('Error loading image:', error);
+      });
+  }, [sprite]);
 
   return (
     <Box
       p="15px"
       width="100%"
-      backgroundColor={colors.primary[400]}
+      backgroundColor={colors.primary[bgColor]}
       borderRadius="5px"
       onClick={() => navigate(`/pokedex/regional/${id}`)}
       sx={{
@@ -36,7 +46,7 @@ export default function GameCard({ id, gen, name, sprite }) {
           <img
             width="100%"
             alt=""
-            src={imageUrl}
+            src={imageSrc}
           />
         </Box>
         {/* POKEDEX NO */}

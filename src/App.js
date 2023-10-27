@@ -1,4 +1,7 @@
 import { Routes, Route } from "react-router-dom"
+import { useRecoilValue } from "recoil";
+import { sidebarCollapse } from "./atoms";
+import { useState, useEffect } from "react";
 
 // mui imports
 import { ColorModeContext, useMode } from "./theme";
@@ -18,26 +21,55 @@ import PokédexRegional from "./scenes/pokedex/regional";
 import GameId from "./scenes/pokedex/gameId";
 import Shiny from "./scenes/shiny";
 import ShinyId from "./scenes/shiny/shinyId";
+import ShinyTable from "./scenes/shiny/table";
 import CreateShiny from "./scenes/shiny/create";
-import CreateFromCounter from "./scenes/shiny/counterId";
+import CreateFromCounter from "./scenes/shiny/createFromCounter";
 
 // Firebase imports
 import { useAuth } from "./hooks/useAuth";
 
 function App() {
-  const {login} = useAuth()
-  
+  const { login } = useAuth()
+  const toggle = useRecoilValue(sidebarCollapse)
+  const [collapse, setCollapse] = useState(false)
+
+  const width = collapse ? "calc(100vw - 10px)" : (toggle ? "calc(100vw - 100px)" : "calc(100vw - 260px)");
+  const left = collapse ? "0px" : (toggle ? "90px" : "250px");
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 900) {
+        setCollapse(true);
+      } else {
+        setCollapse(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   const ConditionalRender = () => {
     if (login) {
       return (
-        <div className="app">
+        <div style={{ display: 'flex' }}>
           <CustomSidebar />
-          <main className="content">
+          <main style={{
+            width: width,
+            position: "relative",
+            left: left,
+            height: "100%",
+          }}>
             <Topbar />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/auth" element={<Login />} />
               <Route path="/shiny" element={<Shiny />} />
+              <Route path="/shiny/table" element={<ShinyTable />} />
               <Route path="/shiny/:shinyId" element={<ShinyId />} />
               <Route path="/shiny/create" element={<CreateShiny />} />
               <Route path="/shiny/create/:counterId" element={<CreateFromCounter />} />
@@ -71,8 +103,8 @@ function App() {
   return (
     <ColorModeContext.Provider value={(colorMode)}>
       <ThemeProvider theme={theme}>
-      <CssBaseline />
-        <ConditionalRender/>
+        <CssBaseline />
+        <ConditionalRender />
       </ThemeProvider>
     </ColorModeContext.Provider>
   );
