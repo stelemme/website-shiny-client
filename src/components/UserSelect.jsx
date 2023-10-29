@@ -11,7 +11,7 @@ import {
 // Hooks
 import useAxios from "axios-hooks";
 
-export default function UserSelect({ label, handleChange, width=120, size="small" }) {
+export default function UserSelect({ label, handleChange, width=120, size="small", defaultValue }) {
   const [userList, setUserList] = useState(["All"]);
 
   const [{ data: userData, loading: userDataLoading }] = useAxios(
@@ -31,7 +31,7 @@ export default function UserSelect({ label, handleChange, width=120, size="small
         color="secondary"
         label={label}
         onChange={handleChange}
-        defaultValue={"All"}
+        value={defaultValue}
       >
         {userList.map((user, index) => (
           <MenuItem key={index} value={user}>

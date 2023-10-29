@@ -25,13 +25,23 @@ export default function Shiny() {
 
   const [shinies, setShinies] = useState(undefined);
 
+  const [trainerFilter, setTrainerFilter] = useState("All");
+
   const [{ data: userData, loading: userDataLoading }] = useAxios(
-    `/user?user=${username}&action=shiniesSort`
+    `/user?user=${username}&action=shinies`
   );
 
   const [{ data: shinyData, loading: shinyLoading }] = useAxios(
     `/shiny?preview=shiny&sort=${userData?.user.shiniesSort}`
   );
+
+  useEffect(() => {
+    if (!userDataLoading) {
+      setTrainerFilter(userData.user.shiniesFilter.trainer);
+    }
+  }, [userData, userDataLoading]);
+
+  console.log(trainerFilter);
 
   useEffect(() => {
     if (!shinyLoading) {
@@ -47,7 +57,12 @@ export default function Shiny() {
         </Typography>
       );
     } else {
-      return data?.map((item) => {
+      const filteredItems =
+        trainerFilter !== "All"
+          ? data?.filter((item) => item.trainer === trainerFilter)
+          : data;
+
+      return filteredItems?.map((item) => {
         return (
           <LazyLoad key={item._id} height={120}>
             <div style={{ marginBottom: "20px" }}>
@@ -75,15 +90,16 @@ export default function Shiny() {
             title="SHINY POKEMON"
             subtitle="Here you can find all shinies."
           />
-          <Box>
+          <Box style={{ display: 'flex', alignItems: 'center' }}>
             <IconButton onClick={(e) => setOpenFilter(true)}>
               <FilterAltOutlinedIcon />
             </IconButton>
             <FilterMenu
               open={openFilter}
               setOpen={setOpenFilter}
-              data={shinyData?.shiny}
-              setData={setShinies}
+              username={username}
+              trainerFilter={trainerFilter}
+              setTrainerFilter={setTrainerFilter}
             />
             <IconButton onClick={(e) => setAnchorElSort(e.currentTarget)}>
               <SortIcon style={{ transform: "scaleX(-1)" }} />

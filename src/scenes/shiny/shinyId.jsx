@@ -370,7 +370,7 @@ export default function ShinyId() {
                         width="50%"
                         style={{ imageRendering: "pixelated" }}
                         onError={(e) => {
-                          e.target.src = `https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-all-home/${item.sprite}.png`;
+                          e.target.src = `https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon/gen-all-home/${item.sprite}.png`;
                         }}
                       />
                     </Grid>
