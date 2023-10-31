@@ -53,7 +53,7 @@ export default function Pokédex() {
 
         {/* CARDS */}
         <Grid container spacing={"20px"}>
-          {pokedex?.data.pokedex.map((pokemon) => {
+          {pokedex?.data.map((pokemon) => {
             return (
               <Grid key={pokemon._id} item lg={3} md={4} sm={6} xs={6}>
                 <PokedexCard

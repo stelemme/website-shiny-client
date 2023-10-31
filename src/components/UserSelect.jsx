@@ -18,7 +18,7 @@ export default function UserSelect({ label, handleChange, width=120, size="small
 
   useEffect(() => {
     if (!userLoading) {
-      setUserList(["All", ...userData.data.userList]);
+      setUserList(["All", ...userData.data]);
     }
   }, [userData, userLoading]);
 

@@ -109,7 +109,7 @@ export default function Counter() {
       const fetchCounterData = async () => {
         try {
           const res = await axios.get(`/counters/${counterId}`);
-          setData(res.data.counter);
+          setData(res.data);
         } catch (error) {
           console.error(error);
         }
@@ -203,7 +203,7 @@ export default function Counter() {
 
     axios["patch"](`/counters/${counterId}?action=add`)
       .then((res) => {
-        setData(res.data.counter);
+        setData(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -223,7 +223,7 @@ export default function Counter() {
     });
     axios["patch"](`/counters/${counterId}?action=undo`)
       .then((res) => {
-        setData(res.data.counter);
+        setData(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -328,7 +328,7 @@ export default function Counter() {
 
     axios["patch"](`/counters/${counterId}?action=addSearchLevel`)
       .then((res) => {
-        setData(res.data.counter);
+        setData(res.data);
       })
       .catch((err) => {
         console.log(err);

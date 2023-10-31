@@ -124,7 +124,7 @@ export default function Counters() {
         <Grid container spacing={"20px"} mb={"20px"}>
           <CountersDisplay
             data={sortData(
-              ongoingCountersData?.data.counters,
+              ongoingCountersData?.data,
               ongoingCounterSort
             )}
             loading={ongoingCountersLoading}
@@ -166,7 +166,7 @@ export default function Counters() {
         <Grid container spacing={"20px"}>
           <CountersDisplay
             data={sortData(
-              completedCountersData?.data.shiny,
+              completedCountersData?.data,
               completedCounterSort
             )}
             loading={completedCountersLoading}

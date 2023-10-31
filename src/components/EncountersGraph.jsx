@@ -78,7 +78,7 @@ export default function EncountersGraph() {
         height={window.innerWidth < 500 ? 300 : 400}
       >
         <ComposedChart
-          data={shinyData?.data.result}
+          data={shinyData?.data}
           margin={{
             top: 0,
             right: 0,

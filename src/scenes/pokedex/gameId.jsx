@@ -58,8 +58,8 @@ export default function GameId() {
         <Box display="flex" justifyContent="space-between" alignItems="center">
           {game ? (
             <Header
-              title={`${game.data.game.name.toUpperCase()} POKEDEX`}
-              subtitle={`Welcome to the ${game.data.game.name} Regional Pokédex!`}
+              title={`${game.data.name.toUpperCase()} POKEDEX`}
+              subtitle={`Welcome to the ${game.data.name} Regional Pokédex!`}
             />
           ) : (
             <Header />
@@ -68,8 +68,8 @@ export default function GameId() {
 
         {/* CARDS */}
         <Grid container spacing={"20px"}>
-          {pokedex?.data.pokedex.length > 0 ? (
-            pokedex?.data.pokedex.map((pokemon) => {
+          {pokedex?.data.length > 0 ? (
+            pokedex?.data.map((pokemon) => {
               return (
                 <Grid key={pokemon._id} item lg={3} md={4} sm={6} xs={6}>
                     <PokedexCard
@@ -77,7 +77,7 @@ export default function GameId() {
                       name={pokemon.name}
                       pokedexNo={pokemon.pokedexNo}
                       sprite={pokemon.sprite}
-                      dir={game.data.game.dir}
+                      dir={game.data.dir}
                     />
                 </Grid>
               );

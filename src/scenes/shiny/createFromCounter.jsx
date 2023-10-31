@@ -88,19 +88,19 @@ export default function CreateFromCounter() {
     const fetchCounterData = async () => {
       try {
         const res = await axios.get(`/counters/${counterId}`);
-        res.data.counter.startDate = new Date(res.data.counter.startDate);
-        res.data.counter.endDate = new Date(res.data.counter.endDate);
+        res.data.startDate = new Date(res.data.startDate);
+        res.data.endDate = new Date(res.data.endDate);
 
         setData((prevState) => {
           return {
             ...prevState,
-            ...res.data.counter,
+            ...res.data,
           };
         });
 
-        axios["get"](`/pokedex?name=${res.data.counter.name}`)
+        axios["get"](`/pokedex?name=${res.data.name}`)
           .then((res) => {
-            if (res.data.pokedex[0].gender === "100:0") {
+            if (res.data[0].gender === "100:0") {
               setData((prevState) => {
                 return {
                   ...prevState,
@@ -109,7 +109,7 @@ export default function CreateFromCounter() {
                   },
                 };
               });
-            } else if (res.data.pokedex[0].gender === "0:100") {
+            } else if (res.data[0].gender === "0:100") {
               setData((prevState) => {
                 return {
                   ...prevState,
@@ -118,7 +118,7 @@ export default function CreateFromCounter() {
                   },
                 };
               });
-            } else if (res.data.pokedex[0].gender === "Genderless") {
+            } else if (res.data[0].gender === "Genderless") {
               setData((prevState) => {
                 return {
                   ...prevState,
@@ -143,11 +143,11 @@ export default function CreateFromCounter() {
             console.log(err);
           });
 
-        axios["get"](`/game?name=${res.data.counter.game}`)
+        axios["get"](`/game?name=${res.data.game}`)
           .then((res) => {
-            setPokemonsList(res.data.game[0].pokemons);
-            setLocationsList(res.data.game[0].locations);
-            setBallList(res.data.game[0].balls);
+            setPokemonsList(res.data[0].pokemons);
+            setLocationsList(res.data[0].locations);
+            setBallList(res.data[0].balls);
           })
           .catch((err) => {
             console.log(err);
@@ -330,7 +330,7 @@ export default function CreateFromCounter() {
               if (reason === "selectOption") {
                 axios["get"](`/pokedex?name=${value}`)
                   .then((res) => {
-                    if (res.data.pokedex[0].gender === "100:0") {
+                    if (res.data[0].gender === "100:0") {
                       setData((prevState) => {
                         return {
                           ...prevState,
@@ -339,7 +339,7 @@ export default function CreateFromCounter() {
                           },
                         };
                       });
-                    } else if (res.data.pokedex[0].gender === "0:100") {
+                    } else if (res.data[0].gender === "0:100") {
                       setData((prevState) => {
                         return {
                           ...prevState,
@@ -348,7 +348,7 @@ export default function CreateFromCounter() {
                           },
                         };
                       });
-                    } else if (res.data.pokedex[0].gender === "Genderless") {
+                    } else if (res.data[0].gender === "Genderless") {
                       setGenderCheck(false);
                       setData((prevState) => {
                         return {
@@ -374,11 +374,11 @@ export default function CreateFromCounter() {
                         ...prevState,
                         ...{
                           name: value,
-                          pokedexNo: res.data.pokedex[0].pokedexNo,
-                          types: res.data.pokedex[0].types,
+                          pokedexNo: res.data[0].pokedexNo,
+                          types: res.data[0].types,
                           sprite: {
                             ...prevState.sprite,
-                            pokemon: res.data.pokedex[0].sprite,
+                            pokemon: res.data[0].sprite,
                           },
                         },
                       };

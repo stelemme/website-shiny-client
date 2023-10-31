@@ -112,7 +112,7 @@ export default function CreateShiny() {
     if (gameId) {
       axios["get"](`/game/${gameId}?action=pokemons`)
         .then((res) => {
-          setPokemonsList(res.data.game.pokemons);
+          setPokemonsList(res.data.pokemons);
         })
         .catch((err) => {
           console.log(err);
@@ -126,7 +126,7 @@ export default function CreateShiny() {
         .post(`/shiny`, data)
         .then((res) => {
           console.log(res.data);
-          navigate(`/shiny/${res.data.shiny._id}`);
+          navigate(`/shiny/${res.data._id}`);
         })
         .catch((err) => {
           console.log(err);
@@ -284,7 +284,7 @@ export default function CreateShiny() {
                 if (JSON.parse(value)) {
                   axios["get"](`shiny?group=true`)
                     .then((res) => {
-                      setGroupList(["New Group", ...res.data.groups]);
+                      setGroupList(["New Group", ...res.data]);
                       setData((prevState) => {
                         return {
                           ...prevState,
@@ -862,7 +862,7 @@ export default function CreateShiny() {
               }
             }}
             sx={{ mb: "20px" }}
-            options={games ? games.data.game : []}
+            options={games ? games.data : []}
             getOptionLabel={(option) => option.name}
             renderInput={(params) => (
               <TextField required color="secondary" {...params} label="Game" />
@@ -890,7 +890,7 @@ export default function CreateShiny() {
               if (reason === "selectOption") {
                 axios["get"](`/pokedex?name=${value}`)
                   .then((res) => {
-                    if (res.data.pokedex[0].gender === "100:0") {
+                    if (res.data[0].gender === "100:0") {
                       setData((prevState) => {
                         return {
                           ...prevState,
@@ -899,7 +899,7 @@ export default function CreateShiny() {
                           },
                         };
                       });
-                    } else if (res.data.pokedex[0].gender === "0:100") {
+                    } else if (res.data[0].gender === "0:100") {
                       setData((prevState) => {
                         return {
                           ...prevState,
@@ -908,7 +908,7 @@ export default function CreateShiny() {
                           },
                         };
                       });
-                    } else if (res.data.pokedex[0].gender === "Genderless") {
+                    } else if (res.data[0].gender === "Genderless") {
                       setGenderCheck(false);
                       setData((prevState) => {
                         return {
@@ -934,11 +934,11 @@ export default function CreateShiny() {
                         ...prevState,
                         ...{
                           name: value,
-                          pokedexNo: res.data.pokedex[0].pokedexNo,
-                          types: res.data.pokedex[0].types,
+                          pokedexNo: res.data[0].pokedexNo,
+                          types: res.data[0].types,
                           sprite: {
                             ...prevState.sprite,
-                            pokemon: res.data.pokedex[0].sprite,
+                            pokemon: res.data[0].sprite,
                           },
                         },
                       };

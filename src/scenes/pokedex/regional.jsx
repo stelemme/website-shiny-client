@@ -55,8 +55,8 @@ export default function PokedexRegional() {
 
         {/* CARDS */}
         <Grid container spacing={"20px"}>
-          {games?.data.game.length > 0 ? (
-            games?.data.game.map((game) => {
+          {games?.data.length > 0 ? (
+            games?.data.map((game) => {
               return (
                 <Grid key={game._id} item lg={3} md={4} sm={6} xs={6}>
                   <GameCard

@@ -342,7 +342,7 @@ export default function ShinyTable() {
             subtitle="Here you can find all shinies."
           />
         </Box>
-        <ShinyDisplay data={shinyData?.data.shiny} loading={shinyLoading} />
+        <ShinyDisplay data={shinyData?.data} loading={shinyLoading} />
       </Box>
     </Box>
   );

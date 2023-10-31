@@ -94,7 +94,7 @@ export default function Shiny() {
 
         {/* CARDS */}
         <ShinyDisplay
-          data={sortData(shinyData?.data.shiny, shinySort)}
+          data={sortData(shinyData?.data, shinySort)}
           loading={shinyLoading}
         />
       </Box>
