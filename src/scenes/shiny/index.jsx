@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import LazyLoad from "react-lazy-load";
+import Cookies from "js-cookie";
 
 // Mui
 import { Box, Typography, IconButton } from "@mui/material";
@@ -12,42 +13,25 @@ import ShinyCard from "../../components/ShinyCard";
 import SortMenu from "../../components/SortMenu";
 import FilterMenu from "../../components/FilterMenu";
 
+// Functions
+import sortData from "../../functions/sortData";
+
 // Hooks
-import { useAuth } from "../../hooks/useAuth";
-import useAxios from "axios-hooks";
+import { useShiny } from "../../hooks/useData";
 
 export default function Shiny() {
-  const { username } = useAuth();
   const [anchorElSort, setAnchorElSort] = useState(null);
   const openSort = Boolean(anchorElSort);
-
   const [openFilter, setOpenFilter] = useState(false);
 
-  const [shinies, setShinies] = useState(undefined);
+  const shinySort = Cookies.get("shinySort")
+    ? Cookies.get("shinySort")
+    : "newest";
+  const shinyTrainerFilter = Cookies.get("shinyTrainerFilter")
+    ? Cookies.get("shinyTrainerFilter")
+    : "All";
 
-  const [trainerFilter, setTrainerFilter] = useState("All");
-
-  const [{ data: userData, loading: userDataLoading }] = useAxios(
-    `/user?user=${username}&action=shinies`
-  );
-
-  const [{ data: shinyData, loading: shinyLoading }] = useAxios(
-    `/shiny?preview=shiny&sort=${userData?.user.shiniesSort}`
-  );
-
-  useEffect(() => {
-    if (!userDataLoading) {
-      setTrainerFilter(userData.user.shiniesFilter.trainer);
-    }
-  }, [userData, userDataLoading]);
-
-  console.log(trainerFilter);
-
-  useEffect(() => {
-    if (!shinyLoading) {
-      setShinies(shinyData.shiny);
-    }
-  }, [shinyData, shinyLoading]);
+  const { isLoading: shinyLoading, data: shinyData } = useShiny("?preview=shiny");
 
   const ShinyDisplay = ({ data, loading }) => {
     if (loading) {
@@ -58,8 +42,8 @@ export default function Shiny() {
       );
     } else {
       const filteredItems =
-        trainerFilter !== "All"
-          ? data?.filter((item) => item.trainer === trainerFilter)
+        shinyTrainerFilter !== "All"
+          ? data?.filter((item) => item.trainer === shinyTrainerFilter)
           : data;
 
       return filteredItems?.map((item) => {
@@ -90,17 +74,11 @@ export default function Shiny() {
             title="SHINY POKEMON"
             subtitle="Here you can find all shinies."
           />
-          <Box style={{ display: 'flex', alignItems: 'center' }}>
+          <Box style={{ display: "flex", alignItems: "center" }}>
             <IconButton onClick={(e) => setOpenFilter(true)}>
               <FilterAltOutlinedIcon />
             </IconButton>
-            <FilterMenu
-              open={openFilter}
-              setOpen={setOpenFilter}
-              username={username}
-              trainerFilter={trainerFilter}
-              setTrainerFilter={setTrainerFilter}
-            />
+            <FilterMenu open={openFilter} setOpen={setOpenFilter} cookie={"shinyTrainerFilter"}/>
             <IconButton onClick={(e) => setAnchorElSort(e.currentTarget)}>
               <SortIcon style={{ transform: "scaleX(-1)" }} />
             </IconButton>
@@ -108,10 +86,7 @@ export default function Shiny() {
               open={openSort}
               anchorEl={anchorElSort}
               setAnchorEl={setAnchorElSort}
-              data={shinies}
-              setData={setShinies}
-              username={username}
-              sortKey="shiniesSort"
+              cookie={"shinySort"}
               options={["game", "pokedexNo", "date"]}
             />
           </Box>
@@ -119,8 +94,8 @@ export default function Shiny() {
 
         {/* CARDS */}
         <ShinyDisplay
-          data={shinies}
-          loading={shinyLoading || userDataLoading}
+          data={sortData(shinyData?.data.shiny, shinySort)}
+          loading={shinyLoading}
         />
       </Box>
     </Box>

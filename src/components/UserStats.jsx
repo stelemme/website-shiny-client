@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState } from "react";
 
 // mui imports
 import {
@@ -19,45 +18,24 @@ import UserSelect from "./UserSelect";
 import { formatTime } from "../functions/statFunctions";
 
 // Hooks
-import useAxios from "axios-hooks";
+import { useShiny } from "../hooks/useData";
 
 export default function UserStats() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [userStats, setUserStats] = useState(null);
-  const [userStatsLoading, setUserStatsLoading] = useState(true);
+  const [query, setQuery] = useState("");
+  const [trainer, setTrainer] = useState("All");
 
-  const [{ data: userStatsData, loading: userStatsDataLoading }] = useAxios(
-    `/shiny?action=userStats&amount=1`
-  );
-
-  useEffect(() => {
-    if (!userStatsDataLoading) {
-      setUserStats(userStatsData);
-      setUserStatsLoading(false)
-    }
-  }, [userStatsData, userStatsDataLoading]);
+  const { isLoading: userStatsLoading, data: userStatsData } = useShiny(`?action=userStats&amount=1${query}`);
+  const userStats = userStatsData?.data
 
   const handleChange = (e) => {
-    setUserStatsLoading(true)
     if (e.target.value === "All") {
-      setUserStats(userStatsData);
-      setUserStatsLoading(false)
+      setQuery("");
+      setTrainer("All")
     } else {
-      let config = {
-        method: 'get',
-        maxBodyLength: Infinity,
-        url: `/shiny?action=userStats&amount=1&trainer=${e.target.value}`,
-      };
-      
-      axios.request(config)
-      .then((response) => {
-        setUserStats(response.data);
-      setUserStatsLoading(false)
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      setQuery(`&trainer=${e.target.value}`);
+      setTrainer(e.target.value)
     }
   };
 
@@ -109,44 +87,44 @@ export default function UserStats() {
         <Typography variant="h4" fontWeight={"bold"}>
           USER STATISTICS
         </Typography>
-          <UserSelect label={"User"} handleChange={handleChange}/>
+          <UserSelect label={"User"} handleChange={handleChange} defaultValue={trainer}/>
       </Box>
       <Grid container spacing={"12px"}>
         <StatsDisplay
           data={userStats?.first[0]}
           dataStat={new Date(userStats?.first[0].endDate).toLocaleDateString()}
           statName={"First Shiny Caught"}
-          loading={userStatsLoading || userStatsDataLoading}
+          loading={userStatsLoading}
         />
         <StatsDisplay
           data={userStats?.lowestEncounters[0]}
           dataStat={userStats?.lowestEncounters[0].totalEncounters}
           statName={"Lowest Amount of Encounters"}
-          loading={userStatsLoading || userStatsDataLoading}
+          loading={userStatsLoading}
         />
         <StatsDisplay
           data={userStats?.mostEncounters[0]}
           dataStat={userStats?.mostEncounters[0].totalEncounters}
           statName={"Highest Amount of Encounters"}
-          loading={userStatsLoading || userStatsDataLoading}
+          loading={userStatsLoading}
         />
         <StatsDisplay
           data={userStats?.shortestHunt[0]}
           dataStat={formatTime(userStats?.shortestHunt[0].stats.totalHuntTime, false)}
           statName={"Shortest Hunt"}
-          loading={userStatsLoading || userStatsDataLoading}
+          loading={userStatsLoading}
         />
         <StatsDisplay
           data={userStats?.longestHunt[0]}
           dataStat={formatTime(userStats?.longestHunt[0].stats.totalHuntTime, false)}
           statName={"Longest Hunt"}
-          loading={userStatsLoading || userStatsDataLoading}
+          loading={userStatsLoading}
         />
         <StatsDisplay
           data={userStats?.mostDays[0]}
           dataStat={`${userStats?.mostDays[0].stats.daysHunting} days`}
           statName={"Most Days Hunted"}
-          loading={userStatsLoading || userStatsDataLoading}
+          loading={userStatsLoading}
         />
       </Grid>
     </Box>

@@ -1,4 +1,4 @@
-import axios from "axios";
+import Cookies from "js-cookie"
 
 // Mui
 import { Box, Dialog, DialogTitle, DialogContent } from "@mui/material";
@@ -6,25 +6,11 @@ import { Box, Dialog, DialogTitle, DialogContent } from "@mui/material";
 // Components imports
 import UserSelect from "./UserSelect";
 
-export default function SortMenu({ open, setOpen, username, trainerFilter, setTrainerFilter }) {
+export default function SortMenu({ open, setOpen, cookie }) {
+  const shinyTrainerFilter = Cookies.get(cookie) ? Cookies.get(cookie) : "All"
+
   const handleTrainerChange = (e) => {
-    setTrainerFilter(e.target.value)
-
-    let config = {
-      method: 'patch',
-      maxBodyLength: Infinity,
-      url: `/user?user=${username}&shiniesFilterTrainer=${e.target.value}`,
-      headers: { }
-    };
-    
-    axios.request(config)
-    .then((response) => {
-      console.log(response.data);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-
+    Cookies.set(cookie, e.target.value)
     setOpen(false)
   };
 
@@ -33,7 +19,7 @@ export default function SortMenu({ open, setOpen, username, trainerFilter, setTr
       <DialogTitle variant="h4">Filter Menu</DialogTitle>
       <DialogContent>
         <Box mt="5px">
-          <UserSelect size="normal" label="User" handleChange={handleTrainerChange} width={180} defaultValue={trainerFilter}/>
+          <UserSelect size="normal" label="User" handleChange={handleTrainerChange} width={180} defaultValue={shinyTrainerFilter}/>
         </Box>
       </DialogContent>
     </Dialog>

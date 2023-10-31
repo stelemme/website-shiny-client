@@ -1,12 +1,7 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState } from "react";
 
 // mui imports
-import {
-  Box,
-  useTheme,
-  Typography,
-} from "@mui/material";
+import { Box, useTheme, Typography } from "@mui/material";
 import { tokens } from "../theme";
 
 // Recharts
@@ -25,55 +20,37 @@ import {
 import UserSelect from "./UserSelect";
 
 // Hooks
-import useAxios from "axios-hooks";
+import { useShiny } from "../hooks/useData";
 
 export default function EncountersGraph() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [userStats, setUserStats] = useState(null);
   const [ticks, setTicks] = useState([0, 5, 10, 15, 20, 25, 30, 35, 40]);
   const [graphColor, setGraphColor] = useState(colors.purpleAccent[500]);
+  const [query, setQuery] = useState("");
+  const [trainer, setTrainer] = useState("All");
 
-  const [{ data: userStatsData, loading: userStatsDataLoading }] = useAxios(
-    `/shiny?encountersList=true`
-  );
-
-  useEffect(() => {
-    if (!userStatsDataLoading) {
-      setUserStats(userStatsData);
-    }
-  }, [userStatsData, userStatsDataLoading]);
+  const { data: shinyData } = useShiny(`?encountersList=true${query}`);
 
   const handleChange = (e) => {
     if (e.target.value === "All") {
-      setUserStats(userStatsData);
+      setQuery("");
       setTicks([0, 5, 10, 15, 20, 25, 30, 35, 40]);
       setGraphColor(colors.purpleAccent[500]);
+      setTrainer("All")
     } else {
-      let config = {
-        method: "get",
-        maxBodyLength: Infinity,
-        url: `/shiny?encountersList=true&trainer=${e.target.value}`,
-      };
-
-      axios
-        .request(config)
-        .then((response) => {
-          setTicks([0, 5, 10, 15, 20]);
-          setUserStats(response.data);
-          if (e.target.value === "Joaquin") {
-            setGraphColor(colors.redAccent[500]);
-          } else if (e.target.value === "Korneel") {
-            setGraphColor(colors.yellowAccent[500]);
-          } else if (e.target.value === "Simon") {
-            setGraphColor(colors.greenAccent[500]);
-          } else if (e.target.value === "Stef") {
-            setGraphColor(colors.blueAccent[500]);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      setTicks([0, 5, 10, 15, 20]);
+      setQuery(`&trainer=${e.target.value}`);
+      setTrainer(e.target.value)
+      if (e.target.value === "Joaquin") {
+        setGraphColor(colors.redAccent[500]);
+      } else if (e.target.value === "Korneel") {
+        setGraphColor(colors.yellowAccent[500]);
+      } else if (e.target.value === "Simon") {
+        setGraphColor(colors.greenAccent[500]);
+      } else if (e.target.value === "Stef") {
+        setGraphColor(colors.blueAccent[500]);
+      }
     }
   };
 
@@ -94,14 +71,14 @@ export default function EncountersGraph() {
         <Typography variant="h4" fontWeight={"bold"}>
           ENCOUNTERS GRAPH
         </Typography>
-        <UserSelect label={"User"} handleChange={handleChange}/>
+        <UserSelect label={"User"} handleChange={handleChange} defaultValue={trainer} />
       </Box>
       <ResponsiveContainer
         width="100%"
         height={window.innerWidth < 500 ? 300 : 400}
       >
         <ComposedChart
-          data={userStats?.result}
+          data={shinyData?.data.result}
           margin={{
             top: 0,
             right: 0,

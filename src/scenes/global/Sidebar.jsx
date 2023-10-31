@@ -11,7 +11,6 @@ import { tokens } from "../../theme";
 import { Box, Typography, useTheme, IconButton } from "@mui/material";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import CalculateOutlinedIcon from "@mui/icons-material/CalculateOutlined";
-import CalculateIcon from "@mui/icons-material/Calculate";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import LibraryAddOutlinedIcon from "@mui/icons-material/LibraryAddOutlined";
 import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone";
@@ -55,7 +54,6 @@ export default function CustomSidebar() {
     shiny: "Shiny Pokémon",
     table: "Shiny Data Table",
     counters: "Your Counters",
-    all: "All Counters",
     create: "Add a Counter",
     stats: "Shiny Stats",
     counter: "Counter Stats",
@@ -171,16 +169,9 @@ export default function CustomSidebar() {
           {isCollapsed ? "Counter" : "Counter  Application"}
         </Typography>
         <Item
-          title="Your Counters"
+          title="Counters"
           to="/counters"
           icon={<CalculateOutlinedIcon />}
-          selected={selected}
-          setSelected={setSelected}
-        />
-        <Item
-          title="All Counters"
-          to="/counters/all"
-          icon={<CalculateIcon />}
           selected={selected}
           setSelected={setSelected}
         />

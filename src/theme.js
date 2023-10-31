@@ -1,10 +1,6 @@
-import { createContext, useState, useMemo, useEffect } from "react";
+import { createContext, useState, useMemo } from "react";
 import { createTheme } from "@mui/material/styles"
-import axios from "axios";
-
-// Hooks
-import { useAuth } from "./hooks/useAuth";
-import useAxios from "axios-hooks";
+import Cookies from "js-cookie"
 
 // color design tokens
 export const tokens = (mode) => ({
@@ -248,45 +244,19 @@ export const ColorModeContext = createContext({
 });
 
 export const useMode = () => {
-  const { username } = useAuth();
+  const [mode, setMode] = useState(Cookies.get("theme") ? Cookies.get("theme") : "dark");
 
-  const [
-    {
-      data: user,
-    }
-  ] = useAxios(`/user?user=${username}&action=colorMode`);
-
-  const [mode, setMode] = useState("dark");
-
-  useEffect(() => {
-    if (user?.user) {
-      setMode(user.user.colorMode);
-    }
-  }, [user]);
-
-  const toggleColorMode = () => {
-    setMode((prev) => (prev === "light" ? "dark" : "light"));
-
-    axios
-      .patch(`/user?user=${username}&action=colorMode`)
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const colorMode = useMemo(() => {
-    if (username) {
-      return {
-        toggleColorMode: toggleColorMode,
-      };
-    }
-    return {
-      toggleColorMode: () =>
+  const colorMode = useMemo(
+    () => ({
+      toggleColorMode: () => {
         setMode((prev) => (prev === "light" ? "dark" : "light"))
-    }
-  }, [username]);
+        const themeCookie = Cookies.get("theme")
+        Cookies.set("theme", themeCookie === "light" ? "dark" : "light")
+      },
+    }),
+    []
+  );
 
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
-
   return [theme, colorMode];
 };

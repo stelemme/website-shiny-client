@@ -1,6 +1,3 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-
 // mui imports
 import { Box, Grid, useTheme, Typography, Skeleton } from "@mui/material";
 import { tokens } from "../../theme";
@@ -14,53 +11,20 @@ import EncountersGraph from "../../components/EncountersGraph";
 
 // Hooks
 import { useAuth } from "../../hooks/useAuth";
-import useAxios from "axios-hooks";
+import { useCounter, useShiny } from "../../hooks/useData";
 
 export default function Home() {
   const { username } = useAuth();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [generalLatestCounter, setGeneralLatestCounter] = useState(undefined)
-  const [generalLatestCounterLoading, setGeneralLatestCounterLoading] = useState(true)
-  const [generalLatestShiny, setGeneralLatestShiny] = useState(undefined)
-  const [generalLatestShinyLoading, setGeneralLatestShinyLoading] = useState(true)
 
-  const [{ data: userData, loading: userDataLoading }] = useAxios(
-    `/user?user=${username}&userList=true`
+  const { isLoading: latestCounterLoading, data: latestCounter } = useCounter(
+    `?trainers=true&preview=true&amount=1&sort=newest`
   );
 
-  const [{ data: latestCounter, loading: latestCounterLoading }] = useAxios(
-    `/counters?trainer=${username}&preview=true&action=latest&amount=1`
+  const { isLoading: latestShinyLoading, data: latestShiny } = useShiny(
+    `?trainers=true&preview=true&amount=1&sort=newest`
   );
-
-  const [{ data: latestShiny, loading: latestShinyLoading }] = useAxios(
-    `/shiny?trainer=${username}&preview=true&action=latest&amount=1`
-  );
-
-  useEffect(() => {
-    if (!userDataLoading) {
-      const filteredUserList = userData.userList.filter((item) => item !== username);
-
-      axios.get(`/counters?trainers=${filteredUserList[0]},${filteredUserList[1]},${filteredUserList[2]}&preview=true&amount=1`)
-        .then(response => {
-          setGeneralLatestCounter(response.data)
-          setGeneralLatestCounterLoading(false)
-        })
-        .catch(error => {
-          console.log(error)
-        });
-      axios.get(`/shiny?trainers=${filteredUserList[0]},${filteredUserList[1]},${filteredUserList[2]}&preview=true&amount=1`)
-        .then(response => {
-          setGeneralLatestShiny(response.data)
-          setGeneralLatestShinyLoading(false)
-        })
-        .catch(error => {
-          console.log(error)
-        });
-    }
-  }, [userData, userDataLoading, username]);
-
-
 
   const CountersDisplay = ({ data, loading, loadingArray = [1] }) => {
     if (loading) {
@@ -153,7 +117,9 @@ export default function Home() {
               </Typography>
               <Grid container spacing={"15px"}>
                 <CountersDisplay
-                  data={latestCounter?.counters}
+                  data={latestCounter?.data.filter(
+                    (item) => item.trainer === username
+                  )}
                   loading={latestCounterLoading}
                 />
               </Grid>
@@ -167,8 +133,10 @@ export default function Home() {
               </Typography>
               <Grid container spacing={"15px"}>
                 <CountersDisplay
-                  data={generalLatestCounter?.counters}
-                  loading={generalLatestCounterLoading}
+                  data={latestCounter?.data.filter(
+                    (item) => item.trainer !== username
+                  )}
+                  loading={latestCounterLoading}
                   loadingArray={[1, 2, 3]}
                 />
               </Grid>
@@ -190,7 +158,9 @@ export default function Home() {
               </Typography>
               <Grid container spacing={"15px"}>
                 <ShinyDisplay
-                  data={latestShiny?.shinies}
+                  data={latestShiny?.data.filter(
+                    (item) => item.trainer === username
+                  )}
                   loading={latestShinyLoading}
                 />
               </Grid>
@@ -204,8 +174,10 @@ export default function Home() {
               </Typography>
               <Grid container spacing={"15px"}>
                 <ShinyDisplay
-                  data={generalLatestShiny?.shinies}
-                  loading={generalLatestShinyLoading}
+                  data={latestShiny?.data.filter(
+                    (item) => item.trainer !== username
+                  )}
+                  loading={latestShinyLoading}
                   loadingArray={[1, 2, 3]}
                 />
               </Grid>

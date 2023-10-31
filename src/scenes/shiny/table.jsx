@@ -12,7 +12,7 @@ import Header from "../../components/Header";
 import { formatTime, formatSeconds } from "../../functions/statFunctions";
 
 // Hooks
-import useAxios from "axios-hooks";
+import { useShiny } from "../../hooks/useData";
 
 const columns = [
   {
@@ -228,8 +228,7 @@ export default function ShinyTable() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const [{ data: shinyData, loading: shinyLoading }] =
-    useAxios(`/shiny?sort=newest`);
+  const { isLoading: shinyLoading, data: shinyData } = useShiny("?sort=newest");
 
   const ShinyDisplay = ({ data, loading }) => {
     if (loading) {
@@ -343,7 +342,7 @@ export default function ShinyTable() {
             subtitle="Here you can find all shinies."
           />
         </Box>
-        <ShinyDisplay data={shinyData?.shiny} loading={shinyLoading} />
+        <ShinyDisplay data={shinyData?.data.shiny} loading={shinyLoading} />
       </Box>
     </Box>
   );

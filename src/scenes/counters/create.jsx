@@ -21,18 +21,14 @@ import {
 import Header from "../../components/Header";
 
 // Hooks
-import useAxios from "../../hooks/useAxios";
 import { useAuth } from "../../hooks/useAuth";
-
-axios.defaults.baseURL = process.env.REACT_APP_PUBLIC_BACKEND;
+import { useGame } from "../../hooks/useData";
 
 export default function CreateCounters() {
   const { username } = useAuth();
   const navigate = useNavigate();
-  const { response: games } = useAxios({
-    method: "get",
-    url: `/game?action=form`,
-  });
+
+  const { data: games } = useGame("?action=form");
 
   const initialState = {
     trainer: username,
@@ -142,7 +138,7 @@ export default function CreateCounters() {
               }
             }}
             sx={{ mb: "20px" }}
-            options={games ? games.game : []}
+            options={games ? games.data.game : []}
             getOptionLabel={(option) => option.name}
             renderInput={(params) => (
               <TextField required color="secondary" {...params} label="Game" />

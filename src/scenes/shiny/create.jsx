@@ -30,10 +30,8 @@ import {
 import methodHunts from "../../functions/methodHunts";
 
 // Hooks
-import useAxios from "../../hooks/useAxios";
 import { useAuth } from "../../hooks/useAuth";
-
-axios.defaults.baseURL = process.env.REACT_APP_PUBLIC_BACKEND;
+import { useGame } from "../../hooks/useData";
 
 const natures = [
   "Adamant",
@@ -66,10 +64,8 @@ const natures = [
 export default function CreateShiny() {
   const { username } = useAuth();
   const navigate = useNavigate();
-  const { response: games } = useAxios({
-    method: "get",
-    url: `/game?action=form`,
-  });
+
+  const { data: games } = useGame("?action=form");
 
   let initialState = {
     trainer: username,
@@ -866,7 +862,7 @@ export default function CreateShiny() {
               }
             }}
             sx={{ mb: "20px" }}
-            options={games ? games.game : []}
+            options={games ? games.data.game : []}
             getOptionLabel={(option) => option.name}
             renderInput={(params) => (
               <TextField required color="secondary" {...params} label="Game" />

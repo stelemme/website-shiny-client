@@ -6,17 +6,19 @@ import Header from "../../components/Header";
 import PokedexCard from "../../components/PokedexCard";
 
 // Hooks
-import useAxios from "axios-hooks";
+import { usePokedex } from "../../hooks/useData";
 
 export default function Pokédex() {
-  const [{ data: pokedex, loading: pokedexLoading }] =
-    useAxios(`/pokedex?action=forms`);
+  const { isLoading: pokedexLoading, data: pokedex } =
+    usePokedex(`?action=forms`);
 
   if (pokedexLoading) {
     return (
-      <Box maxWidth={{ lg: "840px", md: "630px", sm: "420px", xs: "310px" }}
-      mx="auto"
-      my="20px">
+      <Box
+        maxWidth={{ lg: "840px", md: "630px", sm: "420px", xs: "310px" }}
+        mx="auto"
+        my="20px"
+      >
         <Box display="flex" flexDirection="column" mx="20px">
           {/* HEADER */}
           <Box
@@ -29,10 +31,7 @@ export default function Pokédex() {
               subtitle="Welcome to the national Pokédex!"
             />
           </Box>
-          <Typography
-            variant="h5"
-            style={{ marginBottom: "20px" }}
-          >
+          <Typography variant="h5" style={{ marginBottom: "20px" }}>
             Loading ...
           </Typography>
         </Box>
@@ -54,7 +53,7 @@ export default function Pokédex() {
 
         {/* CARDS */}
         <Grid container spacing={"20px"}>
-          {pokedex?.pokedex.map((pokemon) => {
+          {pokedex?.data.pokedex.map((pokemon) => {
             return (
               <Grid key={pokemon._id} item lg={3} md={4} sm={6} xs={6}>
                 <PokedexCard

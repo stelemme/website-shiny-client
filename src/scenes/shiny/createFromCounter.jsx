@@ -28,8 +28,6 @@ import {
   calculateDateDifference,
 } from "../../functions/statFunctions";
 
-axios.defaults.baseURL = process.env.REACT_APP_PUBLIC_BACKEND;
-
 const natures = [
   "Adamant",
   "Bashful",

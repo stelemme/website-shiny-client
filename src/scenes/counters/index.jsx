@@ -1,55 +1,50 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import Cookies from "js-cookie";
 
 // Mui
 import { Box, Grid, Typography, IconButton } from "@mui/material";
 import SortIcon from "@mui/icons-material/Sort";
+import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 
 // Components
 import Header from "../../components/Header";
 import CounterCard from "../../components/CounterCard";
 import SortMenu from "../../components/SortMenu";
+import FilterMenu from "../../components/FilterMenu";
+
+// Functions
+import sortData from "../../functions/sortData";
 
 // Hooks
-import { useAuth } from "../../hooks/useAuth";
-import useAxios from "axios-hooks";
+import { useCounter, useShiny } from "../../hooks/useData";
 
 export default function Counters() {
-  const { username } = useAuth();
   const [anchorElOngoing, setAnchorElOngoing] = useState(null);
-  const openFilterOngoing = Boolean(anchorElOngoing);
+  const openSortOngoing = Boolean(anchorElOngoing);
   const [anchorElCompleted, setAnchorElCompleted] = useState(null);
-  const openFilterCompleted = Boolean(anchorElCompleted);
+  const openSortCompleted = Boolean(anchorElCompleted);
+  const [openFilterOngoing, setOpenFilterOngoing] = useState(false);
+  const [openFilterCompleted, setOpenFilterCompleted] = useState(false);
 
-  const [ongoingCounters, setOngoingCounters] = useState();
-  const [completedCounters, setCompletedCounters] = useState();
+  const ongoingCounterSort = Cookies.get("ongoingCounterSort")
+    ? Cookies.get("ongoingCounterSort")
+    : "newest";
+  const completedCounterSort = Cookies.get("completedCounterSort")
+    ? Cookies.get("completedCounterSort")
+    : "newest";
+  const ongoingTrainerFilter = Cookies.get("ongoingTrainerFilter")
+    ? Cookies.get("ongoingTrainerFilter")
+    : "All";
+  const completedTrainerFilter = Cookies.get("completedTrainerFilter")
+    ? Cookies.get("completedTrainerFilter")
+    : "All";
 
-  const [{ data: userData, loading: userDataLoading }] = useAxios(
-    `/user?user=${username}&action=counterSort`
-  );
+  const { isLoading: ongoingCountersLoading, data: ongoingCountersData } =
+    useCounter("?preview=true");
+  const { isLoading: completedCountersLoading, data: completedCountersData } =
+    useShiny("?preview=counter&action=counters");
 
-  const [{ data: ongoingCountersData, loading: ongoingCountersLoading }] =
-    useAxios(
-      `/counters?trainer=${username}&preview=true&sort=${userData?.user.ongoingCounterSort}`
-    );
-
-  const [{ data: completedCountersData, loading: completedCountersLoading }] =
-    useAxios(
-      `/shiny?trainer=${username}&preview=counter&sort=${userData?.user.completedCounterSort}&action=counters`
-    );
-
-  useEffect(() => {
-    if (!ongoingCountersLoading) {
-      setOngoingCounters(ongoingCountersData.counters);
-    }
-  }, [ongoingCountersData, ongoingCountersLoading]);
-
-  useEffect(() => {
-    if (!completedCountersLoading) {
-      setCompletedCounters(completedCountersData.shiny);
-    }
-  }, [completedCountersData, completedCountersLoading]);
-
-  const CountersDisplay = ({ data, loading, isCompleted }) => {
+  const CountersDisplay = ({ data, loading, isCompleted, filter }) => {
     if (loading) {
       return (
         <Grid item xs={12}>
@@ -57,7 +52,12 @@ export default function Counters() {
         </Grid>
       );
     } else {
-      return data?.map((item) => {
+      const filteredItems =
+        filter !== "All"
+          ? data?.filter((item) => item.trainer === filter)
+          : data;
+
+      return filteredItems?.map((item) => {
         return (
           <Grid item lg={6} xs={12} key={item._id}>
             <CounterCard
@@ -65,6 +65,7 @@ export default function Counters() {
               name={item.name}
               gameSprite={item.sprite.game}
               count={item.totalEncounters}
+              trainer={item.trainer}
               query={isCompleted ? "?completed=true" : ""}
             />
           </Grid>
@@ -83,8 +84,8 @@ export default function Counters() {
         {/* HEADER */}
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Header
-            title="YOUR COUNTERS"
-            subtitle="Here you can find all counters owned by you."
+            title="ALL COUNTERS"
+            subtitle="Here you can find all counters."
           />
         </Box>
 
@@ -99,25 +100,36 @@ export default function Counters() {
           <Typography variant="h4" fontWeight={"bold"}>
             ONGOING COUNTERS
           </Typography>
-          <IconButton onClick={(e) => setAnchorElOngoing(e.currentTarget)}>
-            <SortIcon style={{ transform: "scaleX(-1)" }} />
-          </IconButton>
-          <SortMenu
-            open={openFilterOngoing}
-            anchorEl={anchorElOngoing}
-            setAnchorEl={setAnchorElOngoing}
-            data={ongoingCounters}
-            setData={setOngoingCounters}
-            username={username}
-            sortKey="ongoingCounterSort"
-            options={["game", "pokedexNo", "date", "encounters"]}
-          />
+          <Box style={{ display: "flex", alignItems: "center" }}>
+            <IconButton onClick={(e) => setOpenFilterOngoing(true)}>
+              <FilterAltOutlinedIcon />
+            </IconButton>
+            <FilterMenu
+              open={openFilterOngoing}
+              setOpen={setOpenFilterOngoing}
+              cookie={"ongoingTrainerFilter"}
+            />
+            <IconButton onClick={(e) => setAnchorElOngoing(e.currentTarget)}>
+              <SortIcon style={{ transform: "scaleX(-1)" }} />
+            </IconButton>
+            <SortMenu
+              open={openSortOngoing}
+              anchorEl={anchorElOngoing}
+              setAnchorEl={setAnchorElOngoing}
+              cookie={"ongoingCounterSort"}
+              options={["game", "pokedexNo", "date", "encounters"]}
+            />
+          </Box>
         </Box>
-        <Grid container spacing={"20px"}>
+        <Grid container spacing={"20px"} mb={"20px"}>
           <CountersDisplay
-            data={ongoingCounters}
-            loading={ongoingCountersLoading || userDataLoading}
+            data={sortData(
+              ongoingCountersData?.data.counters,
+              ongoingCounterSort
+            )}
+            loading={ongoingCountersLoading}
             isCompleted={false}
+            filter={ongoingTrainerFilter}
           />
         </Grid>
         {/* COMPLETED CARDS */}
@@ -126,30 +138,40 @@ export default function Counters() {
           justifyContent="space-between"
           alignItems="center"
           mb="10px"
-          mt="20px"
         >
           <Typography variant="h4" fontWeight={"bold"}>
             COMPLETED COUNTERS
           </Typography>
-          <IconButton onClick={(e) => setAnchorElCompleted(e.currentTarget)}>
-            <SortIcon style={{ transform: "scaleX(-1)" }} />
-          </IconButton>
-          <SortMenu
-            open={openFilterCompleted}
-            anchorEl={anchorElCompleted}
-            setAnchorEl={setAnchorElCompleted}
-            data={completedCounters}
-            setData={setCompletedCounters}
-            username={username}
-            sortKey="completedCounterSort"
-            options={["game", "pokedexNo", "date", "encounters"]}
-          />
+          <Box style={{ display: "flex", alignItems: "center" }}>
+            <IconButton onClick={(e) => setOpenFilterCompleted(true)}>
+              <FilterAltOutlinedIcon />
+            </IconButton>
+            <FilterMenu
+              open={openFilterCompleted}
+              setOpen={setOpenFilterCompleted}
+              cookie={"completedTrainerFilter"}
+            />
+            <IconButton onClick={(e) => setAnchorElCompleted(e.currentTarget)}>
+              <SortIcon style={{ transform: "scaleX(-1)" }} />
+            </IconButton>
+            <SortMenu
+              open={openSortCompleted}
+              anchorEl={anchorElCompleted}
+              setAnchorEl={setAnchorElCompleted}
+              cookie={"completedCounterSort"}
+              options={["game", "pokedexNo", "date", "encounters"]}
+            />
+          </Box>
         </Box>
         <Grid container spacing={"20px"}>
           <CountersDisplay
-            data={completedCounters}
-            loading={completedCountersLoading || userDataLoading}
+            data={sortData(
+              completedCountersData?.data.shiny,
+              completedCounterSort
+            )}
+            loading={completedCountersLoading}
             isCompleted={true}
+            filter={completedTrainerFilter}
           />
         </Grid>
       </Box>

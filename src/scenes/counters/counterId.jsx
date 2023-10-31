@@ -52,8 +52,6 @@ import {
 // Hooks
 import { useAuth } from "../../hooks/useAuth";
 
-axios.defaults.baseURL = process.env.REACT_APP_PUBLIC_BACKEND;
-
 export default function Counter() {
   const { counterId } = useParams();
   const [searchParams] = useSearchParams();

@@ -1,7 +1,13 @@
-import { Routes, Route } from "react-router-dom"
+import { Outlet, createBrowserRouter, RouterProvider, ScrollRestoration, redirect } from "react-router-dom"
 import { useRecoilValue } from "recoil";
 import { sidebarCollapse } from "./atoms";
 import { useState, useEffect } from "react";
+import { QueryClientProvider, QueryClient } from "react-query"
+import axios from "axios"
+
+// Firebase imports
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from "./utils/firebase";
 
 // mui imports
 import { ColorModeContext, useMode } from "./theme";
@@ -13,7 +19,6 @@ import Home from "./scenes/home"
 import Login from "./scenes/login"
 import CustomSidebar from "./scenes/global/Sidebar";
 import Counters from "./scenes/counters";
-import CountersAll from "./scenes/counters/all";
 import Counter from "./scenes/counters/counterId";
 import CreateCounters from "./scenes/counters/create";
 import Pokédex from "./scenes/pokedex";
@@ -24,12 +29,83 @@ import ShinyId from "./scenes/shiny/shinyId";
 import ShinyTable from "./scenes/shiny/table";
 import CreateShiny from "./scenes/shiny/create";
 import CreateFromCounter from "./scenes/shiny/createFromCounter";
+import ErrorPage from "./scenes/global/ErrorPage";
 
-// Firebase imports
-import { useAuth } from "./hooks/useAuth";
+axios.defaults.baseURL = process.env.REACT_APP_PUBLIC_BACKEND;
 
-function App() {
-  const { login } = useAuth()
+const getUser = async () => {
+  return new Promise((resolve) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      unsubscribe();
+
+      if (user) {
+        resolve(user);
+      } else {
+        resolve(null);
+      }
+    });
+  });
+};
+
+const loader = async () => {
+  const user = await getUser();
+
+  if (!user) {
+    return redirect("/auth");
+  }
+  return null;
+};
+
+const router = createBrowserRouter([
+  {
+    element: <Layout />,
+    children: [
+      { path: "/auth", Component: Login },
+      { path: "/", Component: Home, loader: loader, },
+      {
+        path: "/shiny",
+        loader: loader,
+        children: [
+          { index: true, Component: Shiny },
+          { path: "table", Component: ShinyTable },
+          { path: "create", Component: CreateShiny },
+          { path: ":shinyId", Component: ShinyId },
+          { path: "create/:counterId", Component: CreateFromCounter },
+        ]
+      },
+      {
+        path: "/counters",
+        loader: loader,
+        children: [
+          { index: true, Component: Counters },
+          { path: "create", Component: CreateCounters },
+          { path: ":counterId", Component: Counter },
+        ]
+      },
+      {
+        path: "/pokedex",
+        loader: loader,
+        children: [
+          { index: true, Component: Pokédex },
+          { path: "regional", Component: PokédexRegional },
+          { path: "regional/:gameId", Component: GameId },
+        ]
+      },
+      { path: "*", Component: ErrorPage },
+    ]
+  },
+
+])
+
+export default function App() {
+  return <RouterProvider router={router} />
+}
+
+function Layout() {
+  const [theme, colorMode] = useMode()
+
+  const queryClient = new QueryClient()
+
   const toggle = useRecoilValue(sidebarCollapse)
   const [collapse, setCollapse] = useState(false)
 
@@ -53,61 +129,26 @@ function App() {
     };
   }, []);
 
-  const ConditionalRender = () => {
-    if (login) {
-      return (
-        <div style={{ display: 'flex' }}>
-          <CustomSidebar />
-          <main style={{
-            width: width,
-            position: "relative",
-            left: left,
-            height: "100%",
-          }}>
-            <Topbar />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/auth" element={<Login />} />
-              <Route path="/shiny" element={<Shiny />} />
-              <Route path="/shiny/table" element={<ShinyTable />} />
-              <Route path="/shiny/:shinyId" element={<ShinyId />} />
-              <Route path="/shiny/create" element={<CreateShiny />} />
-              <Route path="/shiny/create/:counterId" element={<CreateFromCounter />} />
-              <Route path="/counters" element={<Counters />} />
-              <Route path="/counters/all" element={<CountersAll />} />
-              <Route path="/counters/create" element={<CreateCounters />} />
-              <Route path="/counters/:counterId" element={<Counter />} />
-              <Route path="/pokedex" element={<Pokédex />} />
-              <Route path="/pokedex/regional" element={<PokédexRegional />} />
-              <Route path="/pokedex/regional/:gameId" element={<GameId />} />
-            </Routes>
-          </main>
-        </div>
-      )
-    } else {
-      return (
-        <div className="app">
-          <main className="content">
-            <Topbar />
-            <Routes>
-              <Route path="/" element={<Login />} />
-              <Route path="/auth" element={<Login />} />
-            </Routes>
-          </main>
-        </div>
-      )
-    }
-  }
-
-  const [theme, colorMode] = useMode()
   return (
     <ColorModeContext.Provider value={(colorMode)}>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <ConditionalRender />
+        <QueryClientProvider client={queryClient}>
+          <CssBaseline />
+          <div style={{ display: 'flex' }}>
+            <CustomSidebar />
+            <main style={{
+              width: width,
+              position: "relative",
+              left: left,
+              height: "100%",
+            }}>
+              <Topbar />
+              <ScrollRestoration />
+              <Outlet />
+            </main>
+          </div>
+        </QueryClientProvider>
       </ThemeProvider>
     </ColorModeContext.Provider>
-  );
+  )
 }
-
-export default App;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -31,7 +31,7 @@ import { formatTime } from "../../functions/statFunctions";
 
 // Hooks
 import { useAuth } from "../../hooks/useAuth";
-import useAxios from "axios-hooks";
+import { useShinyId } from "../../hooks/useData";
 
 export default function ShinyId() {
   const { shinyId } = useParams();
@@ -43,22 +43,12 @@ export default function ShinyId() {
   const [evolutionsEdit, setEvolutionsEdit] = useState([]);
   const [forms, setForms] = useState(undefined);
   const [formsEdit, setFormsEdit] = useState([]);
-  const [data, setData] = useState(undefined);
 
   const [openDelete, setOpenDelete] = useState(false);
   const [openEvolutionEdit, setOpenEvolutionEdit] = useState(false);
 
-  const [{ data: shinyData }] = useAxios(
-    `/shiny/${shinyId}?action=noEncounters`
-  );
-
-  console.log(shinyData);
-
-  useEffect(() => {
-    if (shinyData) {
-      setData(shinyData.shiny);
-    }
-  }, [shinyData]);
+  const { data: shiny } = useShinyId(shinyId);
+  const data = shiny?.data.shiny
 
   /* DELETE THE SHINY */
   const handleDeleteClick = () => {
@@ -91,7 +81,7 @@ export default function ShinyId() {
     axios
       .request(config)
       .then((res) => {
-        setData(res.data.shiny);
+        console.log(res.data.shiny);
       })
       .catch((error) => {
         console.log(error);

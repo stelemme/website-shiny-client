@@ -9,20 +9,18 @@ import {
 } from "@mui/material";
 
 // Hooks
-import useAxios from "axios-hooks";
+import { useUser } from "../hooks/useData";
 
-export default function UserSelect({ label, handleChange, width=120, size="small", defaultValue }) {
+export default function UserSelect({ label, handleChange, width=120, size="small", defaultValue="All" }) {
   const [userList, setUserList] = useState(["All"]);
 
-  const [{ data: userData, loading: userDataLoading }] = useAxios(
-    `/user?&userList=true`
-  );
+  const { isLoading: userLoading, data: userData } = useUser("?&userList=true");
 
   useEffect(() => {
-    if (!userDataLoading) {
-      setUserList(["All", ...userData.userList]);
+    if (!userLoading) {
+      setUserList(["All", ...userData.data.userList]);
     }
-  }, [userData, userDataLoading]);
+  }, [userData, userLoading]);
 
   return (
     <FormControl size={size} style={{ minWidth: width }} color="secondary">

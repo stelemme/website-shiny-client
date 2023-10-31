@@ -8,16 +8,16 @@ import Header from "../../components/Header";
 import PokedexCard from "../../components/PokedexCard";
 
 //Hooks
-import useAxios from "axios-hooks";
+import { usePokedex, useGame } from "../../hooks/useData";
 
 export default function GameId() {
   const { gameId } = useParams();
 
-  const [{ data: pokedex, loading: pokedexLoading, error: pokedexError }] =
-    useAxios(`/pokedex?game=${gameId}`);
+  const { isLoading: pokedexLoading, data: pokedex } =
+    usePokedex(`?game=${gameId}`, gameId);
 
-  const [{ data: game, loading: gameLoading, error: gameError }] =
-    useAxios(`/game/${gameId}?action=dir`);
+  const { isLoading: gameLoading, data: game } =
+    useGame(`/${gameId}?action=dir`, gameId);
 
     if (pokedexLoading || gameLoading) {
       return (
@@ -58,8 +58,8 @@ export default function GameId() {
         <Box display="flex" justifyContent="space-between" alignItems="center">
           {game ? (
             <Header
-              title={`${game.game.name.toUpperCase()} POKEDEX`}
-              subtitle={`Welcome to the ${game.game.name} Regional Pokédex!`}
+              title={`${game.data.game.name.toUpperCase()} POKEDEX`}
+              subtitle={`Welcome to the ${game.data.game.name} Regional Pokédex!`}
             />
           ) : (
             <Header />
@@ -68,8 +68,8 @@ export default function GameId() {
 
         {/* CARDS */}
         <Grid container spacing={"20px"}>
-          {pokedex?.pokedex.length > 0 ? (
-            pokedex?.pokedex.map((pokemon) => {
+          {pokedex?.data.pokedex.length > 0 ? (
+            pokedex?.data.pokedex.map((pokemon) => {
               return (
                 <Grid key={pokemon._id} item lg={3} md={4} sm={6} xs={6}>
                     <PokedexCard
@@ -77,7 +77,7 @@ export default function GameId() {
                       name={pokemon.name}
                       pokedexNo={pokemon.pokedexNo}
                       sprite={pokemon.sprite}
-                      dir={game.game.dir}
+                      dir={game.data.game.dir}
                     />
                 </Grid>
               );

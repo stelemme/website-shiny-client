@@ -1,4 +1,4 @@
-import axios from "axios";
+import Cookies from "js-cookie"
 
 // Mui
 import {
@@ -12,38 +12,11 @@ import {
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
-function sortByKeys(array, sortKeys) {
-  return array.sort(function (a, b) {
-    for (let i = 0; i < sortKeys.length; i++) {
-      const key = sortKeys[i].key;
-      const desc = sortKeys[i].desc;
-
-      var x = a[key];
-      var y = b[key];
-
-      if (typeof x == "string") {
-        x = ("" + x).toLowerCase();
-      }
-      if (typeof y == "string") {
-        y = ("" + y).toLowerCase();
-      }
-
-      if (x < y) return -desc;
-      if (x > y) return desc;
-    }
-
-    return 0;
-  });
-}
-
 export default function SortMenu({
   open,
   anchorEl,
   setAnchorEl,
-  data,
-  setData,
-  username,
-  sortKey,
+  cookie,
   options,
 }) {
   const handleClose = () => {
@@ -51,55 +24,7 @@ export default function SortMenu({
   };
 
   const handleClick = (sortType) => () => {
-    handleSortClose(sortType, data, setData, username, sortKey);
-  };
-
-  const handleSortClose = (sortString, data, setData, username, sortKey) => {
-    if (typeof sortString === "string") {
-      let sortedData = [];
-      switch (sortString) {
-        case "gameAsc":
-          sortedData = sortByKeys(data, [
-            { key: "gameSort", desc: 1 },
-            { key: "pokedexNo", desc: 1 },
-          ]);
-          break;
-        case "gameDesc":
-          sortedData = sortByKeys(data, [
-            { key: "gameSort", desc: -1 },
-            { key: "pokedexNo", desc: 1 },
-          ]);
-          break;
-        case "pokedexNoAsc":
-          sortedData = sortByKeys(data, [{ key: "pokedexNo", desc: 1 }]);
-          break;
-        case "pokedexNoDesc":
-          sortedData = sortByKeys(data, [{ key: "pokedexNo", desc: -1 }]);
-          break;
-        case "newest":
-          sortedData = sortByKeys(data, [{ key: "endDate", desc: -1 }]);
-          break;
-        case "oldest":
-          sortedData = sortByKeys(data, [{ key: "endDate", desc: 1 }]);
-          break;
-        case "encAsc":
-          sortedData = sortByKeys(data, [{ key: "totalEncounters", desc: -1 }]);
-          break;
-        case "encDesc":
-          sortedData = sortByKeys(data, [{ key: "totalEncounters", desc: 1 }]);
-          break;
-        default:
-          console.log("failed");
-      }
-      setData(sortedData);
-
-      axios
-        .patch(`/user?user=${username}&${sortKey}=${sortString}`)
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-
+    Cookies.set(cookie, sortType)
     setAnchorEl(null);
   };
 
