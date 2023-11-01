@@ -1,5 +1,4 @@
 import { useState } from "react";
-import LazyLoad from "react-lazy-load";
 import Cookies from "js-cookie";
 
 // Mui
@@ -30,8 +29,12 @@ export default function Shiny() {
   const shinyTrainerFilter = Cookies.get("shinyTrainerFilter")
     ? Cookies.get("shinyTrainerFilter")
     : "All";
+  const shinyGenFilter = Cookies.get("shinyGenFilter")
+    ? Cookies.get("shinyGenFilter")
+    : "All";
 
-  const { isLoading: shinyLoading, data: shinyData } = useShiny("?preview=shiny");
+  const { isLoading: shinyLoading, data: shinyData } =
+    useShiny("?preview=shiny");
 
   const ShinyDisplay = ({ data, loading }) => {
     if (loading) {
@@ -41,15 +44,14 @@ export default function Shiny() {
         </Typography>
       );
     } else {
-      const filteredItems =
-        shinyTrainerFilter !== "All"
-          ? data?.filter((item) => item.trainer === shinyTrainerFilter)
-          : data;
-
-      return filteredItems?.map((item) => {
-        return (
-          <LazyLoad key={item._id} height={120}>
-            <div style={{ marginBottom: "20px" }}>
+      return data?.reduce(function (filtered, item) {
+        if (
+          (shinyTrainerFilter === "All" ||
+            item.trainer === shinyTrainerFilter) &&
+          (shinyGenFilter === "All" || item.gen === shinyGenFilter)
+        ) {
+          filtered.push(
+            <div style={{ marginBottom: "20px" }} key={item._id}>
               <ShinyCard
                 id={item._id}
                 name={item.name}
@@ -59,9 +61,10 @@ export default function Shiny() {
                 trainer={item.trainer}
               />
             </div>
-          </LazyLoad>
-        );
-      });
+          );
+        }
+        return filtered;
+      }, []);
     }
   };
 
@@ -78,7 +81,13 @@ export default function Shiny() {
             <IconButton onClick={(e) => setOpenFilter(true)}>
               <FilterAltOutlinedIcon />
             </IconButton>
-            <FilterMenu open={openFilter} setOpen={setOpenFilter} cookie={"shinyTrainerFilter"}/>
+            <FilterMenu
+              open={openFilter}
+              setOpen={setOpenFilter}
+              cookieTrainer={"shinyTrainerFilter"}
+              cookieGen={"shinyGenFilter"}
+              options={["trainer", "gen"]}
+            />
             <IconButton onClick={(e) => setAnchorElSort(e.currentTarget)}>
               <SortIcon style={{ transform: "scaleX(-1)" }} />
             </IconButton>

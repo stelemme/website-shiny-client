@@ -107,7 +107,8 @@ export default function Counters() {
             <FilterMenu
               open={openFilterOngoing}
               setOpen={setOpenFilterOngoing}
-              cookie={"ongoingTrainerFilter"}
+              cookieTrainer={"ongoingTrainerFilter"}
+              options={["trainer"]}
             />
             <IconButton onClick={(e) => setAnchorElOngoing(e.currentTarget)}>
               <SortIcon style={{ transform: "scaleX(-1)" }} />
@@ -149,7 +150,8 @@ export default function Counters() {
             <FilterMenu
               open={openFilterCompleted}
               setOpen={setOpenFilterCompleted}
-              cookie={"completedTrainerFilter"}
+              cookieTrainer={"completedTrainerFilter"}
+              options={["trainer"]}
             />
             <IconButton onClick={(e) => setAnchorElCompleted(e.currentTarget)}>
               <SortIcon style={{ transform: "scaleX(-1)" }} />

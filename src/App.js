@@ -27,8 +27,10 @@ import GameId from "./scenes/pokedex/gameId";
 import Shiny from "./scenes/shiny";
 import ShinyId from "./scenes/shiny/shinyId";
 import ShinyTable from "./scenes/shiny/table";
+import ShinyChecklist from "./scenes/shiny/checklist";
 import CreateShiny from "./scenes/shiny/create";
 import CreateFromCounter from "./scenes/shiny/createFromCounter";
+import ShinyStats from "./scenes/stats";
 import ErrorPage from "./scenes/global/ErrorPage";
 
 axios.defaults.baseURL = process.env.REACT_APP_PUBLIC_BACKEND;
@@ -67,10 +69,11 @@ const router = createBrowserRouter([
         loader: loader,
         children: [
           { index: true, Component: Shiny },
+          { path: ":shinyId", Component: ShinyId },
           { path: "table", Component: ShinyTable },
           { path: "create", Component: CreateShiny },
-          { path: ":shinyId", Component: ShinyId },
           { path: "create/:counterId", Component: CreateFromCounter },
+          { path: "checklist", Component: ShinyChecklist },
         ]
       },
       {
@@ -89,6 +92,13 @@ const router = createBrowserRouter([
           { index: true, Component: Pokédex },
           { path: "regional", Component: PokédexRegional },
           { path: "regional/:gameId", Component: GameId },
+        ]
+      },
+      {
+        path: "/stats",
+        loader: loader,
+        children: [
+          { index: true, Component: ShinyStats },
         ]
       },
       { path: "*", Component: ErrorPage },

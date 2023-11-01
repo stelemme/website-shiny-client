@@ -47,7 +47,7 @@ export default function ShinyId() {
   const [openDelete, setOpenDelete] = useState(false);
   const [openEvolutionEdit, setOpenEvolutionEdit] = useState(false);
 
-  const { data: shiny } = useShinyId(shinyId);
+  const { data: shiny, refetch } = useShinyId(shinyId);
   const data = shiny?.data
 
   /* DELETE THE SHINY */
@@ -81,7 +81,7 @@ export default function ShinyId() {
     axios
       .request(config)
       .then((res) => {
-        console.log(res.data);
+        refetch()
       })
       .catch((error) => {
         console.log(error);

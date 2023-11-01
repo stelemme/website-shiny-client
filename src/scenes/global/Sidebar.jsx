@@ -18,6 +18,7 @@ import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import TableChartOutlinedIcon from '@mui/icons-material/TableChartOutlined';
 import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
 import AssessmentIcon from '@mui/icons-material/Assessment';
+import FactCheckOutlinedIcon from '@mui/icons-material/FactCheckOutlined';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -53,6 +54,7 @@ export default function CustomSidebar() {
     "": "Home",
     shiny: "Shiny Pokémon",
     table: "Shiny Data Table",
+    checklist: "Shiny Checklist",
     counters: "Your Counters",
     create: "Add a Counter",
     stats: "Shiny Stats",
@@ -151,6 +153,13 @@ export default function CustomSidebar() {
           title="Shiny Data Table"
           to="/shiny/table"
           icon={<TableChartOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Item
+          title="Shiny Checklist"
+          to="/shiny/checklist"
+          icon={<FactCheckOutlinedIcon />}
           selected={selected}
           setSelected={setSelected}
         />

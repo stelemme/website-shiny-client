@@ -132,3 +132,14 @@ export function formatEncounterData(encounterArray) {
 
   return formattedData;
 }
+
+export function calculateOverlapPercentage(arr1, arr2) {
+  if (!arr1 || !arr2 ) {
+    return 0;
+  }
+
+  const commonElements = arr2.filter(element => arr1.includes(element));
+  const percentage = (commonElements.length / arr2.length) * 100;
+
+  return percentage;
+}

@@ -1,20 +1,21 @@
 import { useState, useEffect } from "react";
 
 // mui imports
-import {
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-} from "@mui/material";
+import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 
 // Hooks
 import { useUser } from "../hooks/useData";
 
-export default function UserSelect({ label, handleChange, width=120, size="small", defaultValue="All" }) {
+export default function UserSelect({
+  label,
+  handleChange,
+  width = 120,
+  size = "small",
+  defaultValue = "All",
+}) {
   const [userList, setUserList] = useState(["All"]);
 
-  const { isLoading: userLoading, data: userData } = useUser("?&userList=true");
+  const { isLoading: userLoading, data: userData } = useUser("?userList=true");
 
   useEffect(() => {
     if (!userLoading) {
