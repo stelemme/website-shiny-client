@@ -54,6 +54,7 @@ const natures = [
   "Sassy",
   "Serious",
   "Timid",
+  "-"
 ];
 
 export default function CreateFromCounter() {

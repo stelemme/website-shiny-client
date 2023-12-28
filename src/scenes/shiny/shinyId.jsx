@@ -48,7 +48,7 @@ export default function ShinyId() {
   const [openEvolutionEdit, setOpenEvolutionEdit] = useState(false);
 
   const { data: shiny, refetch } = useShinyId(shinyId);
-  const data = shiny?.data
+  const data = shiny?.data;
 
   /* DELETE THE SHINY */
   const handleDeleteClick = () => {
@@ -81,13 +81,15 @@ export default function ShinyId() {
     axios
       .request(config)
       .then((res) => {
-        refetch()
+        refetch();
       })
       .catch((error) => {
         console.log(error);
       });
 
     setOpenEvolutionEdit(false);
+    setEvolutionsEdit([])
+    setFormsEdit([])
   };
 
   const InfoDisplay = ({ infoCat, infoName, xs1 = 5.5, xs2 = 6.5 }) => {
@@ -167,6 +169,64 @@ export default function ShinyId() {
             </Typography>
             {username === data.trainer && (
               <Box ml="10px" display="flex">
+                <IconButton
+                  size="small"
+                  onClick={() => {
+                    axios["get"](
+                      `/pokedex?name=${data.name}&evolutions=true&game=${data.game}`
+                    ).then((res) => {
+                      setEvolutions(res.data.evolutions);
+                      setForms(res.data.forms);
+                    });
+                    setOpenEvolutionEdit(true);
+                  }}
+                >
+                  <EditRoundedIcon />
+                </IconButton>
+                <Dialog
+                  open={openEvolutionEdit}
+                  onClose={() => setOpenEvolutionEdit(false)}
+                >
+                  <DialogTitle fontWeight={"bold"} variant="h4">
+                    Edit Evolutions & Forms
+                  </DialogTitle>
+                  <DialogContent>
+                    <CheckboxDisplay
+                      data={evolutions}
+                      name={"Evolutions"}
+                      state={evolutionsEdit}
+                      setState={setEvolutionsEdit}
+                    />
+                    <CheckboxDisplay
+                      data={forms}
+                      name={"Forms"}
+                      state={formsEdit}
+                      setState={setFormsEdit}
+                    />
+                  </DialogContent>
+                  <DialogActions
+                    style={{ justifyContent: "right", gap: "10px" }}
+                    sx={{ mb: "15px", mr: "15px" }}
+                  >
+                    <Button
+                      variant="contained"
+                      color="neutral"
+                      style={{ color: "white" }}
+                      onClick={() => setOpenEvolutionEdit(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="neutral"
+                      style={{ color: "white" }}
+                      onClick={handleEvolutionsEdit}
+                      autoFocus
+                    >
+                      Edit
+                    </Button>
+                  </DialogActions>
+                </Dialog>
                 <IconButton onClick={() => setOpenDelete(true)}>
                   <DeleteRoundedIcon />
                 </IconButton>
@@ -237,135 +297,95 @@ export default function ShinyId() {
                 />
               </Box>
             </Grid>
-            <Grid item xs={12}>
-              <Divider />
-            </Grid>
-            <Grid item xs={12}>
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                height="21px"
-              >
-                <Typography variant="h5" fontWeight={"bold"}>
-                  EVOLUTIONS & FORMS
-                </Typography>
-                {username === data.trainer && (
-                  <IconButton
-                    size="small"
-                    onClick={() => {
-                      axios["get"](
-                        `/pokedex?name=${data.name}&evolutions=true&game=${data.game}`
-                      ).then((res) => {
-                        setEvolutions(res.data.evolutions);
-                        setForms(res.data.forms);
-                      });
-                      setOpenEvolutionEdit(true);
-                    }}
-                  >
-                    <EditRoundedIcon />
-                  </IconButton>
-                )}
-                <Dialog
-                  open={openEvolutionEdit}
-                  onClose={() => setOpenEvolutionEdit(false)}
-                >
-                  <DialogTitle fontWeight={"bold"} variant="h4">
-                    Edit Evolutions & Forms
-                  </DialogTitle>
-                  <DialogContent>
-                    <CheckboxDisplay
-                      data={evolutions}
-                      name={"Evolutions"}
-                      state={evolutionsEdit}
-                      setState={setEvolutionsEdit}
-                    />
-                    <CheckboxDisplay
-                      data={forms}
-                      name={"Forms"}
-                      state={formsEdit}
-                      setState={setFormsEdit}
-                    />
-                  </DialogContent>
-                  <DialogActions
-                    style={{ justifyContent: "right", gap: "10px" }}
-                    sx={{ mb: "15px", mr: "15px" }}
-                  >
-                    <Button
-                      variant="contained"
-                      color="neutral"
-                      style={{ color: "white" }}
-                      onClick={() => setOpenEvolutionEdit(false)}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="neutral"
-                      style={{ color: "white" }}
-                      onClick={handleEvolutionsEdit}
-                      autoFocus
-                    >
-                      Edit
-                    </Button>
-                  </DialogActions>
-                </Dialog>
-              </Box>
-            </Grid>
+
             {data.evolutions.length > 0 && (
-              <Grid item xs={12} container>
-                {data.evolutions.map((item) => {
-                  return (
-                    <Grid item xs={6} key={item._id}>
-                      <img
-                        alt=""
-                        src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/${data.sprite.dir}/${item.sprite}.png`}
-                        width="50%"
-                        style={{ imageRendering: "pixelated" }}
-                        onError={(e) => {
-                          e.target.src = `https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-all-home/${item.sprite}.png`;
-                        }}
-                      />
-                      <img
-                        alt=""
-                        src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon/${data.sprite.dir}/${item.sprite}.png`}
-                        width="50%"
-                        style={{ imageRendering: "pixelated" }}
-                        onError={(e) => {
-                          e.target.src = `https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon/gen-all-home/${item.sprite}.png`;
-                        }}
-                      />
-                    </Grid>
-                  );
-                })}
+              <Grid item xs={12} container >
+                <Grid item xs={12} mb="20px">
+                  <Divider />
+                </Grid>
+                <Grid item xs={12}>
+                  <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    height="21px"
+                  >
+                    <Typography variant="h5" fontWeight={"bold"}>
+                      EVOLUTIONS
+                    </Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={12} container>
+                  {data.evolutions.map((item) => {
+                    return (
+                      <Grid item xs={6} key={item._id}>
+                        <img
+                          alt=""
+                          src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/${data.sprite.dir}/${item.sprite}.png`}
+                          width="50%"
+                          style={{ imageRendering: "pixelated" }}
+                          onError={(e) => {
+                            e.target.src = `https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-all-home/${item.sprite}.png`;
+                          }}
+                        />
+                        <img
+                          alt=""
+                          src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon/${data.sprite.dir}/${item.sprite}.png`}
+                          width="50%"
+                          style={{ imageRendering: "pixelated" }}
+                          onError={(e) => {
+                            e.target.src = `https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon/gen-all-home/${item.sprite}.png`;
+                          }}
+                        />
+                      </Grid>
+                    );
+                  })}
+                </Grid>
               </Grid>
             )}
             {data.forms.length > 0 && (
               <Grid item xs={12} container>
-                {data.forms.map((item) => {
-                  return (
-                    <Grid item xs={6} key={item._id}>
-                      <img
-                        alt=""
-                        src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/${data.sprite.dir}/${item.sprite}.png`}
-                        width="50%"
-                        style={{ imageRendering: "pixelated" }}
-                        onError={(e) => {
-                          e.target.src = `https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-all-home/${item.sprite}.png`;
-                        }}
-                      />
-                      <img
-                        alt=""
-                        src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon/${data.sprite.dir}/${item.sprite}.png`}
-                        width="50%"
-                        style={{ imageRendering: "pixelated" }}
-                        onError={(e) => {
-                          e.target.src = `https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon/gen-all-home/${item.sprite}.png`;
-                        }}
-                      />
-                    </Grid>
-                  );
-                })}
+                <Grid item xs={12} mb="20px">
+                  <Divider />
+                </Grid>
+                <Grid item xs={12}>
+                  <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    height="21px"
+                  >
+                    <Typography variant="h5" fontWeight={"bold"}>
+                      FORMS
+                    </Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={12} container>
+                  {data.forms.map((item) => {
+                    return (
+                      <Grid item xs={6} key={item._id}>
+                        <img
+                          alt=""
+                          src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/${data.sprite.dir}/${item.sprite}.png`}
+                          width="50%"
+                          style={{ imageRendering: "pixelated" }}
+                          onError={(e) => {
+                            e.target.src = `https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-all-home/${item.sprite}.png`;
+                          }}
+                        />
+                        <img
+                          alt=""
+                          src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon/${data.sprite.dir}/${item.sprite}.png`}
+                          width="50%"
+                          style={{ imageRendering: "pixelated" }}
+                          onError={(e) => {
+                            e.target.src = `https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon/gen-all-home/${item.sprite}.png`;
+                          }}
+                        />
+                      </Grid>
+                    );
+                  })}
+                </Grid>
               </Grid>
             )}
             <Grid item xs={12}>

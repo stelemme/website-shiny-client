@@ -59,6 +59,7 @@ const natures = [
   "Sassy",
   "Serious",
   "Timid",
+  "-"
 ];
 
 export default function CreateShiny() {

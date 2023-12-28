@@ -16,6 +16,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 // Scenes imports
 import Topbar from "./scenes/global/Topbar"
 import Home from "./scenes/home"
+import Search from "./scenes/search";
 import Login from "./scenes/login"
 import CustomSidebar from "./scenes/global/Sidebar";
 import Counters from "./scenes/counters";
@@ -64,6 +65,7 @@ const router = createBrowserRouter([
     children: [
       { path: "/auth", Component: Login },
       { path: "/", Component: Home, loader: loader, },
+      { path: "/search", Component: Search, loader: loader, },
       {
         path: "/shiny",
         loader: loader,
@@ -144,15 +146,30 @@ function Layout() {
       <ThemeProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
           <CssBaseline />
-          <div style={{ display: 'flex' }}>
-            <CustomSidebar />
+          <div style={{
+            display: 'flex',
+          }}>
+            <div style={{
+                zIndex: 2000,
+              }}>
+              <CustomSidebar />
+            </div>
             <main style={{
               width: width,
               position: "relative",
               left: left,
+              top: "70px",
               height: "100%",
             }}>
-              <Topbar />
+              <div style={{
+                position: "fixed",
+                top: 0,
+                width: width,
+                left: left,
+                zIndex: 1000,
+              }}>
+                <Topbar />
+              </div>
               <ScrollRestoration />
               <Outlet />
             </main>

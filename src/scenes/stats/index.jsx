@@ -3,8 +3,9 @@ import { Box, Grid } from "@mui/material";
 
 // Components imports
 import Header from "../../components/Header";
-import UserStats from "../../components/UserStats";
 import EncountersGraph from "../../components/EncountersGraph";
+import UserRecords from "../../components/UserRecords";
+import UserStats from "../../components/UserStats";
 
 export default function ShinyStats() {
   return (
@@ -17,9 +18,12 @@ export default function ShinyStats() {
 
         <Grid container spacing={"20px"}>
           <Grid item xl={4} xs={12}>
-            <UserStats />
+            <UserRecords />
           </Grid>
           <Grid item xl={8} xs={12}>
+            <UserStats />
+          </Grid>
+          <Grid item xl={6} xs={12}>
             <EncountersGraph />
           </Grid>
         </Grid>

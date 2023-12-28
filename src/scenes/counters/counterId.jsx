@@ -99,7 +99,7 @@ export default function Counter() {
       const fetchCounterData = async () => {
         try {
           const res = await axios.get(`/shiny/${counterId}`);
-          setData(res.data.shiny);
+          setData(res.data);
         } catch (error) {
           console.error(error);
         }
@@ -196,6 +196,23 @@ export default function Counter() {
     setEncountersToday((prevState) => {
       return prevState + data.increment;
     });
+
+    if (data.method.function === "dexnav") {
+      setSearchLevel((prevState) => {
+        return prevState + 1;
+      });
+      setSearchLevelEdit((prevState) => {
+        return prevState + 1;
+      });
+
+      axios["patch"](`/counters/${counterId}?action=addSearchLevel`)
+      .then((res) => {
+        setData(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
 
     setTimeout(() => {
       setBackgroundColor(colors.primary[400]);

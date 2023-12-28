@@ -1,21 +1,12 @@
 import { useState } from "react";
 
 // mui imports
-import {
-  Box,
-  useTheme,
-  Typography,
-  Grid,
-  Skeleton
-} from "@mui/material";
+import { Box, useTheme, Typography, Grid, Skeleton } from "@mui/material";
 import { tokens } from "../theme";
 
 // Components imports
 import StatsCard from "./StatsCard";
 import UserSelect from "./UserSelect";
-
-// Functions
-import { formatTime } from "../functions/statFunctions";
 
 // Hooks
 import { useShiny } from "../hooks/useData";
@@ -26,16 +17,19 @@ export default function UserStats() {
   const [query, setQuery] = useState("");
   const [trainer, setTrainer] = useState("All");
 
-  const { isLoading: userStatsLoading, data: userStatsData } = useShiny(`?action=userStats&amount=1${query}`);
-  const userStats = userStatsData?.data
+  const { isLoading: userStatsLoading, data: userStatsData } = useShiny(
+    `?action=userStats${query}`
+  );
+  const userStats = userStatsData?.data;
 
+  console.log(userStats);
   const handleChange = (e) => {
     if (e.target.value === "All") {
       setQuery("");
-      setTrainer("All")
+      setTrainer("All");
     } else {
       setQuery(`&trainer=${e.target.value}`);
-      setTrainer(e.target.value)
+      setTrainer(e.target.value);
     }
   };
 
@@ -44,11 +38,13 @@ export default function UserStats() {
       return (
         <Grid item xs={12}>
           <Skeleton
-            sx={{ bgcolor: colors.primary[500], height: {
-              xs: '53px',
-              sm: '44px',
-              md: '56px',
-            } }}
+            sx={{
+              bgcolor: colors.primary[500],
+              height: {
+                xs: "56px",
+                md: "44px",
+              },
+            }}
             variant="rounded"
             width={"100%"}
           />
@@ -58,11 +54,10 @@ export default function UserStats() {
       return (
         <Grid item xs={12}>
           <StatsCard
-            id={data._id}
-            name={data.name}
+            id={""}
+            name={data._id}
             stat={dataStat}
             statName={statName}
-            trainer={data.trainer}
             bgColor={500}
           />
         </Grid>
@@ -87,45 +82,113 @@ export default function UserStats() {
         <Typography variant="h4" fontWeight={"bold"}>
           USER STATISTICS
         </Typography>
-          <UserSelect label={"User"} handleChange={handleChange} defaultValue={trainer}/>
+        <UserSelect
+          label={"User"}
+          handleChange={handleChange}
+          defaultValue={trainer}
+        />
       </Box>
-      <Grid container spacing={"12px"}>
-        <StatsDisplay
-          data={userStats?.first[0]}
-          dataStat={new Date(userStats?.first[0].endDate).toLocaleDateString()}
-          statName={"First Shiny Caught"}
-          loading={userStatsLoading}
-        />
-        <StatsDisplay
-          data={userStats?.lowestEncounters[0]}
-          dataStat={userStats?.lowestEncounters[0].totalEncounters}
-          statName={"Lowest Amount of Encounters"}
-          loading={userStatsLoading}
-        />
-        <StatsDisplay
-          data={userStats?.mostEncounters[0]}
-          dataStat={userStats?.mostEncounters[0].totalEncounters}
-          statName={"Highest Amount of Encounters"}
-          loading={userStatsLoading}
-        />
-        <StatsDisplay
-          data={userStats?.shortestHunt[0]}
-          dataStat={formatTime(userStats?.shortestHunt[0].stats.totalHuntTime, false)}
-          statName={"Shortest Hunt"}
-          loading={userStatsLoading}
-        />
-        <StatsDisplay
-          data={userStats?.longestHunt[0]}
-          dataStat={formatTime(userStats?.longestHunt[0].stats.totalHuntTime, false)}
-          statName={"Longest Hunt"}
-          loading={userStatsLoading}
-        />
-        <StatsDisplay
-          data={userStats?.mostDays[0]}
-          dataStat={`${userStats?.mostDays[0].stats.daysHunting} days`}
-          statName={"Most Days Hunted"}
-          loading={userStatsLoading}
-        />
+      <Grid container spacing={"8px"}>
+        <Grid item xs={12} xl={6} container spacing={"8px"}>
+          <StatsDisplay
+            data={userStats?.mostFrequentName}
+            dataStat={userStats?.mostFrequentName.count}
+            statName={"The Most Caught Pokémon"}
+            loading={userStatsLoading}
+          />
+          <StatsDisplay
+            data={userStats?.mostFrequentYear}
+            dataStat={userStats?.mostFrequentYear.count}
+            statName={"The Most Frequent Year"}
+            loading={userStatsLoading}
+          />
+          <StatsDisplay
+            data={userStats?.mostFrequentMonth}
+            dataStat={userStats?.mostFrequentMonth.count}
+            statName={"The Most Frequent Month"}
+            loading={userStatsLoading}
+          />
+          <StatsDisplay
+            data={userStats?.mostFrequentDay}
+            dataStat={userStats?.mostFrequentDay.count}
+            statName={"The Most Frequent Day"}
+            loading={userStatsLoading}
+          />
+          <StatsDisplay
+            data={userStats?.mostFrequentNature}
+            dataStat={userStats?.mostFrequentNature.count}
+            statName={"The Most Frequent Nature"}
+            loading={userStatsLoading}
+          />
+          <StatsDisplay
+            data={userStats?.leastFrequentNature}
+            dataStat={userStats?.leastFrequentNature.count}
+            statName={"The Least Frequent Nature"}
+            loading={userStatsLoading}
+          />
+          <StatsDisplay
+            data={userStats?.mostFrequentBall}
+            dataStat={userStats?.mostFrequentBall.count}
+            statName={"The Most Frequent Ball"}
+            loading={userStatsLoading}
+          />
+          <StatsDisplay
+            data={userStats?.leastFrequentBall}
+            dataStat={userStats?.leastFrequentBall.count}
+            statName={"The Least Frequent Ball"}
+            loading={userStatsLoading}
+          />
+        </Grid>
+        <Grid item xs={12} xl={6} container spacing={"8px"}>
+          <StatsDisplay
+            data={userStats?.mostFrequentGen}
+            dataStat={userStats?.mostFrequentGen.count}
+            statName={"The Most Frequent Gen"}
+            loading={userStatsLoading}
+          />
+          <StatsDisplay
+            data={userStats?.leastFrequentGen}
+            dataStat={userStats?.leastFrequentGen.count}
+            statName={"The Least Frequent Gen"}
+            loading={userStatsLoading}
+          />
+          <StatsDisplay
+            data={userStats?.mostFrequentGame}
+            dataStat={userStats?.mostFrequentGame.count}
+            statName={"The Most Frequent Game"}
+            loading={userStatsLoading}
+          />
+          <StatsDisplay
+            data={userStats?.leastFrequentGame}
+            dataStat={userStats?.leastFrequentGame.count}
+            statName={"The Least Frequent Game"}
+            loading={userStatsLoading}
+          />
+          <StatsDisplay
+            data={userStats?.mostFrequentMethod}
+            dataStat={userStats?.mostFrequentMethod.count}
+            statName={"The Most Frequent Method"}
+            loading={userStatsLoading}
+          />
+          <StatsDisplay
+            data={userStats?.leastFrequentMethod}
+            dataStat={userStats?.leastFrequentMethod.count}
+            statName={"The Least Frequent Method"}
+            loading={userStatsLoading}
+          />
+          <StatsDisplay
+            data={userStats?.mostFrequentLocation}
+            dataStat={userStats?.mostFrequentLocation.count}
+            statName={"The Most Frequent Location"}
+            loading={userStatsLoading}
+          />
+          <StatsDisplay
+            data={userStats?.mostFrequentIRLLocation}
+            dataStat={userStats?.mostFrequentIRLLocation.count}
+            statName={"The Most Frequent IRL Location"}
+            loading={userStatsLoading}
+          />
+        </Grid>
       </Grid>
     </Box>
   );

@@ -6,7 +6,7 @@ import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import CounterCard from "../../components/CounterCard";
 import ShinyCard from "../../components/ShinyCard";
-import UserStats from "../../components/UserStats";
+import UserRecords from "../../components/UserRecords";
 import EncountersGraph from "../../components/EncountersGraph";
 
 // Hooks
@@ -74,6 +74,7 @@ export default function Home() {
       });
     } else {
       return data?.map((item) => {
+        console.log(Boolean(item))
         return (
           <Grid item xs={12} key={item?._id}>
             <ShinyCard
@@ -91,6 +92,8 @@ export default function Home() {
       });
     }
   };
+
+  console.log(latestCounter?.data)
 
   return (
     <Box mx="auto" my="20px">
@@ -118,7 +121,7 @@ export default function Home() {
               <Grid container spacing={"15px"}>
                 <CountersDisplay
                   data={latestCounter?.data.filter(
-                    (item) => item.trainer === username
+                    (item) => item && item.trainer === username
                   )}
                   loading={latestCounterLoading}
                 />
@@ -134,7 +137,7 @@ export default function Home() {
               <Grid container spacing={"15px"}>
                 <CountersDisplay
                   data={latestCounter?.data.filter(
-                    (item) => item.trainer !== username
+                    (item) => item && item.trainer !== username
                   )}
                   loading={latestCounterLoading}
                   loadingArray={[1, 2, 3]}
@@ -184,7 +187,7 @@ export default function Home() {
             </Box>
           </Grid>
           <Grid item xl={4} xs={12}>
-            <UserStats />
+            <UserRecords />
           </Grid>
           <Grid item xs={12}>
             <EncountersGraph />

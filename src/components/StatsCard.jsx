@@ -59,13 +59,13 @@ export default function StatsCard({
               }}
               flexDirection={{ xs: "row", md: "column" }}
             >
-              <Typography
+              {trainer && <Typography
                 fontWeight={"bold"}
                 fontSize={12}
                 color={colors.grey[400]}
               >
                 {trainer}
-              </Typography>
+              </Typography>}
               <Typography
                 fontWeight={"bold"}
                 fontSize={12}
