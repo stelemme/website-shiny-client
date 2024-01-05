@@ -142,12 +142,6 @@ export default function methodHunts(
         n1 += 2
       }
 
-      if (totalEncounters === 50) {
-        n += 5
-      } else if (totalEncounters === 100) {
-        n += 10
-      }
-
       if (level > 200) {
         dexNavLevel += level - 200
         level = 200

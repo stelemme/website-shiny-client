@@ -167,18 +167,18 @@ export default function CreateFromCounter() {
       axios
         .post(`/shiny`, data)
         .then((res) => {
-          console.log(res.data);
+          console.log("test", res.data);
           axios["delete"](`/counters/${counterId}`)
-            .then((res) => {
-              navigate("/counters");
-            })
             .catch((err) => {
               console.log(err);
             });
+          navigate(`/shiny/${res.data._id}`);
         })
         .catch((err) => {
           console.log(err);
         });
+
+
     }
   }, [data]);
 
@@ -266,6 +266,7 @@ export default function CreateFromCounter() {
                   data.method.shinyCharm,
                   data.method?.charmRolls,
                   data.method?.function,
+                  data.method?.searchLevel
                 ),
               },
             },

@@ -118,8 +118,6 @@ export default function Counter() {
     }
   }, [completed, counterId, searchParams]);
 
-  console.log(data)
-
   /* DATA FETCHING */
   useEffect(() => {
     if (data) {
@@ -153,7 +151,8 @@ export default function Counter() {
           data.method.rolls,
           data.method.shinyCharm,
           data.method?.charmRolls,
-          data.method?.function
+          data.method?.function,
+          data.method?.searchLevel
         )
       );
       setTimeDifference(

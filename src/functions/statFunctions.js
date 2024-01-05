@@ -33,9 +33,30 @@ export function calculateProb(odds, rolls, shinyCharm, charmRolls, totalEncounte
 }
 
 export function calculatePercentage(encounters, odds, rolls, shinyCharm, charmRolls, methodFunction, searchLevel = null) {
-  const newProb = calculateProb(odds, rolls, shinyCharm, charmRolls, encounters, methodFunction, searchLevel = null);
+  if (searchLevel) {
+    let init_percentage = 1
+    for (let i = 1; i <= encounters; i++) {
+      const current_searchLevel = searchLevel - (encounters - i)
 
-  return Number(((1 - ((newProb - 1) / newProb) ** encounters) * 100).toFixed(2));
+      const newProb = calculateProb(odds, rolls, shinyCharm, charmRolls, 1, methodFunction, current_searchLevel);
+      console.log(newProb)
+      init_percentage *= ((newProb - 1) / newProb)
+    }
+
+    const percentage = (1 - init_percentage) * 100
+    return percentage.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
+
+  const newProb = calculateProb(odds, rolls, shinyCharm, charmRolls, encounters, methodFunction);
+
+  const percentage = (1 - ((newProb - 1) / newProb) ** encounters) * 100
+  return percentage.toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
 };
 
 export function calculateDateDifference(endDate, startDate) {
