@@ -74,7 +74,6 @@ export default function Home() {
       });
     } else {
       return data?.map((item) => {
-        console.log(Boolean(item))
         return (
           <Grid item xs={12} key={item?._id}>
             <ShinyCard
@@ -92,8 +91,6 @@ export default function Home() {
       });
     }
   };
-
-  console.log(latestCounter?.data)
 
   return (
     <Box mx="auto" my="20px">

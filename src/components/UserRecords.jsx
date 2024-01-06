@@ -99,13 +99,13 @@ export default function UserRecords() {
         <StatsDisplay
           data={userStats?.lowestEncounters[0]}
           dataStat={userStats?.lowestEncounters[0].totalEncounters}
-          statName={"Lowest Amount of Encounters"}
+          statName={"Lowest #Encounters"}
           loading={userStatsLoading}
         />
         <StatsDisplay
           data={userStats?.mostEncounters[0]}
           dataStat={userStats?.mostEncounters[0].totalEncounters}
-          statName={"Highest Amount of Encounters"}
+          statName={"Highest #Encounters"}
           loading={userStatsLoading}
         />
         <StatsDisplay

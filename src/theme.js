@@ -235,6 +235,31 @@ export const themeSettings = (mode) => {
         fontSize: 14,
       },
     },
+    scrollbar: {
+      width: 5,
+      trackColor: mode === "dark" ? colors.grey[700] : colors.grey[900],
+      thumbColor: mode === "dark" ? colors.grey[500] : colors.grey[800],
+      thumbHoverColor: mode === "dark" ? colors.grey[300] : colors.grey[600],
+    },
+  };
+};
+
+const scrollbarStyle = (theme) => {
+  const { scrollbar } = theme;
+
+  return {
+    "&::-webkit-scrollbar": {
+      width: scrollbar.width,
+    },
+    "&::-webkit-scrollbar-track": {
+      background: scrollbar.trackColor,
+    },
+    "&::-webkit-scrollbar-thumb": {
+      background: scrollbar.thumbColor,
+    },
+    "&::-webkit-scrollbar-thumb:hover": {
+      background: scrollbar.thumbHoverColor,
+    },
   };
 };
 
@@ -257,6 +282,13 @@ export const useMode = () => {
     []
   );
 
-  const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
+  const theme = useMemo(() => createTheme({
+    ...themeSettings(mode),
+    components: {
+      MuiCssBaseline: {
+        styleOverrides: scrollbarStyle(themeSettings(mode)),
+      },
+    },
+  }), [mode]);
   return [theme, colorMode];
 };

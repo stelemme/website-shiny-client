@@ -6,6 +6,7 @@ import Header from "../../components/Header";
 import EncountersGraph from "../../components/EncountersGraph";
 import UserRecords from "../../components/UserRecords";
 import UserStats from "../../components/UserStats";
+import DateGraph from "../../components/DateGraph";
 
 export default function ShinyStats() {
   return (
@@ -21,10 +22,13 @@ export default function ShinyStats() {
             <UserRecords />
           </Grid>
           <Grid item xl={8} xs={12}>
+            <EncountersGraph />
+          </Grid>
+          <Grid item xl={12} xs={12}>
             <UserStats />
           </Grid>
-          <Grid item xl={6} xs={12}>
-            <EncountersGraph />
+          <Grid item xl={12} xs={12}>
+            <DateGraph />
           </Grid>
         </Grid>
       </Box>

@@ -76,6 +76,7 @@ export default function Counter() {
   const [hasData, setHasData] = useState(false);
   const [count, setCount] = useState(undefined);
   const [countEdit, setCountEdit] = useState(undefined);
+  const [countAdd, setCountAdd] = useState(0);
   const [odds, setOdds] = useState(undefined);
   const [percentage, setPercentage] = useState(undefined);
   const [timeDifference, setTimeDifference] = useState(undefined);
@@ -274,30 +275,58 @@ export default function Counter() {
 
   /* EDIT THE COUNTER */
   const handleEditClick = () => {
-    let data = JSON.stringify({
-      count: countEdit,
-    });
-
-    let config = {
-      method: "patch",
-      maxBodyLength: Infinity,
-      url: `/counters/${counterId}?action=encounterEdit`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: data,
-    };
-
-    axios
-      .request(config)
-      .then((res) => {
-        console.log(res.data);
-        setCount(countEdit);
-        setOpenEdit(false);
-      })
-      .catch((error) => {
-        console.log(error);
+    if (countEdit !== count) {
+      let data = JSON.stringify({
+        count: countEdit,
       });
+  
+      let config = {
+        method: "patch",
+        maxBodyLength: Infinity,
+        url: `/counters/${counterId}?action=encounterEdit`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: data,
+      };
+  
+      axios
+        .request(config)
+        .then((res) => {
+          console.log(res.data);
+          setCount(countEdit);
+          setOpenEdit(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else if (countAdd !== 0) {
+      let data = JSON.stringify({
+        add: countAdd,
+      });
+
+      let config = {
+        method: "patch",
+        maxBodyLength: Infinity,
+        url: `/counters/${counterId}?action=encounterAdd`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: data,
+      };
+  
+      axios
+        .request(config)
+        .then((res) => {
+          console.log(res.data);
+          setCount(count + countAdd);
+          setOpenEdit(false);
+          setCountAdd(0)
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   const handleDateEditClick = () => {
@@ -554,7 +583,7 @@ export default function Counter() {
                     <Box>
                       <Typography mb="15px">
                         Edit the total amount of encounters in the inputfield
-                        below.
+                        below. (These changes are NOT added to the Encounters List)
                       </Typography>
                       <TextField
                         color="secondary"
@@ -563,6 +592,17 @@ export default function Counter() {
                         type="number"
                         value={countEdit}
                         onChange={(e) => setCountEdit(parseInt(e.target.value))}
+                      ></TextField>
+                      <Typography my="15px">
+                        Add a certain amount of Encounters. (These changes are added to the Encounters List)
+                      </Typography>
+                      <TextField
+                        color="secondary"
+                        fullWidth
+                        label="Add Encounters"
+                        type="number"
+                        value={countAdd}
+                        onChange={(e) => setCountAdd(parseInt(e.target.value))}
                       ></TextField>
                     </Box>
                   }

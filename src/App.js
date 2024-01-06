@@ -32,6 +32,7 @@ import ShinyChecklist from "./scenes/shiny/checklist";
 import CreateShiny from "./scenes/shiny/create";
 import CreateFromCounter from "./scenes/shiny/createFromCounter";
 import ShinyStats from "./scenes/stats";
+import CounterStats from "./scenes/stats/counter";
 import ErrorPage from "./scenes/global/ErrorPage";
 
 axios.defaults.baseURL = process.env.REACT_APP_PUBLIC_BACKEND;
@@ -101,6 +102,7 @@ const router = createBrowserRouter([
         loader: loader,
         children: [
           { index: true, Component: ShinyStats },
+          { path: "counter", Component: CounterStats },
         ]
       },
       { path: "*", Component: ErrorPage },
@@ -121,7 +123,7 @@ function Layout() {
   const toggle = useRecoilValue(sidebarCollapse)
   const [collapse, setCollapse] = useState(false)
 
-  const width = collapse ? "calc(100vw - 10px)" : (toggle ? "calc(100vw - 100px)" : "calc(100vw - 260px)");
+  const width = collapse ? "calc(100vw - 5px)" : (toggle ? "calc(100vw - 100px)" : "calc(100vw - 260px)");
   const left = collapse ? "0px" : (toggle ? "90px" : "250px");
 
   useEffect(() => {

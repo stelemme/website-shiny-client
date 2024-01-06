@@ -87,6 +87,7 @@ export default function Topbar() {
         <IconButton onClick={() => navigate("/")}>
           <HomeOutlinedIcon />
         </IconButton>
+        
         <IconButton onClick={() => navigate("/auth")}>
           <PersonOutlinedIcon />
         </IconButton>

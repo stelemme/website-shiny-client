@@ -1,10 +1,13 @@
 import methodHunts from "./methodHunts";
 
 export function calculateMeanEncounterTime(dateList, upperThreshold, lowerThreshold, increment) {
-  if (dateList.length === 0) {
-    return null
+  const uniqueDates = Array.from(new Set(dateList));
+
+  if (uniqueDates.length === 0) {
+    return null;
   }
-  const timestamps = dateList.map(dateString => new Date(dateString));
+
+  const timestamps = uniqueDates.map(dateString => new Date(dateString));
 
   const timeDifferences = [];
   for (let i = 1; i < timestamps.length; i++) {
@@ -19,7 +22,7 @@ export function calculateMeanEncounterTime(dateList, upperThreshold, lowerThresh
 
   const meanDifference = (sum / timeDifferences.length) / increment;
 
-  return meanDifference
+  return meanDifference;
 }
 
 export function calculateProb(odds, rolls, shinyCharm, charmRolls, totalEncounters, methodFunction = null, searchLevel = null) {

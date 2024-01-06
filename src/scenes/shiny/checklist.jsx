@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { trainerImgPaths, medalImgPaths } from "../../assets/imgExporter";
 import Cookies from "js-cookie";
 
 // Mui
@@ -45,6 +46,22 @@ export default function ShinyChecklist() {
   const colors = tokens(theme.palette.mode);
   const [openGraph, setOpenGraph] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
+  const [medalPaths, setMedalPaths] = useState([]);
+  const [trainerPaths, setTrainerPaths] = useState([]);
+
+  useEffect(() => {
+    const loadTrainerImages = async () => {
+      const paths = await Promise.all(trainerImgPaths);
+      setTrainerPaths(paths);
+    };
+    const loadMedalImages = async () => {
+      const paths = await Promise.all(medalImgPaths);
+      setMedalPaths(paths);
+    };
+
+    loadTrainerImages();
+    loadMedalImages();
+  }, []);
 
   const checklistGenFilter = Cookies.get("checklistGenFilter")
     ? Cookies.get("checklistGenFilter")
@@ -210,28 +227,28 @@ export default function ShinyChecklist() {
                   display="inline-flex"
                   justifyContent="center"
                   alignItems="center"
-                  height="35px"
                   minWidth="35px"
-                />
+                ></Box>
                 {/* POKEMON NAME */}
                 <Box
-                  mx="15px"
+                  ml="15px"
+                  mr="5px"
                   overflow="hidden"
                   display="flex"
                   alignItems="center"
                   width="250px"
                 >
                   <Typography
+                    fontSize={window.innerWidth < 600 ? 12 : 14}
                     fontWeight={"bold"}
                     variant="h5"
-                    fontSize={window.innerWidth < 600 ? 12 : 14}
                     sx={{
                       overflow: "hidden",
                       textOverflow: "ellipsis",
                       whiteSpace: "nowrap",
                     }}
                   >
-                    Pokemon Name
+                    {"Pokémon Name"}
                   </Typography>
                 </Box>
                 <Box
@@ -239,11 +256,50 @@ export default function ShinyChecklist() {
                   display="flex"
                   justifyContent="space-between"
                   alignItems="center"
-                ></Box>
+                >
+                  <img
+                    height={"30px"}
+                    alt=""
+                    src={trainerPaths[0]}
+                    style={{ imageRendering: "pixelated" }}
+                  />
+                  <img
+                    height={"30px"}
+                    alt=""
+                    src={trainerPaths[1]}
+                    style={{ imageRendering: "pixelated" }}
+                  />
+                  <img
+                    height={"30px"}
+                    alt=""
+                    src={trainerPaths[2]}
+                    style={{ imageRendering: "pixelated" }}
+                  />
+                  <img
+                    height={"30px"}
+                    alt=""
+                    src={trainerPaths[3]}
+                    style={{ imageRendering: "pixelated" }}
+                  />
+                  <Box width={"30px"}/>
+                  {window.innerWidth >= 600 && <Box width={"30px"}/>}
+                </Box>
               </Box>
             </Box>
           </Grid>
           {pokedex?.data.map((pokemon) => {
+            const joaquinCheck = shinyListJoaquin?.data.includes(pokemon.name);
+            const korneelCheck = shinyListKorneel?.data.includes(pokemon.name);
+            const simonCheck = shinyListSimon?.data.includes(pokemon.name);
+            const stefCheck = shinyListStef?.data.includes(pokemon.name);
+
+            const trueCount = [
+              joaquinCheck,
+              korneelCheck,
+              simonCheck,
+              stefCheck,
+            ].filter(Boolean).length;
+
             return (
               <Grid item xs={12} key={pokemon._id}>
                 <LazyLoad>
@@ -300,7 +356,7 @@ export default function ShinyChecklist() {
                         justifyContent="space-between"
                         alignItems="center"
                       >
-                        {shinyListJoaquin?.data.includes(pokemon.name) ? (
+                        {joaquinCheck ? (
                           <CheckBoxIcon
                             size="small"
                             style={{ color: colors.redAccent[500] }}
@@ -311,7 +367,7 @@ export default function ShinyChecklist() {
                             style={{ color: colors.redAccent[500] }}
                           />
                         )}
-                        {shinyListKorneel?.data.includes(pokemon.name) ? (
+                        {korneelCheck ? (
                           <CheckBoxIcon
                             size="small"
                             style={{ color: colors.yellowAccent[500] }}
@@ -322,7 +378,7 @@ export default function ShinyChecklist() {
                             style={{ color: colors.yellowAccent[500] }}
                           />
                         )}
-                        {shinyListSimon?.data.includes(pokemon.name) ? (
+                        {simonCheck ? (
                           <CheckBoxIcon
                             size="small"
                             style={{ color: colors.greenAccent[500] }}
@@ -333,7 +389,7 @@ export default function ShinyChecklist() {
                             style={{ color: colors.greenAccent[500] }}
                           />
                         )}
-                        {shinyListStef?.data.includes(pokemon.name) ? (
+                        {stefCheck ? (
                           <CheckBoxIcon
                             size="small"
                             style={{ color: colors.blueAccent[500] }}
@@ -355,6 +411,7 @@ export default function ShinyChecklist() {
                             style={{ color: colors.purpleAccent[500] }}
                           />
                         )}
+                        {trueCount > 0 ? (<img width={"30px"} alt="" src={medalPaths[4 - trueCount]} />) : (<Box width={"30px"}/>)}
                       </Box>
                     </Box>
                   </Box>
