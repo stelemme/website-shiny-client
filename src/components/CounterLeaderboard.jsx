@@ -18,12 +18,20 @@ import GeneralSelect from "./GeneralSelect";
 // Hooks
 import { useCounter } from "../hooks/useData";
 
-const optionList = ["Today", "Last 7 Days", "Last 30 Days", "Last 90 Days", "Last Year"];
-
+const optionList = [
+  "Today",
+  "Last 7 Days",
+  "Last 30 Days",
+  "Last 90 Days",
+  "Last Year",
+  "All Time",
+];
 
 export default function CounterLeaderboard() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  let totalEnc = 0;
 
   const [period, setPeriod] = useState("Today");
   const [query, setQuery] = useState(1);
@@ -53,6 +61,8 @@ export default function CounterLeaderboard() {
       setQuery(90);
     } else if (e.target.value === "Last Year") {
       setQuery(365);
+    } else if (e.target.value === "All Time") {
+      setQuery(999999);
     } else {
       setQuery(1);
     }
@@ -66,7 +76,7 @@ export default function CounterLeaderboard() {
             sx={{
               bgcolor: colors.primary[500],
               height: {
-                xs: "190.4px",
+                xs: "229px",
               },
             }}
             variant="rounded"
@@ -85,6 +95,7 @@ export default function CounterLeaderboard() {
             borderRadius="5px"
           >
             {data?.map((item, index) => {
+              totalEnc += item.totalEncounters;
               return (
                 <Box key={index}>
                   <Box display={"flex"} justifyContent={"space-between"}>
@@ -98,7 +109,7 @@ export default function CounterLeaderboard() {
                       </Box>
                       <Typography
                         fontWeight={"bold"}
-                        fontSize={window.innerWidth < 600 ? 12 : 14}
+                        fontSize={14}
                         align="left"
                         sx={{
                           overflow: "hidden",
@@ -111,7 +122,7 @@ export default function CounterLeaderboard() {
                     </Box>
                     <Typography
                       fontWeight={"bold"}
-                      fontSize={window.innerWidth < 600 ? 12 : 14}
+                      fontSize={14}
                       align="left"
                       sx={{
                         overflow: "hidden",
@@ -122,10 +133,46 @@ export default function CounterLeaderboard() {
                       {item.totalEncounters}
                     </Typography>
                   </Box>
-                  {index !== data.length - 1 && <Divider sx={{ my: 1 }} />}
+                  {<Divider sx={{ my: 1 }} />}
                 </Box>
               );
             })}
+            <Box>
+              <Box display={"flex"} justifyContent={"space-between"}>
+                <Box display={"flex"} alignItems="center" gap={"20px"}>
+                  <Box
+                    display="inline-flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    width={"30px"}
+                  ></Box>
+                  <Typography
+                    fontWeight={"bold"}
+                    fontSize={14}
+                    align="left"
+                    sx={{
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    TOTAL
+                  </Typography>
+                </Box>
+                <Typography
+                  fontWeight={"bold"}
+                  fontSize={14}
+                  align="left"
+                  sx={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {totalEnc}
+                </Typography>
+              </Box>
+            </Box>
           </Box>
         </Grid>
       );
