@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { trainerImgPaths, medalImgPaths } from "../../assets/imgExporter";
+import { useState } from "react";
 import Cookies from "js-cookie";
 
 // Mui
@@ -33,7 +32,7 @@ import {
 
 // Components
 import Header from "../../components/Header";
-import FilterMenu from "../../components/FilterMenu";
+import FilterMenu from "../../components/Dialogs/FilterDialog";
 
 // Functions
 import { calculateOverlapPercentage } from "../../functions/statFunctions";
@@ -41,27 +40,21 @@ import { calculateOverlapPercentage } from "../../functions/statFunctions";
 // Hooks
 import { usePokedex, useShiny } from "../../hooks/useData";
 
+// Images
+import { trainerImages, medalImages } from "../../assets/imgExporter";
+
 export default function ShinyChecklist() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [openGraph, setOpenGraph] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
-  const [medalPaths, setMedalPaths] = useState([]);
-  const [trainerPaths, setTrainerPaths] = useState([]);
 
-  useEffect(() => {
-    const loadTrainerImages = async () => {
-      const paths = await Promise.all(trainerImgPaths);
-      setTrainerPaths(paths);
-    };
-    const loadMedalImages = async () => {
-      const paths = await Promise.all(medalImgPaths);
-      setMedalPaths(paths);
-    };
-
-    loadTrainerImages();
-    loadMedalImages();
-  }, []);
+  const medalList = [
+    medalImages["adventure-1-d.png"],
+    medalImages["adventure-1-g.png"],
+    medalImages["adventure-1-s.png"],
+    medalImages["adventure-1-b.png"],
+  ];
 
   const checklistGenFilter = Cookies.get("checklistGenFilter")
     ? Cookies.get("checklistGenFilter")
@@ -260,29 +253,29 @@ export default function ShinyChecklist() {
                   <img
                     height={"30px"}
                     alt=""
-                    src={trainerPaths[0]}
+                    src={trainerImages["Gen 6 - kwakquin.png"]}
                     style={{ imageRendering: "pixelated" }}
                   />
                   <img
                     height={"30px"}
                     alt=""
-                    src={trainerPaths[1]}
+                    src={trainerImages["Gen 6 - chorneef.png"]}
                     style={{ imageRendering: "pixelated" }}
                   />
                   <img
                     height={"30px"}
                     alt=""
-                    src={trainerPaths[2]}
+                    src={trainerImages["Gen 6 - siwob.png"]}
                     style={{ imageRendering: "pixelated" }}
                   />
                   <img
                     height={"30px"}
                     alt=""
-                    src={trainerPaths[3]}
+                    src={trainerImages["Gen 6 - t-loc.png"]}
                     style={{ imageRendering: "pixelated" }}
                   />
-                  <Box width={"30px"}/>
-                  {window.innerWidth >= 600 && <Box width={"30px"}/>}
+                  <Box width={"30px"} />
+                  {window.innerWidth >= 600 && <Box width={"30px"} />}
                 </Box>
               </Box>
             </Box>
@@ -411,7 +404,17 @@ export default function ShinyChecklist() {
                             style={{ color: colors.purpleAccent[500] }}
                           />
                         )}
-                        {trueCount > 0 ? (<img width={"30px"} alt="" src={medalPaths[4 - trueCount]} />) : (<Box width={"30px"}/>)}
+                        {trueCount > 0 ? (
+                          <img
+                            width={window.innerWidth < 500 ? "20px" : "30px"}
+                            alt=""
+                            src={medalList[4 - trueCount]}
+                          />
+                        ) : (
+                          <Box
+                            width={window.innerWidth < 500 ? "20px" : "30px"}
+                          />
+                        )}
                       </Box>
                     </Box>
                   </Box>

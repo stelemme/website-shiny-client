@@ -8,9 +8,9 @@ import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 
 // Components
 import Header from "../../components/Header";
-import CounterCard from "../../components/CounterCard";
-import SortMenu from "../../components/SortMenu";
-import FilterMenu from "../../components/FilterMenu";
+import CounterCard from "../../components/Cards/CounterCard";
+import SortMenu from "../../components/Menus/SortMenu";
+import FilterMenu from "../../components/Dialogs/FilterDialog";
 
 // Functions
 import sortData from "../../functions/sortData";

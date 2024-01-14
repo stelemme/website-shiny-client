@@ -13,7 +13,7 @@ import SearchIcon from "@mui/icons-material/Search";
 
 // Components
 import Header from "../../components/Header";
-import ShinyCard from "../../components/ShinyCard";
+import ShinyCard from "../../components/Cards/ShinyCard";
 
 // Hooks
 import { useShiny } from "../../hooks/useData";

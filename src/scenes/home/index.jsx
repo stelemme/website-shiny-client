@@ -4,10 +4,10 @@ import { tokens } from "../../theme";
 
 // Components imports
 import Header from "../../components/Header";
-import CounterCard from "../../components/CounterCard";
-import ShinyCard from "../../components/ShinyCard";
-import UserRecords from "../../components/UserRecords";
-import EncountersGraph from "../../components/EncountersGraph";
+import CounterCard from "../../components/Cards/CounterCard";
+import ShinyCard from "../../components/Cards/ShinyCard";
+import UserRecords from "../../components/Stats/UserRecordsStats";
+import EncountersGraph from "../../components/Graphs/EncountersGraph";
 
 // Hooks
 import { useAuth } from "../../hooks/useAuth";

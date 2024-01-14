@@ -3,7 +3,7 @@ import { Box, Grid, Typography } from "@mui/material";
 
 // Components imports
 import Header from "../../components/Header";
-import PokedexCard from "../../components/PokedexCard";
+import PokedexCard from "../../components/Cards/PokedexCard";
 
 // Hooks
 import { usePokedex } from "../../hooks/useData";

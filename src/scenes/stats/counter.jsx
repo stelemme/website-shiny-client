@@ -3,7 +3,9 @@ import { Box, Grid } from "@mui/material";
 
 // Components imports
 import Header from "../../components/Header";
-import CounterLeaderboard from "../../components/CounterLeaderboard";
+import EncountersLeaderboard from "../../components/Leaderboards/EncountersLeaderboard";
+import CountersAmountLeaderboard from "../../components/Leaderboards/CountersAmountLeaderboard";
+import CountersPercentageLeaderboard from "../../components/Leaderboards/CountersPercentageLeaderboard";
 
 export default function CounterStats() {
   return (
@@ -18,7 +20,13 @@ export default function CounterStats() {
         </Box>
         <Grid container spacing={"20px"}>
           <Grid item xl={4} xs={12}>
-            <CounterLeaderboard />
+            <EncountersLeaderboard />
+          </Grid>
+          <Grid item xl={4} xs={12}>
+            <CountersPercentageLeaderboard />
+          </Grid>
+          <Grid item xl={4} xs={12}>
+            <CountersAmountLeaderboard />
           </Grid>
         </Grid>
       </Box>

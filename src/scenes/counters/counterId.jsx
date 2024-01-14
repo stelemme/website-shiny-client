@@ -36,7 +36,7 @@ import {
 } from "recharts";
 
 // Components
-import CustomDialog from "../../components/CustomDialog";
+import CustomDialog from "../../components/Dialogs/CustomDialog";
 
 // Functions
 import {

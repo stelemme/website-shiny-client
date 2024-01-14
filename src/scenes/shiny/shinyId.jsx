@@ -18,13 +18,15 @@ import {
   FormControlLabel,
   Checkbox,
   Button,
+  Autocomplete,
+  TextField,
 } from "@mui/material";
 import { tokens } from "../../theme";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 
 // Components
-import CustomDialog from "../../components/CustomDialog";
+import CustomDialog from "../../components/Dialogs/CustomDialog";
 
 // Functions
 import { formatTime } from "../../functions/statFunctions";
@@ -43,12 +45,17 @@ export default function ShinyId() {
   const [evolutionsEdit, setEvolutionsEdit] = useState([]);
   const [forms, setForms] = useState(undefined);
   const [formsEdit, setFormsEdit] = useState([]);
+  const [marks, setMarks] = useState(undefined);
+  const [marksEdit, setMarksEdit] = useState([]);
 
   const [openDelete, setOpenDelete] = useState(false);
   const [openEvolutionEdit, setOpenEvolutionEdit] = useState(false);
+  const [openMarksEdit, setOpenMarksEdit] = useState(false);
 
   const { data: shiny, refetch } = useShinyId(shinyId);
   const data = shiny?.data;
+
+  console.log(marksEdit);
 
   /* DELETE THE SHINY */
   const handleDeleteClick = () => {
@@ -88,8 +95,34 @@ export default function ShinyId() {
       });
 
     setOpenEvolutionEdit(false);
-    setEvolutionsEdit([])
-    setFormsEdit([])
+    setEvolutionsEdit([]);
+    setFormsEdit([]);
+  };
+
+  /* EDIT THE MARK */
+  const handleMarksEdit = () => {
+    let data = JSON.stringify({
+      "name": marksEdit["name"],
+      "sprite": marksEdit["sprite"]
+    });
+    
+    let config = {
+      method: 'patch',
+      maxBodyLength: Infinity,
+      url: `/shiny/${shinyId}?action=marksEdit`,
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      data : data
+    };
+    
+    axios.request(config)
+    .then((response) => {
+      refetch();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   };
 
   const InfoDisplay = ({ infoCat, infoName, xs1 = 5.5, xs2 = 6.5 }) => {
@@ -299,7 +332,7 @@ export default function ShinyId() {
             </Grid>
 
             {data.evolutions.length > 0 && (
-              <Grid item xs={12} container >
+              <Grid item xs={12} container>
                 <Grid item xs={12} mb="20px">
                   <Divider />
                 </Grid>
@@ -485,7 +518,15 @@ export default function ShinyId() {
               <Divider />
             </Grid>
             {data.stats.meanEncounterTime && (
-              <Grid item xs={12} container spacing={2}>
+              <Grid
+                item
+                xs={12}
+                container
+                spacing={2}
+                onClick={() => {
+                  navigate(`/counters/${shinyId}?completed=true`);
+                }}
+              >
                 <Grid item xs={12}>
                   <Typography variant="h5" fontWeight={"bold"}>
                     COUNTER STATS
@@ -525,6 +566,117 @@ export default function ShinyId() {
                 </Grid>
               </Grid>
             )}
+            <Grid item xs={12} container spacing={2}>
+              <Grid item xs={12}>
+                <Box
+                  mb="5px"
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  <Typography
+                    variant="h5"
+                    color={colors.grey[100]}
+                    fontWeight="bold"
+                  >
+                    MARKS
+                  </Typography>
+                  {username === data.trainer && (
+                    <Box ml="10px" display="flex">
+                      <IconButton
+                        size="small"
+                        onClick={() => {
+                          axios["get"](
+                            `/game?name=${data.game}&action=marks`
+                          ).then((res) => {
+                            const allMarks = res.data[0]["marks"];
+                            const filteredMarks = allMarks.filter(mark =>
+                              !data?.marks.some(excluded => excluded.name === mark.name)
+                            );
+                            setMarks(filteredMarks);
+                          });
+                          setOpenMarksEdit(true);
+                        }}
+                      >
+                        <EditRoundedIcon />
+                      </IconButton>
+                      <Dialog
+                        open={openMarksEdit}
+                        onClose={() => setOpenMarksEdit(false)}
+                      >
+                        <DialogTitle fontWeight={"bold"} variant="h4">
+                          Add a Mark
+                        </DialogTitle>
+                        <DialogContent>
+                          <Autocomplete
+                            key={marks}
+                            disabled={!marks}
+                            autoHighlight
+                            onChange={(e, value, reason) => {
+                              if (reason === "selectOption") {
+                                setMarksEdit(value);
+                              }
+                            }}
+                            sx={{ mt: "10px" }}
+                            options={marks ? marks : []}
+                            getOptionLabel={(option) => option.name}
+                            renderInput={(params) => (
+                              <TextField
+                                style={{ width: 200 }}
+                                required
+                                color="secondary"
+                                {...params}
+                                label="Marks"
+                              />
+                            )}
+                          />
+                        </DialogContent>
+                        <DialogActions
+                          style={{ justifyContent: "right", gap: "10px" }}
+                          sx={{ mb: "15px", mr: "15px" }}
+                        >
+                          <Button
+                            variant="contained"
+                            color="neutral"
+                            style={{ color: "white" }}
+                            onClick={() => setOpenMarksEdit(false)}
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            variant="contained"
+                            color="neutral"
+                            style={{ color: "white" }}
+                            onClick={handleMarksEdit}
+                            autoFocus
+                          >
+                            Add
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
+                    </Box>
+                  )}
+                </Box>
+              </Grid>
+              {data?.marks.length > 0 && (
+                <Grid item xs={12}>
+                  {data?.marks.map((mark) => {
+                    return (
+                      <img
+                        alt=""
+                        key={mark.name}
+                        src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/marks/${mark.sprite}.png`}
+                        height={"50px"}
+                        title={mark.name}
+                      />
+                    );
+                  })}
+                </Grid>
+              )}
+              <Grid item xs={12}>
+                <Divider />
+              </Grid>
+            </Grid>
           </Grid>
         </Box>
       )}

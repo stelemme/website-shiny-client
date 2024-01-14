@@ -3,7 +3,7 @@ import { Box, Grid, Typography } from "@mui/material";
 
 // Components imports
 import Header from "../../components/Header";
-import GameCard from "../../components/GameCard";
+import GameCard from "../../components/Cards/GameCard";
 
 // Hooks
 import { useGame } from "../../hooks/useData";
