@@ -48,7 +48,7 @@ export default function GameStats() {
           borderRadius="5px"
         >
           <Grid container>
-            <Grid item md={1.98} xs={5.95} container spacing={"12px"}>
+            <Grid item md={1.98} xs={5.90} container spacing={"12px"}>
               <Grid item xs={12}>
                 <Box
                   display={"flex"}
@@ -225,7 +225,7 @@ export default function GameStats() {
               }
               return (
                 <Fragment key={trainer}>
-                  <Grid item md={1.98} xs={5.95} container spacing={"12px"}>
+                  <Grid item md={1.98} xs={5.90} container spacing={"12px"}>
                     <Grid item xs={12}>
                       <Box
                         display={"flex"}
@@ -408,7 +408,7 @@ export default function GameStats() {
                 </Fragment>
               );
             })}
-            <Grid item md={1.98} xs={5.95} container spacing={"12px"}>
+            <Grid item md={1.98} xs={5.90} container spacing={"12px"}>
               <Grid item xs={12}>
                 <Box
                   display={"flex"}
