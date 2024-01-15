@@ -1,0 +1,654 @@
+import { Fragment, useState } from "react";
+
+// mui imports
+import {
+  Box,
+  useTheme,
+  Typography,
+  Grid,
+  Autocomplete,
+  Divider,
+  TextField,
+} from "@mui/material";
+import { tokens } from "../../theme";
+
+// Functions
+import { formatTime } from "../../functions/statFunctions";
+
+// Hooks
+import { useGame, useShiny } from "../../hooks/useData";
+
+// Images
+import { trainerImages } from "../../assets/imgExporter";
+
+export default function GameStats() {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+  const [game, setGame] = useState("");
+
+  const { data: games } = useGame("?action=select");
+
+  const { isLoading: gameStatsLoading, data: gameStatsData } = useShiny(
+    `?action=gameStats&gameFilter=${game?.name}`
+  );
+  const gameStats = gameStatsData?.data;
+
+  const { isLoading: gameStatsTotalLoading, data: gameStatsTotalData } =
+    useShiny(`?action=gameStatsTotal&gameFilter=${game?.name}`);
+  const gameStatsTotal = gameStatsTotalData?.data;
+
+  const StatsDisplay = ({ data }) => {
+    return (
+      <Grid item xs={12}>
+        <Box
+          py="10px"
+          px="20px"
+          width="100%"
+          backgroundColor={colors.primary[500]}
+          borderRadius="5px"
+        >
+          <Grid container>
+            <Grid item md={1.98} xs={5.95} container spacing={"12px"}>
+              <Grid item xs={12}>
+                <Box
+                  display={"flex"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                  height={"40px"}
+                  mt={"12px"}
+                >
+                  {game?.sprite ? (
+                    <img
+                      alt=""
+                      src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/games/${game?.sprite}.png`}
+                      height={"40px"}
+                    />
+                  ) : (
+                    <Typography
+                      fontWeight={"bold"}
+                      fontSize={14}
+                      align="left"
+                      sx={{
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      ALL GAMES
+                    </Typography>
+                  )}
+                </Box>
+              </Grid>
+              <Grid item xs={12}>
+                <Divider />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography
+                  fontWeight={"bold"}
+                  fontSize={14}
+                  align="left"
+                  sx={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  #SHINY POKEMON
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Divider />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography
+                  fontWeight={"bold"}
+                  fontSize={14}
+                  align="left"
+                  sx={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  #COUNTED SHINIES
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Divider />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography
+                  fontWeight={"bold"}
+                  fontSize={14}
+                  align="left"
+                  sx={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  #OVER ODDS
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Divider />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography
+                  fontWeight={"bold"}
+                  fontSize={14}
+                  align="left"
+                  sx={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  #UNDER ODDS
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Divider />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography
+                  fontWeight={"bold"}
+                  fontSize={14}
+                  align="left"
+                  sx={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  AVERAGE #ENC.
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Divider />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography
+                  fontWeight={"bold"}
+                  fontSize={14}
+                  align="left"
+                  sx={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  TOTAL #ENC.
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Divider />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography
+                  fontWeight={"bold"}
+                  fontSize={14}
+                  align="left"
+                  sx={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  TOTAL TIME
+                </Typography>
+              </Grid>
+              {window.innerWidth < 500 && (
+                <Grid item xs={12}>
+                  <Divider />
+                </Grid>
+              )}
+            </Grid>
+            <Grid item>
+              <Divider orientation="vertical" />
+            </Grid>
+            {data.map((trainer) => {
+              let trainerSprite = "";
+              let bgColor = "";
+              if (trainer === "Korneel") {
+                trainerSprite = "chorneef";
+                bgColor = colors.yellowAccent[200];
+              } else if (trainer === "Joaquin") {
+                trainerSprite = "kwakquin";
+                bgColor = colors.redAccent[200];
+              } else if (trainer === "Simon") {
+                trainerSprite = "siwob";
+                bgColor = colors.greenAccent[200];
+              } else if (trainer === "Stef") {
+                trainerSprite = "t-loc";
+                bgColor = colors.blueAccent[200];
+              }
+              return (
+                <Fragment key={trainer}>
+                  <Grid item md={1.98} xs={5.95} container spacing={"12px"}>
+                    <Grid item xs={12}>
+                      <Box
+                        display={"flex"}
+                        justifyContent={"center"}
+                        mx={"12px"}
+                        mt={"12px"}
+                        backgroundColor={bgColor}
+                      >
+                        <img
+                          alt=""
+                          src={trainerImages[`Gen 6 - ${trainerSprite}.png`]}
+                          style={{ imageRendering: "pixelated" }}
+                          height={"40px"}
+                        />
+                      </Box>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Divider />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography
+                        fontWeight={"bold"}
+                        fontSize={14}
+                        align="right"
+                        sx={{
+                          mr: "10px",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {gameStatsLoading
+                          ? 0
+                          : gameStats[trainer]
+                          ? gameStats[trainer].shinyAmount
+                          : 0}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Divider />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography
+                        fontWeight={"bold"}
+                        fontSize={14}
+                        align="right"
+                        sx={{
+                          mr: "10px",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {gameStatsLoading
+                          ? 0
+                          : gameStats[trainer]
+                          ? gameStats[trainer].countedShinyAmount
+                          : 0}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Divider />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography
+                        fontWeight={"bold"}
+                        fontSize={14}
+                        align="right"
+                        sx={{
+                          mr: "10px",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {gameStatsLoading
+                          ? 0
+                          : gameStats[trainer]
+                          ? gameStats[trainer].overOdds
+                          : 0}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Divider />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography
+                        fontWeight={"bold"}
+                        fontSize={14}
+                        align="right"
+                        sx={{
+                          mr: "10px",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {gameStatsLoading
+                          ? 0
+                          : gameStats[trainer]
+                          ? gameStats[trainer].underOdds
+                          : 0}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Divider />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography
+                        fontWeight={"bold"}
+                        fontSize={14}
+                        align="right"
+                        sx={{
+                          mr: "10px",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {gameStatsLoading
+                          ? 0
+                          : gameStats[trainer]
+                          ? gameStats[trainer].totalEncountersAvg
+                          : 0}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Divider />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography
+                        fontWeight={"bold"}
+                        fontSize={14}
+                        align="right"
+                        sx={{
+                          mr: "10px",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {gameStatsLoading
+                          ? 0
+                          : gameStats[trainer]
+                          ? gameStats[trainer].totalEncountersSum
+                          : 0}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Divider />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography
+                        fontWeight={"bold"}
+                        fontSize={14}
+                        align="right"
+                        sx={{
+                          mr: "10px",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {gameStatsLoading
+                          ? formatTime(0, false)
+                          : gameStats[trainer]
+                          ? formatTime(gameStats[trainer].totalTimeSum, false)
+                          : formatTime(0, false)}
+                      </Typography>
+                    </Grid>
+                    {window.innerWidth < 500 && (
+                      <Grid item xs={12}>
+                        <Divider />
+                      </Grid>
+                    )}
+                  </Grid>
+                  <Grid item>
+                    <Divider orientation="vertical" />
+                  </Grid>
+                </Fragment>
+              );
+            })}
+            <Grid item md={1.98} xs={5.95} container spacing={"12px"}>
+              <Grid item xs={12}>
+                <Box
+                  display={"flex"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                  height={"40px"}
+                  mx={"12px"}
+                  mt={"12px"}
+                  backgroundColor={colors.purpleAccent[200]}
+                >
+                  <Typography
+                    fontWeight={"bold"}
+                    fontSize={14}
+                    sx={{
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    TOTAL
+                  </Typography>
+                </Box>
+              </Grid>
+              <Grid item xs={12}>
+                <Divider />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography
+                  fontWeight={"bold"}
+                  fontSize={14}
+                  align="right"
+                  sx={{
+                    mr: "10px",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {gameStatsTotalLoading
+                    ? 0
+                    : gameStatsTotal
+                    ? gameStatsTotal.shinyAmount
+                    : 0}
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Divider />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography
+                  fontWeight={"bold"}
+                  fontSize={14}
+                  align="right"
+                  sx={{
+                    mr: "10px",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {gameStatsTotalLoading
+                    ? 0
+                    : gameStatsTotal
+                    ? gameStatsTotal.countedShinyAmount
+                    : 0}
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Divider />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography
+                  fontWeight={"bold"}
+                  fontSize={14}
+                  align="right"
+                  sx={{
+                    mr: "10px",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {gameStatsTotalLoading
+                    ? 0
+                    : gameStatsTotal
+                    ? gameStatsTotal.overOdds
+                    : 0}
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Divider />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography
+                  fontWeight={"bold"}
+                  fontSize={14}
+                  align="right"
+                  sx={{
+                    mr: "10px",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {gameStatsTotalLoading
+                    ? 0
+                    : gameStatsTotal
+                    ? gameStatsTotal.underOdds
+                    : 0}
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Divider />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography
+                  fontWeight={"bold"}
+                  fontSize={14}
+                  align="right"
+                  sx={{
+                    mr: "10px",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {gameStatsTotalLoading
+                    ? 0
+                    : gameStatsTotal
+                    ? gameStatsTotal.totalEncountersAvg
+                    : 0}
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Divider />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography
+                  fontWeight={"bold"}
+                  fontSize={14}
+                  align="right"
+                  sx={{
+                    mr: "10px",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {gameStatsTotalLoading
+                    ? 0
+                    : gameStatsTotal
+                    ? gameStatsTotal.totalEncountersSum
+                    : 0}
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Divider />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography
+                  fontWeight={"bold"}
+                  fontSize={14}
+                  align="right"
+                  sx={{
+                    mr: "10px",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {gameStatsTotalLoading
+                    ? formatTime(0, false)
+                    : gameStatsTotal
+                    ? formatTime(gameStatsTotal.totalTimeSum, false)
+                    : formatTime(0, false)}
+                </Typography>
+              </Grid>
+              {window.innerWidth < 500 && (
+                <Grid item xs={12}>
+                  <Divider />
+                </Grid>
+              )}
+            </Grid>
+            {window.innerWidth < 500 && (
+              <Grid item>
+                <Divider orientation="vertical" />
+              </Grid>
+            )}
+          </Grid>
+        </Box>
+      </Grid>
+    );
+  };
+
+  return (
+    <Box
+      p="20px"
+      width="100%"
+      backgroundColor={colors.primary[400]}
+      borderRadius="5px"
+      height="100%"
+    >
+      <Box
+        display="flex"
+        flexDirection={window.innerWidth < 500 ? "column" : "row"}
+        justifyContent="space-between"
+        alignItems={window.innerWidth < 500 ? "left" : "center"}
+        mb={"14px"}
+        height={window.innerWidth < 500 ? "60px" : "28px"}
+        gap={window.innerWidth < 500 ? "5px" : "0px"}
+      >
+        <Typography variant="h4" fontWeight={"bold"}>
+          GAME STATS
+        </Typography>
+        <Autocomplete
+          size="small"
+          autoHighlight
+          onChange={(e, value, reason) => {
+            if (reason === "selectOption") {
+              setGame(value);
+            } else {
+              setGame("");
+            }
+          }}
+          options={games ? games.data : []}
+          getOptionLabel={(option) => option.name}
+          renderInput={(params) => (
+            <TextField
+              sx={{ width: "240px" }}
+              color="secondary"
+              {...params}
+              label="Game"
+            />
+          )}
+        />
+      </Box>
+
+      <Grid container spacing={"12px"}>
+        <StatsDisplay data={["Joaquin", "Korneel", "Simon", "Stef"]} />
+      </Grid>
+    </Box>
+  );
+}

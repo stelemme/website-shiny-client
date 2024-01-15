@@ -25,7 +25,7 @@ export function calculateMeanEncounterTime(
 
   const sum = timeDifferences.reduce((total, diff) => total + diff, 0);
 
-  const meanDifference = sum / timeDifferences.length;
+  const meanDifference = sum / timeDifferences.length / increment;
 
   return meanDifference;
 }
@@ -122,9 +122,7 @@ export function calculateMultiplePercentage(encounterData) {
       item.totalEncounters
     );
 
-
-
-    totalRecalcValues += (8192 / newProb) * item.totalEncounters
+    totalRecalcValues += (8192 / newProb) * item.totalEncounters;
   });
 
   const percentage = (1 - ((8192 - 1) / 8192) ** totalRecalcValues) * 100;

@@ -11,6 +11,7 @@ import DateGraph from "../../components/Graphs/DateGraph";
 import ShiniesAmountLeaderboard from "../../components/Leaderboards/ShiniesAmountLeaderboard";
 import ShiniesCountedAmountLeaderboard from "../../components/Leaderboards/ShiniesCountedAmountLeaderboard";
 import AverageEncLeaderboard from "../../components/Leaderboards/AverageEncLeaderboard";
+import GameStats from "../../components/Stats/GameStats";
 
 export default function ShinyStats() {
   return (
@@ -42,6 +43,9 @@ export default function ShinyStats() {
           </Grid>
           <Grid item xl={12} xs={12}>
             <UserStats />
+          </Grid>
+          <Grid item xl={12} xs={12}>
+            <GameStats />
           </Grid>
           <Grid item xl={12} xs={12}>
             <DateGraph />
