@@ -12,6 +12,7 @@ export default function UserSelect({
   width = 120,
   size = "small",
   defaultValue = "All",
+  addAll = true,
 }) {
   const [userList, setUserList] = useState(["All"]);
 
@@ -19,9 +20,13 @@ export default function UserSelect({
 
   useEffect(() => {
     if (!userLoading) {
-      setUserList(["All", ...userData.data]);
+      if (addAll) {
+        setUserList(["All", ...userData.data]);
+      } else {
+        setUserList(userData.data)
+      }
     }
-  }, [userData, userLoading]);
+  }, [userData, userLoading, addAll]);
 
   return (
     <FormControl size={size} style={{ minWidth: width }} color="secondary">

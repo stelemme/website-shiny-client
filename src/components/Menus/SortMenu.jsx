@@ -19,12 +19,14 @@ export default function SortMenu({
   cookie,
   options,
 }) {
+  const foreverDate = new Date('9999-12-31T23:59:59');
+
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   const handleClick = (sortType) => () => {
-    Cookies.set(cookie, sortType)
+    Cookies.set(cookie, sortType, { expires: foreverDate })
     setAnchorEl(null);
   };
 

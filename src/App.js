@@ -22,9 +22,9 @@ import CustomSidebar from "./scenes/global/Sidebar";
 import Counters from "./scenes/counters";
 import Counter from "./scenes/counters/counterId";
 import CreateCounters from "./scenes/counters/create";
-import Pokédex from "./scenes/pokedex";
-import PokédexRegional from "./scenes/pokedex/regional";
-import GameId from "./scenes/pokedex/gameId";
+import Pokédex from "./scenes/info";
+import PokédexRegional from "./scenes/info/regional";
+import GameId from "./scenes/info/gameId";
 import Shiny from "./scenes/shiny";
 import ShinyId from "./scenes/shiny/shinyId";
 import ShinyTable from "./scenes/shiny/table";
@@ -33,9 +33,14 @@ import CreateShiny from "./scenes/shiny/create";
 import CreateFromCounter from "./scenes/shiny/createFromCounter";
 import ShinyStats from "./scenes/stats";
 import CounterStats from "./scenes/stats/counter";
+import User from "./scenes/info/user";
 import ErrorPage from "./scenes/global/ErrorPage";
 
-axios.defaults.baseURL = process.env.REACT_APP_PUBLIC_BACKEND;
+if (process.env.REACT_APP_ENV === 'dev') {
+  axios.defaults.baseURL = process.env.REACT_APP_BACKEND;
+} else {
+  axios.defaults.baseURL = process.env.REACT_APP_BACKEND_BUILD;
+}
 
 const getUser = async () => {
   return new Promise((resolve) => {
@@ -86,6 +91,13 @@ const router = createBrowserRouter([
           { index: true, Component: Counters },
           { path: "create", Component: CreateCounters },
           { path: ":counterId", Component: Counter },
+        ]
+      },
+      {
+        path: "/user",
+        loader: loader,
+        children: [
+          { path: ":trainer", Component: User },
         ]
       },
       {

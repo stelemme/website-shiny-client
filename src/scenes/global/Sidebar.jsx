@@ -19,6 +19,10 @@ import TableChartOutlinedIcon from '@mui/icons-material/TableChartOutlined';
 import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import FactCheckOutlinedIcon from '@mui/icons-material/FactCheckOutlined';
+import PermIdentityRoundedIcon from '@mui/icons-material/PermIdentityRounded';
+
+// Hooks
+import { useAuth } from "../../hooks/useAuth";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -50,6 +54,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 };
 
 export default function CustomSidebar() {
+  const { username } = useAuth();
   const domains = {
     "": "Home",
     shiny: "Shiny Pokémon",
@@ -219,6 +224,13 @@ export default function CustomSidebar() {
         >
           {isCollapsed ? "Info" : "Information"}
         </Typography>
+        <Item
+          title="User Data"
+          to={`/user/${username}`}
+          icon={<PermIdentityRoundedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
         <Item
           title="National Pokédex"
           to="/pokedex"

@@ -19,13 +19,14 @@ export default function SortMenu({
     : "All";
   const genFilter = Cookies.get(cookieGen) ? Cookies.get(cookieGen) : "All";
 
+  const foreverDate = new Date('9999-12-31T23:59:59');
   const handleTrainerChange = (e) => {
-    Cookies.set(cookieTrainer, e.target.value);
+    Cookies.set(cookieTrainer, e.target.value, { expires: foreverDate });
     setOpen(false);
   };
 
   const handleGenChange = (e) => {
-    Cookies.set(cookieGen, e.target.value);
+    Cookies.set(cookieGen, e.target.value, { expires: foreverDate });
     setOpen(false);
   };
 
