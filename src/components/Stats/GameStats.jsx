@@ -29,13 +29,13 @@ export default function GameStats() {
   const { data: games } = useGame("?action=select");
 
   const { isLoading: gameStatsLoading, data: gameStatsData } = useShiny(
-    `?action=gameStats&gameFilter=${game?.name}`
+    `action=gameStats&gameFilter=${game?.name}`
   );
-  const gameStats = gameStatsData?.data;
+  const gameStats = gameStatsData?.data[0];
 
   const { isLoading: gameStatsTotalLoading, data: gameStatsTotalData } =
-    useShiny(`?action=gameStatsTotal&gameFilter=${game?.name}`);
-  const gameStatsTotal = gameStatsTotalData?.data;
+    useShiny(`action=gameStatsTotal&gameFilter=${game?.name}`);
+  const gameStatsTotal = gameStatsTotalData?.data[0];
 
   const StatsDisplay = ({ data }) => {
     return (
@@ -259,7 +259,7 @@ export default function GameStats() {
                       >
                         {gameStatsLoading
                           ? 0
-                          : gameStats[trainer]
+                          : gameStats && gameStats[trainer]
                           ? gameStats[trainer].shinyAmount
                           : 0}
                       </Typography>
@@ -281,7 +281,7 @@ export default function GameStats() {
                       >
                         {gameStatsLoading
                           ? 0
-                          : gameStats[trainer]
+                          : gameStats && gameStats[trainer]
                           ? gameStats[trainer].countedShinyAmount
                           : 0}
                       </Typography>
@@ -303,7 +303,7 @@ export default function GameStats() {
                       >
                         {gameStatsLoading
                           ? 0
-                          : gameStats[trainer]
+                          : gameStats && gameStats[trainer]
                           ? gameStats[trainer].overOdds
                           : 0}
                       </Typography>
@@ -325,7 +325,7 @@ export default function GameStats() {
                       >
                         {gameStatsLoading
                           ? 0
-                          : gameStats[trainer]
+                          : gameStats && gameStats[trainer]
                           ? gameStats[trainer].underOdds
                           : 0}
                       </Typography>
@@ -347,7 +347,7 @@ export default function GameStats() {
                       >
                         {gameStatsLoading
                           ? 0
-                          : gameStats[trainer]
+                          : gameStats && gameStats[trainer]
                           ? gameStats[trainer].totalEncountersAvg
                           : 0}
                       </Typography>
@@ -369,7 +369,7 @@ export default function GameStats() {
                       >
                         {gameStatsLoading
                           ? 0
-                          : gameStats[trainer]
+                          : gameStats && gameStats[trainer]
                           ? gameStats[trainer].totalEncountersSum
                           : 0}
                       </Typography>
@@ -391,7 +391,7 @@ export default function GameStats() {
                       >
                         {gameStatsLoading
                           ? formatTime(0, false)
-                          : gameStats[trainer]
+                          : gameStats && gameStats[trainer]
                           ? formatTime(gameStats[trainer].totalTimeSum, false)
                           : formatTime(0, false)}
                       </Typography>

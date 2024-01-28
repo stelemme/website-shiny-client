@@ -34,7 +34,7 @@ export default function Shiny() {
     : "All";
 
   const { isLoading: shinyLoading, data: shinyData } =
-    useShiny("?preview=shiny");
+    useShiny("preview=shiny");
 
   const ShinyDisplay = ({ data, loading }) => {
     if (loading) {

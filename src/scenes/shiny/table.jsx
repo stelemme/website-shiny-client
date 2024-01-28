@@ -228,7 +228,7 @@ export default function ShinyTable() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const { isLoading: shinyLoading, data: shinyData } = useShiny("?sort=newest");
+  const { isLoading: shinyLoading, data: shinyData } = useShiny("sort=newest");
 
   const ShinyDisplay = ({ data, loading }) => {
     if (loading) {

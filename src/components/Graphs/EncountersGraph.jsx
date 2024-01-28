@@ -30,7 +30,7 @@ export default function EncountersGraph() {
   const [query, setQuery] = useState("");
   const [trainer, setTrainer] = useState("All");
 
-  const { data: shinyData } = useShiny(`?encountersList=true${query}`);
+  const { data: shinyData } = useShiny(`encountersList=true${query}`);
 
   const handleChange = (e) => {
     if (e.target.value === "All") {

@@ -36,7 +36,9 @@ import CounterStats from "./scenes/stats/counter";
 import User from "./scenes/info/user";
 import ErrorPage from "./scenes/global/ErrorPage";
 
-if (process.env.REACT_APP_ENV === 'dev') {
+console.log(process.env.REACT_APP_ENV)
+
+if (!process.env.REACT_APP_ENV || process.env.REACT_APP_ENV === 'dev') {
   axios.defaults.baseURL = process.env.REACT_APP_BACKEND;
 } else {
   axios.defaults.baseURL = process.env.REACT_APP_BACKEND_BUILD;

@@ -34,7 +34,7 @@ export default function DateGraph() {
   const colors = tokens(theme.palette.mode);
   const [year, setYear] = useState(currentYear);
 
-  const { data: shinyData } = useShiny(`?dateStats=${year}`);
+  const { data: shinyData } = useShiny(`dateStats=${year}`);
 
   const handleChange = (e) => {
     setYear(e.target.value);

@@ -26,8 +26,8 @@ export default function UserRecords() {
   const [query, setQuery] = useState("");
   const [trainer, setTrainer] = useState("All");
 
-  const { isLoading: userStatsLoading, data: userStatsData } = useShiny(`?action=userRecords&amount=1${query}`);
-  const userStats = userStatsData?.data
+  const { isLoading: userStatsLoading, data: userStatsData } = useShiny(`action=userRecords${query}`);
+  const userStats = userStatsData?.data[0]
 
   const handleChange = (e) => {
     if (e.target.value === "All") {
@@ -91,38 +91,38 @@ export default function UserRecords() {
       </Box>
       <Grid container spacing={"12px"}>
         <StatsDisplay
-          data={userStats?.first[0]}
-          dataStat={new Date(userStats?.first[0].endDate).toLocaleDateString()}
+          data={userStats?.first}
+          dataStat={new Date(userStats?.first.endDate).toLocaleDateString()}
           statName={"First Shiny Caught"}
           loading={userStatsLoading}
         />
         <StatsDisplay
-          data={userStats?.lowestEncounters[0]}
-          dataStat={userStats?.lowestEncounters[0].totalEncounters}
+          data={userStats?.lowestEncounters}
+          dataStat={userStats?.lowestEncounters.totalEncounters}
           statName={"Lowest #Encounters"}
           loading={userStatsLoading}
         />
         <StatsDisplay
-          data={userStats?.mostEncounters[0]}
-          dataStat={userStats?.mostEncounters[0].totalEncounters}
+          data={userStats?.mostEncounters}
+          dataStat={userStats?.mostEncounters.totalEncounters}
           statName={"Highest #Encounters"}
           loading={userStatsLoading}
         />
         <StatsDisplay
-          data={userStats?.shortestHunt[0]}
-          dataStat={formatTime(userStats?.shortestHunt[0].stats.totalHuntTime, false)}
+          data={userStats?.shortestHunt}
+          dataStat={formatTime(userStats?.shortestHunt.stats.totalHuntTime, false)}
           statName={"Shortest Hunt"}
           loading={userStatsLoading}
         />
         <StatsDisplay
-          data={userStats?.longestHunt[0]}
-          dataStat={formatTime(userStats?.longestHunt[0].stats.totalHuntTime, false)}
+          data={userStats?.longestHunt}
+          dataStat={formatTime(userStats?.longestHunt.stats.totalHuntTime, false)}
           statName={"Longest Hunt"}
           loading={userStatsLoading}
         />
         <StatsDisplay
-          data={userStats?.mostDays[0]}
-          dataStat={`${userStats?.mostDays[0].stats.daysHunting} days`}
+          data={userStats?.mostDays}
+          dataStat={`${userStats?.mostDays.stats.daysHunting} days`}
           statName={"Most Days Hunted"}
           loading={userStatsLoading}
         />

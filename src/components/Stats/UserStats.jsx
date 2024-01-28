@@ -18,11 +18,10 @@ export default function UserStats() {
   const [trainer, setTrainer] = useState("All");
 
   const { isLoading: userStatsLoading, data: userStatsData } = useShiny(
-    `?action=userStats${query}`
+    `action=userStats${query}`
   );
-  const userStats = userStatsData?.data;
+  const userStats = userStatsData?.data[0];
 
-  console.log(userStats);
   const handleChange = (e) => {
     if (e.target.value === "All") {
       setQuery("");

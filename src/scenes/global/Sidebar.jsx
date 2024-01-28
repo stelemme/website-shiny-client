@@ -225,7 +225,7 @@ export default function CustomSidebar() {
           {isCollapsed ? "Info" : "Information"}
         </Typography>
         <Item
-          title="User Data"
+          title="User Info"
           to={`/user/${username}`}
           icon={<PermIdentityRoundedIcon />}
           selected={selected}

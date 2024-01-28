@@ -24,7 +24,7 @@ export default function Search() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const { isLoading: shinyLoading, data: shinyData } = useShiny(
-    `?search=${searchParams.get("search") ? searchParams.get("search") : false}`
+    `search=${searchParams.get("search") ? searchParams.get("search") : false}`
   );
 
   const handleSubmit = (e) => {

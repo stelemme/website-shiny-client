@@ -1,63 +1,73 @@
-import { useQuery } from 'react-query'
-import axios from "axios"
+import { useQuery } from "react-query";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 /* ALL SHINY DATA */
+const groupShinies = Cookies.get("groupShinies")
+  ? Cookies.get("groupShinies")
+  : false;
+
+const groupCheck = groupShinies === "true";
+
 const fetchShinies = (query) => {
-  return axios.get(`/shiny${query}`)
-}
+  if (groupCheck) {
+    return axios.get(`/shiny?groupShinies=true&${query}`);
+  } else {
+    return axios.get(`/shiny?${query}`);
+  }
+};
 
 export const useShiny = (query) => {
-  return useQuery(["shinies", query], () => fetchShinies(query))
-}
+  return useQuery(["shinies", query], () => fetchShinies(query));
+};
 
 /* INDIVIDUAL SHINY DATA */
 const fetchShiny = (shinyId) => {
-  return axios.get(`/shiny/${shinyId}?action=noEncounters`)
-}
+  return axios.get(`/shiny/${shinyId}?action=noEncounters`);
+};
 
 export const useShinyId = (shinyId) => {
-  return useQuery(["shiny", shinyId], () => fetchShiny(shinyId))
-}
+  return useQuery(["shiny", shinyId], () => fetchShiny(shinyId));
+};
 
 /* ALL COUNTER DATA */
 const fetchCounters = (query) => {
-  return axios.get(`/counters${query}`)
-}
+  return axios.get(`/counters${query}`);
+};
 
 export const useCounter = (query, dependency = true) => {
   return useQuery(["counters", query], () => fetchCounters(query), {
-    enabled: !!dependency
-  })
-}
+    enabled: !!dependency,
+  });
+};
 
 /* ALL USER DATA */
 const fetchUsers = (query) => {
-  return axios.get(`/user${query}`)
-}
+  return axios.get(`/user${query}`);
+};
 
 export const useUser = (query) => {
-  return useQuery(["users", query], () => fetchUsers(query))
-}
-
+  return useQuery(["users", query], () => fetchUsers(query));
+};
 
 /* ALL GAME DATA */
 const fetchGames = (query) => {
-  return axios.get(`/game${query}`)
-}
+  return axios.get(`/game${query}`);
+};
 
 export const useGame = (query, dependency = true) => {
   return useQuery(["game", query], () => fetchGames(query), {
-    enabled: !!dependency
-  })
-}
+    enabled: !!dependency,
+  });
+};
 
 /* ALL POKEDEX DATA */
 const fetchPokedex = (query) => {
-  return axios.get(`/pokedex${query}`)
-}
+  return axios.get(`/pokedex${query}`);
+};
 
 export const usePokedex = (query, dependency = true) => {
   return useQuery(["pokedex", query], () => fetchPokedex(query), {
-    enabled: !!dependency
-  })
-}
+    enabled: !!dependency,
+  });
+};

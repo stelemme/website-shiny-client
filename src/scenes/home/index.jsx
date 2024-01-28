@@ -23,7 +23,7 @@ export default function Home() {
   );
 
   const { isLoading: latestShinyLoading, data: latestShiny } = useShiny(
-    `?trainers=true&preview=true&amount=1&sort=newest`
+    `action=latest`
   );
 
   const CountersDisplay = ({ data, loading, loadingArray = [1] }) => {

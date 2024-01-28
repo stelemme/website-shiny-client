@@ -63,19 +63,19 @@ export default function ShinyChecklist() {
   const { data: pokedex } = usePokedex(`?gen=${checklistGenFilter}`);
 
   const { data: shinyList } = useShiny(
-    `?shinyList=true&gen=${checklistGenFilter}`
+    `shinyList=true&gen=${checklistGenFilter}`
   );
   const { data: shinyListJoaquin } = useShiny(
-    `?shinyList=true&trainer=Joaquin&gen=${checklistGenFilter}`
+    `shinyList=true&trainer=Joaquin&gen=${checklistGenFilter}`
   );
   const { data: shinyListKorneel } = useShiny(
-    `?shinyList=true&trainer=Korneel&gen=${checklistGenFilter}`
+    `shinyList=true&trainer=Korneel&gen=${checklistGenFilter}`
   );
   const { data: shinyListSimon } = useShiny(
-    `?shinyList=true&trainer=Simon&gen=${checklistGenFilter}`
+    `shinyList=true&trainer=Simon&gen=${checklistGenFilter}`
   );
   const { data: shinyListStef } = useShiny(
-    `?shinyList=true&trainer=Stef&gen=${checklistGenFilter}`
+    `shinyList=true&trainer=Stef&gen=${checklistGenFilter}`
   );
 
   const graphData = [

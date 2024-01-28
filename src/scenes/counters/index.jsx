@@ -42,7 +42,7 @@ export default function Counters() {
   const { isLoading: ongoingCountersLoading, data: ongoingCountersData } =
     useCounter("?preview=true");
   const { isLoading: completedCountersLoading, data: completedCountersData } =
-    useShiny("?preview=counter&action=counters");
+    useShiny("preview=counter&action=counters");
 
   const CountersDisplay = ({ data, loading, isCompleted, filter }) => {
     if (loading) {
