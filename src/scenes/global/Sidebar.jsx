@@ -20,6 +20,7 @@ import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import FactCheckOutlinedIcon from '@mui/icons-material/FactCheckOutlined';
 import PermIdentityRoundedIcon from '@mui/icons-material/PermIdentityRounded';
+import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 
 // Hooks
 import { useAuth } from "../../hooks/useAuth";
@@ -233,8 +234,8 @@ export default function CustomSidebar() {
         />
         <Item
           title="Map"
-          to={`/Map`}
-          icon={<PermIdentityRoundedIcon />}
+          to={`/map`}
+          icon={<MapOutlinedIcon />}
           selected={selected}
           setSelected={setSelected}
         />
