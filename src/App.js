@@ -4,6 +4,7 @@ import { sidebarCollapse } from "./atoms";
 import { useState, useEffect } from "react";
 import { QueryClientProvider, QueryClient } from "react-query"
 import axios from "axios"
+import 'leaflet/dist/leaflet.css';
 
 // Firebase imports
 import { onAuthStateChanged } from 'firebase/auth';
@@ -34,6 +35,7 @@ import CreateFromCounter from "./scenes/shiny/createFromCounter";
 import ShinyStats from "./scenes/stats";
 import CounterStats from "./scenes/stats/counter";
 import User from "./scenes/info/user";
+import Map from "./scenes/shiny/map";
 import ErrorPage from "./scenes/global/ErrorPage";
 
 console.log(process.env.REACT_APP_ENV)
@@ -117,6 +119,13 @@ const router = createBrowserRouter([
         children: [
           { index: true, Component: ShinyStats },
           { path: "counter", Component: CounterStats },
+        ]
+      },
+      {
+        path: "/map",
+        loader: loader,
+        children: [
+          { index: true, Component: Map },
         ]
       },
       { path: "*", Component: ErrorPage },

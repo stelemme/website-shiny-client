@@ -232,6 +232,13 @@ export default function CustomSidebar() {
           setSelected={setSelected}
         />
         <Item
+          title="Map"
+          to={`/Map`}
+          icon={<PermIdentityRoundedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Item
           title="National Pokédex"
           to="/pokedex"
           icon={<CatchingPokemonTwoToneIcon />}
