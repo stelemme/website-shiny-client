@@ -3,94 +3,51 @@ import { Box, Grid, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 
 // leaflet imports
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import L from "leaflet";
+import { MapContainer, TileLayer } from "react-leaflet";
+import MarkerClusterGroup from 'react-leaflet-cluster'
 
 // Components imports
 import Header from "../../components/Header";
-import { JSXMarker } from "../../components/Map/CustomMarker";
-
-import {
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  Legend,
-} from "recharts";
-const data = [
-  { name: "Category 1", value: 25 },
-  { name: "Category 2", value: 75 },
-];
-
-const COLORS = ["#0088FE", "#00C49F"];
+import MarkerGraph from "../../components/Map/MarkerGraph";
 
 export default function Map() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const position = [51.09367751050823, 3.7150299371700846];
+  const positions = [
+    [51.09367751050823, 3.7150299371700846],
+    [51.09075080123518, 3.696881086713136],
+    [51.07544829685432, 3.7708830499475208],
+    [51.04310834431113, 3.723888864589091],
+    [51.11537424031271, 3.7118685769438855],
+    [51.0468296465177, 3.7386690335568953],
+  ];
 
   return (
     <Box mx="auto" my="20px">
       <Box display="flex" flexDirection="column" mx="20px">
         {/* HEADER */}
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Header title="IRL LOCATION MAP" subtitle="On the map you can find all the location where shinies have been caught." />
+          <Header
+            title="IRL LOCATION MAP"
+            subtitle="On the map you can find all the location where shinies have been caught."
+          />
         </Box>
 
-        <Grid container spacing={"20px"}>
-          <Grid item xs={12}>
+        <Grid container>
+          <Grid item xs={12} height={"100%"}>
             <MapContainer
-              center={position}
-              zoom={13}
-              style={{ height: "79vh", width: "100%" }}
+              center={[51.080158037454105, 3.7204157561604343]}
+              zoom={12}
+              style={{ height: "calc(100vh - 200px)", width: "100%" }}
             >
               <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 detectRetina={true}
               />
-              <JSXMarker
-                position={position}
-                iconOptions={{
-                  className: "jsx-marker",
-                  iconSize: [100, 100],
-                  iconAnchor: [50, 50],
-                }}
-              >
-                <Box
-                  style={{
-                    height: "100px",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <ResponsiveContainer width="100%" height={100}>
-                    <PieChart>
-                      <Pie
-                        data={data}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={20}
-                        outerRadius={40}
-                        fill="#8884d8"
-                        paddingAngle={5}
-                        dataKey="value"
-                      >
-                        {data.map((entry, index) => (
-                          <Cell
-                            key={`cell-${index}`}
-                            fill={COLORS[index % COLORS.length]}
-                          />
-                        ))}
-                      </Pie>
-                      <Tooltip />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </Box>
-              </JSXMarker>
+              {positions.map((position) => {
+                return <MarkerGraph position={position} />;
+              })}
             </MapContainer>
           </Grid>
         </Grid>

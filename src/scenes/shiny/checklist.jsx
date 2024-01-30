@@ -62,55 +62,61 @@ export default function ShinyChecklist() {
 
   const { data: pokedex } = usePokedex(`?gen=${checklistGenFilter}`);
 
-  const { data: shinyList } = useShiny(
+  const { data: shinyListData } = useShiny(
     `shinyList=true&gen=${checklistGenFilter}`
   );
-  const { data: shinyListJoaquin } = useShiny(
+  const { data: shinyListJoaquinData } = useShiny(
     `shinyList=true&trainer=Joaquin&gen=${checklistGenFilter}`
   );
-  const { data: shinyListKorneel } = useShiny(
+  const { data: shinyListKorneelData } = useShiny(
     `shinyList=true&trainer=Korneel&gen=${checklistGenFilter}`
   );
-  const { data: shinyListSimon } = useShiny(
+  const { data: shinyListSimonData } = useShiny(
     `shinyList=true&trainer=Simon&gen=${checklistGenFilter}`
   );
-  const { data: shinyListStef } = useShiny(
+  const { data: shinyListStefData } = useShiny(
     `shinyList=true&trainer=Stef&gen=${checklistGenFilter}`
   );
+
+  const shinyList = shinyListData?.data[0].names
+  const shinyListJoaquin = shinyListJoaquinData?.data[0]?.names
+  const shinyListKorneel = shinyListKorneelData?.data[0]?.names
+  const shinyListSimon = shinyListSimonData?.data[0]?.names
+  const shinyListStef = shinyListStefData?.data[0]?.names
 
   const graphData = [
     {
       name: "Joaquin",
       percentage: calculateOverlapPercentage(
-        shinyListJoaquin?.data,
+        shinyListJoaquin,
         pokedex?.data.map((pokemon) => pokemon.name)
       ),
     },
     {
       name: "Korneel",
       percentage: calculateOverlapPercentage(
-        shinyListKorneel?.data,
+        shinyListKorneel,
         pokedex?.data.map((pokemon) => pokemon.name)
       ),
     },
     {
       name: "Simon",
       percentage: calculateOverlapPercentage(
-        shinyListSimon?.data,
+        shinyListSimon,
         pokedex?.data.map((pokemon) => pokemon.name)
       ),
     },
     {
       name: "Stef",
       percentage: calculateOverlapPercentage(
-        shinyListStef?.data,
+        shinyListStef,
         pokedex?.data.map((pokemon) => pokemon.name)
       ),
     },
     {
       name: "All",
       percentage: calculateOverlapPercentage(
-        shinyList?.data,
+        shinyList,
         pokedex?.data.map((pokemon) => pokemon.name)
       ),
     },
@@ -281,10 +287,10 @@ export default function ShinyChecklist() {
             </Box>
           </Grid>
           {pokedex?.data.map((pokemon) => {
-            const joaquinCheck = shinyListJoaquin?.data.includes(pokemon.name);
-            const korneelCheck = shinyListKorneel?.data.includes(pokemon.name);
-            const simonCheck = shinyListSimon?.data.includes(pokemon.name);
-            const stefCheck = shinyListStef?.data.includes(pokemon.name);
+            const joaquinCheck = shinyListJoaquin.includes(pokemon.name);
+            const korneelCheck = shinyListKorneel.includes(pokemon.name);
+            const simonCheck = shinyListSimon.includes(pokemon.name);
+            const stefCheck = shinyListStef.includes(pokemon.name);
 
             const trueCount = [
               joaquinCheck,
@@ -393,7 +399,7 @@ export default function ShinyChecklist() {
                             style={{ color: colors.blueAccent[500] }}
                           />
                         )}
-                        {shinyList?.data.includes(pokemon.name) ? (
+                        {shinyList.includes(pokemon.name) ? (
                           <CheckBoxIcon
                             size="small"
                             style={{ color: colors.purpleAccent[500] }}
