@@ -2,25 +2,12 @@
 import { Box, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 
-
 // Components imports
 import { JSXMarker } from "../../components/Map/CustomMarker";
 
-import {
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-} from "recharts";
-const data = [
-  { name: "Joaquin", value: 25 },
-  { name: "Korneel", value: 25 },
-  { name: "Simon", value: 25 },
-  { name: "Stef", value: 50 },
-];
+import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from "recharts";
 
-export default function MarkerGraph({ position }) {
+export default function MarkerGraph({ position, data, name }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -36,6 +23,7 @@ export default function MarkerGraph({ position }) {
   return (
     <JSXMarker
       position={position}
+      name={name}
       iconOptions={{
         className: "jsx-marker",
         iconSize: [50, 50],
@@ -78,7 +66,7 @@ export default function MarkerGraph({ position }) {
             >
               {totalValue}
             </text>
-        <Tooltip />
+            <Tooltip />
           </PieChart>
         </ResponsiveContainer>
       </Box>
