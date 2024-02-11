@@ -2,6 +2,7 @@
 import { Box, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 
+
 // Components imports
 import { JSXMarker } from "../../components/Map/CustomMarker";
 

@@ -4,7 +4,7 @@ import { tokens } from "../../theme";
 
 // leaflet imports
 import { MapContainer, TileLayer } from "react-leaflet";
-import MarkerClusterGroup from 'react-leaflet-cluster'
+import MarkerClusterGroup from "react-leaflet-cluster";
 
 // Components imports
 import Header from "../../components/Header";
@@ -21,6 +21,8 @@ export default function Map() {
     [51.04310834431113, 3.723888864589091],
     [51.11537424031271, 3.7118685769438855],
     [51.0468296465177, 3.7386690335568953],
+    [51.044659034999604, 3.7267207734836907],
+    [51.04386044408767, 3.726018542393129],
   ];
 
   return (
@@ -37,7 +39,7 @@ export default function Map() {
         <Grid container>
           <Grid item xs={12} height={"100%"}>
             <MapContainer
-              center={[51.080158037454105, 3.7204157561604343]}
+              center={[50.080158037454105, 3.7204157561604343]}
               zoom={12}
               style={{ height: "calc(100vh - 200px)", width: "100%" }}
             >
@@ -45,9 +47,11 @@ export default function Map() {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 detectRetina={true}
               />
-              {positions.map((position) => {
-                return <MarkerGraph position={position} />;
-              })}
+              <MarkerClusterGroup>
+                {positions.map((position) => {
+                  return <MarkerGraph position={position} key={position} />;
+                })}
+              </MarkerClusterGroup>
             </MapContainer>
           </Grid>
         </Grid>

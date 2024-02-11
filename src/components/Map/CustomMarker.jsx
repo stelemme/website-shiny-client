@@ -1,36 +1,63 @@
-import React, { useState, useMemo } from "react";
-import { Marker } from "react-leaflet";
+import React, { useState, useMemo, useEffect } from "react";
+import { Marker, useMap } from "react-leaflet";
 import ReactDOM from "react-dom/client";
 import L from "leaflet";
 
 export const JSXMarker = React.forwardRef(
-  ({ children, iconOptions, ...rest }, refInParent) => {
-    const [ref, setRef] = useState();
+  ({ children, position, iconOptions, ...rest }, refInParent) => {
+    const [containerRef, setContainerRef] = useState(null);
+    const map = useMap();
 
     const node = useMemo(
-      () => (ref ? ReactDOM.createRoot(ref.getElement()) : null),
-      [ref]
+      () => (containerRef ? ReactDOM.createRoot(containerRef) : null),
+      [containerRef]
     );
 
+    useEffect(() => {
+      if (containerRef && node) {
+        node.render(children);
+      }
+    }, [containerRef, node, children]);
+
+    useEffect(() => {
+      if (refInParent) {
+        refInParent.current = containerRef;
+      }
+    }, [containerRef, refInParent]);
+
+    useEffect(() => {
+      const onZoomEnd = () => {
+        // Force rerender when zooming ends
+        setContainerRef(null);
+      };
+
+      const onMoveEnd = () => {
+        // Force rerender when panning ends
+        setContainerRef(null);
+      };
+
+      if (map) {
+        map.on('zoomend', onZoomEnd);
+        map.on('moveend', onMoveEnd);
+
+        return () => {
+          map.off('zoomend', onZoomEnd);
+          map.off('moveend', onMoveEnd);
+        };
+      }
+    }, [map]);
+
     return (
-      <>
-        {useMemo(
-          () => (
-            <Marker
-              {...rest}
-              ref={(r) => {
-                setRef(r);
-                if (refInParent) {
-                  refInParent.current = r;
-                }
-              }}
-              icon={L.divIcon(iconOptions)}
-            />
-          ),
-          []
-        )}
-        {ref && node.render(children)}
-      </>
+      <Marker
+        position={position}
+        {...rest}
+        ref={(r) => {
+          if (r) {
+            setContainerRef(r.getElement());
+          }
+        }}
+        icon={L.divIcon(iconOptions)}
+      />
     );
   }
 );
