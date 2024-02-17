@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./map.css";
 
 // Mui
 import {
@@ -25,6 +26,10 @@ import { tokens } from "../../theme";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 
+// leaflet imports
+import L from "leaflet";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+
 // Components
 import CustomDialog from "../../components/Dialogs/CustomDialog";
 
@@ -47,15 +52,28 @@ export default function ShinyId() {
   const [formsEdit, setFormsEdit] = useState([]);
   const [marks, setMarks] = useState(undefined);
   const [marksEdit, setMarksEdit] = useState([]);
+  const [geoLocations, setGeoLocations] = useState(undefined);
+  const [geoLocationEdit, setGeoLocationEdit] = useState([]);
+  const [geoLocationClear, setGeoLocationClear] = useState(false);
+  const [geoNewLocationClear, setGeoNewLocationClear] = useState(false);
 
   const [openDelete, setOpenDelete] = useState(false);
   const [openEvolutionEdit, setOpenEvolutionEdit] = useState(false);
   const [openMarksEdit, setOpenMarksEdit] = useState(false);
+  const [openGeoLocationEdit, setOpenGeoLocationEdit] = useState(false);
 
   const { data: shiny, refetch } = useShinyId(shinyId);
   const data = shiny?.data;
 
-  console.log(marksEdit);
+  let initialLocationState = {
+    name: "",
+    displayName: "",
+    position: [],
+  };
+
+  const [geoLocationData, setGeoLocationData] = useState(initialLocationState);
+
+  console.log(data)
 
   /* DELETE THE SHINY */
   const handleDeleteClick = () => {
@@ -99,30 +117,91 @@ export default function ShinyId() {
     setFormsEdit([]);
   };
 
+  /* EDIT THE GEOLOCATION */
+  const handleGeoLocationEdit = () => {
+    let fetchData = false;
+    if (geoLocationEdit.length !== 0) {
+      fetchData = JSON.stringify(geoLocationEdit);
+    } else if (
+      geoLocationData.name !== "" &&
+      geoLocationData.displayName !== ""
+    ) {
+      fetchData = JSON.stringify(geoLocationData);
+    }
+
+    if (fetchData) {
+      let config = {
+        method: "patch",
+        maxBodyLength: Infinity,
+        url: `/shiny/${shinyId}?action=geoLocationsEdit`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: fetchData,
+      };
+
+      axios
+        .request(config)
+        .then((response) => {
+          console.log(JSON.stringify(response.data));
+          setOpenGeoLocationEdit(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
+
   /* EDIT THE MARK */
   const handleMarksEdit = () => {
     let data = JSON.stringify({
-      "name": marksEdit["name"],
-      "sprite": marksEdit["sprite"]
+      name: marksEdit["name"],
+      sprite: marksEdit["sprite"],
     });
-    
+
     let config = {
-      method: 'patch',
+      method: "patch",
       maxBodyLength: Infinity,
       url: `/shiny/${shinyId}?action=marksEdit`,
-      headers: { 
-        'Content-Type': 'application/json'
+      headers: {
+        "Content-Type": "application/json",
       },
-      data : data
+      data: data,
     };
-    
-    axios.request(config)
-    .then((response) => {
-      refetch();
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+
+    axios
+      .request(config)
+      .then((response) => {
+        refetch();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const getGeoLocation = (newValues) => {
+    if (newValues.length === 2) {
+      let config = {
+        method: "get",
+        maxBodyLength: Infinity,
+        url: `https://nominatim.openstreetmap.org/reverse?lat=${newValues[0]}&lon=${newValues[1]}&format=json`,
+        headers: {},
+      };
+
+      axios
+        .request(config)
+        .then((response) => {
+          setGeoLocationData((prevState) => {
+            return {
+              ...prevState,
+              displayName: response.data.display_name,
+            };
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   const InfoDisplay = ({ infoCat, infoName, xs1 = 5.5, xs2 = 6.5 }) => {
@@ -579,6 +658,203 @@ export default function ShinyId() {
                     color={colors.grey[100]}
                     fontWeight="bold"
                   >
+                    GEO LOCATION
+                  </Typography>
+                  {username === data.trainer && (
+                    <Box ml="10px" display="flex">
+                      <IconButton
+                        size="small"
+                        onClick={() => {
+                          axios["get"](`/shiny?geoLocationList=true`).then(
+                            (res) => {
+                              const geoLocationsData =
+                                res.data[0]["geoLocation"];
+                              setGeoLocations(geoLocationsData);
+                            }
+                          );
+                          setOpenGeoLocationEdit(true);
+                        }}
+                      >
+                        <EditRoundedIcon />
+                      </IconButton>
+                      <Dialog
+                        open={openGeoLocationEdit}
+                        onClose={() => setOpenGeoLocationEdit(false)}
+                      >
+                        <DialogTitle fontWeight="bold" variant="h4">
+                          Edit the Geo Location
+                        </DialogTitle>
+                        <DialogContent>
+                          <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                              <Typography fontWeight="bold">
+                                Existing locations
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                              <Autocomplete
+                                key={geoLocationClear}
+                                disabled={!geoLocations}
+                                autoHighlight
+                                onChange={(e, value, reason) => {
+                                  if (reason === "selectOption") {
+                                    setGeoLocationEdit(value);
+                                    setGeoLocationData(initialLocationState);
+                                    setGeoNewLocationClear(
+                                      (prevState) => !prevState
+                                    );
+                                  }
+                                }}
+                                options={geoLocations ? geoLocations : []}
+                                getOptionLabel={(option) => option.name}
+                                renderInput={(params) => (
+                                  <TextField
+                                    fullWidth
+                                    color="secondary"
+                                    {...params}
+                                    label="Existing Geo Locations"
+                                  />
+                                )}
+                              />
+                            </Grid>
+                            <Grid item xs={12}>
+                              <Typography fontWeight="bold">
+                                A new location
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                              <TextField
+                                fullWidth
+                                color="secondary"
+                                label="Location Name"
+                                value={geoLocationData.name}
+                                onChange={(e) => {
+                                  setGeoLocationEdit([]);
+                                  setGeoLocationClear(
+                                    (prevState) => !prevState
+                                  );
+                                  setGeoLocationData((prevState) => {
+                                    return {
+                                      ...prevState,
+                                      ...{
+                                        name: e.target.value,
+                                      },
+                                    };
+                                  });
+                                }}
+                              />
+                            </Grid>
+                            <Grid item xs={12}>
+                              <TextField
+                                fullWidth
+                                color="secondary"
+                                label="Latitude, Longitude"
+                                key={geoNewLocationClear}
+                                onChange={(e) => {
+                                  setGeoLocationEdit([]);
+                                  setGeoLocationClear(
+                                    (prevState) => !prevState
+                                  );
+                                  const newValues = e.target.value
+                                    .split(",")
+                                    .map((value) => Number(value.trim()));
+                                  setGeoLocationData((prevState) => {
+                                    return {
+                                      ...prevState,
+                                      position: newValues,
+                                    };
+                                  });
+                                  getGeoLocation(newValues);
+                                }}
+                              />
+                            </Grid>
+                            <Grid item xs={12}>
+                              <Typography>
+                                Address: {geoLocationData.displayName}
+                              </Typography>
+                            </Grid>
+                          </Grid>
+                        </DialogContent>
+                        <DialogActions
+                          style={{ justifyContent: "right", gap: "10px" }}
+                          sx={{ mb: "15px", mr: "15px" }}
+                        >
+                          <Button
+                            variant="contained"
+                            color="neutral"
+                            style={{ color: "white" }}
+                            onClick={() => setOpenGeoLocationEdit(false)}
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            variant="contained"
+                            color="neutral"
+                            style={{ color: "white" }}
+                            onClick={handleGeoLocationEdit}
+                            autoFocus
+                          >
+                            Add
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
+                    </Box>
+                  )}
+                </Box>
+              </Grid>
+              {data.geoLocation.name && (
+                <Grid item xs={12}>
+                  <MapContainer
+                    center={data.geoLocation.position}
+                    zoom={16}
+                    zoomControl={false}
+                    scrollWheelZoom={false}
+                    dragging={false}
+                    touchZoom={false}
+                    doubleClickZoom={false}
+                    style={{ height: "200px", width: "100%" }}
+                  >
+                    <TileLayer
+                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                      detectRetina={true}
+                    />
+                    <Marker
+                      position={data.geoLocation.position}
+                      icon={L.divIcon({
+                        html: ``,
+                        className: "marker marker_all",
+                        iconSize: L.point(15, 15, true),
+                      })}
+                    >
+                      <Popup>
+                        <Typography fontWeight="bold">
+                          {data.geoLocation.name}
+                        </Typography>
+                        <Typography gutterBottom>
+                          {data.geoLocation.displayName}
+                        </Typography>
+                      </Popup>
+                    </Marker>
+                  </MapContainer>
+                </Grid>
+              )}
+              <Grid item xs={12}>
+                <Divider />
+              </Grid>
+            </Grid>
+            <Grid item xs={12} container spacing={2}>
+              <Grid item xs={12}>
+                <Box
+                  mb="5px"
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  <Typography
+                    variant="h5"
+                    color={colors.grey[100]}
+                    fontWeight="bold"
+                  >
                     MARKS
                   </Typography>
                   {username === data.trainer && (
@@ -590,8 +866,11 @@ export default function ShinyId() {
                             `/game?name=${data.game}&action=marks`
                           ).then((res) => {
                             const allMarks = res.data[0]["marks"];
-                            const filteredMarks = allMarks.filter(mark =>
-                              !data?.marks.some(excluded => excluded.name === mark.name)
+                            const filteredMarks = allMarks.filter(
+                              (mark) =>
+                                !data?.marks.some(
+                                  (excluded) => excluded.name === mark.name
+                                )
                             );
                             setMarks(filteredMarks);
                           });

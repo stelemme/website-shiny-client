@@ -11,374 +11,8 @@ import MarkerClusterGroup from "react-leaflet-cluster";
 // Components imports
 import Header from "../../components/Header";
 
-var joaquinLocations = [
-  {
-    id: 1,
-    position: [51.07544829685432, 3.7708830499475208],
-    trainer: "Joaquin",
-    name: "Huis Korneel",
-  },
-  {
-    id: 1,
-    position: [51.0468296465177, 3.7386690335568953],
-    trainer: "Joaquin",
-    name: "Kot Stef",
-  },
-  {
-    id: 1,
-    position: [51.0468296465177, 3.7386690335568953],
-    trainer: "Joaquin",
-    name: "Kot Stef",
-  },
-  {
-    id: 1,
-    position: [51.0468296465177, 3.7386690335568953],
-    trainer: "Joaquin",
-    name: "Kot Stef",
-  },
-  {
-    id: 1,
-    position: [51.09075080123518, 3.696881086713136],
-    trainer: "Joaquin",
-    name: "Huis Joaquin",
-  },
-  {
-    id: 1,
-    position: [51.09075080123518, 3.696881086713136],
-    trainer: "Joaquin",
-    name: "Huis Joaquin",
-  },
-];
-var korneelLocations = [
-  {
-    id: 1,
-    position: [51.07544829685432, 3.7708830499475208],
-    trainer: "Korneel",
-    name: "Huis Korneel",
-  },
-  {
-    id: 1,
-    position: [51.09075080123518, 3.696881086713136],
-    trainer: "Korneel",
-    name: "Huis Joaquin",
-  },
-  {
-    id: 1,
-    position: [51.09075080123518, 3.696881086713136],
-    trainer: "Korneel",
-    name: "Huis Joaquin",
-  },
-  {
-    id: 1,
-    position: [51.0468296465177, 3.7386690335568953],
-    trainer: "Joaquin",
-    name: "Kot Stef",
-  },
-  {
-    id: 1,
-    position: [51.0468296465177, 3.7386690335568953],
-    trainer: "Joaquin",
-    name: "Kot Stef",
-  },
-  {
-    id: 1,
-    position: [51.0468296465177, 3.7386690335568953],
-    trainer: "Joaquin",
-    name: "Kot Stef",
-  },
-  {
-    id: 1,
-    position: [51.0468296465177, 3.7386690335568953],
-    trainer: "Joaquin",
-    name: "Kot Stef",
-  },
-];
-var simonLocations = [
-  {
-    id: 1,
-    position: [51.07544829685432, 3.7708830499475208],
-    trainer: "Simon",
-    name: "Huis Korneel",
-  },
-  {
-    id: 1,
-    position: [51.09075080123518, 3.696881086713136],
-    trainer: "Simon",
-    name: "Huis Joaquin",
-  },
-  {
-    id: 1,
-    position: [51.09075080123518, 3.696881086713136],
-    trainer: "Simon",
-    name: "Huis Joaquin",
-  },
-  {
-    id: 1,
-    position: [51.09367751050823, 3.7150299371700846],
-    trainer: "Simon",
-    name: "Huis Stef",
-  },
-  {
-    id: 1,
-    position: [51.0468296465177, 3.7386690335568953],
-    trainer: "Joaquin",
-    name: "Kot Stef",
-  },
-  {
-    id: 1,
-    position: [51.0468296465177, 3.7386690335568953],
-    trainer: "Joaquin",
-    name: "Kot Stef",
-  },
-  {
-    id: 1,
-    position: [51.0468296465177, 3.7386690335568953],
-    trainer: "Joaquin",
-    name: "Kot Stef",
-  },
-  {
-    id: 1,
-    position: [51.04310834431113, 3.723888864589091],
-    trainer: "Simon",
-    name: "Kot Simon 2",
-  },
-  {
-    id: 1,
-    position: [51.04310834431113, 3.723888864589091],
-    trainer: "Simon",
-    name: "Kot Simon 2",
-  },
-  {
-    id: 1,
-    position: [51.04310834431113, 3.723888864589091],
-    trainer: "Simon",
-    name: "Kot Simon 2",
-  },
-  {
-    id: 1,
-    position: [51.04310834431113, 3.723888864589091],
-    trainer: "Simon",
-    name: "Kot Simon 2",
-  },
-  {
-    id: 1,
-    position: [51.04310834431113, 3.723888864589091],
-    trainer: "Simon",
-    name: "Kot Simon 2",
-  },
-  {
-    id: 1,
-    position: [51.04310834431113, 3.723888864589091],
-    trainer: "Simon",
-    name: "Kot Simon 2",
-  },
-  {
-    id: 1,
-    position: [51.04310834431113, 3.723888864589091],
-    trainer: "Simon",
-    name: "Kot Simon 2",
-  },
-];
-var stefLocations = [
-  {
-    id: 1,
-    position: [51.07544829685432, 3.7708830499475208],
-    trainer: "Stef",
-    name: "Huis Korneel",
-  },
-  {
-    id: 1,
-    position: [51.09075080123518, 3.696881086713136],
-    trainer: "Stef",
-    name: "Huis Joaquin",
-  },
-  {
-    id: 1,
-    position: [51.09075080123518, 3.696881086713136],
-    trainer: "Stef",
-    name: "Huis Joaquin",
-  },
-  {
-    id: 1,
-    position: [51.09367751050823, 3.7150299371700846],
-    trainer: "Stef",
-    name: "Huis Stef",
-  },
-  {
-    id: 1,
-    position: [51.09367751050823, 3.7150299371700846],
-    trainer: "Stef",
-    name: "Huis Stef",
-  },
-  {
-    id: 1,
-    position: [51.09367751050823, 3.7150299371700846],
-    trainer: "Stef",
-    name: "Huis Stef",
-  },
-  {
-    id: 1,
-    position: [51.09367751050823, 3.7150299371700846],
-    trainer: "Stef",
-    name: "Huis Stef",
-  },
-  {
-    id: 1,
-    position: [51.044659034999604, 3.7267207734836907],
-    trainer: "Stef",
-    name: "Technicum",
-  },
-  {
-    id: 1,
-    position: [51.11537424031271, 3.7118685769438855],
-    trainer: "Stef",
-    name: "Huis Léonie",
-  },
-  {
-    id: 1,
-    position: [51.11537424031271, 3.7118685769438855],
-    trainer: "Stef",
-    name: "Huis Léonie",
-  },
-  {
-    id: 1,
-    position: [51.11537424031271, 3.7118685769438855],
-    trainer: "Stef",
-    name: "Huis Léonie",
-  },
-  {
-    id: 1,
-    position: [51.11537424031271, 3.7118685769438855],
-    trainer: "Stef",
-    name: "Huis Léonie",
-  },
-  {
-    id: 1,
-    position: [51.11537424031271, 3.7118685769438855],
-    trainer: "Stef",
-    name: "Huis Léonie",
-  },
-  {
-    id: 1,
-    position: [51.11537424031271, 3.7118685769438855],
-    trainer: "Stef",
-    name: "Huis Léonie",
-  },
-  {
-    id: 1,
-    position: [51.11537424031271, 3.7118685769438855],
-    trainer: "Stef",
-    name: "Huis Léonie",
-  },
-  {
-    id: 1,
-    position: [51.11537424031271, 3.7118685769438855],
-    trainer: "Stef",
-    name: "Huis Léonie",
-  },
-  {
-    id: 1,
-    position: [51.11537424031271, 3.7118685769438855],
-    trainer: "Stef",
-    name: "Huis Léonie",
-  },
-  {
-    id: 1,
-    position: [51.0468296465177, 3.7386690335568953],
-    trainer: "Joaquin",
-    name: "Kot Stef",
-  },
-  {
-    id: 1,
-    position: [51.0468296465177, 3.7386690335568953],
-    trainer: "Joaquin",
-    name: "Kot Stef",
-  },
-  {
-    id: 1,
-    position: [51.0468296465177, 3.7386690335568953],
-    trainer: "Joaquin",
-    name: "Kot Stef",
-  },
-  {
-    id: 1,
-    position: [51.0468296465177, 3.7386690335568953],
-    trainer: "Joaquin",
-    name: "Kot Stef",
-  },
-  {
-    id: 1,
-    position: [51.0468296465177, 3.7386690335568953],
-    trainer: "Joaquin",
-    name: "Kot Stef",
-  },
-  {
-    id: 1,
-    position: [51.0468296465177, 3.7386690335568953],
-    trainer: "Joaquin",
-    name: "Kot Stef",
-  },
-  {
-    id: 1,
-    position: [51.0468296465177, 3.7386690335568953],
-    trainer: "Joaquin",
-    name: "Kot Stef",
-  },
-  {
-    id: 1,
-    position: [51.0468296465177, 3.7386690335568953],
-    trainer: "Joaquin",
-    name: "Kot Stef",
-  },
-  {
-    id: 1,
-    position: [51.0468296465177, 3.7386690335568953],
-    trainer: "Joaquin",
-    name: "Kot Stef",
-  },
-  {
-    id: 1,
-    position: [51.0468296465177, 3.7386690335568953],
-    trainer: "Joaquin",
-    name: "Kot Stef",
-  },
-  {
-    id: 1,
-    position: [51.0468296465177, 3.7386690335568953],
-    trainer: "Joaquin",
-    name: "Kot Stef",
-  },
-  {
-    id: 1,
-    position: [51.0468296465177, 3.7386690335568953],
-    trainer: "Joaquin",
-    name: "Kot Stef",
-  },
-  {
-    id: 1,
-    position: [51.0468296465177, 3.7386690335568953],
-    trainer: "Joaquin",
-    name: "Kot Stef",
-  },
-  {
-    id: 1,
-    position: [51.0468296465177, 3.7386690335568953],
-    trainer: "Joaquin",
-    name: "Kot Stef",
-  },
-  {
-    id: 1,
-    position: [51.0468296465177, 3.7386690335568953],
-    trainer: "Joaquin",
-    name: "Kot Stef",
-  },
-  {
-    id: 1,
-    position: [51.0468296465177, 3.7386690335568953],
-    trainer: "Joaquin",
-    name: "Kot Stef",
-  },
-];
+// Hooks
+import { useShiny } from "../../hooks/useData";
 
 const createClusterCustomIcon = function (cluster) {
   const allMarkers = cluster.getAllChildMarkers();
@@ -443,6 +77,24 @@ const createClusterCustomIcon = function (cluster) {
 };
 
 export default function Map() {
+  const { data: joaquinLocationsData } = useShiny(
+    `geoMapLocations=true&trainer=Joaquin`
+  );
+  const { data: korneelLocationsData } = useShiny(
+    `geoMapLocations=true&trainer=Korneel`
+  );
+  const { data: simonLocationsData } = useShiny(
+    `geoMapLocations=true&trainer=Simon`
+  );
+  const { data: stefLocationsData } = useShiny(
+    `geoMapLocations=true&trainer=Stef`
+  );
+
+  const joaquinLocations = joaquinLocationsData?.data;
+  const korneelLocations = korneelLocationsData?.data;
+  const simonLocations = simonLocationsData?.data;
+  const stefLocations = stefLocationsData?.data;
+
   return (
     <Box mx="auto" my="20px">
       <Box display="flex" flexDirection="column" mx="20px">
@@ -467,14 +119,14 @@ export default function Map() {
               />
               <MarkerClusterGroup
                 iconCreateFunction={createClusterCustomIcon}
-                maxClusterRadius={50}
+                maxClusterRadius={30}
               >
-                {joaquinLocations.map((location) => {
+                {joaquinLocations?.map((location) => {
                   return (
                     <Marker
-                      key={location.position}
+                      key={location._id}
                       alt="joaquin"
-                      position={location.position}
+                      position={location.geoLocation.position}
                       icon={L.divIcon({
                         html: ``,
                         className: "marker marker_joaquin",
@@ -482,18 +134,20 @@ export default function Map() {
                       })}
                     >
                       <Popup className="popup popup_booking">
-                        <div className="popup__title">{location.name}</div>
+                        <div className="popup__title">
+                          {location.geoLocation.name}
+                        </div>
                         <div className="popup__info">{location.trainer}</div>
                       </Popup>
                     </Marker>
                   );
                 })}
-                {korneelLocations.map((location) => {
+                {korneelLocations?.map((location) => {
                   return (
                     <Marker
-                      key={location.position}
+                      key={location._id}
                       alt="korneel"
-                      position={location.position}
+                      position={location.geoLocation.position}
                       icon={L.divIcon({
                         html: ``,
                         className: "marker marker_korneel",
@@ -501,18 +155,20 @@ export default function Map() {
                       })}
                     >
                       <Popup className="popup popup_supplier">
-                        <div className="popup__title">{location.name}</div>
+                        <div className="popup__title">
+                          {location.geoLocation.name}
+                        </div>
                         <div className="popup__info">{location.trainer}</div>
                       </Popup>
                     </Marker>
                   );
                 })}
-                {simonLocations.map((location) => {
+                {simonLocations?.map((location) => {
                   return (
                     <Marker
-                      key={location.position}
+                      key={location._id}
                       alt="simon"
-                      position={location.position}
+                      position={location.geoLocation.position}
                       icon={L.divIcon({
                         html: ``,
                         className: "marker marker_simon",
@@ -520,18 +176,20 @@ export default function Map() {
                       })}
                     >
                       <Popup className="popup popup_supplier">
-                        <div className="popup__title">{location.name}</div>
+                        <div className="popup__title">
+                          {location.geoLocation.name}
+                        </div>
                         <div className="popup__info">{location.trainer}</div>
                       </Popup>
                     </Marker>
                   );
                 })}
-                {stefLocations.map((location) => {
+                {stefLocations?.map((location) => {
                   return (
                     <Marker
-                      key={location.position}
+                      key={location._id}
                       alt="stef"
-                      position={location.position}
+                      position={location.geoLocation.position}
                       icon={L.divIcon({
                         html: ``,
                         className: "marker marker_stef",
@@ -539,7 +197,9 @@ export default function Map() {
                       })}
                     >
                       <Popup className="popup popup_supplier">
-                        <div className="popup__title">{location.name}</div>
+                        <div className="popup__title">
+                          {location.geoLocation.name}
+                        </div>
                         <div className="popup__info">{location.trainer}</div>
                       </Popup>
                     </Marker>

@@ -1,10 +1,21 @@
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 // mui imports
 import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 
-export default function ShinyCard({ id, name, gameSprite, dir, monSprite, trainer, bgColor='400', imgSize="80px"}) {
+export default function ShinyCard({
+  id,
+  name,
+  gameSprite,
+  dir,
+  monSprite,
+  trainer,
+  IRLLocation,
+  bgColor = "400",
+  imgSize = "80px",
+}) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
@@ -13,7 +24,6 @@ export default function ShinyCard({ id, name, gameSprite, dir, monSprite, traine
   if (trainer) {
     trainerHeight = "50";
   }
-
 
   return (
     <Box
@@ -33,15 +43,15 @@ export default function ShinyCard({ id, name, gameSprite, dir, monSprite, traine
         {/* GAME IMAGE */}
         <Box
           display="inline-flex"
-          width={(window.innerWidth < 400) ? "60px" : "90px"}
-          minWidth={(window.innerWidth < 400) ? "60px" : "90px"}
+          width={window.innerWidth < 400 ? "60px" : "90px"}
+          minWidth={window.innerWidth < 400 ? "60px" : "90px"}
           justifyContent="center"
           alignItems="center"
         >
           <img
             alt=""
             src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/games/${gameSprite}.png`}
-            height={(window.innerWidth < 400) ? "22px" : "33px"}
+            height={window.innerWidth < 400 ? "22px" : "33px"}
           />
         </Box>
         {/* COUNTER NAME */}
@@ -49,7 +59,7 @@ export default function ShinyCard({ id, name, gameSprite, dir, monSprite, traine
           <Typography fontWeight={"bold"} color={colors.grey[400]}>
             {trainer}
           </Typography>
-          <Box display="flex" alignItems="center" height={trainerHeight} >
+          <Box display="flex" alignItems="center" height={trainerHeight}>
             <Typography
               fontWeight={"bold"}
               variant="h5"
@@ -66,11 +76,7 @@ export default function ShinyCard({ id, name, gameSprite, dir, monSprite, traine
         </Box>
 
         {/* SHINY SPRITE */}
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
+        <Box display="flex" alignItems="center" justifyContent="center">
           <img
             alt=""
             src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-all-home/${monSprite}.png`}
@@ -79,5 +85,5 @@ export default function ShinyCard({ id, name, gameSprite, dir, monSprite, traine
         </Box>
       </Box>
     </Box>
-  )
+  );
 }

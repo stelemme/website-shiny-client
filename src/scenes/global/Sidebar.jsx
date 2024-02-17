@@ -218,6 +218,13 @@ export default function CustomSidebar() {
           selected={selected}
           setSelected={setSelected}
         />
+        <Item
+          title="Shiny Map"
+          to={`/map`}
+          icon={<MapOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
         <Typography
           variant="h6"
           color={colors.grey[300]}
@@ -229,13 +236,6 @@ export default function CustomSidebar() {
           title="User Info"
           to={`/user/${username}`}
           icon={<PermIdentityRoundedIcon />}
-          selected={selected}
-          setSelected={setSelected}
-        />
-        <Item
-          title="Map"
-          to={`/map`}
-          icon={<MapOutlinedIcon />}
           selected={selected}
           setSelected={setSelected}
         />

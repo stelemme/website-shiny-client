@@ -17,6 +17,9 @@
 .marker_stef {
   background: #2196f3;
 }
+.marker_all {
+  background: #8140b9;
+}
 
 .marker_cluster {
   position: relative;

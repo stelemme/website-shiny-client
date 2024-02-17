@@ -59,6 +59,7 @@ export default function Shiny() {
                 dir={item.sprite.dir}
                 monSprite={item.sprite.pokemon}
                 trainer={item.trainer}
+                IRLLocation={item.IRLLocation}
               />
             </div>
           );
