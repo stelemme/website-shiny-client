@@ -101,7 +101,7 @@ export default function Map() {
         {/* HEADER */}
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Header
-            title="IRL LOCATION MAP"
+            title="GEO LOCATION MAP"
             subtitle="On the map you can find all the location where shinies have been caught."
           />
         </Box>

@@ -868,6 +868,14 @@ export default function Counter() {
                               )
                             : "Undefined"}
                         </Typography>
+                        <Typography fontWeight={"bold"} textAlign={"right"}>
+                          Enc./Hour
+                        </Typography>
+                        <Typography textAlign={"right"}>
+                        {timeDifference
+                            ? Math.round(3600 / timeDifference)
+                            : "Undefined"}
+                        </Typography>
                       </Grid>
                     </Grid>
                   </DialogContent>

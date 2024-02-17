@@ -11,6 +11,9 @@ Shiny Map:
   - Op de individuele Shiny pagina is een kleine kaart toegevoegd met geo locatie. Op deze pagina kan de locatie ook worden aangepast.
   - De create forms zijn aangepast zodat ook hier de geo locatie kan worden ingevuld.
 
+Counter:
+  - Encounters per uur stat is toegevoegd aan informatie.
+
 ### Version 0.1.0 (15.02.2024)
 
 De website voor het bijhouden van changelogs. 
