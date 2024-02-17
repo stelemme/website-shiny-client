@@ -6,6 +6,7 @@ import { format } from "date-fns";
 // Mui
 import {
   Box,
+  Typography,
   TextField,
   Autocomplete,
   FormControl,
@@ -54,12 +55,18 @@ const natures = [
   "Sassy",
   "Serious",
   "Timid",
-  "-"
+  "-",
 ];
 
 export default function CreateFromCounter() {
   const { counterId } = useParams();
   const navigate = useNavigate();
+
+  let initialLocationState = {
+    name: "",
+    displayName: "",
+    position: [],
+  };
 
   let initialState = {
     name: "Pokémon Loading...",
@@ -74,7 +81,7 @@ export default function CreateFromCounter() {
     evolutions: [],
     forms: [],
     nickname: "",
-    IRLLocation: "",
+    geoLocation: initialLocationState,
     level: null,
     gender: "genderless",
   };
@@ -84,6 +91,15 @@ export default function CreateFromCounter() {
   const [pokemonsList, setPokemonsList] = useState(undefined);
   const [locationsList, setLocationsList] = useState(undefined);
   const [ballList, setBallList] = useState(undefined);
+  const [geoLocationsList, setGeoLocationsList] = useState(undefined);
+  const [newGeoLocation, setNewGeoLocation] = useState(false);
+
+  useEffect(() => {
+    axios["get"](`/shiny?geoLocationList=true`).then((res) => {
+      const geoLocationsData = res.data[0]["geoLocation"];
+      setGeoLocationsList(geoLocationsData);
+    });
+  }, []);
 
   useEffect(() => {
     const fetchCounterData = async () => {
@@ -168,132 +184,161 @@ export default function CreateFromCounter() {
         .post(`/shiny`, data)
         .then((res) => {
           console.log("test", res.data);
-          axios["delete"](`/counters/${counterId}`)
-            .catch((err) => {
-              console.log(err);
-            });
+          axios["delete"](`/counters/${counterId}`).catch((err) => {
+            console.log(err);
+          });
           navigate(`/shiny/${res.data._id}`);
         })
         .catch((err) => {
           console.log(err);
         });
-
-
     }
   }, [data]);
 
   console.log(data);
 
+  const getGeoLocation = (newValues) => {
+    if (newValues.length === 2) {
+      let config = {
+        method: "get",
+        maxBodyLength: Infinity,
+        url: `https://nominatim.openstreetmap.org/reverse?lat=${newValues[0]}&lon=${newValues[1]}&format=json`,
+        headers: {},
+      };
+
+      axios
+        .request(config)
+        .then((response) => {
+          setData((prevState) => {
+            return {
+              ...prevState,
+              ...{
+                geoLocation: {
+                  ...prevState.geoLocation,
+                  displayName: response.data.display_name,
+                },
+              },
+            };
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const newStats = {
-      probability: calculateProb(
-        data.method.odds,
-        data.method.rolls,
-        data.method.shinyCharm,
-        data.method?.charmRolls,
-        data.totalEncounters,
-        data.method?.function,
-        data.method?.searchLevel
-      ),
-      percentage: calculatePercentage(
-        data.totalEncounters,
-        data.method.odds,
-        data.method.rolls,
-        data.method.shinyCharm,
-        data.method?.charmRolls,
-        data.method?.function,
-        data.method?.searchLevel
-      ),
-      meanEncounterTime: calculateMeanEncounterTime(
-        data.encounters,
-        data.upperTimeThreshold,
-        data.lowerTimeThreshold,
-        data.increment
-      ),
-      daysHunting: calculateDateDifference(data.endDate, data.startDate),
-      totalHuntTime: Math.round(
-        calculateMeanEncounterTime(
+    if (data.geoLocation.name !== "" && data.geoLocation.displayName !== "") {
+      const newStats = {
+        probability: calculateProb(
+          data.method.odds,
+          data.method.rolls,
+          data.method.shinyCharm,
+          data.method?.charmRolls,
+          data.totalEncounters,
+          data.method?.function,
+          data.method?.searchLevel
+        ),
+        percentage: calculatePercentage(
+          data.totalEncounters,
+          data.method.odds,
+          data.method.rolls,
+          data.method.shinyCharm,
+          data.method?.charmRolls,
+          data.method?.function,
+          data.method?.searchLevel
+        ),
+        meanEncounterTime: calculateMeanEncounterTime(
           data.encounters,
           data.upperTimeThreshold,
           data.lowerTimeThreshold,
           data.increment
-        ) * data.totalEncounters
-      ),
-    };
+        ),
+        daysHunting: calculateDateDifference(data.endDate, data.startDate),
+        totalHuntTime: Math.round(
+          calculateMeanEncounterTime(
+            data.encounters,
+            data.upperTimeThreshold,
+            data.lowerTimeThreshold,
+            data.increment
+          ) * data.totalEncounters
+        ),
+      };
 
-    if (data.method.function) {
-      let chainLimit = 0;
-      switch (data.method.function) {
-        case "pokeradar-gen4":
-          chainLimit = 40;
-          break;
-        case "pokeradar-gen6":
-          chainLimit = 40;
-          break;
-        case "pokeradar-gen8":
-          chainLimit = 40;
-          break;
-        case "chainfishing":
-          chainLimit = 20;
-          break;
-        case "sos-chain-sm":
-          chainLimit = 30;
-          break;
-        case "sos-chain":
-          chainLimit = 30;
-          break;
-        default:
-          console.log(chainLimit);
-      }
+      if (data.method.function) {
+        let chainLimit = 0;
+        switch (data.method.function) {
+          case "pokeradar-gen4":
+            chainLimit = 40;
+            break;
+          case "pokeradar-gen6":
+            chainLimit = 40;
+            break;
+          case "pokeradar-gen8":
+            chainLimit = 40;
+            break;
+          case "chainfishing":
+            chainLimit = 20;
+            break;
+          case "sos-chain-sm":
+            chainLimit = 30;
+            break;
+          case "sos-chain":
+            chainLimit = 30;
+            break;
+          default:
+            console.log(chainLimit);
+        }
 
-      if (data.totalEncounters >= chainLimit) {
-        setData((prevState) => {
-          return {
-            ...prevState,
-            ...{
-              method: {
-                ...prevState.method,
-                correctedEncounters: data.totalEncounters - chainLimit,
+        if (data.totalEncounters >= chainLimit) {
+          setData((prevState) => {
+            return {
+              ...prevState,
+              ...{
+                method: {
+                  ...prevState.method,
+                  correctedEncounters: data.totalEncounters - chainLimit,
+                },
+                stats: {
+                  ...newStats,
+                  percentage: calculatePercentage(
+                    data.totalEncounters - chainLimit,
+                    data.method.odds,
+                    data.method.rolls,
+                    data.method.shinyCharm,
+                    data.method?.charmRolls,
+                    data.method?.function,
+                    data.method?.searchLevel
+                  ),
+                },
               },
-              stats: {
-                ...newStats,
-                percentage: calculatePercentage(
-                  data.totalEncounters - chainLimit,
-                  data.method.odds,
-                  data.method.rolls,
-                  data.method.shinyCharm,
-                  data.method?.charmRolls,
-                  data.method?.function,
-                  data.method?.searchLevel
-                ),
+            };
+          });
+        } else {
+          setData((prevState) => {
+            return {
+              ...prevState,
+              ...{
+                method: {
+                  ...prevState.method,
+                  correctedEncounters: 0,
+                },
+                stats: {
+                  ...newStats,
+                  percentage: 0,
+                },
               },
-            },
-          };
-        });
+            };
+          });
+        }
       } else {
-        setData((prevState) => {
-          return {
-            ...prevState,
-            ...{
-              method: {
-                ...prevState.method,
-                correctedEncounters: 0,
-              },
-              stats: {
-                ...newStats,
-                percentage: 0,
-              },
-            },
-          };
-        });
+        setData((prevState) => ({
+          ...prevState,
+          stats: newStats,
+        }));
       }
-    } else {
-      setData((prevState) => ({
-        ...prevState,
-        stats: newStats,
-      }));
     }
   };
 
@@ -562,30 +607,8 @@ export default function CreateFromCounter() {
               />
             </Grid>
 
-            {/* IRL LOCATION */}
-            <Grid item xs={8}>
-              <TextField
-                required
-                color="secondary"
-                label="IRL Location"
-                fullWidth
-                value={data.IRLLocation}
-                sx={{ mb: "10px" }}
-                onChange={(e) => {
-                  setData((prevState) => {
-                    return {
-                      ...prevState,
-                      ...{
-                        IRLLocation: e.target.value,
-                      },
-                    };
-                  });
-                }}
-              />
-            </Grid>
-
             {/* LEVEL */}
-            <Grid item xs={4}>
+            <Grid item xs={12}>
               <TextField
                 required
                 color="secondary"
@@ -611,6 +634,124 @@ export default function CreateFromCounter() {
                 }}
               />
             </Grid>
+
+            {/* GEO LOCATION */}
+            <Grid item xs={12}>
+              <FormControl sx={{ mb: "5px" }}>
+                <RadioGroup
+                  row
+                  value={newGeoLocation}
+                  onChange={(e, value) => {
+                    setNewGeoLocation(JSON.parse(value));
+                    setData((prevState) => {
+                      return {
+                        ...prevState,
+                        ...{
+                          geoLocation: initialLocationState,
+                        },
+                      };
+                    });
+                  }}
+                >
+                  <FormControlLabel
+                    value={false}
+                    control={<Radio color="secondary" />}
+                    label="Existing Location"
+                  />
+                  <FormControlLabel
+                    value={true}
+                    control={<Radio color="secondary" />}
+                    label="New Location"
+                  />
+                </RadioGroup>
+              </FormControl>
+            </Grid>
+            {!newGeoLocation && (
+              <Grid item xs={12}>
+                <Autocomplete
+                  sx={{ mb: "10px" }}
+                  disabled={!geoLocationsList}
+                  autoHighlight
+                  onChange={(e, value) => {
+                    setData((prevState) => {
+                      return {
+                        ...prevState,
+                        ...{
+                          geoLocation: value,
+                        },
+                      };
+                    });
+                  }}
+                  options={geoLocationsList ? geoLocationsList : []}
+                  getOptionLabel={(option) => option.name}
+                  renderInput={(params) => (
+                    <TextField
+                      required
+                      fullWidth
+                      color="secondary"
+                      {...params}
+                      label="Geo Location"
+                    />
+                  )}
+                />
+              </Grid>
+            )}
+            {newGeoLocation && (
+              <>
+                <Grid item xs={12} sx={{ mb: "10px" }}>
+                  <TextField
+                    required
+                    fullWidth
+                    color="secondary"
+                    label="Location Name"
+                    value={data.geoLocation.name}
+                    onChange={(e) => {
+                      setData((prevState) => {
+                        return {
+                          ...prevState,
+                          ...{
+                            geoLocation: {
+                              ...prevState.geoLocation,
+                              name: e.target.value,
+                            },
+                          },
+                        };
+                      });
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    color="secondary"
+                    label="Latitude, Longitude"
+                    onChange={(e) => {
+                      const newValues = e.target.value
+                        .split(",")
+                        .map((value) => Number(value.trim()));
+                      setData((prevState) => {
+                        return {
+                          ...prevState,
+                          ...{
+                            geoLocation: {
+                              ...prevState.geoLocation,
+                              position: newValues,
+                            },
+                          },
+                        };
+                      });
+                      getGeoLocation(newValues);
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12} sx={{ mb: "10px" }}>
+                  <Typography>
+                    Address: {data.geoLocation.displayName}
+                  </Typography>
+                </Grid>
+              </>
+            )}
 
             {/* START DATE */}
             <Grid item xs={6}>

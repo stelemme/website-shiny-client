@@ -132,11 +132,14 @@ const columns = [
     flex: 1,
   },
   {
-    field: "IRLLocation",
+    field: "geoLocation",
     headerClassName: "theme-header",
-    headerName: "IRL Location",
+    headerName: "Geo Location",
     minWidth: 140,
     flex: 1,
+    valueGetter: (params) => {
+      return params.value.name;
+    },
   },
   {
     field: "method",

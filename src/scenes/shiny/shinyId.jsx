@@ -52,7 +52,7 @@ export default function ShinyId() {
   const [formsEdit, setFormsEdit] = useState([]);
   const [marks, setMarks] = useState(undefined);
   const [marksEdit, setMarksEdit] = useState([]);
-  const [geoLocations, setGeoLocations] = useState(undefined);
+  const [geoLocationsList, setGeoLocationsList] = useState(undefined);
   const [geoLocationEdit, setGeoLocationEdit] = useState([]);
   const [geoLocationClear, setGeoLocationClear] = useState(false);
   const [geoNewLocationClear, setGeoNewLocationClear] = useState(false);
@@ -586,12 +586,6 @@ export default function ShinyId() {
                 infoCat={"Location"}
                 infoName={data.location}
               />
-              <InfoDisplay
-                xs1={2.75}
-                xs2={9.25}
-                infoCat={"IRL Location"}
-                infoName={data.IRLLocation}
-              />
             </Grid>
             <Grid item xs={12}>
               <Divider />
@@ -669,7 +663,7 @@ export default function ShinyId() {
                             (res) => {
                               const geoLocationsData =
                                 res.data[0]["geoLocation"];
-                              setGeoLocations(geoLocationsData);
+                              setGeoLocationsList(geoLocationsData);
                             }
                           );
                           setOpenGeoLocationEdit(true);
@@ -694,7 +688,7 @@ export default function ShinyId() {
                             <Grid item xs={12}>
                               <Autocomplete
                                 key={geoLocationClear}
-                                disabled={!geoLocations}
+                                disabled={!geoLocationsList}
                                 autoHighlight
                                 onChange={(e, value, reason) => {
                                   if (reason === "selectOption") {
@@ -705,7 +699,7 @@ export default function ShinyId() {
                                     );
                                   }
                                 }}
-                                options={geoLocations ? geoLocations : []}
+                                options={geoLocationsList ? geoLocationsList : []}
                                 getOptionLabel={(option) => option.name}
                                 renderInput={(params) => (
                                   <TextField

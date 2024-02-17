@@ -182,9 +182,9 @@ export default function UserStats() {
             loading={userStatsLoading}
           />
           <StatsDisplay
-            data={userStats?.mostFrequentIRLLocation}
-            dataStat={userStats?.mostFrequentIRLLocation.count}
-            statName={"The Most Frequent IRL Location"}
+            data={userStats?.mostFrequentGeoLocation}
+            dataStat={userStats?.mostFrequentGeoLocation.count}
+            statName={"The Most Frequent Geo Location"}
             loading={userStatsLoading}
           />
         </Grid>

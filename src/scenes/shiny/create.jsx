@@ -7,6 +7,7 @@ import { format } from "date-fns";
 import {
   Box,
   TextField,
+  Typography,
   Autocomplete,
   FormControl,
   FormControlLabel,
@@ -59,7 +60,7 @@ const natures = [
   "Sassy",
   "Serious",
   "Timid",
-  "-"
+  "-",
 ];
 
 export default function CreateShiny() {
@@ -67,6 +68,12 @@ export default function CreateShiny() {
   const navigate = useNavigate();
 
   const { data: games } = useGame("?action=form");
+
+  let initialLocationState = {
+    name: "",
+    displayName: "",
+    position: [],
+  };
 
   let initialState = {
     trainer: username,
@@ -83,7 +90,7 @@ export default function CreateShiny() {
     evolutions: [],
     forms: [],
     nickname: "",
-    IRLLocation: "",
+    geoLocation: initialLocationState,
     level: null,
     gender: "genderless",
   };
@@ -97,11 +104,20 @@ export default function CreateShiny() {
   const [pokemonsList, setPokemonsList] = useState(undefined);
   const [ballList, setBallList] = useState(undefined);
   const [groupList, setGroupList] = useState(undefined);
+  const [geoLocationsList, setGeoLocationsList] = useState(undefined);
+  const [newGeoLocation, setNewGeoLocation] = useState(false);
 
   const [clearMethod, setClearMethod] = useState("method");
   const [genderCheck, setGenderCheck] = useState(false);
 
   console.log(data);
+
+  useEffect(() => {
+    axios["get"](`/shiny?geoLocationList=true`).then((res) => {
+      const geoLocationsData = res.data[0]["geoLocation"];
+      setGeoLocationsList(geoLocationsData);
+    });
+  }, []);
 
   useEffect(() => {
     setData((prevState) => {
@@ -138,133 +154,165 @@ export default function CreateShiny() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const newStats = {
-      probability: calculateProb(
-        data.method.odds,
-        data.method.rolls,
-        data.method.shinyCharm,
-        data.method?.charmRolls,
-        data.totalEncounters,
-        data.method?.function
-      ),
-      daysHunting: calculateDateDifference(data.endDate, data.startDate),
-    };
+    if (data.geoLocation.name !== "" && data.geoLocation.displayName !== "") {
+      const newStats = {
+        probability: calculateProb(
+          data.method.odds,
+          data.method.rolls,
+          data.method.shinyCharm,
+          data.method?.charmRolls,
+          data.totalEncounters,
+          data.method?.function
+        ),
+        daysHunting: calculateDateDifference(data.endDate, data.startDate),
+      };
 
-    if (data.method.function) {
-      switch (data.method.function) {
-        case "letsgospawn":
-          setData((prevState) => ({
-            ...prevState,
-            stats: {
-              ...newStats,
-              probability: methodHunts(
-                data.method.function,
-                0,
-                data.method.shinyCharm,
-                data.method.lure,
-                data.method.chainMatters,
-                data.method.letsGoChain
-              ),
-            },
-          }));
-          break;
-        case "sos-chain":
-        case "sos-chain-sm":
-          setData((prevState) => ({
-            ...prevState,
-            stats: {
-              ...newStats,
-              probability: methodHunts(
-                data.method.function,
-                data.method.sosChain,
-                data.method.shinyCharm
-              ),
-            },
-          }));
-          break;
-        case "ultra-wormhole":
-          setData((prevState) => ({
-            ...prevState,
-            stats: {
-              ...newStats,
-              probability: methodHunts(
-                data.method.function,
-                0,
-                data.method.shinyCharm,
-                false,
-                false,
-                0,
-                null,
-                null,
-                null,
-                data.method.wormholeType,
-                data.method.wormholeDistance
-              ),
-            },
-          }));
-          break;
-        case "pokeradar-gen4":
-        case "pokeradar-gen6":
-        case "pokeradar-gen8":
-          setData((prevState) => ({
-            ...prevState,
-            stats: {
-              ...newStats,
-              probability: methodHunts(
-                data.method.function,
-                data.method.radarChain,
-                data.method.shinyCharm
-              ),
-            },
-          }));
-          break;
-        case "arceus-spawn":
-        case "arceus-mass-outbreak":
-        case "arceus-massive-mass-outbreak":
-          setData((prevState) => ({
-            ...prevState,
-            stats: {
-              ...newStats,
-              probability: methodHunts(
-                data.method.function,
-                0,
-                data.method.shinyCharm,
-                false,
-                false,
-                0,
-                data.method.researchLevel
-              ),
-            },
-          }));
-          break;
-        case "sv-spawn":
-        case "sv-outbreak":
-          setData((prevState) => ({
-            ...prevState,
-            stats: {
-              ...newStats,
-              probability: methodHunts(
-                data.method.function,
-                0,
-                data.method.shinyCharm,
-                false,
-                false,
-                0,
-                null,
-                data.method?.svOutbreak,
-                data.method.svSparklingPower
-              ),
-            },
-          }));
-          break;
-        default:
-          console.log("Failed");
+      if (data.method.function) {
+        switch (data.method.function) {
+          case "letsgospawn":
+            setData((prevState) => ({
+              ...prevState,
+              stats: {
+                ...newStats,
+                probability: methodHunts(
+                  data.method.function,
+                  0,
+                  data.method.shinyCharm,
+                  data.method.lure,
+                  data.method.chainMatters,
+                  data.method.letsGoChain
+                ),
+              },
+            }));
+            break;
+          case "sos-chain":
+          case "sos-chain-sm":
+            setData((prevState) => ({
+              ...prevState,
+              stats: {
+                ...newStats,
+                probability: methodHunts(
+                  data.method.function,
+                  data.method.sosChain,
+                  data.method.shinyCharm
+                ),
+              },
+            }));
+            break;
+          case "ultra-wormhole":
+            setData((prevState) => ({
+              ...prevState,
+              stats: {
+                ...newStats,
+                probability: methodHunts(
+                  data.method.function,
+                  0,
+                  data.method.shinyCharm,
+                  false,
+                  false,
+                  0,
+                  null,
+                  null,
+                  null,
+                  data.method.wormholeType,
+                  data.method.wormholeDistance
+                ),
+              },
+            }));
+            break;
+          case "pokeradar-gen4":
+          case "pokeradar-gen6":
+          case "pokeradar-gen8":
+            setData((prevState) => ({
+              ...prevState,
+              stats: {
+                ...newStats,
+                probability: methodHunts(
+                  data.method.function,
+                  data.method.radarChain,
+                  data.method.shinyCharm
+                ),
+              },
+            }));
+            break;
+          case "arceus-spawn":
+          case "arceus-mass-outbreak":
+          case "arceus-massive-mass-outbreak":
+            setData((prevState) => ({
+              ...prevState,
+              stats: {
+                ...newStats,
+                probability: methodHunts(
+                  data.method.function,
+                  0,
+                  data.method.shinyCharm,
+                  false,
+                  false,
+                  0,
+                  data.method.researchLevel
+                ),
+              },
+            }));
+            break;
+          case "sv-spawn":
+          case "sv-outbreak":
+            setData((prevState) => ({
+              ...prevState,
+              stats: {
+                ...newStats,
+                probability: methodHunts(
+                  data.method.function,
+                  0,
+                  data.method.shinyCharm,
+                  false,
+                  false,
+                  0,
+                  null,
+                  data.method?.svOutbreak,
+                  data.method.svSparklingPower
+                ),
+              },
+            }));
+            break;
+          default:
+            console.log("Failed");
+        }
+      } else {
+        setData((prevState) => ({
+          ...prevState,
+          stats: newStats,
+        }));
       }
-    } else {
-      setData((prevState) => ({
-        ...prevState,
-        stats: newStats,
-      }));
+    }
+  };
+
+  const getGeoLocation = (newValues) => {
+    if (newValues.length === 2) {
+      let config = {
+        method: "get",
+        maxBodyLength: Infinity,
+        url: `https://nominatim.openstreetmap.org/reverse?lat=${newValues[0]}&lon=${newValues[1]}&format=json`,
+        headers: {},
+      };
+
+      axios
+        .request(config)
+        .then((response) => {
+          setData((prevState) => {
+            return {
+              ...prevState,
+              ...{
+                geoLocation: {
+                  ...prevState.geoLocation,
+                  displayName: response.data.display_name,
+                },
+              },
+            };
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
 
@@ -305,7 +353,7 @@ export default function CreateShiny() {
                       console.log(err);
                     });
                 } else {
-                  setGroupList(undefined)
+                  setGroupList(undefined);
                   setData((prevState) => {
                     delete prevState.group;
                     return {
@@ -1124,9 +1172,7 @@ export default function CreateShiny() {
                         },
                       },
                     };
-                  } else if (
-                    value?.function === "ultra-wormhole" 
-                  ) {
+                  } else if (value?.function === "ultra-wormhole") {
                     return {
                       ...prevState,
                       ...{
@@ -1341,30 +1387,8 @@ export default function CreateShiny() {
               />
             </Grid>
 
-            {/* IRL LOCATION */}
-            <Grid item xs={8}>
-              <TextField
-                required
-                color="secondary"
-                label="IRL Location"
-                fullWidth
-                value={data.IRLLocation}
-                sx={{ mb: "10px" }}
-                onChange={(e) => {
-                  setData((prevState) => {
-                    return {
-                      ...prevState,
-                      ...{
-                        IRLLocation: e.target.value,
-                      },
-                    };
-                  });
-                }}
-              />
-            </Grid>
-
             {/* LEVEL */}
-            <Grid item xs={4}>
+            <Grid item xs={12}>
               <TextField
                 required
                 color="secondary"
@@ -1390,6 +1414,124 @@ export default function CreateShiny() {
                 }}
               />
             </Grid>
+
+            {/* GEO LOCATION */}
+            <Grid item xs={12}>
+              <FormControl sx={{ mb: "5px" }}>
+                <RadioGroup
+                  row
+                  value={newGeoLocation}
+                  onChange={(e, value) => {
+                    setNewGeoLocation(JSON.parse(value));
+                    setData((prevState) => {
+                      return {
+                        ...prevState,
+                        ...{
+                          geoLocation: initialLocationState,
+                        },
+                      };
+                    });
+                  }}
+                >
+                  <FormControlLabel
+                    value={false}
+                    control={<Radio color="secondary" />}
+                    label="Existing Location"
+                  />
+                  <FormControlLabel
+                    value={true}
+                    control={<Radio color="secondary" />}
+                    label="New Location"
+                  />
+                </RadioGroup>
+              </FormControl>
+            </Grid>
+            {!newGeoLocation && (
+              <Grid item xs={12}>
+                <Autocomplete
+                  sx={{ mb: "10px" }}
+                  disabled={!geoLocationsList}
+                  autoHighlight
+                  onChange={(e, value) => {
+                    setData((prevState) => {
+                      return {
+                        ...prevState,
+                        ...{
+                          geoLocation: value,
+                        },
+                      };
+                    });
+                  }}
+                  options={geoLocationsList ? geoLocationsList : []}
+                  getOptionLabel={(option) => option.name}
+                  renderInput={(params) => (
+                    <TextField
+                      required
+                      fullWidth
+                      color="secondary"
+                      {...params}
+                      label="Geo Location"
+                    />
+                  )}
+                />
+              </Grid>
+            )}
+            {newGeoLocation && (
+              <>
+                <Grid item xs={12} sx={{ mb: "10px" }}>
+                  <TextField
+                    required
+                    fullWidth
+                    color="secondary"
+                    label="Location Name"
+                    value={data.geoLocation.name}
+                    onChange={(e) => {
+                      setData((prevState) => {
+                        return {
+                          ...prevState,
+                          ...{
+                            geoLocation: {
+                              ...prevState.geoLocation,
+                              name: e.target.value,
+                            },
+                          },
+                        };
+                      });
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    color="secondary"
+                    label="Latitude, Longitude"
+                    onChange={(e) => {
+                      const newValues = e.target.value
+                        .split(",")
+                        .map((value) => Number(value.trim()));
+                      setData((prevState) => {
+                        return {
+                          ...prevState,
+                          ...{
+                            geoLocation: {
+                              ...prevState.geoLocation,
+                              position: newValues,
+                            },
+                          },
+                        };
+                      });
+                      getGeoLocation(newValues);
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12} sx={{ mb: "10px" }}>
+                  <Typography>
+                    Address: {data.geoLocation.displayName}
+                  </Typography>
+                </Grid>
+              </>
+            )}
 
             {/* START DATE */}
             <Grid item xs={8}>
