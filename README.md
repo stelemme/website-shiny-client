@@ -4,6 +4,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Changelogs
 
+---
+
 ### Version 1.0.0 (17.02.2024)
 
 **Shiny Map:**
@@ -13,6 +15,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 **Counter:**
   - Encounters per uur stat is toegevoegd aan informatie.
+
+---
 
 ### Version 0.1.0 (15.02.2024)
 
