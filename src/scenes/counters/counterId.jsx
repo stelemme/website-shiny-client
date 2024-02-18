@@ -206,12 +206,12 @@ export default function Counter() {
       });
 
       axios["patch"](`/counters/${counterId}?action=addSearchLevel`)
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        .then((res) => {
+          setData(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
 
     setTimeout(() => {
@@ -279,7 +279,7 @@ export default function Counter() {
       let data = JSON.stringify({
         count: countEdit,
       });
-  
+
       let config = {
         method: "patch",
         maxBodyLength: Infinity,
@@ -289,7 +289,7 @@ export default function Counter() {
         },
         data: data,
       };
-  
+
       axios
         .request(config)
         .then((res) => {
@@ -314,14 +314,14 @@ export default function Counter() {
         },
         data: data,
       };
-  
+
       axios
         .request(config)
         .then((res) => {
           console.log(res.data);
           setCount(count + countAdd);
           setOpenEdit(false);
-          setCountAdd(0)
+          setCountAdd(0);
         })
         .catch((error) => {
           console.log(error);
@@ -583,7 +583,8 @@ export default function Counter() {
                     <Box>
                       <Typography mb="15px">
                         Edit the total amount of encounters in the inputfield
-                        below. (These changes are NOT added to the Encounters List)
+                        below. (These changes are NOT added to the Encounters
+                        List)
                       </Typography>
                       <TextField
                         color="secondary"
@@ -594,7 +595,8 @@ export default function Counter() {
                         onChange={(e) => setCountEdit(parseInt(e.target.value))}
                       ></TextField>
                       <Typography my="15px">
-                        Add a certain amount of Encounters. (These changes are added to the Encounters List)
+                        Add a certain amount of Encounters. (These changes are
+                        added to the Encounters List)
                       </Typography>
                       <TextField
                         color="secondary"
@@ -699,14 +701,10 @@ export default function Counter() {
           {/* STATS */}
           <Grid container>
             <Grid item xs={6}>
-              <Typography fontWeight={"bold"}>Shiny Hunting Method</Typography>
-              <Typography>{data.method.name}</Typography>
-              <Typography fontStyle={"italic"}>
-                {data.method.category}
-              </Typography>
-              {encountersTodayDisplay()}
               <Box display="flex" alignItems="center" height="21px">
-                <Typography fontWeight={"bold"}>Extra Information</Typography>
+                <Typography fontWeight={"bold"}>
+                  Shiny Hunting Method
+                </Typography>
                 <IconButton size="small" onClick={() => setOpenInfo(true)}>
                   <InfoOutlinedIcon fontSize="inherit" />
                 </IconButton>
@@ -819,7 +817,7 @@ export default function Counter() {
                       </Grid>
                       <Grid item xs={5.5}>
                         <Typography fontWeight={"bold"} textAlign={"right"}>
-                          Shiny Probability
+                          Total Hunt Time
                         </Typography>
                       </Grid>
                       <Grid item xs={5}>
@@ -838,9 +836,13 @@ export default function Counter() {
                         </Typography>
                       </Grid>
                       <Grid item xs={7}>
-                        <Typography textAlign={"right"}>1/{odds}</Typography>
                         <Typography textAlign={"right"}>
-                          {percentage}%
+                          {timeDifference
+                            ? formatTime(
+                                Math.round(timeDifference * count),
+                                false
+                              )
+                            : "Undefined"}
                         </Typography>
                         <Typography fontWeight={"bold"} textAlign={"right"}>
                           Mean Encounter Time
@@ -852,35 +854,39 @@ export default function Counter() {
                                 .slice(11, 19)
                             : "Undefined"}
                         </Typography>
+                        <Typography fontWeight={"bold"} textAlign={"right"}>
+                          Enc./Hour
+                        </Typography>
                       </Grid>
                       <Grid item xs={7}>
                         {timeDisplay()}
                       </Grid>
                       <Grid item xs={5}>
-                        <Typography fontWeight={"bold"} textAlign={"right"}>
-                          Total Time
-                        </Typography>
                         <Typography textAlign={"right"}>
                           {timeDifference
-                            ? formatTime(
-                                Math.round(timeDifference * count),
-                                false
-                              )
+                            ? Math.round(3600 / timeDifference)
                             : "Undefined"}
                         </Typography>
                         <Typography fontWeight={"bold"} textAlign={"right"}>
-                          Enc./Hour
+                          Times Odds
                         </Typography>
                         <Typography textAlign={"right"}>
-                        {timeDifference
-                            ? Math.round(3600 / timeDifference)
-                            : "Undefined"}
+                          {(count / odds).toLocaleString("en-US", {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}
                         </Typography>
                       </Grid>
                     </Grid>
                   </DialogContent>
                 </Dialog>
               </Box>
+              <Typography>{data.method.name}</Typography>
+              <Typography fontStyle={"italic"}>
+                {data.method.category}
+              </Typography>
+              {encountersTodayDisplay()}
+
               <Box display="flex" alignItems="center" height="21px">
                 <Typography fontWeight={"bold"}>Encounter Graph</Typography>
                 <IconButton size="small" onClick={() => setOpenGraph(true)}>
@@ -914,7 +920,10 @@ export default function Counter() {
                           dataKey="date"
                           scale="time"
                           type="number"
-                          domain={[dataMin => dataMin, () => new Date(data.endDate).getTime()]}
+                          domain={[
+                            (dataMin) => dataMin,
+                            () => new Date(data.endDate).getTime(),
+                          ]}
                           tick={false}
                           axisLine={{ stroke: colors.primary[200] }}
                           tickLine={{ stroke: colors.primary[200] }}
@@ -933,10 +942,7 @@ export default function Counter() {
                             return `${new Date(value).toLocaleDateString()}`;
                           }}
                         />
-                        <Bar
-                          dataKey="value"
-                          fill={colors.redAccent[500]}
-                        />
+                        <Bar dataKey="value" fill={colors.redAccent[500]} />
                       </BarChart>
                     </ResponsiveContainer>
                   </DialogContent>
@@ -950,7 +956,11 @@ export default function Counter() {
               </Typography>
               <Typography textAlign={"right"}>1/{odds}</Typography>
               <Typography textAlign={"right"}>{percentage}%</Typography>
-              <Typography textAlign={"right"}>{Math.round((8192 / odds) * count)} : 8192</Typography>
+              {odds !== 8192 && (
+                <Typography textAlign={"right"}>
+                  {Math.round((8192 / odds) * count)} : 8192
+                </Typography>
+              )}
               <Typography fontWeight={"bold"} textAlign={"right"}>
                 Mean Encounter Time
               </Typography>

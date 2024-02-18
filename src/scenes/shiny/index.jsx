@@ -97,7 +97,7 @@ export default function Shiny() {
               anchorEl={anchorElSort}
               setAnchorEl={setAnchorElSort}
               cookie={"shinySort"}
-              options={["game", "pokedexNo", "date"]}
+              options={["game", "pokedexNo", "date", "abc"]}
             />
           </Box>
         </Box>

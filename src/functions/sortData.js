@@ -58,6 +58,12 @@ export default function sortData(data, sortString) {
       case "encDesc":
         sortedData = sortByKeys(data, [{ key: "totalEncounters", desc: 1 }]);
         break;
+      case "abcAsc":
+        sortedData = sortByKeys(data, [{ key: "name", desc: 1 }]);
+        break;
+      case "abcDesc":
+        sortedData = sortByKeys(data, [{ key: "name", desc: -1 }]);
+        break;
       default:
         console.log("failed");
     }

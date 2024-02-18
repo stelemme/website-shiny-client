@@ -42,7 +42,12 @@ export default function User() {
     ? Cookies.get("groupShinies")
     : false;
 
+  const gameSpriteDisplay = Cookies.get("gameSpriteDisplay")
+    ? Cookies.get("gameSpriteDisplay")
+    : false;
+
   const [groupCheck, setGroupCheck] = useState(groupShinies === "true")
+  const [spriteCheck, setSpriteCheck] = useState(gameSpriteDisplay === "true")
   const [trainerCheck, setTrainerCheck] = useState(trainerChoice !== username)
 
   
@@ -55,6 +60,11 @@ export default function User() {
   const handleGroupChange = (e) => {
     setGroupCheck(e.target.checked)
     Cookies.set("groupShinies", e.target.checked, { expires: foreverDate });
+  };
+
+  const handleSpriteChange = (e) => {
+    setSpriteCheck(e.target.checked)
+    Cookies.set("gameSpriteDisplay", e.target.checked, { expires: foreverDate });
   };
 
   const handleTrainerChange = (e) => {
@@ -176,6 +186,24 @@ export default function User() {
                     label={
                       <Typography variant="h6" fontWeight={"bold"}>
                         GROUP THE RADAR SHINIES
+                      </Typography>
+                    }
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        color="secondary"
+                        checked={spriteCheck}
+                        onChange={handleSpriteChange}
+                        inputProps={{ "aria-label": "controlled" }}
+                        disabled={trainerCheck}
+                      />
+                    }
+                    label={
+                      <Typography variant="h6" fontWeight={"bold"}>
+                        DISPLAY GAMESPRITE ON SHINY PAGE
                       </Typography>
                     }
                   />

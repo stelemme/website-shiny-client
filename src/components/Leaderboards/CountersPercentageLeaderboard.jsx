@@ -37,10 +37,10 @@ export default function CountersPercentageLeaderboard() {
       title={"TOTAL COUNTER PERCENTAGE"}
       selectBool={false}
       medalList={[
-        medalImages["battle-4-d.png"],
-        medalImages["battle-4-g.png"],
-        medalImages["battle-4-s.png"],
-        medalImages["battle-4-b.png"],
+        medalImages["battle-3-d.png"],
+        medalImages["battle-3-g.png"],
+        medalImages["battle-3-s.png"],
+        medalImages["battle-3-b.png"],
       ]}
       total={`${calculateMultiplePercentage(totalCounterStats)} %`}
     />

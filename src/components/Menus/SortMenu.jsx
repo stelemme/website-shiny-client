@@ -109,6 +109,23 @@ export default function SortMenu({
           </MenuItem>
         </Box>
       )}
+      {options.indexOf("abc") !== -1 && (
+        <Box>
+          <Divider sx={{ mb: "10px"}}/>
+          <MenuItem onClick={handleClick("abcAsc")}>
+            <ListItemIcon>
+              <ArrowUpwardIcon />
+            </ListItemIcon>
+            <Typography fontWeight={"bold"}>A - Z</Typography>
+          </MenuItem>
+          <MenuItem onClick={handleClick("abcDesc")}>
+            <ListItemIcon>
+              <ArrowDownwardIcon />
+            </ListItemIcon>
+            <Typography fontWeight={"bold"}>Z - A</Typography>
+          </MenuItem>
+        </Box>
+      )}
     </Menu>
   );
 }

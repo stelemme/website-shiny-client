@@ -73,7 +73,7 @@ export default function ShinyId() {
 
   const [geoLocationData, setGeoLocationData] = useState(initialLocationState);
 
-  console.log(data)
+  console.log(data);
 
   /* DELETE THE SHINY */
   const handleDeleteClick = () => {
@@ -699,7 +699,9 @@ export default function ShinyId() {
                                     );
                                   }
                                 }}
-                                options={geoLocationsList ? geoLocationsList : []}
+                                options={
+                                  geoLocationsList ? geoLocationsList : []
+                                }
                                 getOptionLabel={(option) => option.name}
                                 renderInput={(params) => (
                                   <TextField
@@ -821,10 +823,13 @@ export default function ShinyId() {
                       })}
                     >
                       <Popup>
-                        <Typography fontWeight="bold">
+                        <Typography
+                          fontWeight="bold"
+                          style={{ marginBottom: 0 }}
+                        >
                           {data.geoLocation.name}
                         </Typography>
-                        <Typography gutterBottom>
+                        <Typography gutterBottom style={{ marginTop: 0 }}>
                           {data.geoLocation.displayName}
                         </Typography>
                       </Popup>

@@ -31,6 +31,8 @@ export default function EncountersLeaderboard() {
       setQuery(365);
     } else if (e.target.value === "All Time") {
       setQuery(999999);
+    } else if (e.target.value === "Yesterday") {
+      setQuery("yesterday");
     } else {
       setQuery(1);
     }
@@ -47,6 +49,7 @@ export default function EncountersLeaderboard() {
       handleChange={handleChange}
       optionList={[
         "Today",
+        "Yesterday",
         "Last 7 Days",
         "Last 30 Days",
         "Last 90 Days",

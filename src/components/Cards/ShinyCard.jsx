@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import Cookies from "js-cookie";
 
 // mui imports
 import { Box, Typography, useTheme } from "@mui/material";
@@ -24,6 +24,12 @@ export default function ShinyCard({
   if (trainer) {
     trainerHeight = "50";
   }
+
+  const gameSpriteDisplay = Cookies.get("gameSpriteDisplay")
+    ? Cookies.get("gameSpriteDisplay")
+    : false;
+
+  const spriteCheck = gameSpriteDisplay === "true";
 
   return (
     <Box
@@ -77,11 +83,24 @@ export default function ShinyCard({
 
         {/* SHINY SPRITE */}
         <Box display="flex" alignItems="center" justifyContent="center">
-          <img
-            alt=""
-            src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-all-home/${monSprite}.png`}
-            height={imgSize}
-          />
+          {!spriteCheck && (
+            <img
+              alt=""
+              src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-all-home/${monSprite}.png`}
+              height={imgSize}
+            />
+          )}
+          {spriteCheck && (
+            <img
+              alt=""
+              src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/${dir}/${monSprite}.png`}
+              height={imgSize}
+              style={{ imageRendering: "pixelated" }}
+              onError={(e) => {
+                e.target.src = `https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-all-home/${monSprite}.png`;
+              }}
+            />
+          )}
         </Box>
       </Box>
     </Box>

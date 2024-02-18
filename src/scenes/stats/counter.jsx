@@ -6,6 +6,7 @@ import Header from "../../components/Header";
 import EncountersLeaderboard from "../../components/Leaderboards/EncountersLeaderboard";
 import CountersAmountLeaderboard from "../../components/Leaderboards/CountersAmountLeaderboard";
 import CountersPercentageLeaderboard from "../../components/Leaderboards/CountersPercentageLeaderboard";
+import ConvertedEncLeaderBoard from "../../components/Leaderboards/ConvertedEncLeaderboard";
 
 export default function CounterStats() {
   return (
@@ -23,10 +24,13 @@ export default function CounterStats() {
             <EncountersLeaderboard />
           </Grid>
           <Grid item xl={4} xs={12}>
-            <CountersPercentageLeaderboard />
+            <ConvertedEncLeaderBoard />
           </Grid>
           <Grid item xl={4} xs={12}>
             <CountersAmountLeaderboard />
+          </Grid>
+          <Grid item xl={4} xs={12}>
+            <CountersPercentageLeaderboard />
           </Grid>
         </Grid>
       </Box>

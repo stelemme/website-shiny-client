@@ -1,7 +1,7 @@
 import "./map.css";
 
 // mui imports
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 
 // leaflet imports
 import L from "leaflet";
@@ -52,9 +52,9 @@ const createClusterCustomIcon = function (cluster) {
 
   let iconSize;
   if (totalMarkers < 10) {
-    iconSize = 30;
+    iconSize = 25;
   } else if (totalMarkers < 100) {
-    iconSize = 35;
+    iconSize = 30;
   } else {
     iconSize = 40;
   }
@@ -128,16 +128,24 @@ export default function Map() {
                       alt="joaquin"
                       position={location.geoLocation.position}
                       icon={L.divIcon({
-                        html: ``,
-                        className: "marker marker_joaquin",
-                        iconSize: L.point(15, 15, true),
+                        html: `<div  class="donut-chart-container">
+                                  <div class="donut-chart" style="--percentage1: 100%; --percentage2: 0%; --percentage3: 0%; --percentage4: 0%;"></div>
+                                  <div class="donut-chart-center"></div>
+                                <div class="text">1</div>`,
+                        className: "marker_1",
+                        iconSize: L.point(20, 20, true),
                       })}
                     >
-                      <Popup className="popup popup_booking">
-                        <div className="popup__title">
+                      <Popup>
+                        <Typography
+                          fontWeight="bold"
+                          style={{ marginBottom: 0 }}
+                        >
                           {location.geoLocation.name}
-                        </div>
-                        <div className="popup__info">{location.trainer}</div>
+                        </Typography>
+                        <Typography gutterBottom style={{ marginTop: 0 }}>
+                          {location.trainer + " - " + location.name}
+                        </Typography>
                       </Popup>
                     </Marker>
                   );
@@ -149,16 +157,24 @@ export default function Map() {
                       alt="korneel"
                       position={location.geoLocation.position}
                       icon={L.divIcon({
-                        html: ``,
-                        className: "marker marker_korneel",
-                        iconSize: L.point(15, 15, true),
+                        html: `<div  class="donut-chart-container">
+                                  <div class="donut-chart" style="--percentage1: 0%; --percentage2: 100%; --percentage3: 0%; --percentage4: 0%;"></div>
+                                  <div class="donut-chart-center"></div>
+                                <div class="text">1</div>`,
+                        className: "marker_1",
+                        iconSize: L.point(20, 20, true),
                       })}
                     >
-                      <Popup className="popup popup_supplier">
-                        <div className="popup__title">
+                      <Popup>
+                        <Typography
+                          fontWeight="bold"
+                          style={{ marginBottom: 0 }}
+                        >
                           {location.geoLocation.name}
-                        </div>
-                        <div className="popup__info">{location.trainer}</div>
+                        </Typography>
+                        <Typography gutterBottom style={{ marginTop: 0 }}>
+                          {location.trainer + " - " + location.name}
+                        </Typography>
                       </Popup>
                     </Marker>
                   );
@@ -170,16 +186,24 @@ export default function Map() {
                       alt="simon"
                       position={location.geoLocation.position}
                       icon={L.divIcon({
-                        html: ``,
-                        className: "marker marker_simon",
-                        iconSize: L.point(15, 15, true),
+                        html: `<div  class="donut-chart-container">
+                                  <div class="donut-chart" style="--percentage1: 0%; --percentage2: 0%; --percentage3: 100%; --percentage4: 0%;"></div>
+                                  <div class="donut-chart-center"></div>
+                                <div class="text">1</div>`,
+                        className: "marker_1",
+                        iconSize: L.point(20, 20, true),
                       })}
                     >
-                      <Popup className="popup popup_supplier">
-                        <div className="popup__title">
+                      <Popup>
+                        <Typography
+                          fontWeight="bold"
+                          style={{ marginBottom: 0 }}
+                        >
                           {location.geoLocation.name}
-                        </div>
-                        <div className="popup__info">{location.trainer}</div>
+                        </Typography>
+                        <Typography gutterBottom style={{ marginTop: 0 }}>
+                          {location.trainer + " - " + location.name}
+                        </Typography>
                       </Popup>
                     </Marker>
                   );
@@ -191,16 +215,24 @@ export default function Map() {
                       alt="stef"
                       position={location.geoLocation.position}
                       icon={L.divIcon({
-                        html: ``,
-                        className: "marker marker_stef",
-                        iconSize: L.point(15, 15, true),
+                        html: `<div  class="donut-chart-container">
+                                  <div class="donut-chart" style="--percentage1: 0%; --percentage2: 0%; --percentage3: 0%; --percentage4: 100%;"></div>
+                                  <div class="donut-chart-center"></div>
+                                <div class="text">1</div>`,
+                        className: "marker_1",
+                        iconSize: L.point(20, 20, true),
                       })}
                     >
-                      <Popup className="popup popup_supplier">
-                        <div className="popup__title">
+                      <Popup>
+                        <Typography
+                          fontWeight="bold"
+                          style={{ marginBottom: 0 }}
+                        >
                           {location.geoLocation.name}
-                        </div>
-                        <div className="popup__info">{location.trainer}</div>
+                        </Typography>
+                        <Typography gutterBottom style={{ marginTop: 0 }}>
+                          {location.trainer + " - " + location.name}
+                        </Typography>
                       </Popup>
                     </Marker>
                   );
