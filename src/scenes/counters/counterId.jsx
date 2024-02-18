@@ -701,10 +701,9 @@ export default function Counter() {
           {/* STATS */}
           <Grid container>
             <Grid item xs={6}>
+              <Typography fontWeight={"bold"}>Shiny Hunting Method</Typography>
               <Box display="flex" alignItems="center" height="21px">
-                <Typography fontWeight={"bold"}>
-                  Shiny Hunting Method
-                </Typography>
+                <Typography>{data.method.name}</Typography>
                 <IconButton size="small" onClick={() => setOpenInfo(true)}>
                   <InfoOutlinedIcon fontSize="inherit" />
                 </IconButton>
@@ -881,7 +880,6 @@ export default function Counter() {
                   </DialogContent>
                 </Dialog>
               </Box>
-              <Typography>{data.method.name}</Typography>
               <Typography fontStyle={"italic"}>
                 {data.method.category}
               </Typography>
