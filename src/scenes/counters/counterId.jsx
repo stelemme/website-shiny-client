@@ -950,6 +950,7 @@ export default function Counter() {
               </Typography>
               <Typography textAlign={"right"}>1/{odds}</Typography>
               <Typography textAlign={"right"}>{percentage}%</Typography>
+              <Typography textAlign={"right"}>{Math.round((8192 / odds) * count)} : 8192</Typography>
               <Typography fontWeight={"bold"} textAlign={"right"}>
                 Mean Encounter Time
               </Typography>

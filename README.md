@@ -4,6 +4,18 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Changelogs
 
+### version 1.1.0 (18.02.2024)
+
+**Counter:**
+
+  - Omgerekende encounters (naar 1/8192) toegevoegd aan counter scherm.
+
+**Shiny create form:**
+
+  - Verduidelijking toegevoegd bij random SOS Chain over welke chain length moet ingevuld worden.
+
+---
+
 ### Version 1.0.0 (17.02.2024)
 
 **Shiny Map:**

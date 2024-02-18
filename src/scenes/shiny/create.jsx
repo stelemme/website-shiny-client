@@ -564,6 +564,7 @@ export default function CreateShiny() {
     ) {
       return (
         <Box>
+          {data.method.category === "Random SOS Chain" && <Typography>Fill in Chain Length 31, if the Chain Length is unknown.</Typography>}
           <TextField
             fullWidth
             sx={{ mb: "20px" }}

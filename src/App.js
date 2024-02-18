@@ -38,8 +38,6 @@ import User from "./scenes/info/user";
 import Map from "./scenes/shiny/map";
 import ErrorPage from "./scenes/global/ErrorPage";
 
-console.log(process.env.REACT_APP_ENV)
-
 if (!process.env.REACT_APP_ENV || process.env.REACT_APP_ENV === 'dev') {
   axios.defaults.baseURL = process.env.REACT_APP_BACKEND;
 } else {
