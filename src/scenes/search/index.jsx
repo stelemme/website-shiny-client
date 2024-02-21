@@ -1,4 +1,5 @@
 import { useSearchParams } from "react-router-dom";
+import { useState } from "react";
 
 // Mui
 import {
@@ -7,6 +8,9 @@ import {
   InputBase,
   useTheme,
   Typography,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
 } from "@mui/material";
 import { tokens } from "../../theme";
 import SearchIcon from "@mui/icons-material/Search";
@@ -14,17 +18,22 @@ import SearchIcon from "@mui/icons-material/Search";
 // Components
 import Header from "../../components/Header";
 import ShinyCard from "../../components/Cards/ShinyCard";
+import CounterCard from "../../components/Cards/CounterCard";
 
 // Hooks
-import { useShiny } from "../../hooks/useData";
+import { useShiny, useCounter } from "../../hooks/useData";
 
 export default function Search() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [countersSearch, setCountersSearch] = useState(false);
 
   const { isLoading: shinyLoading, data: shinyData } = useShiny(
     `search=${searchParams.get("search") ? searchParams.get("search") : false}`
+  );
+  const { isLoading: counterLoading, data: counterData } = useCounter(
+    `?search=${searchParams.get("search") ? searchParams.get("search") : false}`
   );
 
   const handleSubmit = (e) => {
@@ -52,17 +61,34 @@ export default function Search() {
       );
     } else {
       return data?.map((item) => {
+        console.log(item);
         return (
-          <div key={item._id} style={{ marginBottom: "20px" }}>
-            <ShinyCard
-              id={item._id}
-              name={item.name}
-              gameSprite={item.sprite.game}
-              dir={item.sprite.dir}
-              monSprite={item.sprite.pokemon}
-              trainer={item.trainer}
-            />
-          </div>
+          <>
+            {!countersSearch && (
+              <div key={item._id} style={{ marginBottom: "20px" }}>
+                <ShinyCard
+                  id={item._id}
+                  name={item.name}
+                  gameSprite={item.sprite.game}
+                  dir={item.sprite.dir}
+                  monSprite={item.sprite.pokemon}
+                  trainer={item.trainer}
+                />
+              </div>
+            )}
+            {countersSearch && item.totalEncounters > 0 && (
+              <div key={item._id} style={{ marginBottom: "20px" }}>
+                <CounterCard
+                  id={item._id}
+                  name={item.name}
+                  gameSprite={item.sprite.game}
+                  count={item.totalEncounters}
+                  trainer={item.trainer}
+                  query={"?completed=true"}
+                />
+              </div>
+            )}
+          </>
         );
       });
     }
@@ -78,6 +104,25 @@ export default function Search() {
             subtitle="Here you can search for Shiny Pokémon."
           />
         </Box>
+
+        <RadioGroup
+          row
+          value={countersSearch}
+          onChange={(e, value) => {
+            setCountersSearch(JSON.parse(value));
+          }}
+        >
+          <FormControlLabel
+            value={false}
+            control={<Radio color="secondary" />}
+            label="Shinies"
+          />
+          <FormControlLabel
+            value={true}
+            control={<Radio color="secondary" />}
+            label="Counters"
+          />
+        </RadioGroup>
 
         {/* SEARCH BAR */}
         <form onSubmit={handleSubmit} noValidate autoComplete="off">
@@ -98,7 +143,21 @@ export default function Search() {
             </IconButton>
           </Box>
         </form>
-        <ShinyDisplay data={shinyData?.data} loading={shinyLoading} error={!shinyData?.data.length}/>
+        <ShinyDisplay
+          data={
+            countersSearch
+              ? shinyData?.data.concat(counterData?.data)
+              : shinyData?.data
+          }
+          loading={
+            countersSearch ? shinyLoading && counterLoading : shinyLoading
+          }
+          error={
+            countersSearch
+              ? !shinyData?.data.length && !counterData?.data.length
+              : !shinyData?.data.length
+          }
+        />
       </Box>
     </Box>
   );

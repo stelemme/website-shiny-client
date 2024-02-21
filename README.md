@@ -2,6 +2,18 @@
 
 ## Changelogs
 
+### Version 1.2.0 (21.02.2024)
+
+**Counters:**
+
+- Counters kunnen alfabetisch gesorteerd worden.
+
+**Search:**
+
+- Counters kunnen ook gesearched worden via de search pagina.
+
+---
+
 ### Version 1.1.0 (18.02.2024)
 
 **Counter:**

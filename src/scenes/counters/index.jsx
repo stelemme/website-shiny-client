@@ -118,7 +118,7 @@ export default function Counters() {
               anchorEl={anchorElOngoing}
               setAnchorEl={setAnchorElOngoing}
               cookie={"ongoingCounterSort"}
-              options={["game", "pokedexNo", "date", "encounters"]}
+              options={["game", "pokedexNo", "date", "encounters", "abc"]}
             />
           </Box>
         </Box>
@@ -161,7 +161,7 @@ export default function Counters() {
               anchorEl={anchorElCompleted}
               setAnchorEl={setAnchorElCompleted}
               cookie={"completedCounterSort"}
-              options={["game", "pokedexNo", "date", "encounters"]}
+              options={["game", "pokedexNo", "date", "encounters", "abc"]}
             />
           </Box>
         </Box>
