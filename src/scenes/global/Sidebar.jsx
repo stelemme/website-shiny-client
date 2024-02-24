@@ -21,6 +21,7 @@ import AssessmentIcon from '@mui/icons-material/Assessment';
 import FactCheckOutlinedIcon from '@mui/icons-material/FactCheckOutlined';
 import PermIdentityRoundedIcon from '@mui/icons-material/PermIdentityRounded';
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
+import DescriptionIcon from '@mui/icons-material/Description';
 
 // Hooks
 import { useAuth } from "../../hooks/useAuth";
@@ -250,6 +251,13 @@ export default function CustomSidebar() {
           title="Regional Pokédex"
           to="/pokedex/regional"
           icon={<CatchingPokemonTwoToneIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Item
+          title="Changelogs"
+          to="/changelogs"
+          icon={<DescriptionIcon />}
           selected={selected}
           setSelected={setSelected}
         />

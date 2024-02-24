@@ -2,6 +2,14 @@
 
 ## Changelogs
 
+### Version 1.3.0 (24.02.2024)
+
+**Info:**
+
+- Changelogs kunnen bekeken worden op de changelog page.
+
+***
+
 ### Version 1.2.0 (21.02.2024)
 
 **Counters:**
@@ -12,7 +20,7 @@
 
 - Counters kunnen ook gesearched worden via de search pagina.
 
----
+***
 
 ### Version 1.1.0 (18.02.2024)
 
@@ -41,7 +49,7 @@
 
 - Verduidelijking toegevoegd bij random SOS Chain over welke chain length moet ingevuld worden.
 
----
+***
 
 ### Version 1.0.0 (17.02.2024)
 
@@ -55,7 +63,7 @@
 
 - Encounters per uur stat is toegevoegd aan informatie.
 
----
+***
 
 ### Version 0.1.0 (15.02.2024)
 

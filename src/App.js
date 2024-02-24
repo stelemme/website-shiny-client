@@ -36,6 +36,7 @@ import ShinyStats from "./scenes/stats";
 import CounterStats from "./scenes/stats/counter";
 import User from "./scenes/info/user";
 import Map from "./scenes/shiny/map";
+import ChangeLog from "./scenes/info/changeLog";
 import ErrorPage from "./scenes/global/ErrorPage";
 
 if (!process.env.REACT_APP_ENV || process.env.REACT_APP_ENV === 'dev') {
@@ -124,6 +125,13 @@ const router = createBrowserRouter([
         loader: loader,
         children: [
           { index: true, Component: Map },
+        ]
+      },
+      {
+        path: "/changelogs",
+        loader: loader,
+        children: [
+          { index: true, Component: ChangeLog },
         ]
       },
       { path: "*", Component: ErrorPage },
