@@ -7,5 +7,6 @@ function importAll(r) {
 const gameImages = importAll(require.context('./games', false, /\.png$/));
 const trainerImages = importAll(require.context('./trainers', false, /\.png$/));
 const medalImages = importAll(require.context('./medals', false, /\.png$/));
+const natureImages = importAll(require.context('./natures', false, /\.png$/));
 
-export { gameImages, trainerImages, medalImages };
+export { gameImages, trainerImages, medalImages, natureImages };

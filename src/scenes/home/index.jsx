@@ -84,7 +84,7 @@ export default function Home() {
               monSprite={item?.sprite.pokemon}
               trainer={item?.trainer}
               bgColor={500}
-              imgSize={"52px"}
+              imgSize={52}
             />
           </Grid>
         );

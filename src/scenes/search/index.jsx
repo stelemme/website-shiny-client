@@ -46,7 +46,7 @@ export default function Search() {
     }
   };
 
-  const ShinyDisplay = ({ data, loading, error }) => {
+  const ShinyDisplay = ({ data, loading, error, text }) => {
     if (loading) {
       return (
         <Typography variant="h5" style={{ marginBottom: "20px" }}>
@@ -56,7 +56,7 @@ export default function Search() {
     } else if (error) {
       return (
         <Typography variant="h5" style={{ marginBottom: "20px" }}>
-          No Pokémon Found
+          No {text} Found
         </Typography>
       );
     } else {
@@ -157,6 +157,7 @@ export default function Search() {
               ? !shinyData?.data.length && !counterData?.data.length
               : !shinyData?.data.length
           }
+          text={countersSearch ? "Counters" : "Pokémons"}
         />
       </Box>
     </Box>

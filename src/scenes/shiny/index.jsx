@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Cookies from "js-cookie";
+import LazyLoad from "react-lazy-load";
 
 // Mui
 import { Box, Typography, IconButton } from "@mui/material";
@@ -9,6 +10,7 @@ import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 // Components
 import Header from "../../components/Header";
 import ShinyCard from "../../components/Cards/ShinyCard";
+import ShinyCardEvolutions from "../../components/Cards/ShinyCardEvolutions";
 import SortMenu from "../../components/Menus/SortMenu";
 import FilterMenu from "../../components/Dialogs/FilterDialog";
 
@@ -32,6 +34,9 @@ export default function Shiny() {
   const shinyGenFilter = Cookies.get("shinyGenFilter")
     ? Cookies.get("shinyGenFilter")
     : "All";
+  const evolutionSpriteDisplay = Cookies.get("evolutionSpriteDisplay")
+    ? Cookies.get("evolutionSpriteDisplay")
+    : false;
 
   const { isLoading: shinyLoading, data: shinyData } =
     useShiny("preview=shiny");
@@ -52,15 +57,32 @@ export default function Shiny() {
         ) {
           filtered.push(
             <div style={{ marginBottom: "20px" }} key={item._id}>
-              <ShinyCard
-                id={item._id}
-                name={item.name}
-                gameSprite={item.sprite.game}
-                dir={item.sprite.dir}
-                monSprite={item.sprite.pokemon}
-                trainer={item.trainer}
-                IRLLocation={item.IRLLocation}
-              />
+              {evolutionSpriteDisplay === "false" ? (
+                <LazyLoad height={100}>
+                  <ShinyCard
+                    id={item._id}
+                    name={item.name}
+                    gameSprite={item.sprite.game}
+                    dir={item.sprite.dir}
+                    monSprite={item.sprite.pokemon}
+                    trainer={item.trainer}
+                    IRLLocation={item.IRLLocation}
+                  />
+                </LazyLoad>
+              ) : (
+                <ShinyCardEvolutions
+                  id={item._id}
+                  name={item.name}
+                  gameSprite={item.sprite.game}
+                  dir={item.sprite.dir}
+                  monSprite={item.sprite.pokemon}
+                  trainer={item.trainer}
+                  evolutions={item.evolutions}
+                  forms={item.forms}
+                  group={item.group}
+                  IRLLocation={item.IRLLocation}
+                />
+              )}
             </div>
           );
         }
@@ -70,7 +92,15 @@ export default function Shiny() {
   };
 
   return (
-    <Box maxWidth={{ md: "630px", sm: "420px" }} mx="auto" my="20px">
+    <Box
+      maxWidth={
+        evolutionSpriteDisplay === "false"
+          ? { md: "630px", sm: "420px" }
+          : { lg: "920px" }
+      }
+      mx="auto"
+      my="20px"
+    >
       <Box display="flex" flexDirection="column" mx="20px">
         {/* HEADER */}
         <Box display="flex" justifyContent="space-between" alignItems="center">

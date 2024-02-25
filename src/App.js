@@ -23,9 +23,9 @@ import CustomSidebar from "./scenes/global/Sidebar";
 import Counters from "./scenes/counters";
 import Counter from "./scenes/counters/counterId";
 import CreateCounters from "./scenes/counters/create";
-import Pokédex from "./scenes/info";
-import PokédexRegional from "./scenes/info/regional";
-import GameId from "./scenes/info/gameId";
+import Pokédex from "./scenes/pokedex";
+import PokédexRegional from "./scenes/pokedex/regional";
+import GameId from "./scenes/pokedex/gameId";
 import Shiny from "./scenes/shiny";
 import ShinyId from "./scenes/shiny/shinyId";
 import ShinyTable from "./scenes/shiny/table";
@@ -35,7 +35,8 @@ import CreateFromCounter from "./scenes/shiny/createFromCounter";
 import ShinyStats from "./scenes/stats";
 import CounterStats from "./scenes/stats/counter";
 import User from "./scenes/info/user";
-import Map from "./scenes/shiny/map";
+import Map from "./scenes/stats/map";
+import Collections from "./scenes/stats/collections";
 import ChangeLog from "./scenes/info/changeLog";
 import ErrorPage from "./scenes/global/ErrorPage";
 
@@ -118,6 +119,7 @@ const router = createBrowserRouter([
         children: [
           { index: true, Component: ShinyStats },
           { path: "counter", Component: CounterStats },
+          { path: "collections", Component: Collections },
         ]
       },
       {

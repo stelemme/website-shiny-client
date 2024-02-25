@@ -2,13 +2,33 @@
 
 ## Changelogs
 
-### Version 1.3.0 (24.02.2024)
+### Version 1.3.0 (25.02.2024)
+
+**Shiny Page:**
+
+- Evolutions en Forms kunnen nu op de homepage worden getoont, dit kan worden aangevinkt in de user info.
+- Gegroepeerde shinies kunnen nu samen worden bekeken op de individuele shiny pagina.
+
+**Collections:**
+
+- Collections page is aangemaakt.
+- Natures Collection kan nu worden bekeken, kan worden weergegeven voor iedereen of per trainer specifiek.
+- Balls Collection kan nu worden bekeken, kan worden weergegeven voor iedereen of per trainer specifiek.
 
 **Info:**
 
 - Changelogs kunnen bekeken worden op de changelog page.
 
-***
+**Sidebar:**
+
+- Herindeling Pokedex en information.
+
+**Bugs:**
+
+- Radar Shinies worden niet meer gegrouped in de checklist zodat evoluties wel zichtbaar zijn.
+- Marks kunnen nu maar 1x toegevoegd worden.
+
+---
 
 ### Version 1.2.0 (21.02.2024)
 
@@ -20,7 +40,7 @@
 
 - Counters kunnen ook gesearched worden via de search pagina.
 
-***
+---
 
 ### Version 1.1.0 (18.02.2024)
 
@@ -49,7 +69,7 @@
 
 - Verduidelijking toegevoegd bij random SOS Chain over welke chain length moet ingevuld worden.
 
-***
+---
 
 ### Version 1.0.0 (17.02.2024)
 
@@ -63,7 +83,7 @@
 
 - Encounters per uur stat is toegevoegd aan informatie.
 
-***
+---
 
 ### Version 0.1.0 (15.02.2024)
 

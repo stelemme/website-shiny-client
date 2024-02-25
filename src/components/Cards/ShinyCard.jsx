@@ -12,7 +12,6 @@ export default function ShinyCard({
   dir,
   monSprite,
   trainer,
-  IRLLocation,
   bgColor = "400",
   imgSize = "80px",
 }) {
@@ -87,14 +86,14 @@ export default function ShinyCard({
             <img
               alt=""
               src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-all-home/${monSprite}.png`}
-              height={imgSize}
+              height={String(imgSize) + "px"}
             />
           )}
           {spriteCheck && (
             <img
               alt=""
               src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/${dir}/${monSprite}.png`}
-              height={imgSize}
+              height={String(imgSize) + "px"}
               style={{ imageRendering: "pixelated" }}
               onError={(e) => {
                 e.target.src = `https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-all-home/${monSprite}.png`;

@@ -21,7 +21,8 @@ import AssessmentIcon from '@mui/icons-material/Assessment';
 import FactCheckOutlinedIcon from '@mui/icons-material/FactCheckOutlined';
 import PermIdentityRoundedIcon from '@mui/icons-material/PermIdentityRounded';
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
-import DescriptionIcon from '@mui/icons-material/Description';
+import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
+import PermMediaOutlinedIcon from '@mui/icons-material/PermMediaOutlined';
 
 // Hooks
 import { useAuth } from "../../hooks/useAuth";
@@ -226,6 +227,34 @@ export default function CustomSidebar() {
           selected={selected}
           setSelected={setSelected}
         />
+        <Item
+          title="Shiny Collections"
+          to="/stats/collections"
+          icon={<PermMediaOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Typography
+          variant="h6"
+          color={colors.grey[300]}
+          sx={{ m: "15px 0 5px 20px" }}
+        >
+          {isCollapsed ? "Dex" : "Pokédex"}
+        </Typography>
+        <Item
+          title="National Pokédex"
+          to="/pokedex"
+          icon={<CatchingPokemonTwoToneIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Item
+          title="Regional Pokédex"
+          to="/pokedex/regional"
+          icon={<CatchingPokemonTwoToneIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
         <Typography
           variant="h6"
           color={colors.grey[300]}
@@ -241,23 +270,9 @@ export default function CustomSidebar() {
           setSelected={setSelected}
         />
         <Item
-          title="National Pokédex"
-          to="/pokedex"
-          icon={<CatchingPokemonTwoToneIcon />}
-          selected={selected}
-          setSelected={setSelected}
-        />
-        <Item
-          title="Regional Pokédex"
-          to="/pokedex/regional"
-          icon={<CatchingPokemonTwoToneIcon />}
-          selected={selected}
-          setSelected={setSelected}
-        />
-        <Item
           title="Changelogs"
           to="/changelogs"
-          icon={<DescriptionIcon />}
+          icon={<ArticleOutlinedIcon />}
           selected={selected}
           setSelected={setSelected}
         />

@@ -287,10 +287,10 @@ export default function ShinyChecklist() {
             </Box>
           </Grid>
           {pokedex?.data.map((pokemon) => {
-            const joaquinCheck = shinyListJoaquin.includes(pokemon.name);
-            const korneelCheck = shinyListKorneel.includes(pokemon.name);
-            const simonCheck = shinyListSimon.includes(pokemon.name);
-            const stefCheck = shinyListStef.includes(pokemon.name);
+            const joaquinCheck = shinyListJoaquin?.includes(pokemon.name);
+            const korneelCheck = shinyListKorneel?.includes(pokemon.name);
+            const simonCheck = shinyListSimon?.includes(pokemon.name);
+            const stefCheck = shinyListStef?.includes(pokemon.name);
 
             const trueCount = [
               joaquinCheck,

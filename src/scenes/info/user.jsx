@@ -46,25 +46,40 @@ export default function User() {
     ? Cookies.get("gameSpriteDisplay")
     : false;
 
-  const [groupCheck, setGroupCheck] = useState(groupShinies === "true")
-  const [spriteCheck, setSpriteCheck] = useState(gameSpriteDisplay === "true")
-  const [trainerCheck, setTrainerCheck] = useState(trainerChoice !== username)
+  const evolutionSpriteDisplay = Cookies.get("evolutionSpriteDisplay")
+    ? Cookies.get("evolutionSpriteDisplay")
+    : false;
 
-  
+  const [groupCheck, setGroupCheck] = useState(groupShinies === "true");
+  const [spriteCheck, setSpriteCheck] = useState(gameSpriteDisplay === "true");
+  const [evolutionSpriteCheck, setEvolutionSpriteCheck] = useState(
+    evolutionSpriteDisplay === "true"
+  );
+  const [trainerCheck, setTrainerCheck] = useState(trainerChoice !== username);
+
   useEffect(() => {
-    setTrainerCheck(trainerChoice !== username)
-  }, [trainerChoice, username])
+    setTrainerCheck(trainerChoice !== username);
+  }, [trainerChoice, username]);
 
   const foreverDate = new Date("9999-12-31T23:59:59");
 
   const handleGroupChange = (e) => {
-    setGroupCheck(e.target.checked)
+    setGroupCheck(e.target.checked);
     Cookies.set("groupShinies", e.target.checked, { expires: foreverDate });
   };
 
   const handleSpriteChange = (e) => {
-    setSpriteCheck(e.target.checked)
-    Cookies.set("gameSpriteDisplay", e.target.checked, { expires: foreverDate });
+    setSpriteCheck(e.target.checked);
+    Cookies.set("gameSpriteDisplay", e.target.checked, {
+      expires: foreverDate,
+    });
+  };
+
+  const handleEvolutionSpriteChange = (e) => {
+    setEvolutionSpriteCheck(e.target.checked);
+    Cookies.set("evolutionSpriteDisplay", e.target.checked, {
+      expires: foreverDate,
+    });
   };
 
   const handleTrainerChange = (e) => {
@@ -147,70 +162,90 @@ export default function User() {
               </Box>
             </Box>
           </Grid>
-          {!trainerCheck && (<Grid item xs={12}>
-            <Box
-              p="20px"
-              width="100%"
-              backgroundColor={colors.primary[400]}
-              borderRadius="5px"
-              height="100%"
-            >
+          {!trainerCheck && (
+            <Grid item xs={12}>
               <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                mb={"14px"}
-                height={"28px"}
-              >
-                <Typography variant="h4" fontWeight={"bold"}>
-                  TRAINER SETTINGS
-                </Typography>
-              </Box>
-              <Box
-                p="10px"
+                p="20px"
                 width="100%"
-                backgroundColor={colors.primary[500]}
+                backgroundColor={colors.primary[400]}
                 borderRadius="5px"
+                height="100%"
               >
-                <FormGroup>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        color="secondary"
-                        checked={groupCheck}
-                        onChange={handleGroupChange}
-                        inputProps={{ "aria-label": "controlled" }}
-                        disabled={trainerCheck}
-                      />
-                    }
-                    label={
-                      <Typography variant="h6" fontWeight={"bold"}>
-                        GROUP THE RADAR SHINIES
-                      </Typography>
-                    }
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        color="secondary"
-                        checked={spriteCheck}
-                        onChange={handleSpriteChange}
-                        inputProps={{ "aria-label": "controlled" }}
-                        disabled={trainerCheck}
-                      />
-                    }
-                    label={
-                      <Typography variant="h6" fontWeight={"bold"}>
-                        DISPLAY GAMESPRITE ON SHINY PAGE
-                      </Typography>
-                    }
-                  />
-                </FormGroup>
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  mb={"14px"}
+                  height={"28px"}
+                >
+                  <Typography variant="h4" fontWeight={"bold"}>
+                    TRAINER SETTINGS
+                  </Typography>
+                </Box>
+                <Box
+                  p="10px"
+                  width="100%"
+                  backgroundColor={colors.primary[500]}
+                  borderRadius="5px"
+                >
+                  <FormGroup>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          color="secondary"
+                          checked={groupCheck}
+                          onChange={handleGroupChange}
+                          inputProps={{ "aria-label": "controlled" }}
+                          disabled={trainerCheck}
+                        />
+                      }
+                      label={
+                        <Typography variant="h6" fontWeight={"bold"}>
+                          GROUP THE RADAR SHINIES
+                        </Typography>
+                      }
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          color="secondary"
+                          checked={spriteCheck}
+                          onChange={handleSpriteChange}
+                          inputProps={{ "aria-label": "controlled" }}
+                          disabled={trainerCheck}
+                        />
+                      }
+                      label={
+                        <Typography variant="h6" fontWeight={"bold"}>
+                          DISPLAY GAMESPRITE ON THE SHINY PAGE
+                        </Typography>
+                      }
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          color="secondary"
+                          checked={evolutionSpriteCheck}
+                          onChange={handleEvolutionSpriteChange}
+                          inputProps={{ "aria-label": "controlled" }}
+                          disabled={trainerCheck}
+                        />
+                      }
+                      label={
+                        <Typography variant="h6" fontWeight={"bold"}>
+                          DISPLAY EVOLUTIONS AND FORMS ON THE SHINY PAGE
+                        </Typography>
+                      }
+                    />
+                  </FormGroup>
+                </Box>
               </Box>
-            </Box>
-          </Grid>)}
+            </Grid>
+          )}
         </Grid>
       </Box>
     </Box>
