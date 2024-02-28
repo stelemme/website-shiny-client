@@ -10,6 +10,43 @@ import UserSelect from "../Selects/UserSelect";
 // Hooks
 import { useShiny, useGame } from "../../hooks/useData";
 
+const ballsData = [
+  "Poké Ball",
+  "Great Ball",
+  "Ultra Ball",
+  "Master Ball",
+  "Safari Ball",
+  "Fast Ball",
+  "Level Ball",
+  "Lure Ball",
+  "Heavy Ball",
+  "Love Ball",
+  "Friend Ball",
+  "Moon Ball",
+  "Sport Ball",
+  "Net Ball",
+  "Dive Ball",
+  "Nest Ball",
+  "Repeat Ball",
+  "Timer Ball",
+  "Luxury Ball",
+  "Premier Ball",
+  "Dusk Ball",
+  "Heal Ball",
+  "Quick Ball",
+  "Dream Ball",
+  "Beast Ball",
+  "Poké Ball (Hisui)",
+  "Great Ball (Hisui)",
+  "Ultra Ball (Hisui)",
+  "Feather Ball",
+  "Wing Ball",
+  "Jet Ball",
+  "Heavy Ball (Hisui)",
+  "Leaden Ball",
+  "Gigaton Ball",
+];
+
 export default function Pokeballs() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -20,7 +57,7 @@ export default function Pokeballs() {
   const ballTotalData = shinyData?.data[0]?.ballCount;
 
   const { data: gameData } = useGame(`?ballList=true`);
-  const ballData = gameData?.data;
+  const ballSprites = gameData?.data[0]?.ballsprites;
 
   const handleChange = (e) => {
     if (e.target.value === "All") {
@@ -57,9 +94,9 @@ export default function Pokeballs() {
         />
       </Box>
       <Grid container spacing={"12px"}>
-        {ballData?.map((ball) => {
+        {ballSprites && ballsData?.map((ball) => {
           return (
-            <Grid item key={ball.name} lg={2} sm={2.4} xs={4}>
+            <Grid item key={ball} lg={2} sm={2.4} xs={4}>
               <Box
                 py="10px"
                 px="20px"
@@ -73,18 +110,18 @@ export default function Pokeballs() {
               >
                 <img
                   alt=""
-                  src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/balls/pixel/${ball.sprite}.png`}
+                  src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/balls/pixel/${ballSprites[ball]}.png`}
                   style={{
                     imageRendering: "pixelated",
                     height: "30px",
                   }}
                 />
                 <Typography variant="h6" fontWeight={"bold"} align="center">
-                  {ball.name}
+                  {ball}
                 </Typography>
                 <Typography variant="h6">
-                  {ballTotalData && ballTotalData[ball.name]
-                    ? ballTotalData[ball.name]
+                  {ballTotalData && ballTotalData[ball]
+                    ? ballTotalData[ball]
                     : 0}
                 </Typography>
               </Box>

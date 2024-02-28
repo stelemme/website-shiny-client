@@ -14,6 +14,7 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  ReferenceLine,
 } from "recharts";
 
 // Components imports
@@ -25,7 +26,6 @@ import { useShiny } from "../../hooks/useData";
 export default function EncountersGraph() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [ticks, setTicks] = useState([0, 5, 10, 15, 20, 25, 30, 35, 40]);
   const [graphColor, setGraphColor] = useState(colors.purpleAccent[500]);
   const [query, setQuery] = useState("");
   const [trainer, setTrainer] = useState("All");
@@ -35,13 +35,11 @@ export default function EncountersGraph() {
   const handleChange = (e) => {
     if (e.target.value === "All") {
       setQuery("");
-      setTicks([0, 5, 10, 15, 20, 25, 30, 35, 40]);
       setGraphColor(colors.purpleAccent[500]);
-      setTrainer("All")
+      setTrainer("All");
     } else {
-      setTicks([0, 5, 10, 15, 20]);
       setQuery(`&trainer=${e.target.value}`);
-      setTrainer(e.target.value)
+      setTrainer(e.target.value);
       if (e.target.value === "Joaquin") {
         setGraphColor(colors.redAccent[500]);
       } else if (e.target.value === "Korneel") {
@@ -71,7 +69,11 @@ export default function EncountersGraph() {
         <Typography variant="h4" fontWeight={"bold"}>
           ENCOUNTERS GRAPH
         </Typography>
-        <UserSelect label={"User"} handleChange={handleChange} defaultValue={trainer} />
+        <UserSelect
+          label={"User"}
+          handleChange={handleChange}
+          defaultValue={trainer}
+        />
       </Box>
       <ResponsiveContainer
         width="100%"
@@ -100,6 +102,7 @@ export default function EncountersGraph() {
             tick={{ dy: 15, dx: -10, fill: colors.grey[100] }}
           />
           <YAxis
+            type="number"
             label={
               window.innerWidth > 500
                 ? {
@@ -110,8 +113,9 @@ export default function EncountersGraph() {
                   }
                 : null
             }
+            domain={[0, () => 40]}
             tick={{ fill: colors.grey[100] }}
-            ticks={ticks}
+            tickCount={9}
             width={window.innerWidth > 500 ? 60 : 25}
           />
           <Tooltip
@@ -120,6 +124,7 @@ export default function EncountersGraph() {
               return `${Number(value) - 999}-${value}`;
             }}
           />
+          <ReferenceLine x="9000" stroke="black" strokeWidth={2} />
           <Bar dataKey="amount" fill={graphColor} />
           <Line
             type="basis"

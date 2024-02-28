@@ -2,6 +2,25 @@
 
 ## Changelogs
 
+### Version 1.4.0 (28.02.2024)
+
+**Odds Graph**
+
+- Reference lijn op odds.
+- Alle graphs zijn nu gelijk gescaled. 
+
+**Encounter Graph**
+
+- Worden nu weergegeven in trainer kleuren.
+
+**Bug Fixes:**
+
+- Encounter graph toont nu ook de encounters als er maar 1 of twee dagen zijn gehunt.
+- Als er meer dan 1000 encounters zijn worden die volledig op het scherm weergegeven op de encounter graph y-as.
+- Performance verbetering shiny page met evolutions.
+
+---
+
 ### Version 1.3.0 (25.02.2024)
 
 **Shiny Page:**

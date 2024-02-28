@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Cookies from "js-cookie";
-import LazyLoad from "react-lazy-load";
+import { LazyLoadComponent } from 'react-lazy-load-image-component';
 
 // Mui
 import { Box, Typography, IconButton } from "@mui/material";
@@ -58,7 +58,7 @@ export default function Shiny() {
           filtered.push(
             <div style={{ marginBottom: "20px" }} key={item._id}>
               {evolutionSpriteDisplay === "false" ? (
-                <LazyLoad height={100}>
+                <LazyLoadComponent>
                   <ShinyCard
                     id={item._id}
                     name={item.name}
@@ -68,8 +68,9 @@ export default function Shiny() {
                     trainer={item.trainer}
                     IRLLocation={item.IRLLocation}
                   />
-                </LazyLoad>
+                </LazyLoadComponent>
               ) : (
+                <LazyLoadComponent>
                 <ShinyCardEvolutions
                   id={item._id}
                   name={item.name}
@@ -82,6 +83,7 @@ export default function Shiny() {
                   group={item.group}
                   IRLLocation={item.IRLLocation}
                 />
+                </LazyLoadComponent>
               )}
             </div>
           );

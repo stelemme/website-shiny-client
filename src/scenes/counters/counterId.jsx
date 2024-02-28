@@ -24,19 +24,9 @@ import ReplyTwoToneIcon from "@mui/icons-material/ReplyTwoTone";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
 
-// Recharts
-import {
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  BarChart,
-  ResponsiveContainer,
-} from "recharts";
-
 // Components
 import CustomDialog from "../../components/Dialogs/CustomDialog";
+import CounterEncounterGraph from "../../components/Graphs/CounterEncounterGraph";
 
 // Functions
 import {
@@ -901,48 +891,11 @@ export default function Counter() {
                     Encounter Graph
                   </DialogTitle>
                   <DialogContent width="100%">
-                    <ResponsiveContainer
-                      width="100%"
-                      height={window.innerWidth < 500 ? 300 : 400}
-                    >
-                      <BarChart
-                        data={formatEncounterData(data.encounters)}
-                        margin={{
-                          top: 0,
-                          right: 0,
-                          bottom: -15,
-                          left: 5,
-                        }}
-                      >
-                        <XAxis
-                          dataKey="date"
-                          scale="time"
-                          type="number"
-                          domain={[
-                            (dataMin) => dataMin,
-                            () => new Date(data.endDate).getTime(),
-                          ]}
-                          tick={false}
-                          axisLine={{ stroke: colors.primary[200] }}
-                          tickLine={{ stroke: colors.primary[200] }}
-                        />
-                        <YAxis
-                          dataKey="value"
-                          width={25}
-                          tick={{ fill: colors.grey[100] }}
-                          axisLine={{ stroke: colors.primary[200] }}
-                          tickLine={{ stroke: colors.primary[200] }}
-                        />
-                        <CartesianGrid stroke={colors.primary[200]} />
-                        <Tooltip
-                          labelStyle={{ color: "black" }}
-                          labelFormatter={(value) => {
-                            return `${new Date(value).toLocaleDateString()}`;
-                          }}
-                        />
-                        <Bar dataKey="value" fill={colors.redAccent[500]} />
-                      </BarChart>
-                    </ResponsiveContainer>
+                    <CounterEncounterGraph
+                      formatEncounterData={formatEncounterData}
+                      data={data}
+                      trainer={data.trainer}
+                    />
                   </DialogContent>
                 </Dialog>
               </Box>

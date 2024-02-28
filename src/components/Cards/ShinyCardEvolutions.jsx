@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import LazyLoad from "react-lazy-load";
 
 // mui imports
 import { Box, Typography, useTheme } from "@mui/material";
@@ -8,12 +7,6 @@ import { tokens } from "../../theme";
 
 // Hooks
 import { useShiny } from "../../hooks/useData";
-
-const calculateLazyLoadHeight = (totalItems, imgHeight) => {
-  const itemsPerRow = 3;
-  const rows = Math.ceil(totalItems / itemsPerRow);
-  return rows * imgHeight;
-};
 
 function makeUnique(array, propertyName) {
   let seen = new Set();
@@ -60,7 +53,6 @@ export default function ShinyCardEvolutions({
   const spriteCheck = gameSpriteDisplay === "true";
 
   return (
-    <LazyLoad height={calculateLazyLoadHeight(evolutions.length, imgSize) + 20}>
       <Box
         p="10px"
         width="100%"
@@ -203,6 +195,5 @@ export default function ShinyCardEvolutions({
           </Box>
         </Box>
       </Box>
-    </LazyLoad>
   );
 }
