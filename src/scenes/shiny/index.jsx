@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Cookies from "js-cookie";
-import { LazyLoadComponent } from 'react-lazy-load-image-component';
+import LazyLoad from "react-lazy-load";
 
 // Mui
 import { Box, Typography, IconButton } from "@mui/material";
@@ -19,6 +19,7 @@ import sortData from "../../functions/sortData";
 
 // Hooks
 import { useShiny } from "../../hooks/useData";
+
 
 export default function Shiny() {
   const [anchorElSort, setAnchorElSort] = useState(null);
@@ -58,7 +59,7 @@ export default function Shiny() {
           filtered.push(
             <div style={{ marginBottom: "20px" }} key={item._id}>
               {evolutionSpriteDisplay === "false" ? (
-                <LazyLoadComponent>
+                <LazyLoad height={100}>
                   <ShinyCard
                     id={item._id}
                     name={item.name}
@@ -68,22 +69,20 @@ export default function Shiny() {
                     trainer={item.trainer}
                     IRLLocation={item.IRLLocation}
                   />
-                </LazyLoadComponent>
+                </LazyLoad>
               ) : (
-                <LazyLoadComponent>
-                <ShinyCardEvolutions
-                  id={item._id}
-                  name={item.name}
-                  gameSprite={item.sprite.game}
-                  dir={item.sprite.dir}
-                  monSprite={item.sprite.pokemon}
-                  trainer={item.trainer}
-                  evolutions={item.evolutions}
-                  forms={item.forms}
-                  group={item.group}
-                  IRLLocation={item.IRLLocation}
-                />
-                </LazyLoadComponent>
+                  <ShinyCardEvolutions
+                    id={item._id}
+                    name={item.name}
+                    gameSprite={item.sprite.game}
+                    dir={item.sprite.dir}
+                    monSprite={item.sprite.pokemon}
+                    trainer={item.trainer}
+                    evolutions={item.evolutions}
+                    forms={item.forms}
+                    group={item.group}
+                    IRLLocation={item.IRLLocation}
+                  />
               )}
             </div>
           );

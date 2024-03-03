@@ -231,6 +231,20 @@ export function formatEncounterData(encounterArray) {
   return formattedData;
 }
 
+export function getMaxEncounters(encounterArray) {
+  let maxObject = null;
+  let maxValue = -Infinity;
+
+  for (const obj of encounterArray) {
+    if (obj.value > maxValue) {
+      maxValue = obj.value;
+      maxObject = obj;
+    }
+  }
+
+   return maxObject
+}
+
 export function calculateOverlapPercentage(arr1, arr2) {
   if (!arr1 || !arr2) {
     return 0;

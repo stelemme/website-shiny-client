@@ -2,6 +2,18 @@
 
 ## Changelogs
 
+### Version 1.5.0 (03.03.2024)
+
+**Counter:**
+
+- Dag waarop het meeste gehunt is kan bekeken worden onder de encounter graph.
+
+**Shiny Page (Bug Fix):**
+
+- Als de shiny display cards een variabele hoogte hebben, werkt bij het wisselen van pagina's de scrollmemory niet meer. De evolutions shiny cards zijn nu allemaal dezelfde hoogte en wanneer de afbeeldingen niet op het scherm passen kan er gescrolld worden.
+
+---
+
 ### Version 1.4.0 (28.02.2024)
 
 **Odds Graph**

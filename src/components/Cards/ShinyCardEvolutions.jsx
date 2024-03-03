@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import LazyLoad from "react-lazy-load";
 
 // mui imports
 import { Box, Typography, useTheme } from "@mui/material";
@@ -53,6 +54,7 @@ export default function ShinyCardEvolutions({
   const spriteCheck = gameSpriteDisplay === "true";
 
   return (
+    <LazyLoad height={window.innerWidth < 600 ? 50 : 100}>
       <Box
         p="10px"
         width="100%"
@@ -113,7 +115,7 @@ export default function ShinyCardEvolutions({
           </Box>
 
           {/* SHINY SPRITE */}
-          <Box display="flex" flexWrap="wrap">
+          <Box display="flex" overflow="auto">
             <Box display="flex" alignItems="center" justifyContent="center">
               {!spriteCheck && (
                 <img
@@ -195,5 +197,6 @@ export default function ShinyCardEvolutions({
           </Box>
         </Box>
       </Box>
+      </LazyLoad>
   );
 }

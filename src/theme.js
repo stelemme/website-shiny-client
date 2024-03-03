@@ -260,6 +260,16 @@ const scrollbarStyle = (theme) => {
     "&::-webkit-scrollbar-thumb:hover": {
       background: scrollbar.thumbHoverColor,
     },
+    // Horizontal scrollbar
+    "&::-webkit-scrollbar:horizontal": {
+      height: scrollbar.width,
+    },
+    "&::-webkit-scrollbar-thumb:horizontal": {
+      background: scrollbar.thumbColor,
+    },
+    "&::-webkit-scrollbar-thumb:hover:horizontal": {
+      background: scrollbar.thumbHoverColor,
+    },
   };
 };
 

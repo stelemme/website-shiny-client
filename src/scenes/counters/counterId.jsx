@@ -36,7 +36,6 @@ import {
   calculateDateDifference,
   calculateEncountersPerDay,
   formatTime,
-  formatEncounterData,
 } from "../../functions/statFunctions";
 
 // Hooks
@@ -892,7 +891,6 @@ export default function Counter() {
                   </DialogTitle>
                   <DialogContent width="100%">
                     <CounterEncounterGraph
-                      formatEncounterData={formatEncounterData}
                       data={data}
                       trainer={data.trainer}
                     />
