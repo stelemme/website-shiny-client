@@ -1,134 +1,161 @@
 import { useState } from "react";
 
-// mui imports
-import { Box, useTheme, Typography, Grid } from "@mui/material";
-import { tokens } from "../../theme";
-
 // Components imports
-import UserSelect from "../Selects/UserSelect";
-
-// Hooks
-import { useShiny, useGame } from "../../hooks/useData";
+import CollectionCard from "./CollectionCard";
 
 const ballsData = [
-  "Poké Ball",
-  "Great Ball",
-  "Ultra Ball",
-  "Master Ball",
-  "Safari Ball",
-  "Fast Ball",
-  "Level Ball",
-  "Lure Ball",
-  "Heavy Ball",
-  "Love Ball",
-  "Friend Ball",
-  "Moon Ball",
-  "Sport Ball",
-  "Net Ball",
-  "Dive Ball",
-  "Nest Ball",
-  "Repeat Ball",
-  "Timer Ball",
-  "Luxury Ball",
-  "Premier Ball",
-  "Dusk Ball",
-  "Heal Ball",
-  "Quick Ball",
-  "Dream Ball",
-  "Beast Ball",
-  "Poké Ball (Hisui)",
-  "Great Ball (Hisui)",
-  "Ultra Ball (Hisui)",
-  "Feather Ball",
-  "Wing Ball",
-  "Jet Ball",
-  "Heavy Ball (Hisui)",
-  "Leaden Ball",
-  "Gigaton Ball",
+  {
+    name: "Poké Ball",
+    sprite: "poke-ball",
+  },
+  {
+    name: "Great Ball",
+    sprite: "great-ball",
+  },
+  {
+    name: "Ultra Ball",
+    sprite: "ultra-ball",
+  },
+  {
+    name: "Master Ball",
+    sprite: "master-ball",
+  },
+  {
+    name: "Safari Ball",
+    sprite: "safari-ball",
+  },
+  {
+    name: "Fast Ball",
+    sprite: "fast-ball",
+  },
+  {
+    name: "Level Ball",
+    sprite: "level-ball",
+  },
+  {
+    name: "Lure Ball",
+    sprite: "lure-ball",
+  },
+  {
+    name: "Heavy Ball",
+    sprite: "heavy-ball",
+  },
+  {
+    name: "Love Ball",
+    sprite: "love-ball",
+  },
+  {
+    name: "Friend Ball",
+    sprite: "friend-ball",
+  },
+  {
+    name: "Moon Ball",
+    sprite: "moon-ball",
+  },
+  {
+    name: "Sport Ball",
+    sprite: "sport-ball",
+  },
+  {
+    name: "Net Ball",
+    sprite: "net-ball",
+  },
+  {
+    name: "Dive Ball",
+    sprite: "dive-ball",
+  },
+  {
+    name: "Nest Ball",
+    sprite: "nest-ball",
+  },
+  {
+    name: "Repeat Ball",
+    sprite: "repeat-ball",
+  },
+  {
+    name: "Timer Ball",
+    sprite: "timer-ball",
+  },
+  {
+    name: "Luxury Ball",
+    sprite: "luxury-ball",
+  },
+  {
+    name: "Premier Ball",
+    sprite: "premier-ball",
+  },
+  {
+    name: "Dusk Ball",
+    sprite: "dusk-ball",
+  },
+  {
+    name: "Heal Ball",
+    sprite: "heal-ball",
+  },
+  {
+    name: "Quick Ball",
+    sprite: "quick-ball",
+  },
+  {
+    name: "Dream Ball",
+    sprite: "dream-ball",
+  },
+  {
+    name: "Beast Ball",
+    sprite: "beast-ball",
+  },
+  {
+    name: "Poké Ball (Hisui)",
+    sprite: "poke-ball-legends",
+  },
+  {
+    name: "Great Ball (Hisui)",
+    sprite: "great-ball-legends",
+  },
+  {
+    name: "Ultra Ball (Hisui)",
+    sprite: "ultra-ball-legends",
+  },
+  {
+    name: "Feather Ball",
+    sprite: "feather-ball",
+  },
+  {
+    name: "Wing Ball",
+    sprite: "wing-ball",
+  },
+  {
+    name: "Jet Ball",
+    sprite: "jet-ball",
+  },
+  {
+    name: "Heavy Ball (Hisui)",
+    sprite: "heavy-ball-legends",
+  },
+  {
+    name: "Leaden Ball",
+    sprite: "leaden-ball",
+  },
+  {
+    name: "Gigaton Ball",
+    sprite: "gigaton-ball",
+  },
 ];
 
 export default function Pokeballs() {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-  const [query, setQuery] = useState("");
   const [trainer, setTrainer] = useState("All");
 
-  const { data: shinyData } = useShiny(`ballCollection=true${query}`);
-  const ballTotalData = shinyData?.data[0]?.ballCount;
-
-  const { data: gameData } = useGame(`?ballList=true`);
-  const ballSprites = gameData?.data[0]?.ballsprites;
-
-  const handleChange = (e) => {
-    if (e.target.value === "All") {
-      setQuery("");
-      setTrainer("All");
-    } else {
-      setQuery(`&trainer=${e.target.value}`);
-      setTrainer(e.target.value);
-    }
-  };
-
   return (
-    <Box
-      p="20px"
-      width="100%"
-      backgroundColor={colors.primary[400]}
-      borderRadius="5px"
-      height="100%"
-    >
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mb={"14px"}
-        height={"28px"}
-      >
-        <Typography variant="h4" fontWeight={"bold"}>
-          POKEBALLS
-        </Typography>
-        <UserSelect
-          label={"User"}
-          handleChange={handleChange}
-          defaultValue={trainer}
-        />
-      </Box>
-      <Grid container spacing={"12px"}>
-        {ballSprites && ballsData?.map((ball) => {
-          return (
-            <Grid item key={ball} lg={2} sm={2.4} xs={4}>
-              <Box
-                py="10px"
-                px="20px"
-                height="100%"
-                backgroundColor={colors.primary[500]}
-                borderRadius="5px"
-                display="flex"
-                flexDirection="column"
-                alignItems="center"
-                justifyContent="space-between"
-              >
-                <img
-                  alt=""
-                  src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/balls/pixel/${ballSprites[ball]}.png`}
-                  style={{
-                    imageRendering: "pixelated",
-                    height: "30px",
-                  }}
-                />
-                <Typography variant="h6" fontWeight={"bold"} align="center">
-                  {ball}
-                </Typography>
-                <Typography variant="h6">
-                  {ballTotalData && ballTotalData[ball]
-                    ? ballTotalData[ball]
-                    : 0}
-                </Typography>
-              </Box>
-            </Grid>
-          );
-        })}
-      </Grid>
-    </Box>
+    <CollectionCard
+      placeholdList={ballsData}
+      trainer={trainer}
+      setTrainer={setTrainer}
+      dir={"balls/pixel"}
+      title={"POKEBALLS"}
+      collectionStr={"ball"}
+      lg={2}
+      sm={2.4}
+      xs={4}
+    />
   );
 }

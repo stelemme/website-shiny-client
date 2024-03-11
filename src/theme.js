@@ -237,6 +237,7 @@ export const themeSettings = (mode) => {
     },
     scrollbar: {
       width: 5,
+      height: 2,
       trackColor: mode === "dark" ? colors.grey[700] : colors.grey[900],
       thumbColor: mode === "dark" ? colors.grey[500] : colors.grey[800],
       thumbHoverColor: mode === "dark" ? colors.grey[300] : colors.grey[600],
@@ -262,7 +263,7 @@ const scrollbarStyle = (theme) => {
     },
     // Horizontal scrollbar
     "&::-webkit-scrollbar:horizontal": {
-      height: scrollbar.width,
+      height: scrollbar.height,
     },
     "&::-webkit-scrollbar-thumb:horizontal": {
       background: scrollbar.thumbColor,

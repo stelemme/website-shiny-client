@@ -2,6 +2,15 @@
 
 ## Changelogs
 
+### Version 1.6.0 (11.03.2024)
+
+**Collections:**
+
+- Als waarde nul is, afbeelding wordt zwart
+- Alolan collection toegevoegd
+
+---
+
 ### Version 1.5.0 (03.03.2024)
 
 **Counter:**

@@ -8,6 +8,7 @@ import Header from "../../components/Header";
 import GeneralSelect from "../../components/Selects/GeneralSelect";
 import Pokeballs from "../../components/Collections/Pokeballs";
 import Natures from "../../components/Collections/Natures";
+import Alolans from "../../components/Collections/Alolans";
 
 export default function Collections() {
   const [collection, setCollection] = useState("Pokéballs");
@@ -19,6 +20,7 @@ export default function Collections() {
   const collectionComponents = {
     "Pokéballs": Pokeballs,
     "Natures": Natures,
+    "Alolan Forms": Alolans,
   };
 
   return (
@@ -42,7 +44,7 @@ export default function Collections() {
             <GeneralSelect
               label={"Collections"}
               handleChange={handleChange}
-              list={["Pokéballs", "Natures"]}
+              list={Object.keys(collectionComponents)}
               value={collection}
               width={200}
               size={"normal"}
