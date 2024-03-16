@@ -9,7 +9,6 @@ export default function GeneralSelect({
   width = 120,
   size = "small",
 }) {
-
   return (
     <FormControl size={size} style={{ minWidth: width }} color="secondary">
       <InputLabel>{label} </InputLabel>
@@ -19,11 +18,17 @@ export default function GeneralSelect({
         onChange={handleChange}
         value={value}
       >
-        {list.map((item, index) => (
-          <MenuItem key={index} value={item}>
-            {item}
-          </MenuItem>
-        ))}
+        {list.map((item, index) =>
+          item.charAt(0) === "_" ? (
+            <MenuItem key={index} value={item} divider>
+              {item.slice(1)}
+            </MenuItem>
+          ) : (
+            <MenuItem key={index} value={item}>
+              {item}
+            </MenuItem>
+          )
+        )}
       </Select>
     </FormControl>
   );

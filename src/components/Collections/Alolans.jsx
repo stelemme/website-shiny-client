@@ -90,8 +90,9 @@ export default function Alolans() {
       title={"Alolan Forms"}
       collectionStr={"alola"}
       lg={2}
-      sm={2.4}
+      sm={3}
       xs={4}
+      numbers={false}
     />
   );
 }

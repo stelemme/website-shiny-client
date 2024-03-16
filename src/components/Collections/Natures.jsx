@@ -120,6 +120,7 @@ export default function Natures() {
       lg={2.4}
       sm={2.4}
       xs={4}
+      imgHeight={40}
     />
   );
 }

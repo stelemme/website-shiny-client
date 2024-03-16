@@ -8,7 +8,14 @@ import Header from "../../components/Header";
 import GeneralSelect from "../../components/Selects/GeneralSelect";
 import Pokeballs from "../../components/Collections/Pokeballs";
 import Natures from "../../components/Collections/Natures";
+import Megas from "../../components/Collections/Megas";
+import Gigantamax from "../../components/Collections/Gigantamax";
 import Alolans from "../../components/Collections/Alolans";
+import Galarians from "../../components/Collections/Galarian";
+import Hisuians from "../../components/Collections/Hisuians";
+import Paldeans from "../../components/Collections/Paldeans";
+import Eeveelutions from "../../components/Collections/Eeveelutions";
+import Unowns from "../../components/Collections/Unowns";
 
 export default function Collections() {
   const [collection, setCollection] = useState("Pokéballs");
@@ -19,8 +26,15 @@ export default function Collections() {
 
   const collectionComponents = {
     "Pokéballs": Pokeballs,
-    "Natures": Natures,
+    "_Natures": Natures,
+    "Mega Evolutions": Megas,
+    "_Gigantamax Pokémon": Gigantamax,
     "Alolan Forms": Alolans,
+    "Galarian Forms": Galarians,
+    "Hisuian Forms": Hisuians,    
+    "_Paldean Forms": Paldeans,
+    "Eeveelutions": Eeveelutions,
+    "Unowns": Unowns,
   };
 
   return (

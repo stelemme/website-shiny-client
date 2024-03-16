@@ -19,7 +19,9 @@ export default function CollectionCard({
   collectionStr,
   lg,
   sm,
-  xs
+  xs,
+  numbers=true,
+  imgHeight=(window.innerWidth < 600) ? 50 : 70
 }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -66,7 +68,7 @@ export default function CollectionCard({
       <Grid container spacing={"12px"}>
         {placeholdList.map((item) => {
           return (
-            <Grid item key={item} lg={lg} sm={sm} xs={xs}>
+            <Grid item key={item.name} lg={lg} sm={sm} xs={xs}>
               <Box
                 py="10px"
                 px="20px"
@@ -84,7 +86,7 @@ export default function CollectionCard({
                     src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/${dir}/${item.sprite}.png`}
                     style={{
                       imageRendering: "pixelated",
-                      height: "30px",
+                      height: String(imgHeight) + "px",
                     }}
                   />
                 ) : (
@@ -93,19 +95,19 @@ export default function CollectionCard({
                     src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/${dir}/${item.sprite}.png`}
                     style={{
                       imageRendering: "pixelated",
-                      height: "30px",
+                      height: String(imgHeight) + "px",
                       filter: "contrast(0%) brightness(50%)",
                     }}
                   />
                 )}
-                <Typography variant="h6" fontWeight={"bold"} align="center">
+                <Typography fontWeight={"bold"} align="center" fontSize={12} mt={"10px"}>
                   {item.name}
                 </Typography>
-                <Typography variant="h6">
+                {numbers && <Typography variant="h6">
                   {collectionData && collectionData[item.name]
                     ? collectionData[item.name]
                     : 0}
-                </Typography>
+                </Typography>}
               </Box>
             </Grid>
           );

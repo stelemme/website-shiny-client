@@ -154,8 +154,9 @@ export default function Pokeballs() {
       title={"POKEBALLS"}
       collectionStr={"ball"}
       lg={2}
-      sm={2.4}
+      sm={3}
       xs={4}
+      imgHeight={40}
     />
   );
 }
