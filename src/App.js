@@ -1,13 +1,20 @@
-import { Outlet, createBrowserRouter, RouterProvider, ScrollRestoration, redirect } from "react-router-dom"
+import {
+  Outlet,
+  createBrowserRouter,
+  RouterProvider,
+  ScrollRestoration,
+  redirect,
+} from "react-router-dom";
+import { ErrorBoundary } from "react-error-boundary";
 import { useRecoilValue } from "recoil";
 import { sidebarCollapse } from "./atoms";
 import { useState, useEffect } from "react";
-import { QueryClientProvider, QueryClient } from "react-query"
-import axios from "axios"
-import 'leaflet/dist/leaflet.css';
+import { QueryClientProvider, QueryClient } from "react-query";
+import axios from "axios";
+import "leaflet/dist/leaflet.css";
 
 // Firebase imports
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./utils/firebase";
 
 // mui imports
@@ -15,10 +22,10 @@ import { ColorModeContext, useMode } from "./theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 
 // Scenes imports
-import Topbar from "./scenes/global/Topbar"
-import Home from "./scenes/home"
+import Topbar from "./scenes/global/Topbar";
+import Home from "./scenes/home";
 import Search from "./scenes/search";
-import Login from "./scenes/login"
+import Login from "./scenes/login";
 import CustomSidebar from "./scenes/global/Sidebar";
 import Counters from "./scenes/counters";
 import Counter from "./scenes/counters/counterId";
@@ -38,9 +45,10 @@ import User from "./scenes/info/user";
 import Map from "./scenes/stats/map";
 import Collections from "./scenes/stats/collections";
 import ChangeLog from "./scenes/info/changeLog";
+import NotFoundPage from "./scenes/global/NotFoundPage";
 import ErrorPage from "./scenes/global/ErrorPage";
 
-if (!process.env.REACT_APP_ENV || process.env.REACT_APP_ENV === 'dev') {
+if (!process.env.REACT_APP_ENV || process.env.REACT_APP_ENV === "dev") {
   axios.defaults.baseURL = process.env.REACT_APP_BACKEND;
 } else {
   axios.defaults.baseURL = process.env.REACT_APP_BACKEND_BUILD;
@@ -73,9 +81,13 @@ const router = createBrowserRouter([
   {
     element: <Layout />,
     children: [
-      { path: "/auth", Component: Login },
-      { path: "/", Component: Home, loader: loader, },
-      { path: "/search", Component: Search, loader: loader, },
+      { path: "/auth", Component: Login},
+      { path: "/", Component: Home, loader: loader},
+      {
+        path: "/search",
+        Component: Search,
+        loader: loader,
+      },
       {
         path: "/shiny",
         loader: loader,
@@ -86,7 +98,7 @@ const router = createBrowserRouter([
           { path: "create", Component: CreateShiny },
           { path: "create/:counterId", Component: CreateFromCounter },
           { path: "checklist", Component: ShinyChecklist },
-        ]
+        ],
       },
       {
         path: "/counters",
@@ -95,14 +107,12 @@ const router = createBrowserRouter([
           { index: true, Component: Counters },
           { path: "create", Component: CreateCounters },
           { path: ":counterId", Component: Counter },
-        ]
+        ],
       },
       {
         path: "/user",
         loader: loader,
-        children: [
-          { path: ":trainer", Component: User },
-        ]
+        children: [{ path: ":trainer", Component: User }],
       },
       {
         path: "/pokedex",
@@ -111,7 +121,7 @@ const router = createBrowserRouter([
           { index: true, Component: Pokédex },
           { path: "regional", Component: PokédexRegional },
           { path: "regional/:gameId", Component: GameId },
-        ]
+        ],
       },
       {
         path: "/stats",
@@ -120,42 +130,41 @@ const router = createBrowserRouter([
           { index: true, Component: ShinyStats },
           { path: "counter", Component: CounterStats },
           { path: "collections", Component: Collections },
-        ]
+        ],
       },
       {
         path: "/map",
         loader: loader,
-        children: [
-          { index: true, Component: Map },
-        ]
+        children: [{ index: true, Component: Map }],
       },
       {
         path: "/changelogs",
         loader: loader,
-        children: [
-          { index: true, Component: ChangeLog },
-        ]
+        children: [{ index: true, Component: ChangeLog }],
       },
-      { path: "*", Component: ErrorPage },
-    ]
+      { path: "*", Component: NotFoundPage },
+    ],
   },
-
-])
+]);
 
 export default function App() {
-  return <RouterProvider router={router} />
+  return <RouterProvider router={router} />;
 }
 
 function Layout() {
-  const [theme, colorMode] = useMode()
+  const [theme, colorMode] = useMode();
 
-  const queryClient = new QueryClient()
+  const queryClient = new QueryClient();
 
-  const toggle = useRecoilValue(sidebarCollapse)
-  const [collapse, setCollapse] = useState(false)
+  const toggle = useRecoilValue(sidebarCollapse);
+  const [collapse, setCollapse] = useState(false);
 
-  const width = collapse ? "calc(100vw - 5px)" : (toggle ? "calc(100vw - 100px)" : "calc(100vw - 260px)");
-  const left = collapse ? "0px" : (toggle ? "90px" : "250px");
+  const width = collapse
+    ? "calc(100vw - 5px)"
+    : toggle
+    ? "calc(100vw - 100px)"
+    : "calc(100vw - 260px)";
+  const left = collapse ? "0px" : toggle ? "90px" : "250px";
 
   useEffect(() => {
     const handleResize = () => {
@@ -166,49 +175,59 @@ function Layout() {
       }
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
     handleResize();
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
   return (
-    <ColorModeContext.Provider value={(colorMode)}>
+    <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
           <CssBaseline />
-          <div style={{
-            display: 'flex',
-          }}>
-            <div style={{
+          <div
+            style={{
+              display: "flex",
+            }}
+          >
+            <div
+              style={{
                 zIndex: 2000,
-              }}>
+              }}
+            >
               <CustomSidebar />
             </div>
-            <main style={{
-              width: width,
-              position: "relative",
-              left: left,
-              top: "70px",
-              height: "100%",
-            }}>
-              <div style={{
-                position: "fixed",
-                top: 0,
+            <main
+              style={{
                 width: width,
+                position: "relative",
                 left: left,
-                zIndex: 1000,
-              }}>
+                top: "70px",
+                height: "100%",
+              }}
+            >
+              <div
+                style={{
+                  position: "fixed",
+                  top: 0,
+                  width: width,
+                  left: left,
+                  zIndex: 1000,
+                }}
+              >
                 <Topbar />
               </div>
               <ScrollRestoration />
-              <Outlet />
+              <ErrorBoundary FallbackComponent={ErrorPage}>
+                <Outlet />
+              </ErrorBoundary>
             </main>
           </div>
         </QueryClientProvider>
       </ThemeProvider>
     </ColorModeContext.Provider>
-  )
+  );
 }

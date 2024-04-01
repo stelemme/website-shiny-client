@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../scenes/stats/map.css";
 
@@ -39,7 +39,7 @@ import { formatTime } from "../../functions/statFunctions";
 // Hooks
 import { useAuth } from "../../hooks/useAuth";
 
-export default function CompleteShinyCard({data, refetch}) {
+export default function CompleteShinyCard({ data, refetch }) {
   const { username } = useAuth();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -168,7 +168,7 @@ export default function CompleteShinyCard({data, refetch}) {
       .request(config)
       .then((response) => {
         refetch();
-        setOpenMarksEdit(false)
+        setOpenMarksEdit(false);
       })
       .catch((error) => {
         console.log(error);
@@ -796,41 +796,41 @@ export default function CompleteShinyCard({data, refetch}) {
               </Grid>
               {data.geoLocation.name && (
                 <Grid item xs={12}>
-                  <MapContainer
-                    center={data.geoLocation.position}
-                    zoom={16}
-                    zoomControl={false}
-                    scrollWheelZoom={false}
-                    dragging={false}
-                    touchZoom={false}
-                    doubleClickZoom={false}
-                    style={{ height: "200px", width: "100%" }}
-                  >
-                    <TileLayer
-                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                      detectRetina={true}
-                    />
-                    <Marker
-                      position={data.geoLocation.position}
-                      icon={L.divIcon({
-                        html: ``,
-                        className: "marker marker_all",
-                        iconSize: L.point(15, 15, true),
-                      })}
+                    <MapContainer
+                      center={data.geoLocation.position}
+                      zoom={16}
+                      zoomControl={false}
+                      scrollWheelZoom={false}
+                      dragging={false}
+                      touchZoom={false}
+                      doubleClickZoom={false}
+                      style={{ height: "200px", width: "100%",  zIndex: 1, }}
                     >
-                      <Popup>
-                        <Typography
-                          fontWeight="bold"
-                          style={{ marginBottom: 0 }}
-                        >
-                          {data.geoLocation.name}
-                        </Typography>
-                        <Typography gutterBottom style={{ marginTop: 0 }}>
-                          {data.geoLocation.displayName}
-                        </Typography>
-                      </Popup>
-                    </Marker>
-                  </MapContainer>
+                      <TileLayer
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        detectRetina={true}
+                      />
+                      <Marker
+                        position={data.geoLocation.position}
+                        icon={L.divIcon({
+                          html: ``,
+                          className: "marker marker_all",
+                          iconSize: L.point(15, 15, true),
+                        })}
+                      >
+                        <Popup>
+                          <Typography
+                            fontWeight="bold"
+                            style={{ marginBottom: 0 }}
+                          >
+                            {data.geoLocation.name}
+                          </Typography>
+                          <Typography gutterBottom style={{ marginTop: 0 }}>
+                            {data.geoLocation.displayName}
+                          </Typography>
+                        </Popup>
+                      </Marker>
+                    </MapContainer>
                 </Grid>
               )}
               <Grid item xs={12}>

@@ -18,8 +18,8 @@ export default function GeneralSelect({
         onChange={handleChange}
         value={value}
       >
-        {list.map((item, index) =>
-          item.charAt(0) === "_" ? (
+        {list?.map((item, index) =>
+          String(item).charAt(0) === "_" ? (
             <MenuItem key={index} value={item} divider>
               {item.slice(1)}
             </MenuItem>

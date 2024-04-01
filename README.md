@@ -2,6 +2,32 @@
 
 ## Changelogs
 
+### Version 1.7.0 (01.04.2024)
+
+**Collections:**
+- Volgende collections zijn toegevoegd:
+  - Mega Evolutions
+  - Gigantamax Pokémon
+  - Galarian Forms
+  - Hisuian Forms
+  - Pladean Forms
+  - Eeveelutions
+  - Unowns
+  - Flabébés
+  - Vivillons
+
+**Create Shiny Form:**
+- Shinies kunnen niet meer worden toegevoegd zonder eerst gender aan te klikken, om gender fouten te vermijden.
+- Grouped shinies blijven nu in de form staan na submitten. Zo kunnen er meerdere radar pokemon snel na elkaar worden toegevoegd.
+
+**Error Handeling:**
+- Voor sommige errors is er nu een error pagina toegevoegd.
+
+**Bug Fixes:**
+- Bij het toevoegen van Shinies worden nu enkel de u eigen groups getoond, niemeer die van andere trainers. 
+- Leaflet logo is nu achter de topbar.
+- Evolutions card bug gefixt waarbij altijd alle radar evolutions werden getoont bij bv Eevee en Tyrogue.
+
 ### Version 1.6.0 (11.03.2024)
 
 **Collections:**

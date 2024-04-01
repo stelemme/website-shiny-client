@@ -16,6 +16,8 @@ import Hisuians from "../../components/Collections/Hisuians";
 import Paldeans from "../../components/Collections/Paldeans";
 import Eeveelutions from "../../components/Collections/Eeveelutions";
 import Unowns from "../../components/Collections/Unowns";
+import Flabebes from "../../components/Collections/Flabebes";
+import Vivillons from "../../components/Collections/Vivillons";
 
 export default function Collections() {
   const [collection, setCollection] = useState("Pokéballs");
@@ -35,6 +37,8 @@ export default function Collections() {
     "_Paldean Forms": Paldeans,
     "Eeveelutions": Eeveelutions,
     "Unowns": Unowns,
+    "Flabébés": Flabebes,
+    "Vivillons": Vivillons,
   };
 
   return (

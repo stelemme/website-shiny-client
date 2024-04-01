@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { format } from "date-fns";
@@ -18,6 +18,7 @@ import {
   Grid,
   FormGroup,
   Checkbox,
+  Alert,
 } from "@mui/material";
 
 // Components
@@ -66,6 +67,7 @@ const natures = [
 export default function CreateShiny() {
   const { username } = useAuth();
   const navigate = useNavigate();
+  const navigateRef = useRef(navigate);
 
   const { data: games } = useGame("?action=form");
 
@@ -74,6 +76,12 @@ export default function CreateShiny() {
     displayName: "",
     position: [],
   };
+
+  const initialAlert = {
+    severity: undefined,
+    message: undefined,
+  };
+  const initialAlertRef = useRef(initialAlert);
 
   let initialState = {
     trainer: username,
@@ -103,12 +111,17 @@ export default function CreateShiny() {
   const [methodCatList, setMethodCatList] = useState(undefined);
   const [pokemonsList, setPokemonsList] = useState(undefined);
   const [ballList, setBallList] = useState(undefined);
+  const [ballCheck, setBallCheck] = useState(false);
+  const [natureCheck, setNatureCheck] = useState(false);
   const [groupList, setGroupList] = useState(undefined);
   const [geoLocationsList, setGeoLocationsList] = useState(undefined);
   const [newGeoLocation, setNewGeoLocation] = useState(false);
 
   const [clearMethod, setClearMethod] = useState("method");
   const [genderCheck, setGenderCheck] = useState(false);
+
+  const [alert, setAlert] = useState(initialAlert);
+  const [alertSkip, setAlertSkip] = useState(false);
 
   console.log(data);
 
@@ -137,24 +150,70 @@ export default function CreateShiny() {
     }
   }, [gameId]);
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
+    const endFunction = (id) => {
+      if (data.method.group) {
+        setData((prevState) => {
+          delete prevState.stats;
+          delete prevState.ball;
+          delete prevState.sprite.ball;
+          delete prevState.nature;
+          return {
+            ...prevState,
+            ...{
+              gender: genderCheck ? undefined : prevState.gender,
+              nickname: "",
+            },
+          };
+        });
+        setBallCheck((prevState) => !prevState);
+        setNatureCheck((prevState) => !prevState);
+        setAlert({
+          severity: "success",
+          message:
+            "The shiny is succesfully added to the site. You can now add another one to the group.",
+        });
+        setAlertSkip(true);
+      } else {
+        navigateRef.current(`/shiny/${id}`);
+      }
+    };
+
     if (data.stats) {
       axios
         .post(`/shiny`, data)
         .then((res) => {
           console.log(res.data);
-          navigate(`/shiny/${res.data._id}`);
+          endFunction(res.data._id);
         })
         .catch((err) => {
+          setAlert({
+            severity: "error",
+            message: "Something went wrong. Refresh the site and try again.",
+          });
           console.log(err);
         });
+    } else if (!alertSkip) {
+      setAlert(initialAlertRef);
+    } else {
+      setAlertSkip(false);
     }
-  }, [data]);
+  }, [data, genderCheck]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (data.geoLocation.name !== "" && data.geoLocation.displayName !== "") {
+    setAlert({
+      severity: "info",
+      message: "Loading...",
+    });
+
+    if (
+      data.geoLocation.name !== "" &&
+      data.geoLocation.displayName !== "" &&
+      data.gender
+    ) {
       const newStats = {
         probability: calculateProb(
           data.method.odds,
@@ -283,6 +342,19 @@ export default function CreateShiny() {
           stats: newStats,
         }));
       }
+    } else if (!data.gender) {
+      setAlert({
+        severity: "warning",
+        message: "You forgot to fill in the gender.",
+      });
+    } else if (
+      data.geoLocation.name === "" &&
+      data.geoLocation.displayName === ""
+    ) {
+      setAlert({
+        severity: "warning",
+        message: "You forgot to fill in the geo location.",
+      });
     }
   };
 
@@ -316,12 +388,20 @@ export default function CreateShiny() {
     }
   };
 
+  const alertDisplay = () => {
+    if (alert.severity) {
+      return (
+        <Alert variant="filled" severity={alert.severity}>
+          {alert.message}
+        </Alert>
+      );
+    } else {
+      return null;
+    }
+  };
+
   const groupDisplay = () => {
-    if (
-      data.method.function === "pokeradar-gen4" ||
-      data.method.function === "pokeradar-gen6" ||
-      data.method.function === "pokeradar-gen8"
-    ) {
+    if (data.method.function === "pokeradar-gen4") {
       return (
         <Box>
           <FormControl sx={{ mb: "5px", mr: "5px" }}>
@@ -331,9 +411,9 @@ export default function CreateShiny() {
               value={data.method.group}
               onChange={(e, value) => {
                 if (JSON.parse(value)) {
-                  axios["get"](`shiny?group=true`)
+                  axios["get"](`shiny?group=true&trainer=${username}`)
                     .then((res) => {
-                      setGroupList(["New Group", ...res.data]);
+                      setGroupList([...res.data]);
                       setData((prevState) => {
                         return {
                           ...prevState,
@@ -344,7 +424,7 @@ export default function CreateShiny() {
                             },
                             group: `${username}-${
                               data.name
-                            }-${data.endDate.toLocaleDateString()}`,
+                            }-${data.endDate.toLocaleDateString("nl-NL")}`,
                           },
                         };
                       });
@@ -386,29 +466,17 @@ export default function CreateShiny() {
             key={groupList}
             disabled={!groupList}
             autoHighlight
+            value={data.group}
             onChange={(e, value, reason) => {
               if (reason === "selectOption") {
-                if (value === "New Group") {
-                  setData((prevState) => {
-                    return {
-                      ...prevState,
-                      ...{
-                        group: `${username}-${
-                          data.name
-                        }-${data.endDate.toLocaleDateString()}`,
-                      },
-                    };
-                  });
-                } else {
-                  setData((prevState) => {
-                    return {
-                      ...prevState,
-                      ...{
-                        group: value,
-                      },
-                    };
-                  });
-                }
+                setData((prevState) => {
+                  return {
+                    ...prevState,
+                    ...{
+                      group: value,
+                    },
+                  };
+                });
               }
             }}
             sx={{ mb: "20px" }}
@@ -564,7 +632,11 @@ export default function CreateShiny() {
     ) {
       return (
         <Box>
-          {data.method.category === "Random SOS Chain" && <Typography>Fill in Chain Length 31, if the Chain Length is unknown.</Typography>}
+          {data.method.category === "Random SOS Chain" && (
+            <Typography>
+              Fill in Chain Length 31, if the Chain Length is unknown.
+            </Typography>
+          )}
           <TextField
             fullWidth
             sx={{ mb: "20px" }}
@@ -974,7 +1046,7 @@ export default function CreateShiny() {
                         return {
                           ...prevState,
                           ...{
-                            gender: "male",
+                            gender: undefined,
                           },
                         };
                       });
@@ -1311,7 +1383,7 @@ export default function CreateShiny() {
           <Grid container spacing={"10px"}>
             <Grid item xs={6}>
               <Autocomplete
-                key={ballList}
+                key={ballList && ballCheck}
                 disabled={!ballList}
                 autoHighlight
                 onChange={(e, value, reason) => {
@@ -1355,6 +1427,7 @@ export default function CreateShiny() {
             {/* NATURE */}
             <Grid item xs={6}>
               <Autocomplete
+                key={natureCheck}
                 autoHighlight
                 onChange={(e, value, reason) => {
                   setData((prevState) => {
@@ -1661,6 +1734,7 @@ export default function CreateShiny() {
             Submit
           </Button>
         </form>
+        {alertDisplay()}
       </Box>
     </Box>
   );

@@ -41,7 +41,11 @@ export default function ShinyCardEvolutions({
 
   const { data: groupData } = useShiny(`groupShiniesEvolutions=${group}`);
 
-  if (groupData?.data[0]?.evolutions) {
+  const groupShinies = Cookies.get("groupShinies")
+    ? Cookies.get("groupShinies")
+    : false;
+
+  if (groupShinies === "true" && groupData?.data[0]?.evolutions) {
     evolutions = makeUnique(groupData?.data[0]?.evolutions, "name");
 
     evolutions.sort((a, b) => a.pokedexNo - b.pokedexNo);
@@ -197,6 +201,6 @@ export default function ShinyCardEvolutions({
           </Box>
         </Box>
       </Box>
-      </LazyLoad>
+    </LazyLoad>
   );
 }

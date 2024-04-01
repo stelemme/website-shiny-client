@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { format } from "date-fns";
@@ -61,6 +61,7 @@ const natures = [
 export default function CreateFromCounter() {
   const { counterId } = useParams();
   const navigate = useNavigate();
+  const navigateRef = useRef(navigate);
 
   let initialLocationState = {
     name: "",
@@ -150,7 +151,7 @@ export default function CreateFromCounter() {
                 return {
                   ...prevState,
                   ...{
-                    gender: "male",
+                    gender: undefined,
                   },
                 };
               });
@@ -179,6 +180,10 @@ export default function CreateFromCounter() {
   }, [counterId]);
 
   useEffect(() => {
+    const endFunction = (id) => {
+      navigateRef.current(`/shiny/${id}`);
+    };
+
     if (data.stats) {
       axios
         .post(`/shiny`, data)
@@ -187,13 +192,13 @@ export default function CreateFromCounter() {
           axios["delete"](`/counters/${counterId}`).catch((err) => {
             console.log(err);
           });
-          navigate(`/shiny/${res.data._id}`);
+          endFunction(res.data._id)
         })
         .catch((err) => {
           console.log(err);
         });
     }
-  }, [data]);
+  }, [data, counterId]);
 
   console.log(data);
 
@@ -230,7 +235,11 @@ export default function CreateFromCounter() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (data.geoLocation.name !== "" && data.geoLocation.displayName !== "") {
+    if (
+      data.geoLocation.name !== "" &&
+      data.geoLocation.displayName !== "" &&
+      data.gender
+    ) {
       const newStats = {
         probability: calculateProb(
           data.method.odds,
@@ -411,7 +420,7 @@ export default function CreateFromCounter() {
                         return {
                           ...prevState,
                           ...{
-                            gender: "male",
+                            gender: undefined,
                           },
                         };
                       });
