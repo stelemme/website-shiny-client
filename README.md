@@ -28,6 +28,8 @@
 - Leaflet logo is nu achter de topbar.
 - Evolutions card bug gefixt waarbij altijd alle radar evolutions werden getoont bij bv Eevee en Tyrogue.
 
+---
+
 ### Version 1.6.0 (11.03.2024)
 
 **Collections:**
