@@ -21,6 +21,18 @@ export const useShiny = (query) => {
   return useQuery(["shinies", query], () => fetchShinies(query));
 };
 
+const fetchDeadShinies = (query) => {
+  if (groupCheck) {
+    return axios.get(`/deadshiny?groupShinies=true&${query}`);
+  } else {
+    return axios.get(`/deadshiny?${query}`);
+  }
+};
+
+export const useDeadShiny = (query) => {
+  return useQuery(["deadshinies", query], () => fetchDeadShinies(query));
+};
+
 /* INDIVIDUAL SHINY DATA */
 const fetchShiny = (shinyId) => {
   return axios.get(`/shiny/${shinyId}?action=noEncounters`);
@@ -28,6 +40,15 @@ const fetchShiny = (shinyId) => {
 
 export const useShinyId = (shinyId) => {
   return useQuery(["shiny", shinyId], () => fetchShiny(shinyId));
+};
+ 
+/* INDIVIDUAL DEAD SHINY DATA */
+const fetchDeadShiny = (shinyId) => {
+  return axios.get(`/deadshiny/${shinyId}?action=noEncounters`);
+};
+
+export const useDeadShinyId = (shinyId) => {
+  return useQuery(["deadshiny", shinyId], () => fetchDeadShiny(shinyId));
 };
 
 /* ALL COUNTER DATA */

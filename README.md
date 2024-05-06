@@ -2,7 +2,10 @@
 
 ## Changelogs
 
-### Version 1.7.1 (06.05.2024)
+### Version 1.8.0 (06.05.2024)
+
+**Dead Shiny's**:
+- Dode Shiny's kunnen nu toegevoegd worden (al dan niet via een counter).
 
 **Bug Fixes:**
 - Lazy Loading

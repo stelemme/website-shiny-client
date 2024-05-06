@@ -12,15 +12,21 @@ export default function ChangeLog() {
     const fetchReadme = async () => {
       try {
         const response = await axios.get(
-          "https://raw.githubusercontent.com/stelemme/website-shiny-client/main/README.md"
+          "https://raw.githubusercontent.com/stelemme/website-shiny-client/main/README.md",
+          {
+            baseURL: undefined,
+            headers: {
+              Authorization: undefined
+            }
+          }
         );
-
+  
         setReadmeContent(response.data);
       } catch (error) {
         console.error("Error fetching README:", error);
       }
     };
-
+  
     fetchReadme();
   }, []);
 

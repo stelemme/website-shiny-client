@@ -14,6 +14,7 @@ export default function ShinyCard({
   trainer,
   bgColor = "400",
   imgSize = "80px",
+  status = "alive",
 }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -36,7 +37,13 @@ export default function ShinyCard({
       width="100%"
       backgroundColor={colors.primary[bgColor]}
       borderRadius="5px"
-      onClick={() => navigate(`/shiny/${id}`)}
+      onClick={() => {
+        if (status === "alive") {
+          navigate(`/shiny/${id}`);
+        } else {
+          navigate(`/shiny/dead/${id}`);
+        }
+      }}
       sx={{
         "&:hover": {
           cursor: "pointer",

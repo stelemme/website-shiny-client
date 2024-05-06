@@ -241,6 +241,10 @@ export default function Counter() {
     navigate(`/shiny/create/${counterId}`);
   };
 
+  const handleDeadClick = () => {
+    navigate(`/shiny/dead/create/${counterId}`);
+  }
+
   /* DELETE THE COUNTER */
   const handleDeleteClick = () => {
     if (completed) {
@@ -550,10 +554,12 @@ export default function Counter() {
                 <CustomDialog
                   open={openShiny}
                   handleClick={handleShinyClick}
+                  handleClick2={handleDeadClick}
                   handleClose={() => setOpenShiny(false)}
                   title={"Shiny Encounter"}
                   content={"Did you get a Shiny Pokémon?"}
                   action={"Caught"}
+                  action2={"Killed"}
                 />
                 {!completed && (
                   <IconButton onClick={() => setOpenEdit(true)}>
