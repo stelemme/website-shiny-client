@@ -54,6 +54,8 @@ if (!process.env.REACT_APP_ENV || process.env.REACT_APP_ENV === "dev") {
   axios.defaults.baseURL = process.env.REACT_APP_BACKEND_BUILD;
 }
 
+axios.defaults.headers.common['Authorization'] = `Bearer ${process.env.REACT_APP_BACKEND_AUTH_TOKEN}`;
+
 const getUser = async () => {
   return new Promise((resolve) => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
