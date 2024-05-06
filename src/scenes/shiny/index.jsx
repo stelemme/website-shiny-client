@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Cookies from "js-cookie";
-import LazyLoad from "react-lazy-load";
+import LazyLoad from 'react-lazyload';
 
 // Mui
 import { Box, Typography, IconButton } from "@mui/material";
@@ -19,7 +19,6 @@ import sortData from "../../functions/sortData";
 
 // Hooks
 import { useShiny } from "../../hooks/useData";
-
 
 export default function Shiny() {
   const [anchorElSort, setAnchorElSort] = useState(null);
@@ -71,6 +70,7 @@ export default function Shiny() {
                   />
                 </LazyLoad>
               ) : (
+                <LazyLoad height={window.innerWidth < 600 ? 50 : 100}>
                   <ShinyCardEvolutions
                     id={item._id}
                     name={item.name}
@@ -83,6 +83,7 @@ export default function Shiny() {
                     group={item.group}
                     IRLLocation={item.IRLLocation}
                   />
+                </LazyLoad>
               )}
             </div>
           );

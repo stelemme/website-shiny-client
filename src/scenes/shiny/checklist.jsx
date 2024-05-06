@@ -15,7 +15,7 @@ import {
 import { tokens } from "../../theme";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import LazyLoad from "react-lazy-load";
+import LazyLoad from "react-lazyload";
 import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 

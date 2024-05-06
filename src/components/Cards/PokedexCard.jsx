@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import LazyLoad from 'react-lazy-load';
+import LazyLoad from 'react-lazyload';
 
 // mui imports
 import { Box, Typography, useTheme } from "@mui/material";
