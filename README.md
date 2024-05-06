@@ -10,6 +10,9 @@
 **Authentication:**
 - Between back end and front end
 
+**Hosting:**
+- Auto Hosting
+
 ---
 
 ### Version 1.7.0 (01.04.2024)
