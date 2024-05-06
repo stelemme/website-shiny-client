@@ -2,6 +2,13 @@
 
 ## Changelogs
 
+### Version 1.7.1 (06.05.2024)
+
+**Bug Fixes**
+**Authentication**
+
+---
+
 ### Version 1.7.0 (01.04.2024)
 
 **Collections:**
