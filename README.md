@@ -4,8 +4,11 @@
 
 ### Version 1.7.1 (06.05.2024)
 
-**Bug Fixes**
-**Authentication**
+**Bug Fixes:**
+- Lazy Loading
+
+**Authentication:**
+- Between back end and front end
 
 ---
 
