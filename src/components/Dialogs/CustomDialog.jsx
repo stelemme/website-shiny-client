@@ -13,9 +13,11 @@ import {
 export default function CustomDialog({
   open,
   handleClick,
+  handleClick2,
   handleClose,
   title,
   action,
+  action2,
   content,
   warning,
 }) {
@@ -56,6 +58,17 @@ export default function CustomDialog({
         >
           Cancel
         </Button>
+        {action2 ? (
+          <Button
+            variant="contained"
+            color="neutral"
+            style={{ color: "white" }}
+            onClick={handleClick2}
+            autoFocus
+          >
+            {action2}
+          </Button>
+        ) : null}
         <Button
           variant="contained"
           color="neutral"

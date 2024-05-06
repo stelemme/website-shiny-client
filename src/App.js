@@ -39,6 +39,10 @@ import ShinyTable from "./scenes/shiny/table";
 import ShinyChecklist from "./scenes/shiny/checklist";
 import CreateShiny from "./scenes/shiny/create";
 import CreateFromCounter from "./scenes/shiny/createFromCounter";
+import ShinyDead from "./scenes/shiny/dead";
+import CreateDeadShiny from "./scenes/shiny/createDead";
+import CreateDeadFromCounter from "./scenes/shiny/createDeadFromCounter";
+import ShinyDeadId from "./scenes/shiny/deadId";
 import ShinyStats from "./scenes/stats";
 import CounterStats from "./scenes/stats/counter";
 import User from "./scenes/info/user";
@@ -100,6 +104,10 @@ const router = createBrowserRouter([
           { path: "create", Component: CreateShiny },
           { path: "create/:counterId", Component: CreateFromCounter },
           { path: "checklist", Component: ShinyChecklist },
+          { path: "dead", Component: ShinyDead },
+          { path: "dead/:deadId", Component: ShinyDeadId },
+          { path: "dead/create", Component: CreateDeadShiny },
+          { path: "dead/create/:counterDeadId", Component: CreateDeadFromCounter },
         ],
       },
       {
