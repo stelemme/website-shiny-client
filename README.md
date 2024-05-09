@@ -10,6 +10,9 @@
 **Shiny Page:**
 - Shiny Cards worden compacter weergegeven op gsm zodat alles beter zichtbaar is.
 
+**Collections:**
+- Select value blijft behouden bij het switchen tussen collections.
+
 ---
 
 ### Version 1.8.0 (06.05.2024)
