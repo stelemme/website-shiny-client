@@ -27,8 +27,8 @@ export default function ShinyDead() {
     } else {
       return data?.reduce(function (filtered, item) {        
           filtered.push(
-            <div style={{ marginBottom: "20px" }} key={item._id}>
-                <LazyLoad height={100}>
+            <div style={{ marginBottom: window.innerWidth < 600 ? "10px" : "20px" }} key={item._id}>
+                <LazyLoad height={window.innerWidth < 600 ? 50 : 100}>
                   <ShinyCard
                     id={item._id}
                     name={item.name}

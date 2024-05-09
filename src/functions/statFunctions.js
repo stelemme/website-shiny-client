@@ -111,6 +111,9 @@ export function calculatePercentage(
 }
 
 export function calculateMultiplePercentage(encounterData) {
+  if (encounterData.length < 1) {
+    return "0.00"
+  }
   let totalRecalcValues = 1;
 
   encounterData.forEach((item) => {

@@ -254,10 +254,6 @@ export default function CompleteDeadCard({ data, refetch }) {
                 infoCat={"Level Seen"}
                 infoName={data.level ? `lvl. ${data.level}` : "-"}
               />
-              <InfoDisplay
-                infoCat={"Nickname"}
-                infoName={data.nickname ? data.nickname : "-"}
-              />
             </Grid>
             <Grid item xs={6}>
               <InfoDisplay
