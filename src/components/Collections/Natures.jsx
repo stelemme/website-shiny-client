@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 // Components imports
 import CollectionCard from "./CollectionCard";
 
@@ -107,13 +105,9 @@ const natures = [
 ];
 
 export default function Natures() {
-  const [trainer, setTrainer] = useState("All");
-
   return (
     <CollectionCard
       placeholdList={natures}
-      trainer={trainer}
-      setTrainer={setTrainer}
       dir={"natures"}
       title={"Natures"}
       collectionStr={"nature"}

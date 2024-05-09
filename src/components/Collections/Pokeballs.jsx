@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 // Components imports
 import CollectionCard from "./CollectionCard";
 
@@ -143,13 +141,9 @@ const ballsData = [
 ];
 
 export default function Pokeballs() {
-  const [trainer, setTrainer] = useState("All");
-
   return (
     <CollectionCard
       placeholdList={ballsData}
-      trainer={trainer}
-      setTrainer={setTrainer}
       dir={"balls/pixel"}
       title={"POKEBALLS"}
       collectionStr={"ball"}
