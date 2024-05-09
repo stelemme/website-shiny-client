@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 // Components imports
 import CollectionCard from "./CollectionCard";
 
@@ -119,13 +117,9 @@ const unowns = [
 ];
 
 export default function Unowns() {
-  const [trainer, setTrainer] = useState("All");
-
   return (
     <CollectionCard
       placeholdList={unowns}
-      trainer={trainer}
-      setTrainer={setTrainer}
       dir={"pokemon-shiny/gen-all-home"}
       title={"Unowns"}
       collectionStr={"unown"}

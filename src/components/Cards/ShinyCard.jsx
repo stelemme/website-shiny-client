@@ -13,7 +13,7 @@ export default function ShinyCard({
   monSprite,
   trainer,
   bgColor = "400",
-  imgSize = "80px",
+  imgSize = window.innerWidth < 600 ? "40px" : "80px",
   status = "alive",
 }) {
   const theme = useTheme();

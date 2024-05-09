@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Cookies from "js-cookie";
 
 // mui imports
 import { Box, useTheme, Typography, Grid } from "@mui/material";
@@ -12,32 +13,42 @@ import { useShiny } from "../../hooks/useData";
 
 export default function CollectionCard({
   placeholdList,
-  trainer,
-  setTrainer,
   dir,
   title,
   collectionStr,
   lg,
   sm,
   xs,
-  numbers=true,
-  imgHeight=(window.innerWidth < 600) ? 50 : 70
+  numbers = true,
+  imgHeight = window.innerWidth < 600 ? 50 : 70,
 }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const foreverDate = new Date("9999-12-31T23:59:59");
 
   const [query, setQuery] = useState("");
 
   const { data: shinyData } = useShiny(`collection=${collectionStr}${query}`);
   const collectionData = shinyData?.data[0]?.collectionData;
 
+  const collectionSelect = Cookies.get("collectionSelect")
+    ? Cookies.get("collectionSelect")
+    : "All";
+
+  useEffect(() => {
+    if (collectionSelect === "All") {
+      setQuery("");
+    } else {
+      setQuery(`&trainer=${collectionSelect}`);
+    }
+  }, [collectionSelect]);
+
   const handleChange = (e) => {
+    Cookies.set("collectionSelect", e.target.value, { expires: foreverDate });
     if (e.target.value === "All") {
       setQuery("");
-      setTrainer("All");
     } else {
       setQuery(`&trainer=${e.target.value}`);
-      setTrainer(e.target.value);
     }
   };
 
@@ -62,7 +73,7 @@ export default function CollectionCard({
         <UserSelect
           label={"User"}
           handleChange={handleChange}
-          defaultValue={trainer}
+          defaultValue={collectionSelect}
         />
       </Box>
       <Grid container spacing={"12px"}>
@@ -100,14 +111,21 @@ export default function CollectionCard({
                     }}
                   />
                 )}
-                <Typography fontWeight={"bold"} align="center" fontSize={12} mt={"10px"}>
+                <Typography
+                  fontWeight={"bold"}
+                  align="center"
+                  fontSize={12}
+                  mt={"10px"}
+                >
                   {item.name}
                 </Typography>
-                {numbers && <Typography variant="h6">
-                  {collectionData && collectionData[item.name]
-                    ? collectionData[item.name]
-                    : 0}
-                </Typography>}
+                {numbers && (
+                  <Typography variant="h6">
+                    {collectionData && collectionData[item.name]
+                      ? collectionData[item.name]
+                      : 0}
+                  </Typography>
+                )}
               </Box>
             </Grid>
           );

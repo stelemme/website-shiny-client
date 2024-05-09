@@ -56,9 +56,9 @@ export default function Shiny() {
           (shinyGenFilter === "All" || item.gen === shinyGenFilter)
         ) {
           filtered.push(
-            <div style={{ marginBottom: "20px" }} key={item._id}>
+            <div style={{ marginBottom: window.innerWidth < 600 ? "10px" : "20px" }} key={item._id}>
               {evolutionSpriteDisplay === "false" ? (
-                <LazyLoad height={100}>
+                <LazyLoad height={window.innerWidth < 600 ? 50 : 100}>
                   <ShinyCard
                     id={item._id}
                     name={item.name}

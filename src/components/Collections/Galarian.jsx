@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 // Components imports
 import CollectionCard from "./CollectionCard";
 
@@ -83,13 +81,9 @@ const galarians = [
 ];
 
 export default function Galarians() {
-  const [trainer, setTrainer] = useState("All");
-
   return (
     <CollectionCard
       placeholdList={galarians}
-      trainer={trainer}
-      setTrainer={setTrainer}
       dir={"pokemon-shiny/gen-all-home"}
       title={"Galarian Forms"}
       collectionStr={"galar"}

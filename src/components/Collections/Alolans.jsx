@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 // Components imports
 import CollectionCard from "./CollectionCard";
 
@@ -79,13 +77,9 @@ const alolans = [
 ];
 
 export default function Alolans() {
-  const [trainer, setTrainer] = useState("All");
-
   return (
     <CollectionCard
       placeholdList={alolans}
-      trainer={trainer}
-      setTrainer={setTrainer}
       dir={"pokemon-shiny/gen-all-home"}
       title={"Alolan Forms"}
       collectionStr={"alola"}

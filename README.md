@@ -2,9 +2,22 @@
 
 ## Changelogs
 
+### Version 1.9.0 (09.05.2024)
+
+**Counter Stats:**
+- Percentage wordt nu berekend vanaf laatste shiny.
+
+**Shiny Page:**
+- Shiny Cards worden compacter weergegeven op gsm zodat alles beter zichtbaar is.
+
+**Collections:**
+- Select value blijft behouden bij het switchen tussen collections.
+
+---
+
 ### Version 1.8.0 (06.05.2024)
 
-**Dead Shiny's**:
+**Dead Shiny's:**
 - Dode Shiny's kunnen nu toegevoegd worden (al dan niet via een counter).
 
 **Bug Fixes:**

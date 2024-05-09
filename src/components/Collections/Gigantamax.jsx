@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 // Components imports
 import CollectionCard from "./CollectionCard";
 
@@ -139,13 +137,9 @@ const gmax = [
 ];
 
 export default function Gigantamax() {
-  const [trainer, setTrainer] = useState("All");
-
   return (
     <CollectionCard
       placeholdList={gmax}
-      trainer={trainer}
-      setTrainer={setTrainer}
       dir={"pokemon-shiny/gen-all-home"}
       title={"Gigantamax Pokémon"}
       collectionStr={"gmax"}

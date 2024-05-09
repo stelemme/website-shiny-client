@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 // Components imports
 import CollectionCard from "./CollectionCard";
 
@@ -71,13 +69,9 @@ const hisuians = [
 ];
 
 export default function Hisuians() {
-  const [trainer, setTrainer] = useState("All");
-
   return (
     <CollectionCard
       placeholdList={hisuians}
-      trainer={trainer}
-      setTrainer={setTrainer}
       dir={"pokemon-shiny/gen-all-home"}
       title={"Hisuian Forms"}
       collectionStr={"hisui"}
