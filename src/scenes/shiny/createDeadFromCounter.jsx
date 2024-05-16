@@ -1,25 +1,23 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { format } from "date-fns";
 
 // Mui
-import {
-  Box,
-  Typography,
-  TextField,
-  Autocomplete,
-  FormControl,
-  FormControlLabel,
-  RadioGroup,
-  Radio,
-  Button,
-  FormLabel,
-  Grid,
-} from "@mui/material";
+import { Box, Button, Grid } from "@mui/material";
 
 // Components
 import Header from "../../components/Header";
+import GameForm from "../../components/Forms/GameForm";
+import PokemonForm from "../../components/Forms/PokemonForm";
+import GenderForm from "../../components/Forms/GenderForm";
+import LocationsForm from "../../components/Forms/LocationForm";
+import MethodForm from "../../components/Forms/MethodForm";
+import SubMethodForm from "../../components/Forms/SubMethodForm";
+import LevelForm from "../../components/Forms/LevelForm";
+import GeoLocationForm from "../../components/Forms/GeoLocationForm";
+import StartDateForm from "../../components/Forms/StartDateForm";
+import EndDateForm from "../../components/Forms/EndDateForm";
+import FailForm from "../../components/Forms/FailForm";
 
 // Functions
 import {
@@ -28,16 +26,6 @@ import {
   calculatePercentage,
   calculateDateDifference,
 } from "../../functions/statFunctions";
-
-const failMethods = [
-  "Despawn",
-  "Fled",
-  "Killed",
-  "Soft Reset",
-  "Suicide",
-  "Uncatchable",
-  "-",
-];
 
 export default function CreateDeadFromCounter() {
   const { counterDeadId } = useParams();
@@ -71,15 +59,6 @@ export default function CreateDeadFromCounter() {
   const [genderCheck, setGenderCheck] = useState(false);
   const [pokemonsList, setPokemonsList] = useState(undefined);
   const [locationsList, setLocationsList] = useState(undefined);
-  const [geoLocationsList, setGeoLocationsList] = useState(undefined);
-  const [newGeoLocation, setNewGeoLocation] = useState(false);
-
-  useEffect(() => {
-    axios["get"](`/shiny?geoLocationList=true`).then((res) => {
-      const geoLocationsData = res.data[0]["geoLocation"];
-      setGeoLocationsList(geoLocationsData);
-    });
-  }, []);
 
   useEffect(() => {
     const fetchCounterData = async () => {
@@ -179,36 +158,6 @@ export default function CreateDeadFromCounter() {
   }, [data, counterDeadId]);
 
   console.log(data);
-
-  const getGeoLocation = (newValues) => {
-    if (newValues.length === 2) {
-      let config = {
-        method: "get",
-        maxBodyLength: Infinity,
-        url: `https://nominatim.openstreetmap.org/reverse?lat=${newValues[0]}&lon=${newValues[1]}&format=json`,
-        headers: {},
-      };
-
-      axios
-        .request(config)
-        .then((response) => {
-          setData((prevState) => {
-            return {
-              ...prevState,
-              ...{
-                geoLocation: {
-                  ...prevState.geoLocation,
-                  displayName: response.data.display_name,
-                },
-              },
-            };
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -339,408 +288,52 @@ export default function CreateDeadFromCounter() {
         {/* FORM */}
         <form autoComplete="off" onSubmit={handleSubmit}>
           {/* GAMES */}
-          <TextField
-            sx={{ mb: "20px" }}
-            color="secondary"
-            fullWidth
-            disabled
-            value={data.game}
-            key={data.game}
-            label="Game"
-            required
-          ></TextField>
+          <GameForm data={data} isForCounter />
 
           {/* POKEMONS */}
-          <Autocomplete
-            key={data.name}
-            value={data.name}
-            disabled={!pokemonsList}
-            autoHighlight
-            onChange={(e, value, reason) => {
-              if (reason === "selectOption") {
-                axios["get"](`/pokedex?name=${value}`)
-                  .then((res) => {
-                    if (res.data[0].gender === "100:0") {
-                      setData((prevState) => {
-                        return {
-                          ...prevState,
-                          ...{
-                            gender: "male",
-                          },
-                        };
-                      });
-                    } else if (res.data[0].gender === "0:100") {
-                      setData((prevState) => {
-                        return {
-                          ...prevState,
-                          ...{
-                            gender: "female",
-                          },
-                        };
-                      });
-                    } else if (res.data[0].gender === "Genderless") {
-                      setGenderCheck(false);
-                      setData((prevState) => {
-                        return {
-                          ...prevState,
-                          ...{
-                            gender: "genderless",
-                          },
-                        };
-                      });
-                    } else {
-                      setGenderCheck(true);
-                      setData((prevState) => {
-                        return {
-                          ...prevState,
-                          ...{
-                            gender: undefined,
-                          },
-                        };
-                      });
-                    }
-                    setData((prevState) => {
-                      return {
-                        ...prevState,
-                        ...{
-                          name: value,
-                          pokedexNo: res.data[0].pokedexNo,
-                          types: res.data[0].types,
-                          sprite: {
-                            ...prevState.sprite,
-                            pokemon: res.data[0].sprite,
-                          },
-                        },
-                      };
-                    });
-                  })
-                  .catch((err) => {
-                    console.log(err);
-                  });
-              }
-            }}
-            sx={{ mb: "20px" }}
-            options={pokemonsList ? pokemonsList : []}
-            renderInput={(params) => (
-              <TextField
-                required
-                color="secondary"
-                {...params}
-                label="Pokémon"
-              />
-            )}
+          <PokemonForm
+            data={data}
+            setData={setData}
+            pokemonsList={pokemonsList}
+            setGenderCheck={setGenderCheck}
+            isForCounter
           />
 
           {/* GENDER */}
-          <FormControl sx={{ mb: "5px" }} disabled={!genderCheck}>
-            <FormLabel focused={false}>Gender</FormLabel>
-            <RadioGroup
-              row
-              value={data.gender}
-              onChange={(e) => {
-                setData((prevState) => {
-                  return {
-                    ...prevState,
-                    ...{
-                      gender: e.target.value,
-                    },
-                  };
-                });
-              }}
-            >
-              <FormControlLabel
-                value={"male"}
-                control={<Radio color="secondary" />}
-                label="Male"
-              />
-              <FormControlLabel
-                value={"female"}
-                control={<Radio color="secondary" />}
-                label="Female"
-              />
-            </RadioGroup>
-          </FormControl>
+          <GenderForm data={data} setData={setData} genderCheck={genderCheck} />
 
           {/* LOCATIONS */}
-          <Autocomplete
-            key={data.location}
-            value={data.location}
-            disabled={!locationsList}
-            autoHighlight
-            onChange={(e, value, reason) => {
-              if (reason === "selectOption") {
-                setData((prevState) => {
-                  return { ...prevState, ...{ location: value } };
-                });
-              }
-            }}
-            sx={{ mb: "20px" }}
-            options={locationsList ? locationsList : []}
-            renderInput={(params) => (
-              <TextField
-                required
-                color="secondary"
-                {...params}
-                label="Location"
-              />
-            )}
-          />
+          <LocationsForm setData={setData} locationsList={locationsList} />
 
           {/* METHODS */}
-          <TextField
-            sx={{ mb: "20px" }}
-            color="secondary"
-            fullWidth
-            disabled
-            value={data.method.name}
-            key={data.method.name}
-            label="Method"
-            required
-          ></TextField>
+          <MethodForm data={data} isForCounter />
 
           {/* METHODS SUBCATEGORY*/}
-          <TextField
-            sx={{ mb: "20px" }}
-            color="secondary"
-            fullWidth
-            disabled
-            value={data.method.category}
-            key={data.method.category}
-            label="Method Category"
-          ></TextField>
+          <SubMethodForm data={data} isForCounter />
 
           <Grid container spacing={"10px"}>
             {/* FAIL METHOD */}
             <Grid item xs={12}>
-              <Autocomplete
-                autoHighlight
-                onChange={(e, value, reason) => {
-                  setData((prevState) => {
-                    const { failMethod, ...updatedData } = prevState;
-
-                    return {
-                      ...updatedData,
-                    };
-                  });
-                  if (reason === "selectOption") {
-                    setData((prevState) => {
-                      return {
-                        ...prevState,
-                        ...{
-                          failMethod: value,
-                        },
-                      };
-                    });
-                  }
-                }}
-                sx={{ mb: "10px" }}
-                options={failMethods}
-                renderInput={(params) => (
-                  <TextField
-                    required
-                    color="secondary"
-                    {...params}
-                    label="Fail Method"
-                  />
-                )}
-              />
+              <FailForm setData={setData} />
             </Grid>
             {/* LEVEL */}
             <Grid item xs={12}>
-              <TextField
-                color="secondary"
-                label="Level"
-                type="number"
-                fullWidth
-                value={data.level}
-                sx={{ mb: "10px" }}
-                onChange={(e) => {
-                  if (
-                    parseInt(e.target.value) <= 100 &&
-                    parseInt(e.target.value) > 0
-                  ) {
-                    setData((prevState) => {
-                      return {
-                        ...prevState,
-                        ...{
-                          level: parseInt(e.target.value),
-                        },
-                      };
-                    });
-                  }
-                }}
-              />
+              <LevelForm data={data} setData={setData} />
             </Grid>
 
             {/* GEO LOCATION */}
             <Grid item xs={12}>
-              <FormControl sx={{ mb: "5px" }}>
-                <RadioGroup
-                  row
-                  value={newGeoLocation}
-                  onChange={(e, value) => {
-                    setNewGeoLocation(JSON.parse(value));
-                    setData((prevState) => {
-                      return {
-                        ...prevState,
-                        ...{
-                          geoLocation: initialLocationState,
-                        },
-                      };
-                    });
-                  }}
-                >
-                  <FormControlLabel
-                    value={false}
-                    control={<Radio color="secondary" />}
-                    label="Existing Location"
-                  />
-                  <FormControlLabel
-                    value={true}
-                    control={<Radio color="secondary" />}
-                    label="New Location"
-                  />
-                </RadioGroup>
-              </FormControl>
+              <GeoLocationForm data={data} setData={setData} />
             </Grid>
-            {!newGeoLocation && (
-              <Grid item xs={12}>
-                <Autocomplete
-                  sx={{ mb: "10px" }}
-                  disabled={!geoLocationsList}
-                  autoHighlight
-                  onChange={(e, value) => {
-                    setData((prevState) => {
-                      return {
-                        ...prevState,
-                        ...{
-                          geoLocation: value,
-                        },
-                      };
-                    });
-                  }}
-                  options={geoLocationsList ? geoLocationsList : []}
-                  getOptionLabel={(option) => option.name}
-                  renderInput={(params) => (
-                    <TextField
-                      required
-                      fullWidth
-                      color="secondary"
-                      {...params}
-                      label="Geo Location"
-                    />
-                  )}
-                />
-              </Grid>
-            )}
-            {newGeoLocation && (
-              <>
-                <Grid item xs={12} sx={{ mb: "10px" }}>
-                  <TextField
-                    required
-                    fullWidth
-                    color="secondary"
-                    label="Location Name"
-                    value={data.geoLocation.name}
-                    onChange={(e) => {
-                      setData((prevState) => {
-                        return {
-                          ...prevState,
-                          ...{
-                            geoLocation: {
-                              ...prevState.geoLocation,
-                              name: e.target.value,
-                            },
-                          },
-                        };
-                      });
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    color="secondary"
-                    label="Latitude, Longitude"
-                    onChange={(e) => {
-                      const newValues = e.target.value
-                        .split(",")
-                        .map((value) => Number(value.trim()));
-                      setData((prevState) => {
-                        return {
-                          ...prevState,
-                          ...{
-                            geoLocation: {
-                              ...prevState.geoLocation,
-                              position: newValues,
-                            },
-                          },
-                        };
-                      });
-                      getGeoLocation(newValues);
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} sx={{ mb: "10px" }}>
-                  <Typography>
-                    Address: {data.geoLocation.displayName}
-                  </Typography>
-                </Grid>
-              </>
-            )}
 
             {/* START DATE */}
             <Grid item xs={6}>
-              <TextField
-                disabled={!data.startDate}
-                required
-                color="secondary"
-                label="Start Date"
-                type={data.startDate ? "date" : "text"}
-                fullWidth
-                value={
-                  data.startDate ? format(data.startDate, "yyyy-MM-dd") : ""
-                }
-                sx={{ mb: "20px" }}
-                onChange={(e) => {
-                  if (!isNaN(new Date(e.target.value))) {
-                    setData((prevState) => {
-                      return {
-                        ...prevState,
-                        ...{
-                          startDate: new Date(e.target.value),
-                        },
-                      };
-                    });
-                  }
-                }}
-              />
+              <StartDateForm data={data} setData={setData} />
             </Grid>
 
             {/* END DATE */}
             <Grid item xs={6}>
-              <TextField
-                required
-                color="secondary"
-                label="End Date"
-                type="date"
-                fullWidth
-                value={data.endDate ? format(data.endDate, "yyyy-MM-dd") : ""}
-                sx={{ mb: "20px" }}
-                onChange={(e) => {
-                  if (!isNaN(new Date(e.target.value))) {
-                    setData((prevState) => {
-                      return {
-                        ...prevState,
-                        ...{
-                          endDate: new Date(e.target.value),
-                        },
-                      };
-                    });
-                  }
-                }}
-              />
+              <EndDateForm data={data} setData={setData} />
             </Grid>
           </Grid>
 
