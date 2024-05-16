@@ -23,6 +23,13 @@ import {
 
 // Components
 import Header from "../../components/Header";
+import RadarForm from "../../components/Forms/RadarForm";
+import LetsGoForm from "../../components/Forms/LetsGoForm";
+import SosForm from "../../components/Forms/SosForm";
+import WormholeForm from "../../components/Forms/WormholeForm";
+import LaForm from "../../components/Forms/LaForm";
+import SvForm from "../../components/Forms/SvForm";
+import SvOutbreakForm from "../../components/Forms/SvOutbreakForm";
 
 // Functions
 import {
@@ -88,7 +95,6 @@ export default function CreateDeadShiny() {
   const [methodsList, setMethodsList] = useState(undefined);
   const [methodCatList, setMethodCatList] = useState(undefined);
   const [pokemonsList, setPokemonsList] = useState(undefined);
-  const [groupList, setGroupList] = useState(undefined);
   const [geoLocationsList, setGeoLocationsList] = useState(undefined);
   const [newGeoLocation, setNewGeoLocation] = useState(false);
 
@@ -360,537 +366,6 @@ export default function CreateDeadShiny() {
     }
   };
 
-  const groupDisplay = () => {
-    if (data.method.function === "pokeradar-gen4") {
-      return (
-        <Box>
-          <FormControl sx={{ mb: "5px", mr: "5px" }}>
-            <FormLabel focused={false}>Caught Multiple Shinies?</FormLabel>
-            <RadioGroup
-              row
-              value={data.method.group}
-              onChange={(e, value) => {
-                if (JSON.parse(value)) {
-                  axios["get"](`shiny?group=true&trainer=${username}`)
-                    .then((res) => {
-                      setGroupList([...res.data]);
-                      setData((prevState) => {
-                        return {
-                          ...prevState,
-                          ...{
-                            method: {
-                              ...prevState.method,
-                              group: JSON.parse(value),
-                            },
-                            group: `${username}-${
-                              data.name
-                            }-${data.endDate.toLocaleDateString("nl-NL")}`,
-                          },
-                        };
-                      });
-                    })
-                    .catch((err) => {
-                      console.log(err);
-                    });
-                } else {
-                  setGroupList(undefined);
-                  setData((prevState) => {
-                    delete prevState.group;
-                    return {
-                      ...prevState,
-                      ...{
-                        method: {
-                          ...prevState.method,
-                          group: JSON.parse(value),
-                        },
-                      },
-                    };
-                  });
-                }
-              }}
-            >
-              <FormControlLabel
-                value={false}
-                control={<Radio color="secondary" />}
-                label="No"
-              />
-              <FormControlLabel
-                value={true}
-                control={<Radio color="secondary" />}
-                label="Yes"
-              />
-            </RadioGroup>
-          </FormControl>
-          <Autocomplete
-            required
-            key={groupList}
-            disabled={!groupList}
-            autoHighlight
-            value={data.group}
-            onChange={(e, value, reason) => {
-              if (reason === "selectOption") {
-                setData((prevState) => {
-                  return {
-                    ...prevState,
-                    ...{
-                      group: value,
-                    },
-                  };
-                });
-              }
-            }}
-            sx={{ mb: "20px" }}
-            options={groupList ? groupList : []}
-            renderInput={(params) => (
-              <TextField required color="secondary" {...params} label="Group" />
-            )}
-          />
-        </Box>
-      );
-    } else {
-      return null;
-    }
-  };
-
-  const pokeradarDisplay = () => {
-    if (
-      data.method.function === "pokeradar-gen4" ||
-      data.method.function === "pokeradar-gen6" ||
-      data.method.function === "pokeradar-gen8"
-    ) {
-      return (
-        <TextField
-          fullWidth
-          sx={{ mb: "20px" }}
-          label="Chain Length"
-          required
-          type="number"
-          color="secondary"
-          onChange={(e) => {
-            if (parseInt(e.target.value) > 0) {
-              setData((prevState) => {
-                return {
-                  ...prevState,
-                  ...{
-                    method: {
-                      ...prevState.method,
-                      radarChain: parseInt(e.target.value),
-                    },
-                  },
-                };
-              });
-            }
-          }}
-        ></TextField>
-      );
-    } else {
-      return null;
-    }
-  };
-
-  const letsGoSpawnDisplay = () => {
-    if (data.method.function === "letsgospawn") {
-      return (
-        <Box>
-          <FormControl sx={{ mb: "5px", mr: "5px" }}>
-            <FormLabel focused={false}>Lure</FormLabel>
-            <RadioGroup
-              row
-              value={data.method.lure}
-              onChange={(e, value) => {
-                setData((prevState) => {
-                  return {
-                    ...prevState,
-                    ...{
-                      method: {
-                        ...prevState.method,
-                        lure: JSON.parse(value),
-                      },
-                    },
-                  };
-                });
-              }}
-            >
-              <FormControlLabel
-                value={true}
-                control={<Radio color="secondary" />}
-                label="Active"
-              />
-              <FormControlLabel
-                value={false}
-                control={<Radio color="secondary" />}
-                label="Not Active"
-              />
-            </RadioGroup>
-          </FormControl>
-          <FormControl sx={{ mb: "5px" }}>
-            <FormLabel focused={false}>Chain Matters?</FormLabel>
-            <RadioGroup
-              row
-              value={data.method.chainMatters}
-              onChange={(e, value) => {
-                setData((prevState) => {
-                  return {
-                    ...prevState,
-                    ...{
-                      method: {
-                        ...prevState.method,
-                        chainMatters: JSON.parse(value),
-                      },
-                    },
-                  };
-                });
-              }}
-            >
-              <FormControlLabel
-                value={false}
-                control={<Radio color="secondary" />}
-                label="False"
-              />
-              <FormControlLabel
-                value={true}
-                control={<Radio color="secondary" />}
-                label="True"
-              />
-            </RadioGroup>
-          </FormControl>
-          <TextField
-            fullWidth
-            sx={{ mb: "20px" }}
-            label="Chain Length"
-            required
-            disabled={!data.method.chainMatters}
-            type="number"
-            color="secondary"
-            onChange={(e) => {
-              if (parseInt(e.target.value) > 0) {
-                setData((prevState) => {
-                  return {
-                    ...prevState,
-                    ...{
-                      method: {
-                        ...prevState.method,
-                        letsGoChain: parseInt(e.target.value),
-                      },
-                    },
-                  };
-                });
-              }
-            }}
-          ></TextField>
-        </Box>
-      );
-    } else {
-      return null;
-    }
-  };
-
-  const sosDisplay = () => {
-    if (
-      data.method.function === "sos-chain" ||
-      data.method.function === "sos-chain-sm"
-    ) {
-      return (
-        <Box>
-          {data.method.category === "Random SOS Chain" && (
-            <Typography>
-              Fill in Chain Length 31, if the Chain Length is unknown.
-            </Typography>
-          )}
-          <TextField
-            fullWidth
-            sx={{ mb: "20px" }}
-            label="Chain Length"
-            required
-            type="number"
-            color="secondary"
-            onChange={(e) => {
-              if (parseInt(e.target.value) > 0) {
-                setData((prevState) => {
-                  return {
-                    ...prevState,
-                    ...{
-                      method: {
-                        ...prevState.method,
-                        sosChain: parseInt(e.target.value),
-                      },
-                    },
-                  };
-                });
-              }
-            }}
-          ></TextField>
-        </Box>
-      );
-    } else {
-      return null;
-    }
-  };
-
-  const ultraWormholeDisplay = () => {
-    if (data.method.function === "ultra-wormhole") {
-      return (
-        <Box>
-          <FormControl sx={{ mb: "5px", mr: "5px" }}>
-            <FormLabel focused={false}>Wormhole Type</FormLabel>
-            <RadioGroup
-              row
-              value={data.method.wormholeType}
-              onChange={(e, value) => {
-                setData((prevState) => {
-                  return {
-                    ...prevState,
-                    ...{
-                      method: {
-                        ...prevState.method,
-                        wormholeType: JSON.parse(value),
-                      },
-                    },
-                  };
-                });
-              }}
-            >
-              <FormControlLabel
-                value={0}
-                control={<Radio color="secondary" />}
-                label="Type 1"
-              />
-              <FormControlLabel
-                value={1}
-                control={<Radio color="secondary" />}
-                label="Type 2"
-              />
-              <FormControlLabel
-                value={2}
-                control={<Radio color="secondary" />}
-                label="Type 3"
-              />
-              <FormControlLabel
-                value={3}
-                control={<Radio color="secondary" />}
-                label="Type 4"
-              />
-            </RadioGroup>
-          </FormControl>
-          <TextField
-            fullWidth
-            sx={{ mb: "20px" }}
-            label="Light Years"
-            required
-            type="number"
-            color="secondary"
-            onChange={(e) => {
-              if (parseInt(e.target.value) > 0) {
-                setData((prevState) => {
-                  return {
-                    ...prevState,
-                    ...{
-                      method: {
-                        ...prevState.method,
-                        wormholeDistance: parseInt(e.target.value),
-                      },
-                    },
-                  };
-                });
-              }
-            }}
-          ></TextField>
-        </Box>
-      );
-    } else {
-      return null;
-    }
-  };
-
-  const laDisplay = () => {
-    if (
-      data.method.function === "arceus-spawn" ||
-      data.method.function === "arceus-mass-outbreak" ||
-      data.method.function === "arceus-massive-mass-outbreak"
-    ) {
-      return (
-        <FormControl sx={{ mb: "5px", mr: "5px" }}>
-          <FormLabel focused={false}>Research Level</FormLabel>
-          <RadioGroup
-            row
-            value={data.method.researchLevel}
-            onChange={(e, value) => {
-              setData((prevState) => {
-                return {
-                  ...prevState,
-                  ...{
-                    method: {
-                      ...prevState.method,
-                      researchLevel: value,
-                    },
-                  },
-                };
-              });
-            }}
-          >
-            <FormControlLabel
-              value={"0"}
-              control={<Radio color="secondary" />}
-              label="Level 0-9"
-            />
-            <FormControlLabel
-              value={"10"}
-              control={<Radio color="secondary" />}
-              label="Level 10"
-            />
-            <FormControlLabel
-              value={"perfect"}
-              control={<Radio color="secondary" />}
-              label="Perfect Level"
-            />
-          </RadioGroup>
-        </FormControl>
-      );
-    } else {
-      return null;
-    }
-  };
-
-  const svSpawnDisplay = () => {
-    if (data.method.function === "sv-spawn") {
-      return (
-        <Box>
-          <FormControl sx={{ mb: "5px", mr: "5px" }}>
-            <FormLabel focused={false}>Sparkling Power</FormLabel>
-            <RadioGroup
-              row
-              value={data.method.svSparklingPower}
-              onChange={(e, value) => {
-                setData((prevState) => {
-                  return {
-                    ...prevState,
-                    ...{
-                      method: {
-                        ...prevState.method,
-                        svSparklingPower: value,
-                      },
-                    },
-                  };
-                });
-              }}
-            >
-              <FormControlLabel
-                value={"0"}
-                control={<Radio color="secondary" />}
-                label="Level 0"
-              />
-              <FormControlLabel
-                value={"1"}
-                control={<Radio color="secondary" />}
-                label="Level 1"
-              />
-              <FormControlLabel
-                value={"2"}
-                control={<Radio color="secondary" />}
-                label="Level 2"
-              />
-              <FormControlLabel
-                value={"3"}
-                control={<Radio color="secondary" />}
-                label="Level 3"
-              />
-            </RadioGroup>
-          </FormControl>
-        </Box>
-      );
-    } else {
-      return null;
-    }
-  };
-
-  const svOutbreakDisplay = () => {
-    if (data.method.function === "sv-outbreak") {
-      return (
-        <Box>
-          <FormControl sx={{ mb: "5px", mr: "5px" }}>
-            <FormLabel focused={false}>Outbreak</FormLabel>
-            <RadioGroup
-              row
-              value={data.method.svOutbreak}
-              onChange={(e, value) => {
-                setData((prevState) => {
-                  return {
-                    ...prevState,
-                    ...{
-                      method: {
-                        ...prevState.method,
-                        svOutbreak: value,
-                      },
-                    },
-                  };
-                });
-              }}
-            >
-              <FormControlLabel
-                value={"0"}
-                control={<Radio color="secondary" />}
-                label="No Outbreak"
-              />
-              <FormControlLabel
-                value={"30"}
-                control={<Radio color="secondary" />}
-                label="30-59 Cleared"
-              />
-              <FormControlLabel
-                value={"60"}
-                control={<Radio color="secondary" />}
-                label="60+ Cleared"
-              />
-            </RadioGroup>
-          </FormControl>
-          <FormControl sx={{ mb: "5px", mr: "5px" }}>
-            <FormLabel focused={false}>Sparkling Power</FormLabel>
-            <RadioGroup
-              row
-              value={data.method.svSparklingPower}
-              onChange={(e, value) => {
-                setData((prevState) => {
-                  return {
-                    ...prevState,
-                    ...{
-                      method: {
-                        ...prevState.method,
-                        svSparklingPower: value,
-                      },
-                    },
-                  };
-                });
-              }}
-            >
-              <FormControlLabel
-                value={"0"}
-                control={<Radio color="secondary" />}
-                label="Level 0"
-              />
-              <FormControlLabel
-                value={"1"}
-                control={<Radio color="secondary" />}
-                label="Level 1"
-              />
-              <FormControlLabel
-                value={"2"}
-                control={<Radio color="secondary" />}
-                label="Level 2"
-              />
-              <FormControlLabel
-                value={"3"}
-                control={<Radio color="secondary" />}
-                label="Level 3"
-              />
-            </RadioGroup>
-          </FormControl>
-        </Box>
-      );
-    } else {
-      return null;
-    }
-  };
-
   return (
     <Box maxWidth="420px" mx="auto" my="20px">
       <Box display="flex" flexDirection="column" mx="20px">
@@ -1144,7 +619,6 @@ export default function CreateDeadShiny() {
             autoHighlight
             onChange={(e, value, reason) => {
               setMethodCatList(undefined);
-              setGroupList(undefined);
               setData((prevState) => {
                 const { method, ...updatedData } = prevState;
                 const updatedMethod = { ...method };
@@ -1328,14 +802,45 @@ export default function CreateDeadShiny() {
             />
           )}
 
-          {/* METHODS EXTRA DATA*/}
-          {pokeradarDisplay()}
-          {letsGoSpawnDisplay()}
-          {sosDisplay()}
-          {laDisplay()}
-          {svSpawnDisplay()}
-          {svOutbreakDisplay()}
-          {ultraWormholeDisplay()}
+          {/* RADAR FORM*/}
+          {data.method.function === "pokeradar-gen4" ||
+          data.method.function === "pokeradar-gen6" ||
+          data.method.function === "pokeradar-gen8" ? (
+            <RadarForm setData={setData} />
+          ) : null}
+
+          {/* LET'S GO FORM*/}
+          {data.method.function === "letsgospawn" ? (
+            <LetsGoForm data={data} setData={setData} />
+          ) : null}
+
+          {/* SOS FORM*/}
+          {data.method.function === "sos-chain" ||
+          data.method.function === "sos-chain-sm" ? (
+            <SosForm setData={setData} />
+          ) : null}
+
+          {/* WORMHOLE FORM*/}
+          {data.method.function === "ultra-wormhole" ? (
+            <WormholeForm data={data} setData={setData} />
+          ) : null}
+
+          {/* LEGEND ARCEUS FORM*/}
+          {data.method.function === "arceus-spawn" ||
+          data.method.function === "arceus-mass-outbreak" ||
+          data.method.function === "arceus-massive-mass-outbreak" ? (
+            <LaForm data={data} setData={setData} />
+          ) : null}
+
+          {/* SV SPAWN FORM*/}
+          {data.method.function === "sv-spawn" ? (
+            <SvForm data={data} setData={setData} />
+          ) : null}
+
+          {/* SV OUTBREAK FORM*/}
+          {data.method.function === "sv-outbreak" ? (
+            <SvOutbreakForm data={data} setData={setData} />
+          ) : null}
 
           <Grid container spacing={"10px"}>
             {/* FAIL METHOD */}
@@ -1611,8 +1116,6 @@ export default function CreateDeadShiny() {
               }
             }}
           />
-
-          {groupDisplay()}
 
           {/* SUBMIT */}
           <Button
