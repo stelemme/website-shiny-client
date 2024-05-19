@@ -2,6 +2,20 @@
 
 ## Changelogs
 
+### Version 1.10.0 (19.05.2024)
+
+**Geolocation List:**
+- "Vliegtuig" wordt nu uit de lijst gefilterd.
+
+**Shiny Map:**
+- Map start nu uitgezoomd op heel europa om zo alle shinies direct te zien zonder te moeten uitzoomen. Middelpunt van de kaart blijft Gent.
+
+**Sprites:**
+- Shiny Shellos & Gastrodon hebben nu de juiste sprite.
+
+
+---
+
 ### Version 1.9.0 (09.05.2024)
 
 **Counter Stats:**

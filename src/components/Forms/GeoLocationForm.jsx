@@ -171,7 +171,7 @@ export default function GeoLocationForm({ data, setData }) {
               }}
             />
           </Grid>
-          <Grid item xs={12} sx={{ mb: "10px" }}>
+          <Grid item xs={12} sx={{ my: "10px" }}>
             <Typography>Address: {data.geoLocation.displayName}</Typography>
           </Grid>
         </>

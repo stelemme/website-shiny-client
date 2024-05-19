@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 
 // Components
-import CompleteShinyCard from "../../components/Cards/CompleteShinyCard";
+import CompleteShinyCard from "../../components/DataDisplay/ShinyDisplay";
 
 // Hooks
 import { useShinyId, useShiny } from "../../hooks/useData";

@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 
 // Components
-import CompleteDeadCard from "../../components/Cards/CompleteDeadCard";
+import CompleteDeadCard from "../../components/DataDisplay/DeadDisplay";
 
 // Hooks
 import { useDeadShinyId } from "../../hooks/useData";
