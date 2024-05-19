@@ -13,6 +13,14 @@
 **Sprites:**
 - Shiny Shellos & Gastrodon hebben nu de juiste sprite.
 
+**Individual Shiny Page:**
+- Link naar counter door ook counter icon te klikken
+- Evolution/form button is aangepast
+- Marks zijn vervangen door onderstaande. Ze kunnen nu ook verwijderd worden door op het kruisje te klikken bij het hoveren met muis (of klikker op gsm).
+    - Specs
+    - Ribbons
+    - Marks
+
 
 ---
 
