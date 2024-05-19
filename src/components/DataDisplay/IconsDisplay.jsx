@@ -203,19 +203,21 @@ export default function IconsDisplay({
                   title={icon.name}
                   style={{ imageRendering: "pixelated" }}
                 />
-                <IconButton
-                  size="small"
-                  onClick={handleIconsDelete}
-                  style={{
-                    position: "absolute",
-                    top: -10,
-                    right: -10,
-                    opacity: hoveredItem === icon ? 1 : 0,
-                    transition: "opacity 0.3s",
-                  }}
-                >
-                  <CancelOutlinedIcon fontSize="small" color="disabled" />
-                </IconButton>
+                {username === data.trainer && (
+                  <IconButton
+                    size="small"
+                    onClick={handleIconsDelete}
+                    style={{
+                      position: "absolute",
+                      top: -10,
+                      right: -10,
+                      opacity: hoveredItem === icon ? 1 : 0,
+                      transition: "opacity 0.3s",
+                    }}
+                  >
+                    <CancelOutlinedIcon fontSize="small" color="disabled" />
+                  </IconButton>
+                )}
               </div>
             );
           })}
