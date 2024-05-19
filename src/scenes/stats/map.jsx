@@ -110,7 +110,7 @@ export default function Map() {
           <Grid item xs={12} height={"100%"}>
             <MapContainer
               center={[51.080158037454105, 3.7204157561604343]}
-              zoom={12}
+              zoom={3}
               style={{ height: "calc(100vh - 200px)", width: "100%" }}
             >
               <TileLayer
