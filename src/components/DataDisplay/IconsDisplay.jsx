@@ -30,8 +30,6 @@ export default function IconsDisplay({
   const [iconsEdit, setIconsEdit] = useState([]);
   const [hoveredItem, setHoveredItem] = useState(null);
 
-  console.log(iconsEdit);
-
   /* EDIT THE ICON */
   const handleIconsEdit = () => {
     let iconData = JSON.stringify({
@@ -123,11 +121,14 @@ export default function IconsDisplay({
                   setOpenIconEdit(true);
                 }}
               >
-                <EditRoundedIcon />
+                <EditRoundedIcon fontSize="small" />
               </IconButton>
               <Dialog
                 open={openIconEdit}
                 onClose={() => setOpenIconEdit(false)}
+                sx={{
+                  "& .MuiDialog-paper": { width: "400px", maxWidth: "80%" },
+                }}
               >
                 <DialogTitle fontWeight={"bold"} variant="h4">
                   {`Add a ${
@@ -150,7 +151,7 @@ export default function IconsDisplay({
                     getOptionLabel={(option) => option.name}
                     renderInput={(params) => (
                       <TextField
-                        style={{ width: 200 }}
+                        fullWidth
                         required
                         color="secondary"
                         {...params}

@@ -176,6 +176,9 @@ export default function CompleteShinyCard({ data, refetch }) {
               <Dialog
                 open={openEvolutionEdit}
                 onClose={() => setOpenEvolutionEdit(false)}
+                sx={{
+                  "& .MuiDialog-paper": { width: "400px", maxWidth: "80%" },
+                }}
               >
                 <DialogTitle fontWeight={"bold"} variant="h4">
                   Edit Evolutions & Forms
@@ -293,7 +296,7 @@ export default function CompleteShinyCard({ data, refetch }) {
 
             {/* INFORMATION */}
             <Grid item xs={12}>
-              <InfoDisplay data={data} />
+              <InfoDisplay data={data} username={username} refetch={refetch}/>
             </Grid>
 
             <Grid item xs={12}>
@@ -341,20 +344,18 @@ export default function CompleteShinyCard({ data, refetch }) {
               )}
 
             {/* MARKS */}
-            {(username === data.trainer || data?.specs) && (
-              parseInt(data.gen.slice(-2).trim()) > 7 && <Grid
-                item
-                xs={12}
-              >
-                <IconsDisplay
-                  data={data}
-                  username={username}
-                  refetch={refetch}
-                  type="marks"
-                  exisitingData={data?.marks}
-                />
-              </Grid>
-            )}
+            {(username === data.trainer || data?.specs) &&
+              parseInt(data.gen.slice(-2).trim()) > 7 && (
+                <Grid item xs={12}>
+                  <IconsDisplay
+                    data={data}
+                    username={username}
+                    refetch={refetch}
+                    type="marks"
+                    exisitingData={data?.marks}
+                  />
+                </Grid>
+              )}
 
             {(username === data.trainer || data?.specs) && (
               <Grid item xs={12}>

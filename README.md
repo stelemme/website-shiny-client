@@ -20,7 +20,7 @@
     - Specs
     - Ribbons
     - Marks
-
+- Alle attributen die volgens mij aanspasbaar zijn, kunnen nu worden aangepast door op de edit button te klikken naast shiny information. 
 
 ---
 

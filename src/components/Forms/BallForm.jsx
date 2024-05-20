@@ -10,7 +10,7 @@ export default function BallForm({ setData, ballList, ballCheck = true }) {
       onChange={(e, value, reason) => {
         setData((prevState) => {
           const { ball, ...updatedData } = prevState;
-          delete updatedData.sprite.ball;
+          delete updatedData?.sprite?.ball;
 
           return {
             ...updatedData,
@@ -22,7 +22,7 @@ export default function BallForm({ setData, ballList, ballCheck = true }) {
               ...prevState,
               ...{
                 sprite: {
-                  ...prevState.sprite,
+                  ...prevState?.sprite,
                   ball: value.sprite,
                 },
                 ball: value.name,
