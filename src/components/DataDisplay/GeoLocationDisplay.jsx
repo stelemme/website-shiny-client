@@ -82,11 +82,14 @@ export default function GeoLocationDisplay({ data, username, refetch }) {
                 size="small"
                 onClick={() => setOpenGeoLocationEdit(true)}
               >
-                <EditRoundedIcon />
+                <EditRoundedIcon fontSize="small" />
               </IconButton>
               <Dialog
                 open={openGeoLocationEdit}
                 onClose={() => setOpenGeoLocationEdit(false)}
+                sx={{
+                  "& .MuiDialog-paper": { width: "400px", maxWidth: "80%" },
+                }}
               >
                 <DialogTitle fontWeight="bold" variant="h4">
                   Edit the Geo Location
