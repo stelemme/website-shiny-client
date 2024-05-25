@@ -3,32 +3,25 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 // Mui
-import {
-  Box,
-  TextField,
-  Autocomplete,
-  FormControl,
-  FormControlLabel,
-  RadioGroup,
-  Radio,
-  Button,
-  FormLabel,
-  Grid,
-  InputAdornment,
-} from "@mui/material";
+import { Box, Button, Grid } from "@mui/material";
 
 // Components
 import Header from "../../components/Header";
+import GameForm from "../../components/Forms/GameForm";
+import PokemonForm from "../../components/Forms/PokemonForm";
+import LocationsForm from "../../components/Forms/LocationForm";
+import ShinyCharmForm from "../../components/Forms/ShinyCharmForm";
+import MethodForm from "../../components/Forms/MethodForm";
+import SubMethodForm from "../../components/Forms/SubMethodForm";
+import IncrementForm from "../../components/Forms/IncrementForm";
+import ThresholdForm from "../../components/Forms/ThresholdForm";
 
 // Hooks
 import { useAuth } from "../../hooks/useAuth";
-import { useGame } from "../../hooks/useData";
 
 export default function CreateCounters() {
   const { username } = useAuth();
   const navigate = useNavigate();
-
-  const { data: games } = useGame("?action=form");
 
   const initialState = {
     trainer: username,
@@ -41,11 +34,10 @@ export default function CreateCounters() {
       shinyCharm: false,
     },
     startDate: new Date(),
-    endDate: new Date()
+    endDate: new Date(),
   };
 
   const [data, setData] = useState(initialState);
-  const [gameId, setGameId] = useState(undefined);
   const [shinyCharmCheck, setShinyCharmCheck] = useState(false);
   const [locationsList, setLocationsList] = useState(undefined);
   const [methodsList, setMethodsList] = useState(undefined);
@@ -54,25 +46,13 @@ export default function CreateCounters() {
 
   const [clearMethod, setClearMethod] = useState("method");
 
-  console.log(data)
+  console.log(data);
 
   useEffect(() => {
     setData((prevState) => {
       return { ...prevState, ...{ trainer: username } };
     });
   }, [username]);
-
-  useEffect(() => {
-    if (gameId) {
-      axios["get"](`/game/${gameId}?action=pokemons`)
-        .then((res) => {
-          setPokemonsList(res.data.pokemons);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [gameId]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -101,327 +81,61 @@ export default function CreateCounters() {
         {/* FORM */}
         <form autoComplete="off" onSubmit={handleSubmit}>
           {/* GAMES */}
-          <Autocomplete
-            autoHighlight
-            onChange={(e, value, reason) => {
-              setData(initialState);
-              setGameId(undefined);
-              setShinyCharmCheck(false);
-              setLocationsList(undefined);
-              setMethodsList(undefined);
-              setMethodCatList(undefined);
-              setPokemonsList(undefined);
-
-              setClearMethod((prevState) =>
-                prevState === "method" ? "clearMethod" : "method"
-              );
-              if (reason === "selectOption") {
-                setData((prevState) => {
-                  console.log(value)
-                  return {
-                    ...prevState,
-                    ...{
-                      game: value.name,
-                      gen: value.gen,
-                      gameSort: value.sort,
-                      sprite: {
-                        game: value.sprite,
-                        dir: value.dir,
-                      },
-                    },
-                  };
-                });
-                setGameId(value._id);
-                setShinyCharmCheck(value.shinyCharm);
-                setLocationsList(value.locations);
-                setMethodsList(value.methods);
-              }
-            }}
-            sx={{ mb: "20px" }}
-            options={games ? games.data : []}
-            getOptionLabel={(option) => option.name}
-            renderInput={(params) => (
-              <TextField required color="secondary" {...params} label="Game" />
-            )}
+          <GameForm
+            setData={setData}
+            initialState={initialState}
+            setShinyCharmCheck={setShinyCharmCheck}
+            setPokemonsList={setPokemonsList}
+            setMethodsList={setMethodsList}
+            setMethodCatList={setMethodCatList}
+            setLocationsList={setLocationsList}
+            setClearMethod={setClearMethod}
           />
 
           {/* POKEMONS */}
-          <Autocomplete
-            key={pokemonsList}
-            disabled={!pokemonsList}
-            autoHighlight
-            onChange={(e, value, reason) => {
-              setData((prevState) => {
-                const { name, pokedexNo, types, sprite, ...updatedData } =
-                  prevState;
-                const updatedSprites = { ...sprite };
-                delete updatedSprites.pokemon;
-
-                return {
-                  ...updatedData,
-                  sprite: updatedSprites,
-                };
-              });
-              if (reason === "selectOption") {
-                axios["get"](`/pokedex?name=${value}`)
-                  .then((res) => {
-                    setData((prevState) => {
-                      return {
-                        ...prevState,
-                        ...{
-                          name: value,
-                          pokedexNo: res.data[0].pokedexNo,
-                          types: res.data[0].types,
-                          sprite: {
-                            ...prevState.sprite,
-                            pokemon: res.data[0].sprite,
-                          },
-                        },
-                      };
-                    });
-                  })
-                  .catch((err) => {
-                    console.log(err);
-                  });
-              }
-            }}
-            sx={{ mb: "20px" }}
-            options={pokemonsList ? pokemonsList : []}
-            renderInput={(params) => (
-              <TextField
-                required
-                color="secondary"
-                {...params}
-                label="Pokémon"
-              />
-            )}
+          <PokemonForm
+            setData={setData}
+            pokemonsList={pokemonsList}
+            isAsCounter
           />
 
           {/* LOCATIONS */}
-          <Autocomplete
-            key={locationsList}
-            disabled={!locationsList}
-            autoHighlight
-            onChange={(e, value, reason) => {
-              setData((prevState) => {
-                const { location, ...rest } = prevState;
-                return rest;
-              });
-              if (reason === "selectOption") {
-                setData((prevState) => {
-                  return { ...prevState, ...{ location: value } };
-                });
-              }
-            }}
-            sx={{ mb: "20px" }}
-            options={locationsList ? locationsList : []}
-            renderInput={(params) => (
-              <TextField
-                required
-                color="secondary"
-                {...params}
-                label="Location"
-              />
-            )}
-          />
+          <LocationsForm setData={setData} locationsList={locationsList} />
 
           {/* SHINYCHARM */}
           {shinyCharmCheck && (
-            <FormControl sx={{ mb: "5px" }}>
-              <FormLabel focused={false}>ShinyCharm</FormLabel>
-              <RadioGroup
-                row
-                value={data.method.shinyCharm}
-                onChange={(e, value) => {
-                  setClearMethod((prevState) =>
-                    prevState === "method" ? "clearMethod" : "method"
-                  );
-                  setMethodCatList(undefined);
-                  setData((prevState) => {
-                    return {
-                      ...prevState,
-                      ...{
-                        method: {
-                          shinyCharm: JSON.parse(value),
-                        },
-                      },
-                    };
-                  });
-                }}
-              >
-                <FormControlLabel
-                  value={false}
-                  control={<Radio color="secondary" />}
-                  label="Not Obtained"
-                />
-                <FormControlLabel
-                  value={true}
-                  control={<Radio color="secondary" />}
-                  label="Obtained"
-                />
-              </RadioGroup>
-            </FormControl>
+            <ShinyCharmForm
+              data={data}
+              setData={setData}
+              setClearMethod={setClearMethod}
+              setMethodCatList={setMethodCatList}
+            />
           )}
 
           {/* METHODS */}
-          <Autocomplete
-            key={clearMethod}
-            disabled={!methodsList}
-            autoHighlight
-            onChange={(e, value, reason) => {
-              setMethodCatList(undefined);
-              setData((prevState) => {
-                const { method, ...updatedData } = prevState;
-                const updatedMethod = { ...method };
-                delete updatedMethod.name;
-                delete updatedMethod.function;
-                delete updatedMethod.odds;
-                delete updatedMethod.rolls;
-                delete updatedMethod.charmRolls;
-                delete updatedMethod.category;
-
-                return {
-                  ...updatedData,
-                  method: updatedMethod,
-                };
-              });
-              if (reason === "selectOption") {
-                setData((prevState) => {
-                  console.log(value.categories?.length)
-                  if (value.categories?.length > 0) {
-                    setMethodCatList(value.categories);
-                  }
-
-                  return {
-                    ...prevState,
-                    ...{
-                      method: {
-                        ...prevState.method,
-                        ...value,
-                      },
-                    },
-                  };
-                });
-              }
-            }}
-            sx={{ mb: "20px" }}
-            options={methodsList ? methodsList.filter(option => option.countable !== false) : []}
-            getOptionLabel={(option) => option.name}
-            renderInput={(params) => (
-              <TextField
-                required
-                color="secondary"
-                {...params}
-                label="Method"
-              />
-            )}
+          <MethodForm
+            setData={setData}
+            methodsList={methodsList}
+            setMethodCatList={setMethodCatList}
+            clearMethod={clearMethod}
           />
 
           {/* METHODS SUBCATEGORY*/}
-          {methodCatList && <Autocomplete
-            key={methodCatList}
-            disabled={!methodCatList}
-            autoHighlight
-            onChange={(e, value, reason) => {
-              if (reason === "selectOption") {
-                setData((prevState) => {
-                  return {
-                    ...prevState,
-                    ...{
-                      method: {
-                        ...prevState.method,
-                        category: value,
-                      },
-                    },
-                  };
-                });
-              }
-            }}
-            sx={{ mb: "20px" }}
-            options={methodCatList ? methodCatList : []}
-            renderInput={(params) => (
-              <TextField
-                color="secondary"
-                {...params}
-                label="Method Category"
-              />
-            )}
-          />}
+          {methodCatList && (
+            <SubMethodForm setData={setData} methodCatList={methodCatList} />
+          )}
 
-          {/* INCREMENT */}
           <Grid container spacing={"10px"}>
             <Grid item xs={4}>
-              <TextField
-                sx={{ mb: "20px" }}
-                value={data.increment}
-                type="number"
-                fullWidth
-                required
-                color="secondary"
-                label="Increment"
-                onChange={(e) => {
-                  if (e.target.value > 0) {
-                    setData((prevState) => {
-                      return {
-                        ...prevState,
-                        ...{ increment: e.target.value },
-                      };
-                    });
-                  }
-                }}
-              />
+              {/* INCREMENT */}
+              <IncrementForm data={data} setData={setData} />
             </Grid>
             <Grid item xs={4}>
-              <TextField
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="start">sec</InputAdornment>
-                  ),
-                }}
-                sx={{ mb: "20px" }}
-                value={data.lowerTimeThreshold}
-                type="number"
-                fullWidth
-                required
-                color="secondary"
-                label="Lower Threshold"
-                onChange={(e) => {
-                  if (e.target.value >= 0) {
-                    setData((prevState) => {
-                      return {
-                        ...prevState,
-                        ...{ lowerTimeThreshold: e.target.value },
-                      };
-                    });
-                  }
-                }}
-              />
+              {/* LOWER THRESHOLD */}
+              <ThresholdForm data={data} setData={setData} type={"lower"} />
             </Grid>
             <Grid item xs={4}>
-              <TextField
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="start">sec</InputAdornment>
-                  ),
-                }}
-                sx={{ mb: "20px" }}
-                value={data.upperTimeThreshold}
-                type="number"
-                fullWidth
-                required
-                color="secondary"
-                label="Upper Threshold"
-                onChange={(e) => {
-                  if (e.target.value >= 0) {
-                    setData((prevState) => {
-                      return {
-                        ...prevState,
-                        ...{ upperTimeThreshold: e.target.value },
-                      };
-                    });
-                  }
-                }}
-              />
+              <ThresholdForm data={data} setData={setData} type={"upper"} />
             </Grid>
           </Grid>
 

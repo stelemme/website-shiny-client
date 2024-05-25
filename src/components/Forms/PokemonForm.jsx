@@ -9,6 +9,7 @@ export default function PokemonForm({
   pokemonsList,
   setGenderCheck,
   isForCounter = false,
+  isAsCounter = false,
 }) {
   if (!isForCounter) {
     return (
@@ -25,10 +26,12 @@ export default function PokemonForm({
             return {
               ...updatedData,
               sprite: updatedSprites,
-              gender: "genderless",
+              ...(!isAsCounter && { gender: "genderless" }),
             };
           });
-          setGenderCheck(false);
+          if (setGenderCheck) {
+            setGenderCheck(false);
+          }
 
           if (reason === "selectOption" && value) {
             axios
@@ -45,10 +48,12 @@ export default function PokemonForm({
                   gender = "genderless";
                 }
 
-                if (pokemonData.gender === "Genderless") {
-                  setGenderCheck(false);
-                } else {
-                  setGenderCheck(true);
+                if (setGenderCheck) {
+                  if (pokemonData.gender === "Genderless") {
+                    setGenderCheck(false);
+                  } else {
+                    setGenderCheck(true);
+                  }
                 }
 
                 setData((prevState) => ({
@@ -60,7 +65,7 @@ export default function PokemonForm({
                     ...prevState.sprite,
                     pokemon: pokemonData.sprite,
                   },
-                  gender,
+                  ...(!isAsCounter && { gender }),
                 }));
               })
               .catch((err) => {

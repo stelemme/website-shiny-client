@@ -128,6 +128,7 @@ export default function GeoLocationForm({ data, setData }) {
             <TextField
               required
               fullWidth
+              autoComplete="off"
               color="secondary"
               label="Location Name"
               value={data.geoLocation.name}
@@ -150,6 +151,7 @@ export default function GeoLocationForm({ data, setData }) {
             <TextField
               required
               fullWidth
+              autoComplete="off"
               color="secondary"
               label="Latitude, Longitude"
               onChange={(e) => {

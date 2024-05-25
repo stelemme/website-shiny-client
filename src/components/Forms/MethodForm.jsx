@@ -9,6 +9,7 @@ export default function MethodForm({
   setGroupList,
   clearMethod,
   isForCounter = false,
+  isAsCounter = false,
 }) {
   if (!isForCounter) {
     return (
@@ -159,7 +160,13 @@ export default function MethodForm({
           }
         }}
         sx={{ mb: "20px" }}
-        options={methodsList ? methodsList : []}
+        options={
+          methodsList
+            ? isAsCounter
+              ? methodsList.filter((option) => option.countable !== false)
+              : methodsList
+            : []
+        }
         getOptionLabel={(option) => option.name}
         renderInput={(params) => (
           <TextField required color="secondary" {...params} label="Method" />

@@ -26,8 +26,9 @@ export default function CustomDialog({
       open={open}
       onClose={handleClose}
       aria-labelledby="alert-dialog"
-      maxWidth="xs"
-      fullWidth
+      sx={{
+        "& .MuiDialog-paper": { width: "400px", maxWidth: "80%" },
+      }}
     >
       <DialogTitle
         id="alert-dialog"

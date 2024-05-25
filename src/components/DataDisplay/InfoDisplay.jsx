@@ -2,22 +2,12 @@ import { useState } from "react";
 import axios from "axios";
 
 // Mui
-import {
-  Box,
-  Typography,
-  IconButton,
-  Grid,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-  Alert
-} from "@mui/material";
+import { Box, Typography, IconButton, Grid, Alert } from "@mui/material";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 
 // Components
 import GeneralSelect from "../../components/Selects/GeneralSelect";
+import CustomDialog from "../Dialogs/CustomDialog";
 import NicknameForm from "../Forms/NicknameForm";
 import EndDateForm from "../Forms/EndDateForm";
 import NatureForm from "../Forms/NatureForm";
@@ -35,7 +25,7 @@ export default function InfoDisplay({ data: initialData, username, refetch }) {
   const [locationsList, setLocationsList] = useState([]);
   const [ballList, setBallList] = useState([]);
   const [methodCatList, setMethodCatList] = useState([]);
-  const [alertShown, setAlertShown] = useState(false)
+  const [alertShown, setAlertShown] = useState(false);
 
   let initialState = {
     endDate: new Date(),
@@ -129,7 +119,7 @@ export default function InfoDisplay({ data: initialData, username, refetch }) {
   /* EDIT THE VALUE */
   const handleEdit = () => {
     if (Object.keys(editData).length !== 0) {
-      setAlertShown(false)
+      setAlertShown(false);
       let editPatchData = JSON.stringify(editData);
 
       let config = {
@@ -153,7 +143,7 @@ export default function InfoDisplay({ data: initialData, username, refetch }) {
           console.log(error);
         });
     } else {
-      setAlertShown(true)
+      setAlertShown(true);
     }
   };
 
@@ -211,17 +201,12 @@ export default function InfoDisplay({ data: initialData, username, refetch }) {
               >
                 <EditRoundedIcon fontSize="small" />
               </IconButton>
-              <Dialog
+              <CustomDialog
                 open={openEdit}
-                onClose={() => setOpenEdit(false)}
-                sx={{
-                  "& .MuiDialog-paper": { width: "400px", maxWidth: "80%" },
-                }}
-              >
-                <DialogTitle fontWeight={"bold"} variant="h4">
-                  Edit an Attribute:
-                </DialogTitle>
-                <DialogContent>
+                handleClick={handleEdit}
+                handleClose={() => setOpenEdit(false)}
+                title={"Edit an Attribute:"}
+                content={
                   <Grid container spacing={2} mt={1}>
                     <Grid item xs={12}>
                       <GeneralSelect
@@ -240,30 +225,9 @@ export default function InfoDisplay({ data: initialData, username, refetch }) {
                       {alertDisplay()}
                     </Grid>
                   </Grid>
-                </DialogContent>
-                <DialogActions
-                  style={{ justifyContent: "right", gap: "10px" }}
-                  sx={{ mb: "15px", mr: "15px" }}
-                >
-                  <Button
-                    variant="contained"
-                    color="neutral"
-                    style={{ color: "white" }}
-                    onClick={() => setOpenEdit(false)}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="neutral"
-                    style={{ color: "white" }}
-                    onClick={handleEdit}
-                    autoFocus
-                  >
-                    Edit
-                  </Button>
-                </DialogActions>
-              </Dialog>
+                }
+                action={"Edit"}
+              />
             </Box>
           )}
         </Box>
@@ -303,11 +267,17 @@ export default function InfoDisplay({ data: initialData, username, refetch }) {
         />
         <InfoDict
           infoCat={"Date Caught"}
-          infoName={new Date(data?.endDate).toLocaleDateString()}
+          infoName={new Date(data?.endDate).toLocaleDateString("nl-BE")}
         />
       </Grid>
 
       <Grid item xs={12}>
+        <InfoDict
+          xs1={2.75}
+          xs2={9.25}
+          infoCat={"Trainer"}
+          infoName={data?.trainer}
+        />
         <InfoDict
           xs1={2.75}
           xs2={9.25}

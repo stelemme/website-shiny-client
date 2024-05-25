@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
-import { format } from "date-fns";
 
 // Mui
 import {
@@ -27,6 +26,10 @@ import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
 // Components
 import CustomDialog from "../../components/Dialogs/CustomDialog";
 import CounterEncounterGraph from "../../components/Graphs/CounterEncounterGraph";
+import StartDateForm from "../../components/Forms/StartDateForm";
+import EndDateForm from "../../components/Forms/EndDateForm";
+import IncrementForm from "../../components/Forms/IncrementForm";
+import ThresholdForm from "../../components/Forms/ThresholdForm";
 
 // Functions
 import {
@@ -60,6 +63,8 @@ export default function Counter() {
   const [openEdit, setOpenEdit] = useState(false);
   const [openDateEdit, setOpenDateEdit] = useState(false);
   const [openSearchLevelEdit, setOpenSearchLevelEdit] = useState(false);
+  const [openIncrementEdit, setOpenIncrementEdit] = useState(false);
+  const [openThresholdEdit, setOpenThresholdEdit] = useState(false);
 
   const [data, setData] = useState(undefined);
   const [hasData, setHasData] = useState(false);
@@ -72,7 +77,10 @@ export default function Counter() {
   const [startDate, setStartDate] = useState(undefined);
   const [endDate, setEndDate] = useState(undefined);
   const [startDateEdit, setStartDateEdit] = useState(undefined);
-  const [endDateEdit, setEndDateEdit] = useState(undefined);
+  const [endDateEdit, setEndDateEdit] = useState({});
+  const [increment, setIncrement] = useState(undefined);
+  const [incrementEdit, setIncrementEdit] = useState(undefined);
+  const [thresholdEdit, setThresholdEdit] = useState(undefined);
   const [dateDifference, setDateDifference] = useState(undefined);
 
   const [searchLevel, setSearchLevel] = useState(0);
@@ -153,13 +161,19 @@ export default function Counter() {
           data.increment
         )
       );
+      setIncrement(data.increment);
+      setIncrementEdit({ increment: data.increment });
+      setThresholdEdit({
+        lowerTimeThreshold: data.lowerTimeThreshold,
+        upperTimeThreshold: data.upperTimeThreshold,
+      });
       if (data.startDate) {
-        setStartDate(new Date(data.startDate).toLocaleDateString());
-        setStartDateEdit(format(new Date(data.startDate), "yyyy-MM-dd"));
+        setStartDate(new Date(data.startDate).toLocaleDateString("nl-BE"));
+        setStartDateEdit({ startDate: new Date(data.startDate) });
       }
       if (data.endDate) {
-        setEndDate(new Date(data.endDate).toLocaleDateString());
-        setEndDateEdit(format(new Date(data.endDate), "yyyy-MM-dd"));
+        setEndDate(new Date(data.endDate).toLocaleDateString("nl-BE"));
+        setEndDateEdit({ endDate: new Date(data.endDate) });
       }
       if (data.startDate && data.endDate) {
         setDateDifference(
@@ -177,13 +191,13 @@ export default function Counter() {
   const handleCountClick = () => {
     setBackgroundColor(colors.primary[900]);
     setCount((prevState) => {
-      return prevState + data.increment;
+      return prevState + increment;
     });
     setCountEdit((prevState) => {
-      return prevState + data.increment;
+      return prevState + increment;
     });
     setEncountersToday((prevState) => {
-      return prevState + data.increment;
+      return prevState + increment;
     });
 
     if (data.method.function === "dexnav") {
@@ -219,13 +233,13 @@ export default function Counter() {
   /* COUNTER UNDO */
   const handleUndoClick = () => {
     setCount((prevState) => {
-      return prevState - data.increment;
+      return prevState - increment;
     });
     setCountEdit((prevState) => {
-      return prevState - data.increment;
+      return prevState - increment;
     });
     setEncountersToday((prevState) => {
-      return prevState - data.increment;
+      return prevState - increment;
     });
     axios["patch"](`/counters/${counterId}?action=undo`)
       .then((res) => {
@@ -243,7 +257,7 @@ export default function Counter() {
 
   const handleDeadClick = () => {
     navigate(`/shiny/dead/create/${counterId}`);
-  }
+  };
 
   /* DELETE THE COUNTER */
   const handleDeleteClick = () => {
@@ -324,8 +338,8 @@ export default function Counter() {
 
   const handleDateEditClick = () => {
     let data = JSON.stringify({
-      startDate: startDateEdit,
-      endDate: endDateEdit,
+      startDate: startDateEdit.startDate,
+      endDate: endDateEdit.endDate,
     });
 
     let config = {
@@ -341,9 +355,61 @@ export default function Counter() {
     axios
       .request(config)
       .then((res) => {
-        setStartDate(new Date(res.data.startDate).toLocaleDateString());
-        setEndDate(new Date(res.data.endDate).toLocaleDateString());
+        setStartDate(new Date(res.data.startDate).toLocaleDateString("nl-BE"));
+        setEndDate(new Date(res.data.endDate).toLocaleDateString("nl-BE"));
         setOpenDateEdit(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleIncrementEditClick = () => {
+    let data = JSON.stringify({
+      increment: incrementEdit.increment,
+    });
+
+    let config = {
+      method: "patch",
+      maxBodyLength: Infinity,
+      url: `/counters/${counterId}?action=incrementEdit`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios
+      .request(config)
+      .then((res) => {
+        setIncrement(res.data.increment);
+        setOpenIncrementEdit(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleThresholdEdit = () => {
+    let data = JSON.stringify({
+      lowerTimeThreshold: thresholdEdit.lowerTimeThreshold,
+      upperTimeThreshold: thresholdEdit.upperTimeThreshold,
+    });
+
+    let config = {
+      method: "patch",
+      maxBodyLength: Infinity,
+      url: `/counters/${counterId}?action=thresholdEdit`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios
+      .request(config)
+      .then((res) => {
+        setOpenThresholdEdit(false);
       })
       .catch((error) => {
         console.log(error);
@@ -426,11 +492,16 @@ export default function Counter() {
     if (!completed) {
       return (
         <Box>
-          <Typography fontWeight={"bold"}>Last Encounter Time</Typography>
-          <Typography>
+          <Typography
+            fontWeight={"bold"}
+            fontSize={window.innerWidth < 600 ? 12 : 14}
+          >
+            Last Encounter Time
+          </Typography>
+          <Typography fontSize={window.innerWidth < 600 ? 12 : 14}>
             {lastCount ? lastCount.toLocaleTimeString() : undefined}
           </Typography>
-          <Typography>
+          <Typography fontSize={window.innerWidth < 600 ? 12 : 14}>
             {elapsedTime ? formatTime(elapsedTime) : "Undefined"}
           </Typography>
         </Box>
@@ -518,7 +589,7 @@ export default function Counter() {
                   type="number"
                   value={searchLevelEdit}
                   onChange={(e) => setSearchLevelEdit(parseInt(e.target.value))}
-                ></TextField>
+                />
               </Box>
             }
             action={"Edit"}
@@ -588,7 +659,7 @@ export default function Counter() {
                         type="number"
                         value={countEdit}
                         onChange={(e) => setCountEdit(parseInt(e.target.value))}
-                      ></TextField>
+                      />
                       <Typography my="15px">
                         Add a certain amount of Encounters. (These changes are
                         added to the Encounters List)
@@ -600,7 +671,7 @@ export default function Counter() {
                         type="number"
                         value={countAdd}
                         onChange={(e) => setCountAdd(parseInt(e.target.value))}
-                      ></TextField>
+                      />
                     </Box>
                   }
                   action={"Edit"}
@@ -654,11 +725,42 @@ export default function Counter() {
               width="125px"
               minWidth="125px"
               mx="10px"
+              onClick={
+                username === data.trainer && !completed
+                  ? () => setOpenIncrementEdit(true)
+                  : undefined
+              }
+              sx={{
+                "@media (min-width: 768px)": {
+                  ...(username === data.trainer &&
+                    !completed && {
+                      "&:hover": {
+                        cursor: "pointer",
+                        backgroundColor: backgroundColor,
+                      },
+                    }),
+                },
+              }}
             >
               <Typography fontWeight={"bold"} variant="h2">
-                +{data.increment}
+                +{increment}
               </Typography>
             </Box>
+            <CustomDialog
+              open={openIncrementEdit}
+              handleClick={handleIncrementEditClick}
+              handleClose={() => setOpenIncrementEdit(false)}
+              title={"Edit Increment"}
+              content={
+                <Box mt={2}>
+                  <IncrementForm
+                    data={incrementEdit}
+                    setData={setIncrementEdit}
+                  />
+                </Box>
+              }
+              action={"Edit"}
+            />
           </Box>
 
           {/* COUNT BUTTON */}
@@ -704,7 +806,13 @@ export default function Counter() {
                 </IconButton>
 
                 {/* DIALOG */}
-                <Dialog open={openInfo} onClose={() => setOpenInfo(false)}>
+                <Dialog
+                  open={openInfo}
+                  onClose={() => setOpenInfo(false)}
+                  sx={{
+                    "& .MuiDialog-paper": { width: "300px", maxWidth: "90%" },
+                  }}
+                >
                   <DialogTitle fontWeight={"bold"} variant="h4">
                     Counter Information
                   </DialogTitle>
@@ -712,29 +820,49 @@ export default function Counter() {
                     <img
                       alt=""
                       src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/${data.sprite.dir}/${data.sprite.pokemon}.png`}
-                      width="240px"
+                      width="100%"
                       style={{ imageRendering: "pixelated" }}
                       onError={(e) => {
                         e.target.src = `https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-all-home/${data.sprite.pokemon}.png`;
                       }}
                     />
-                    <Grid container width={"240px"}>
+                    <Grid container>
                       <Grid item xs={12} mb={"5px"}>
                         <Divider />
                       </Grid>
                       <Grid item xs={12} container>
                         <Grid item xs={4}>
-                          <Typography fontWeight={"bold"}>Trainer</Typography>
-                          <Typography>{data.trainer}</Typography>
+                          <Typography
+                            fontWeight={"bold"}
+                            fontSize={window.innerWidth < 600 ? 12 : 14}
+                          >
+                            Trainer
+                          </Typography>
+                          <Typography
+                            fontSize={window.innerWidth < 600 ? 12 : 14}
+                          >
+                            {data.trainer}{" "}
+                          </Typography>
                         </Grid>
                         <Grid item xs={8}>
-                          <Typography fontWeight={"bold"} textAlign={"right"}>
+                          <Typography
+                            fontWeight={"bold"}
+                            textAlign={"right"}
+                            fontSize={window.innerWidth < 600 ? 12 : 14}
+                          >
                             Shiny Hunting Method
                           </Typography>
-                          <Typography textAlign={"right"}>
+                          <Typography
+                            textAlign={"right"}
+                            fontSize={window.innerWidth < 600 ? 12 : 14}
+                          >
                             {data.method.name}
                           </Typography>
-                          <Typography fontStyle={"italic"} textAlign={"right"}>
+                          <Typography
+                            fontStyle={"italic"}
+                            textAlign={"right"}
+                            fontSize={window.innerWidth < 600 ? 12 : 14}
+                          >
                             {data.method.category}
                           </Typography>
                         </Grid>
@@ -749,7 +877,10 @@ export default function Counter() {
                         alignItems="center"
                         height="21px"
                       >
-                        <Typography fontWeight={"bold"}>
+                        <Typography
+                          fontWeight={"bold"}
+                          fontSize={window.innerWidth < 600 ? 12 : 14}
+                        >
                           Start & End Date
                         </Typography>
                         {username === data.trainer && (
@@ -767,12 +898,12 @@ export default function Counter() {
                               handleClick={handleDateEditClick}
                               handleClose={() => {
                                 setOpenDateEdit(false);
-                                setStartDateEdit(
-                                  format(new Date(data.startDate), "yyyy-MM-dd")
-                                );
-                                setEndDateEdit(
-                                  format(new Date(data.endDate), "yyyy-MM-dd")
-                                );
+                                setStartDateEdit({
+                                  startDate: new Date(data.startDate),
+                                });
+                                setEndDateEdit({
+                                  endDate: new Date(data.endDate),
+                                });
                               }}
                               title={"Edit Start & End Date"}
                               content={
@@ -781,26 +912,14 @@ export default function Counter() {
                                     Edit the start & end date in the inputfields
                                     below.
                                   </Typography>
-                                  <TextField
-                                    color="secondary"
-                                    fullWidth
-                                    label="Start Date"
-                                    type="date"
-                                    value={startDateEdit}
-                                    onChange={(e) =>
-                                      setStartDateEdit(e.target.value)
-                                    }
-                                    style={{ marginBottom: "15px" }}
+                                  <StartDateForm
+                                    data={startDateEdit}
+                                    setData={setStartDateEdit}
+                                    isForCounter
                                   />
-                                  <TextField
-                                    color="secondary"
-                                    fullWidth
-                                    label="End Date"
-                                    type="date"
-                                    value={endDateEdit}
-                                    onChange={(e) =>
-                                      setEndDateEdit(e.target.value)
-                                    }
+                                  <EndDateForm
+                                    data={endDateEdit}
+                                    setData={setEndDateEdit}
                                   />
                                 </Box>
                               }
@@ -810,27 +929,43 @@ export default function Counter() {
                         )}
                       </Grid>
                       <Grid item xs={5.5}>
-                        <Typography fontWeight={"bold"} textAlign={"right"}>
+                        <Typography
+                          fontWeight={"bold"}
+                          textAlign={"right"}
+                          fontSize={window.innerWidth < 600 ? 12 : 14}
+                        >
                           Total Hunt Time
                         </Typography>
                       </Grid>
                       <Grid item xs={5}>
-                        <Typography>
+                        <Typography
+                          fontSize={window.innerWidth < 600 ? 12 : 14}
+                        >
                           {startDate ? startDate : "Undefined"}
                         </Typography>
-                        <Typography>
+                        <Typography
+                          fontSize={window.innerWidth < 600 ? 12 : 14}
+                        >
                           {endDate ? endDate : "Undefined"}
                         </Typography>
-                        <Typography fontWeight={"bold"}>
+                        <Typography
+                          fontWeight={"bold"}
+                          fontSize={window.innerWidth < 600 ? 12 : 14}
+                        >
                           {completed ? "Days Hunted" : "Days Hunting"}
                         </Typography>
-                        <Typography>
+                        <Typography
+                          fontSize={window.innerWidth < 600 ? 12 : 14}
+                        >
                           {dateDifference}{" "}
                           {dateDifference === 1 ? "day" : "days"}{" "}
                         </Typography>
                       </Grid>
                       <Grid item xs={7}>
-                        <Typography textAlign={"right"}>
+                        <Typography
+                          textAlign={"right"}
+                          fontSize={window.innerWidth < 600 ? 12 : 14}
+                        >
                           {timeDifference
                             ? formatTime(
                                 Math.round(timeDifference * count),
@@ -838,17 +973,28 @@ export default function Counter() {
                               )
                             : "Undefined"}
                         </Typography>
-                        <Typography fontWeight={"bold"} textAlign={"right"}>
+                        <Typography
+                          fontWeight={"bold"}
+                          textAlign={"right"}
+                          fontSize={window.innerWidth < 600 ? 12 : 14}
+                        >
                           Mean Encounter Time
                         </Typography>
-                        <Typography textAlign={"right"}>
+                        <Typography
+                          textAlign={"right"}
+                          fontSize={window.innerWidth < 600 ? 12 : 14}
+                        >
                           {timeDifference
                             ? new Date(timeDifference * 1000)
                                 .toISOString()
                                 .slice(11, 19)
                             : "Undefined"}
                         </Typography>
-                        <Typography fontWeight={"bold"} textAlign={"right"}>
+                        <Typography
+                          fontWeight={"bold"}
+                          textAlign={"right"}
+                          fontSize={window.innerWidth < 600 ? 12 : 14}
+                        >
                           Enc./Hour
                         </Typography>
                       </Grid>
@@ -856,15 +1002,25 @@ export default function Counter() {
                         {timeDisplay()}
                       </Grid>
                       <Grid item xs={5}>
-                        <Typography textAlign={"right"}>
+                        <Typography
+                          textAlign={"right"}
+                          fontSize={window.innerWidth < 600 ? 12 : 14}
+                        >
                           {timeDifference
                             ? Math.round(3600 / timeDifference)
                             : "Undefined"}
                         </Typography>
-                        <Typography fontWeight={"bold"} textAlign={"right"}>
+                        <Typography
+                          fontWeight={"bold"}
+                          textAlign={"right"}
+                          fontSize={window.innerWidth < 600 ? 12 : 14}
+                        >
                           Times Odds
                         </Typography>
-                        <Typography textAlign={"right"}>
+                        <Typography
+                          textAlign={"right"}
+                          fontSize={window.innerWidth < 600 ? 12 : 14}
+                        >
                           {(count / odds).toLocaleString("en-US", {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
@@ -896,10 +1052,7 @@ export default function Counter() {
                     Encounter Graph
                   </DialogTitle>
                   <DialogContent width="100%">
-                    <CounterEncounterGraph
-                      data={data}
-                      trainer={data.trainer}
-                    />
+                    <CounterEncounterGraph data={data} trainer={data.trainer} />
                   </DialogContent>
                 </Dialog>
               </Box>
@@ -916,9 +1069,50 @@ export default function Counter() {
                   {Math.round((8192 / odds) * count)} : 8192
                 </Typography>
               )}
-              <Typography fontWeight={"bold"} textAlign={"right"}>
-                Mean Encounter Time
-              </Typography>
+              <Box display="flex" alignItems="center" justifyContent="flex-end">
+                {username === data.trainer && (
+                  <Box>
+                    <IconButton
+                      size="small"
+                      onClick={() => {
+                        setOpenThresholdEdit(true);
+                      }}
+                    >
+                      <EditRoundedIcon fontSize="inherit" />
+                    </IconButton>
+                  </Box>
+                )}
+                <Typography fontWeight={"bold"} textAlign={"right"}>
+                  Mean Encounter Time
+                </Typography>
+                <CustomDialog
+                  open={openThresholdEdit}
+                  handleClick={handleThresholdEdit}
+                  handleClose={() => {
+                    setOpenThresholdEdit(false);
+                  }}
+                  title={"Edit the Thresholds"}
+                  content={
+                    <Grid container mt={1} spacing={2}>
+                      <Grid item md={6} xs={12}>
+                        <ThresholdForm
+                          data={thresholdEdit}
+                          setData={setThresholdEdit}
+                          type="lower"
+                        />
+                      </Grid>
+                      <Grid item md={6} xs={12}>
+                        <ThresholdForm
+                          data={thresholdEdit}
+                          setData={setThresholdEdit}
+                          type="upper"
+                        />
+                      </Grid>
+                    </Grid>
+                  }
+                  action={"Edit"}
+                />
+              </Box>
               <Typography textAlign={"right"}>
                 {timeDifference
                   ? new Date(timeDifference * 1000).toISOString().slice(11, 19)

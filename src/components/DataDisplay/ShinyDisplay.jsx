@@ -11,14 +11,9 @@ import {
   IconButton,
   Grid,
   Divider,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
   FormGroup,
   FormControlLabel,
   Checkbox,
-  Button,
 } from "@mui/material";
 import { tokens } from "../../theme";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
@@ -173,53 +168,29 @@ export default function CompleteShinyCard({ data, refetch }) {
                   <FileUploadIcon />
                 </IconButton>
               )}
-              <Dialog
+              <CustomDialog
                 open={openEvolutionEdit}
-                onClose={() => setOpenEvolutionEdit(false)}
-                sx={{
-                  "& .MuiDialog-paper": { width: "400px", maxWidth: "80%" },
-                }}
-              >
-                <DialogTitle fontWeight={"bold"} variant="h4">
-                  Edit Evolutions & Forms
-                </DialogTitle>
-                <DialogContent>
-                  <CheckboxDisplay
-                    data={evolutions}
-                    name={"Evolutions"}
-                    state={evolutionsEdit}
-                    setState={setEvolutionsEdit}
-                  />
-                  <CheckboxDisplay
-                    data={forms}
-                    name={"Forms"}
-                    state={formsEdit}
-                    setState={setFormsEdit}
-                  />
-                </DialogContent>
-                <DialogActions
-                  style={{ justifyContent: "right", gap: "10px" }}
-                  sx={{ mb: "15px", mr: "15px" }}
-                >
-                  <Button
-                    variant="contained"
-                    color="neutral"
-                    style={{ color: "white" }}
-                    onClick={() => setOpenEvolutionEdit(false)}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="neutral"
-                    style={{ color: "white" }}
-                    onClick={handleEvolutionsEdit}
-                    autoFocus
-                  >
-                    Edit
-                  </Button>
-                </DialogActions>
-              </Dialog>
+                handleClick={handleEvolutionsEdit}
+                handleClose={() => setOpenEvolutionEdit(false)}
+                title={"Edit Evolutions & Forms"}
+                content={
+                  <>
+                    <CheckboxDisplay
+                      data={evolutions}
+                      name={"Evolutions"}
+                      state={evolutionsEdit}
+                      setState={setEvolutionsEdit}
+                    />
+                    <CheckboxDisplay
+                      data={forms}
+                      name={"Forms"}
+                      state={formsEdit}
+                      setState={setFormsEdit}
+                    />
+                  </>
+                }
+                action={"Edit"}
+              />
               {data.stats.meanEncounterTime && (
                 <IconButton
                   onClick={() =>
@@ -296,7 +267,7 @@ export default function CompleteShinyCard({ data, refetch }) {
 
             {/* INFORMATION */}
             <Grid item xs={12}>
-              <InfoDisplay data={data} username={username} refetch={refetch}/>
+              <InfoDisplay data={data} username={username} refetch={refetch} />
             </Grid>
 
             <Grid item xs={12}>
