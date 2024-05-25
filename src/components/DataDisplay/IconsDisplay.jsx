@@ -7,16 +7,14 @@ import {
   Typography,
   IconButton,
   Grid,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
   Autocomplete,
   TextField,
 } from "@mui/material";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+
+// Components
+import CustomDialog from "../Dialogs/CustomDialog";
 
 export default function IconsDisplay({
   data,
@@ -123,20 +121,14 @@ export default function IconsDisplay({
               >
                 <EditRoundedIcon fontSize="small" />
               </IconButton>
-              <Dialog
+              <CustomDialog
                 open={openIconEdit}
-                onClose={() => setOpenIconEdit(false)}
-                sx={{
-                  "& .MuiDialog-paper": { width: "400px", maxWidth: "80%" },
-                }}
-              >
-                <DialogTitle fontWeight={"bold"} variant="h4">
-                  {`Add a ${
-                    type.slice(0, -1).charAt(0).toUpperCase() +
-                    type.slice(1, -1)
-                  }`}
-                </DialogTitle>
-                <DialogContent>
+                handleClick={handleIconsEdit}
+                handleClose={() => setOpenIconEdit(false)}
+                title={`Add a ${
+                  type.slice(0, -1).charAt(0).toUpperCase() + type.slice(1, -1)
+                }`}
+                content={
                   <Autocomplete
                     key={icons}
                     disabled={!icons}
@@ -159,30 +151,9 @@ export default function IconsDisplay({
                       />
                     )}
                   />
-                </DialogContent>
-                <DialogActions
-                  style={{ justifyContent: "right", gap: "10px" }}
-                  sx={{ mb: "15px", mr: "15px" }}
-                >
-                  <Button
-                    variant="contained"
-                    color="neutral"
-                    style={{ color: "white" }}
-                    onClick={() => setOpenIconEdit(false)}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="neutral"
-                    style={{ color: "white" }}
-                    onClick={handleIconsEdit}
-                    autoFocus
-                  >
-                    Add
-                  </Button>
-                </DialogActions>
-              </Dialog>
+                }
+                action={"Add"}
+              />
             </Box>
           )}
         </Box>

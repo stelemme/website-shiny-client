@@ -2,6 +2,21 @@
 
 ## Changelogs
 
+### Version 1.11.0 (25.05.2024)
+
+**Individual Shiny Page:**
+- Trainer staat nu vermeld bij informatie
+- Train sprites van chorneef zijn ook toegevoegd (geen voor gen 2/7/8/9, deze gebruiken de laatst voorkomende gen)
+
+**Individual Counter Page:**
+- Increment kan worden aangepast door erop te klikken
+- Thresholds kunnen worden aangepast door op de edit button naast de "Mean encounter time" te klikken.
+
+**Dialogs & Forms:**
+- Alle dialogs en forms zijn (onzichtbaar) aangepast (om mijn code leesbaar te houden). Zou kunnen dat er hierdoor nieuwe bugs zijn ingeslopen, laat die zo snel mogelijk weten.
+
+---
+
 ### Version 1.10.0 (19.05.2024)
 
 **Geolocation List:**

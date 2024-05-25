@@ -49,7 +49,9 @@ export default function GameForm({
           setMethodsList(undefined);
           setMethodCatList(undefined);
           setPokemonsList(undefined);
-          setGenderCheck(false);
+          if (setGenderCheck) {
+            setGenderCheck(false);
+          }
           if (setBallList) {
             setBallList(undefined);
           }

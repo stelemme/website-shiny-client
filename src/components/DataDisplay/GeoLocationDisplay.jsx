@@ -2,18 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 
 // Mui
-import {
-  Box,
-  Typography,
-  IconButton,
-  Grid,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-  useTheme,
-} from "@mui/material";
+import { Box, Typography, IconButton, Grid, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 
@@ -23,6 +12,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
 // Components
 import GeoLocationForm from "../Forms/GeoLocationForm";
+import CustomDialog from "../Dialogs/CustomDialog";
 
 export default function GeoLocationDisplay({ data, username, refetch }) {
   const theme = useTheme();
@@ -84,45 +74,19 @@ export default function GeoLocationDisplay({ data, username, refetch }) {
               >
                 <EditRoundedIcon fontSize="small" />
               </IconButton>
-              <Dialog
+              <CustomDialog
                 open={openGeoLocationEdit}
-                onClose={() => setOpenGeoLocationEdit(false)}
-                sx={{
-                  "& .MuiDialog-paper": { width: "400px", maxWidth: "80%" },
-                }}
-              >
-                <DialogTitle fontWeight="bold" variant="h4">
-                  Edit the Geo Location
-                </DialogTitle>
-                <DialogContent>
+                handleClick={handleGeoLocationEdit}
+                handleClose={() => setOpenGeoLocationEdit(false)}
+                title={"Edit the Geo Location"}
+                content={
                   <GeoLocationForm
                     data={geoLocationData}
                     setData={setGeoLocationData}
                   />
-                </DialogContent>
-                <DialogActions
-                  style={{ justifyContent: "right", gap: "10px" }}
-                  sx={{ mb: "15px", mr: "15px" }}
-                >
-                  <Button
-                    variant="contained"
-                    color="neutral"
-                    style={{ color: "white" }}
-                    onClick={() => setOpenGeoLocationEdit(false)}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="neutral"
-                    style={{ color: "white" }}
-                    onClick={handleGeoLocationEdit}
-                    autoFocus
-                  >
-                    Edit
-                  </Button>
-                </DialogActions>
-              </Dialog>
+                }
+                action={"Edit"}
+              />
             </Box>
           )}
         </Box>
