@@ -13,11 +13,13 @@ import GenderForm from "../../components/Forms/GenderForm";
 import LocationsForm from "../../components/Forms/LocationForm";
 import MethodForm from "../../components/Forms/MethodForm";
 import SubMethodForm from "../../components/Forms/SubMethodForm";
+import BallForm from "../../components/Forms/BallForm";
+import NatureForm from "../../components/Forms/NatureForm";
 import LevelForm from "../../components/Forms/LevelForm";
 import GeoLocationForm from "../../components/Forms/GeoLocationForm";
 import StartDateForm from "../../components/Forms/StartDateForm";
 import EndDateForm from "../../components/Forms/EndDateForm";
-import FailForm from "../../components/Forms/FailForm";
+import NicknameForm from "../../components/Forms/NicknameForm";
 
 // Functions
 import {
@@ -27,8 +29,8 @@ import {
   calculateDateDifference,
 } from "../../functions/statFunctions";
 
-export default function CreateDeadFromCounter() {
-  const { counterDeadId } = useParams();
+export default function CreateShinyFromCounter() {
+  const { counterId } = useParams();
   const navigate = useNavigate();
   const navigateRef = useRef(navigate);
 
@@ -50,6 +52,7 @@ export default function CreateDeadFromCounter() {
     endDate: new Date(),
     evolutions: [],
     forms: [],
+    nickname: "",
     geoLocation: initialLocationState,
     level: null,
     gender: "genderless",
@@ -59,11 +62,12 @@ export default function CreateDeadFromCounter() {
   const [genderCheck, setGenderCheck] = useState(false);
   const [pokemonsList, setPokemonsList] = useState(undefined);
   const [locationsList, setLocationsList] = useState(undefined);
+  const [ballList, setBallList] = useState(undefined);
 
   useEffect(() => {
     const fetchCounterData = async () => {
       try {
-        const res = await axios.get(`/counters/${counterDeadId}`);
+        const res = await axios.get(`/counters/${counterId}`);
         res.data.startDate = new Date(res.data.startDate);
         res.data.endDate = new Date(res.data.endDate);
 
@@ -123,6 +127,7 @@ export default function CreateDeadFromCounter() {
           .then((res) => {
             setPokemonsList(res.data[0].pokemons);
             setLocationsList(res.data[0].locations);
+            setBallList(res.data[0].balls);
           })
           .catch((err) => {
             console.log(err);
@@ -131,22 +136,22 @@ export default function CreateDeadFromCounter() {
         console.error(error);
       }
     };
-    if (counterDeadId) {
+    if (counterId) {
       fetchCounterData();
     }
-  }, [counterDeadId]);
+  }, [counterId]);
 
   useEffect(() => {
     const endFunction = (id) => {
-      navigateRef.current(`/shiny/dead/${id}`);
+      navigateRef.current(`/shiny/${id}`);
     };
 
     if (data.stats) {
       axios
-        .post(`/deadshiny`, data)
+        .post(`/shiny`, data)
         .then((res) => {
           console.log("test", res.data);
-          axios["delete"](`/counters/${counterDeadId}`).catch((err) => {
+          axios["delete"](`/counters/${counterId}`).catch((err) => {
             console.log(err);
           });
           endFunction(res.data._id);
@@ -155,14 +160,18 @@ export default function CreateDeadFromCounter() {
           console.log(err);
         });
     }
-  }, [data, counterDeadId]);
+  }, [data, counterId]);
 
   console.log(data);
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (data.geoLocation.name !== "" && data.geoLocation.displayName !== "") {
+    if (
+      data.geoLocation.name !== "" &&
+      data.geoLocation.displayName !== "" &&
+      data.gender
+    ) {
       const newStats = {
         probability: calculateProb(
           data.method.odds,
@@ -280,8 +289,8 @@ export default function CreateDeadFromCounter() {
         {/* HEADER */}
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Header
-            title="ADD A FALLEN SHINY"
-            subtitle="Here you can add a fallen shiny pokémon."
+            title="ADD A NEW SHINY"
+            subtitle="Here you can add a new shiny pokémon."
           />
         </Box>
 
@@ -312,10 +321,16 @@ export default function CreateDeadFromCounter() {
           <SubMethodForm data={data} isForCounter />
 
           <Grid container spacing={"10px"}>
-            {/* FAIL METHOD */}
-            <Grid item xs={12}>
-              <FailForm setData={setData} />
+            {/* BALL */}
+            <Grid item xs={6}>
+              <BallForm setData={setData} ballList={ballList} />
             </Grid>
+
+            {/* NATURE */}
+            <Grid item xs={6}>
+              <NatureForm setData={setData} />
+            </Grid>
+
             {/* LEVEL */}
             <Grid item xs={12}>
               <LevelForm data={data} setData={setData} />
@@ -336,6 +351,9 @@ export default function CreateDeadFromCounter() {
               <EndDateForm data={data} setData={setData} />
             </Grid>
           </Grid>
+
+          {/* NICKNAME */}
+          <NicknameForm data={data} setData={setData} />
 
           {/* SUBMIT */}
           <Button

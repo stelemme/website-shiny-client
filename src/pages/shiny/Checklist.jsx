@@ -43,7 +43,7 @@ import { usePokedex, useShiny } from "../../hooks/useData";
 // Images
 import { trainerImages, medalImages } from "../../assets/imgExporter";
 
-export default function ShinyChecklist() {
+export default function Checklist() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [openGraph, setOpenGraph] = useState(false);

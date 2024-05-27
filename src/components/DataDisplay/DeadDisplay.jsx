@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "../../scenes/stats/map.css";
+import "../../pages/stats/map.css";
 
 // Mui
 import {

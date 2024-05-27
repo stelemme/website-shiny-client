@@ -21,36 +21,42 @@ import { auth } from "./utils/firebase";
 import { ColorModeContext, useMode } from "./theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 
-// Scenes imports
-import Topbar from "./scenes/global/Topbar";
-import Home from "./scenes/home";
-import Search from "./scenes/search";
-import Login from "./scenes/login";
-import CustomSidebar from "./scenes/global/Sidebar";
-import Counters from "./scenes/counters";
-import Counter from "./scenes/counters/counterId";
-import CreateCounters from "./scenes/counters/create";
-import Pokédex from "./scenes/pokedex";
-import PokédexRegional from "./scenes/pokedex/regional";
-import GameId from "./scenes/pokedex/gameId";
-import Shiny from "./scenes/shiny";
-import ShinyId from "./scenes/shiny/shinyId";
-import ShinyTable from "./scenes/shiny/table";
-import ShinyChecklist from "./scenes/shiny/checklist";
-import CreateShiny from "./scenes/shiny/create";
-import CreateFromCounter from "./scenes/shiny/createFromCounter";
-import ShinyDead from "./scenes/shiny/dead";
-import CreateDeadShiny from "./scenes/shiny/createDead";
-import CreateDeadFromCounter from "./scenes/shiny/createDeadFromCounter";
-import ShinyDeadId from "./scenes/shiny/deadId";
-import ShinyStats from "./scenes/stats";
-import CounterStats from "./scenes/stats/counter";
-import User from "./scenes/info/user";
-import Map from "./scenes/stats/map";
-import Collections from "./scenes/stats/collections";
-import ChangeLog from "./scenes/info/changeLog";
-import NotFoundPage from "./scenes/global/NotFoundPage";
-import ErrorPage from "./scenes/global/ErrorPage";
+// PAGE IMPORTS
+// Counter Pages
+import Counter from "./pages/counter/Counter";
+import Counters from "./pages/counter/Counters";
+import CreateCounter from "./pages/counter/CreateCounter";
+// Global Pages
+import ErrorPage from "./pages/global/ErrorPage";
+import Home from "./pages/global/Home";
+import Login from "./pages/global/Login";
+import NotFoundPage from "./pages/global/NotFoundPage";
+import Search from "./pages/global/Search";
+import CustomSidebar from "./pages/global/Sidebar";
+import Topbar from "./pages/global/Topbar";
+// Info Pages
+import ChangeLog from "./pages/info/ChangeLog";
+import User from "./pages/info/User";
+// Pokedex Pages
+import GamePokedex from "./pages/pokedex/GamePokedex";
+import Pokédex from "./pages/pokedex/Pokedex";
+import SelectPokedex from "./pages/pokedex/SelectPokedex";
+// Shiny Pages
+import Checklist from "./pages/shiny/Checklist";
+import CreateDeadShiny from "./pages/shiny/CreateDeadShiny";
+import CreateDeadShinyFromCounter from "./pages/shiny/CreateDeadShinyFromCounter";
+import CreateShiny from "./pages/shiny/CreateShiny";
+import CreateShinyFromCounter from "./pages/shiny/CreateShinyFromCounter";
+import DeadShinies from "./pages/shiny/DeadShinies";
+import DeadShiny from "./pages/shiny/DeadShiny";
+import Shinies from "./pages/shiny/Shinies";
+import Shiny from "./pages/shiny/Shiny";
+import Table from "./pages/shiny/Table";
+// Stats Pages
+import Collections from "./pages/stats/Collections";
+import CounterStats from "./pages/stats/CounterStats";
+import Map from "./pages/stats/Map";
+import ShinyStats from "./pages/stats/ShinyStats";
 
 if (!process.env.REACT_APP_ENV || process.env.REACT_APP_ENV === "dev") {
   axios.defaults.baseURL = process.env.REACT_APP_BACKEND;
@@ -58,7 +64,9 @@ if (!process.env.REACT_APP_ENV || process.env.REACT_APP_ENV === "dev") {
   axios.defaults.baseURL = process.env.REACT_APP_BACKEND_BUILD;
 }
 
-axios.defaults.headers.common['Authorization'] = `Bearer ${process.env.REACT_APP_BACKEND_AUTH_TOKEN}`;
+axios.defaults.headers.common[
+  "Authorization"
+] = `Bearer ${process.env.REACT_APP_BACKEND_AUTH_TOKEN}`;
 
 const getUser = async () => {
   return new Promise((resolve) => {
@@ -87,8 +95,8 @@ const router = createBrowserRouter([
   {
     element: <Layout />,
     children: [
-      { path: "/auth", Component: Login},
-      { path: "/", Component: Home, loader: loader},
+      { path: "/auth", Component: Login },
+      { path: "/", Component: Home, loader: loader },
       {
         path: "/search",
         Component: Search,
@@ -98,16 +106,19 @@ const router = createBrowserRouter([
         path: "/shiny",
         loader: loader,
         children: [
-          { index: true, Component: Shiny },
-          { path: ":shinyId", Component: ShinyId },
-          { path: "table", Component: ShinyTable },
+          { index: true, Component: Shinies },
+          { path: ":shinyId", Component: Shiny },
+          { path: "table", Component: Table },
           { path: "create", Component: CreateShiny },
-          { path: "create/:counterId", Component: CreateFromCounter },
-          { path: "checklist", Component: ShinyChecklist },
-          { path: "dead", Component: ShinyDead },
-          { path: "dead/:deadId", Component: ShinyDeadId },
+          { path: "create/:counterId", Component: CreateShinyFromCounter },
+          { path: "checklist", Component: Checklist },
+          { path: "dead", Component: DeadShinies },
+          { path: "dead/:deadId", Component: DeadShiny },
           { path: "dead/create", Component: CreateDeadShiny },
-          { path: "dead/create/:counterDeadId", Component: CreateDeadFromCounter },
+          {
+            path: "dead/create/:counterDeadId",
+            Component: CreateDeadShinyFromCounter,
+          },
         ],
       },
       {
@@ -115,7 +126,7 @@ const router = createBrowserRouter([
         loader: loader,
         children: [
           { index: true, Component: Counters },
-          { path: "create", Component: CreateCounters },
+          { path: "create", Component: CreateCounter },
           { path: ":counterId", Component: Counter },
         ],
       },
@@ -129,8 +140,8 @@ const router = createBrowserRouter([
         loader: loader,
         children: [
           { index: true, Component: Pokédex },
-          { path: "regional", Component: PokédexRegional },
-          { path: "regional/:gameId", Component: GameId },
+          { path: "regional", Component: SelectPokedex },
+          { path: "regional/:gameId", Component: GamePokedex },
         ],
       },
       {

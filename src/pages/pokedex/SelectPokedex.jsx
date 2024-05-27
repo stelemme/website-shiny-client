@@ -8,7 +8,7 @@ import GameCard from "../../components/Cards/GameCard";
 // Hooks
 import { useGame } from "../../hooks/useData";
 
-export default function PokedexRegional() {
+export default function SelectPokedex() {
   const { isLoading: gamesLoading, data: games } = useGame(`?action=select`);
 
   if (gamesLoading) {

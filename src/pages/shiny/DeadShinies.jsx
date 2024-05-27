@@ -1,4 +1,4 @@
-import LazyLoad from 'react-lazyload';
+import LazyLoad from "react-lazyload";
 
 // mui imports
 import { Box, Typography } from "@mui/material";
@@ -13,7 +13,7 @@ import sortData from "../../functions/sortData";
 // Hooks
 import { useDeadShiny } from "../../hooks/useData";
 
-export default function ShinyDead() {
+export default function DeadShinies() {
   const { isLoading: shinyLoading, data: shinyData } =
     useDeadShiny("preview=shiny");
 
@@ -25,35 +25,33 @@ export default function ShinyDead() {
         </Typography>
       );
     } else {
-      return data?.reduce(function (filtered, item) {        
-          filtered.push(
-            <div style={{ marginBottom: window.innerWidth < 600 ? "10px" : "20px" }} key={item._id}>
-                <LazyLoad height={window.innerWidth < 600 ? 50 : 100}>
-                  <ShinyCard
-                    id={item._id}
-                    name={item.name}
-                    gameSprite={item.sprite.game}
-                    dir={item.sprite.dir}
-                    monSprite={item.sprite.pokemon}
-                    trainer={item.trainer}
-                    IRLLocation={item.IRLLocation}
-                    status='dead'
-                  />
-                </LazyLoad>
-
-            </div>
-          );
+      return data?.reduce(function (filtered, item) {
+        filtered.push(
+          <div
+            style={{ marginBottom: window.innerWidth < 600 ? "10px" : "20px" }}
+            key={item._id}
+          >
+            <LazyLoad height={window.innerWidth < 600 ? 50 : 100}>
+              <ShinyCard
+                id={item._id}
+                name={item.name}
+                gameSprite={item.sprite.game}
+                dir={item.sprite.dir}
+                monSprite={item.sprite.pokemon}
+                trainer={item.trainer}
+                IRLLocation={item.IRLLocation}
+                status="dead"
+              />
+            </LazyLoad>
+          </div>
+        );
         return filtered;
       }, []);
     }
   };
 
   return (
-    <Box
-      maxWidth={{ md: "630px", sm: "420px" }}
-      mx="auto"
-      my="20px"
-    >
+    <Box maxWidth={{ md: "630px", sm: "420px" }} mx="auto" my="20px">
       <Box display="flex" flexDirection="column" mx="20px">
         {/* HEADER */}
         <Box display="flex" justifyContent="space-between" alignItems="center">

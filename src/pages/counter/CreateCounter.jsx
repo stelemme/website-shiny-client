@@ -19,7 +19,7 @@ import ThresholdForm from "../../components/Forms/ThresholdForm";
 // Hooks
 import { useAuth } from "../../hooks/useAuth";
 
-export default function CreateCounters() {
+export default function CreateCounter() {
   const { username } = useAuth();
   const navigate = useNavigate();
 

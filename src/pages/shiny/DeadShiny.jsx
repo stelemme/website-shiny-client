@@ -6,7 +6,7 @@ import CompleteDeadCard from "../../components/DataDisplay/DeadDisplay";
 // Hooks
 import { useDeadShinyId } from "../../hooks/useData";
 
-export default function ShinyDeadId() {
+export default function DeadShiny() {
   const { deadId } = useParams();
 
   const { data: shiny, refetch } = useDeadShinyId(deadId);

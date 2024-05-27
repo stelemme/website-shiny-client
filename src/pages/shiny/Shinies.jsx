@@ -20,7 +20,7 @@ import sortData from "../../functions/sortData";
 // Hooks
 import { useShiny } from "../../hooks/useData";
 
-export default function Shiny() {
+export default function Shinies() {
   const [anchorElSort, setAnchorElSort] = useState(null);
   const openSort = Boolean(anchorElSort);
   const [openFilter, setOpenFilter] = useState(false);
