@@ -21,5 +21,6 @@
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#141b2d",
+  "description ": "A Web Application to store Shiny Pokémon"
 }
