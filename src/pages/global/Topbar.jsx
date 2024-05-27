@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { sidebarToggle } from "../../atoms";
+import { sidebarToggle } from "../../utils/atoms";
 
 // mui imports
 import { ColorModeContext, tokens } from "../../theme";

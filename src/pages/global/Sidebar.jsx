@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { sidebarToggle, sidebarCollapse } from "../../atoms";
+import { sidebarToggle, sidebarCollapse } from "../../utils/atoms";
 
 // Sidebar Pro imports
 import { Sidebar, Menu, MenuItem, menuClasses } from "react-pro-sidebar";

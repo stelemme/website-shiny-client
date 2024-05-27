@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
 import { useRecoilValue } from "recoil";
-import { sidebarCollapse } from "./atoms";
+import { sidebarCollapse } from "./utils/atoms";
 import { useState, useEffect } from "react";
 import { QueryClientProvider, QueryClient } from "react-query";
 import axios from "axios";
