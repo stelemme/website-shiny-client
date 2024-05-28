@@ -301,7 +301,7 @@ export default function CompleteShinyCard({ data, refetch }) {
             )}
 
             {/* RIBBONS */}
-            {(username === data.trainer || data?.specs) &&
+            {(username === data.trainer || data?.ribbons) &&
               parseInt(data.gen.slice(-2).trim()) > 2 && (
                 <Grid item xs={12}>
                   <IconsDisplay
@@ -315,7 +315,7 @@ export default function CompleteShinyCard({ data, refetch }) {
               )}
 
             {/* MARKS */}
-            {(username === data.trainer || data?.specs) &&
+            {(username === data.trainer || data?.marks) &&
               parseInt(data.gen.slice(-2).trim()) > 7 && (
                 <Grid item xs={12}>
                   <IconsDisplay

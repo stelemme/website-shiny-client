@@ -56,7 +56,7 @@ export default function DeadShinies() {
         {/* HEADER */}
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Header
-            title="Dead Shiny's"
+            title="Dead Shinies"
             subtitle="Here you can find the last resting place of all fallen Shiny Pokémon."
           />
         </Box>

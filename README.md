@@ -2,6 +2,14 @@
 
 ## Changelogs
 
+### Version 1.11.1 (28.05.2024)
+
+**Dead Shiny Display:**
+- Gebruikt nu dezelfde componenten als de gewone shiny display.
+- Shiny's is vervangen door Shinies.
+
+---
+
 ### Version 1.11.0 (25.05.2024)
 
 **Individual Shiny Page:**

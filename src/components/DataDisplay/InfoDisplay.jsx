@@ -17,10 +17,15 @@ import LocationsForm from "../Forms/LocationForm";
 import BallForm from "../Forms/BallForm";
 import SubMethodForm from "../Forms/SubMethodForm";
 
-export default function InfoDisplay({ data: initialData, username, refetch }) {
+export default function InfoDisplay({
+  data: initialData,
+  username,
+  refetch,
+  isDead = false,
+}) {
   const [data, setData] = useState(initialData);
   const [openEdit, setOpenEdit] = useState(false);
-  const [collection, setCollection] = useState("Nickname");
+  const [collection, setCollection] = useState("Gender");
   const [genderCheck, setGenderCheck] = useState(false);
   const [locationsList, setLocationsList] = useState([]);
   const [ballList, setBallList] = useState([]);
@@ -56,6 +61,28 @@ export default function InfoDisplay({ data: initialData, username, refetch }) {
       <LocationsForm setData={setEditData} locationsList={locationsList} />
     ),
     "Date Caught": <EndDateForm data={editData} setData={setEditData} />,
+  };
+
+  const collectionComponentsDead = {
+    Gender: (
+      <GenderForm
+        data={editData}
+        setData={setEditData}
+        genderCheck={genderCheck}
+      />
+    ),
+    Level: <LevelForm data={editData} setData={setEditData} />,
+    "Method Category": (
+      <SubMethodForm
+        data={editData}
+        setData={setEditData}
+        methodCatList={methodCatList}
+      />
+    ),
+    Location: (
+      <LocationsForm setData={setEditData} locationsList={locationsList} />
+    ),
+    "Date Failed": <EndDateForm data={editData} setData={setEditData} />,
   };
 
   const handleChange = (e) => {
@@ -111,7 +138,10 @@ export default function InfoDisplay({ data: initialData, username, refetch }) {
         .catch((err) => {
           console.log(err);
         });
-    } else if (e.target.value === "Date Caught") {
+    } else if (
+      e.target.value === "Date Caught" ||
+      e.target.value === "Date Failed"
+    ) {
       setEditData(initialState);
     }
   };
@@ -212,14 +242,20 @@ export default function InfoDisplay({ data: initialData, username, refetch }) {
                       <GeneralSelect
                         label={"Collections"}
                         handleChange={handleChange}
-                        list={Object.keys(collectionComponents)}
+                        list={
+                          isDead
+                            ? Object.keys(collectionComponentsDead)
+                            : Object.keys(collectionComponents)
+                        }
                         value={collection}
                         width={"100%"}
                         size={"normal"}
                       />
                     </Grid>
                     <Grid item xs={12}>
-                      {collectionComponents[collection]}
+                      {isDead
+                        ? collectionComponentsDead[collection]
+                        : collectionComponents[collection]}
                     </Grid>
                     <Grid item xs={12}>
                       {alertDisplay()}
@@ -235,7 +271,7 @@ export default function InfoDisplay({ data: initialData, username, refetch }) {
       <Grid item xs={6}>
         <InfoDict infoCat={"Dex No."} infoName={`#${data?.pokedexNo}`} />
         <InfoDict infoCat={"Pokémon"} infoName={data?.name} />
-        <InfoDict infoCat={"Nature"} infoName={data?.nature} />
+        {!isDead && <InfoDict infoCat={"Nature"} infoName={data?.nature} />}
         <InfoDict
           infoCat={"Gender"}
           infoName={
@@ -247,10 +283,12 @@ export default function InfoDisplay({ data: initialData, username, refetch }) {
           }
         />
         <InfoDict infoCat={"Level"} infoName={`lvl. ${data?.level}`} />
-        <InfoDict
-          infoCat={"Nickname"}
-          infoName={data?.nickname ? data?.nickname : "-"}
-        />
+        {!isDead && (
+          <InfoDict
+            infoCat={"Nickname"}
+            infoName={data?.nickname ? data?.nickname : "-"}
+          />
+        )}
       </Grid>
       <Grid item xs={6}>
         <InfoDict
@@ -266,7 +304,7 @@ export default function InfoDisplay({ data: initialData, username, refetch }) {
           infoName={data?.stats.percentage ? `${data?.stats.percentage}%` : "-"}
         />
         <InfoDict
-          infoCat={"Date Caught"}
+          infoCat={!isDead ? "Date Caught" : "Date Failed"}
           infoName={new Date(data?.endDate).toLocaleDateString("nl-BE")}
         />
       </Grid>
