@@ -55,7 +55,7 @@ export default function CompleteShinyCard({ data: initialData, refetch }) {
   const handleDeleteClick = async () => {
     try {
       await makeRequest("delete", `/shiny/${data._id}`);
-      navigate("/shiny/dead");
+      navigate("/shiny");
     } catch {
       return;
     }
