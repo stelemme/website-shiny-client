@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 
 // Mui
 import {
@@ -13,20 +12,24 @@ import {
   Grid,
 } from "@mui/material";
 
+// Functions
+import { getRequest } from "../../functions/requestFunctions";
+
 export default function GeoLocationForm({ data, setData }) {
   const [geoLocationsList, setGeoLocationsList] = useState(undefined);
   const [newGeoLocation, setNewGeoLocation] = useState(false);
 
   useEffect(() => {
-    axios
-      .get(`/shiny?geoLocationList=true`)
-      .then((res) => {
-        const geoLocationsData = res.data[0]["geoLocation"];
-        setGeoLocationsList(geoLocationsData);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    async function fetchData() {
+      try {
+        const response = await getRequest(`/shiny?geoLocationList=true`);
+        setGeoLocationsList(response[0]["geoLocation"]);
+      } catch {
+        return;
+      }
+    }
+
+    fetchData();
   }, []);
 
   let initialLocationState = {
@@ -35,33 +38,28 @@ export default function GeoLocationForm({ data, setData }) {
     position: [],
   };
 
-  const getGeoLocation = (newValues) => {
-    if (newValues.length === 2) {
-      let config = {
-        method: "get",
-        maxBodyLength: Infinity,
-        url: `https://nominatim.openstreetmap.org/reverse?lat=${newValues[0]}&lon=${newValues[1]}&format=json`,
-        headers: {},
-      };
+  const getGeoLocation = async (newValues) => {
+    if (newValues.length !== 2) {
+      return;
+    }
 
-      axios
-        .request(config)
-        .then((response) => {
-          setData((prevState) => {
-            return {
-              ...prevState,
-              ...{
-                geoLocation: {
-                  ...prevState.geoLocation,
-                  displayName: response.data.display_name,
-                },
-              },
-            };
-          });
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+    try {
+      const response = await getRequest(
+        `https://nominatim.openstreetmap.org/reverse?lat=${newValues[0]}&lon=${newValues[1]}&format=json`
+      );
+      setData((prevState) => {
+        return {
+          ...prevState,
+          ...{
+            geoLocation: {
+              ...prevState.geoLocation,
+              displayName: response.display_name,
+            },
+          },
+        };
+      });
+    } catch {
+      return;
     }
   };
 

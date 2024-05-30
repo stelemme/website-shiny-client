@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import "../../pages/stats/map.css";
 
 // Mui
 import {
@@ -34,7 +32,7 @@ import IconsDisplay from "./IconsDisplay";
 import { useAuth } from "../../hooks/useAuth";
 
 // Functions
-import { makeRequest } from "../../functions/requestFunctions";
+import { makeRequest, getRequest } from "../../functions/requestFunctions";
 
 export default function CompleteShinyCard({ data: initialData, refetch }) {
   const { username } = useAuth();
@@ -82,6 +80,20 @@ export default function CompleteShinyCard({ data: initialData, refetch }) {
       setEvolutionsEdit([]);
       setFormsEdit([]);
     } catch (error) {
+      return;
+    }
+  };
+
+  /* GET THE EVOLUTIONS & FORMS */
+  const handleEvolutionOpen = async () => {
+    try {
+      const response = await getRequest(
+        `/pokedex?name=${data.name}&evolutions=true&game=${data.game}`
+      );
+      setEvolutions(response.evolutions);
+      setForms(response.forms);
+      setOpenEvolutionEdit(true);
+    } catch {
       return;
     }
   };
@@ -159,23 +171,7 @@ export default function CompleteShinyCard({ data: initialData, refetch }) {
             </Typography>
             <Box ml="10px" display="flex">
               {username === data.trainer && (
-                <IconButton
-                  size="small"
-                  onClick={() => {
-                    axios
-                      .get(
-                        `/pokedex?name=${data.name}&evolutions=true&game=${data.game}`
-                      )
-                      .then((res) => {
-                        setEvolutions(res.data.evolutions);
-                        setForms(res.data.forms);
-                      })
-                      .catch((err) => {
-                        console.error(err);
-                      });
-                    setOpenEvolutionEdit(true);
-                  }}
-                >
+                <IconButton size="small" onClick={handleEvolutionOpen}>
                   <FileUploadIcon />
                 </IconButton>
               )}

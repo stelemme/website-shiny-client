@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from "axios";
 
 // Mui
 import {
@@ -17,7 +16,7 @@ import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import CustomDialog from "../Dialogs/CustomDialog";
 
 // Functions
-import { makeRequest } from "../../functions/requestFunctions";
+import { makeRequest, getRequest } from "../../functions/requestFunctions";
 
 export default function IconsDisplay({
   data,
@@ -52,6 +51,7 @@ export default function IconsDisplay({
     }
   };
 
+  /* DELETE THE ICON */
   const handleIconsDelete = async () => {
     if (!hoveredItem) {
       return;
@@ -76,6 +76,23 @@ export default function IconsDisplay({
     }
   };
 
+  const handleOpenEdit = async () => {
+    try {
+      const response = await getRequest(
+        `/game?name=${data.game}&action=${type}`
+      );
+      const allIcons = response[0][type];
+      const filteredIcons = allIcons.filter(
+        (icon) =>
+          !exisitingData?.some((excluded) => excluded.name === icon.name)
+      );
+      setIcons(filteredIcons);
+      setOpenIconEdit(true);
+    } catch {
+      return;
+    }
+  };
+
   return (
     <Grid container>
       <Grid item xs={12}>
@@ -90,27 +107,7 @@ export default function IconsDisplay({
           </Typography>
           {username === data.trainer && (
             <Box ml="10px" display="flex">
-              <IconButton
-                size="small"
-                onClick={() => {
-                  axios
-                    .get(`/game?name=${data.game}&action=${type}`)
-                    .then((res) => {
-                      const allIcons = res.data[0][type];
-                      const filteredIcons = allIcons.filter(
-                        (icon) =>
-                          !exisitingData?.some(
-                            (excluded) => excluded.name === icon.name
-                          )
-                      );
-                      setIcons(filteredIcons);
-                    })
-                    .catch((err) => {
-                      console.error(err);
-                    });
-                  setOpenIconEdit(true);
-                }}
-              >
+              <IconButton size="small" onClick={handleOpenEdit}>
                 <EditRoundedIcon fontSize="small" />
               </IconButton>
               <CustomDialog

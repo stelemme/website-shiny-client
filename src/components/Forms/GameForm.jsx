@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 
 // Mui
 import { TextField, Autocomplete } from "@mui/material";
 
 // Hooks
 import { useGame } from "../../hooks/useData";
+
+// Functions
+import { getRequest } from "../../functions/requestFunctions";
 
 export default function GameForm({
   data,
@@ -26,16 +28,20 @@ export default function GameForm({
   const { data: games } = useGame("?action=form");
 
   useEffect(() => {
-    if (gameId) {
-      axios
-        .get(`/game/${gameId}?action=pokemons`)
-        .then((res) => {
-          setPokemonsList(res.data.pokemons);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+    async function fetchData() {
+      if (!gameId) {
+        return;
+      }
+
+      try {
+        const response = await getRequest(`/game/${gameId}?action=pokemons`);
+        setPokemonsList(response.pokemons);
+      } catch {
+        return;
+      }
     }
+
+    fetchData();
   }, [gameId, setPokemonsList]);
 
   if (!isForCounter) {

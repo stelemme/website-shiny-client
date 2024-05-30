@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from "axios";
 
 // Mui
 import { Box, Typography, IconButton, Grid, Alert } from "@mui/material";
@@ -18,7 +17,7 @@ import BallForm from "../Forms/BallForm";
 import SubMethodForm from "../Forms/SubMethodForm";
 
 // Functions
-import { makeRequest } from "../../functions/requestFunctions";
+import { makeRequest, getRequest } from "../../functions/requestFunctions";
 
 export default function InfoDisplay({
   data: initialData,
@@ -91,59 +90,51 @@ export default function InfoDisplay({
     "Date Failed": <EndDateForm data={editData} setData={setEditData} />,
   };
 
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     setCollection(e.target.value);
     setEditData({});
 
     if (e.target.value === "Gender") {
-      axios
-        .get(`/pokedex?name=${data.name}`)
-        .then((res) => {
-          const pokemonData = res.data[0];
+      try {
+        const response = await getRequest(`/pokedex?name=${data.name}`);
+        const pokemonData = response[0];
 
-          if (
-            pokemonData.gender === "100:0" ||
-            pokemonData.gender === "0:100" ||
-            pokemonData.gender === "Genderless"
-          ) {
-            setGenderCheck(false);
-          } else {
-            setGenderCheck(true);
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+        if (
+          pokemonData.gender === "100:0" ||
+          pokemonData.gender === "0:100" ||
+          pokemonData.gender === "Genderless"
+        ) {
+          setGenderCheck(false);
+        } else {
+          setGenderCheck(true);
+        }
+      } catch {
+        return;
+      }
     } else if (e.target.value === "Location") {
-      axios
-        .get(`/game?name=${data.game}`)
-        .then((res) => {
-          setLocationsList(res.data[0].locations);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+      try {
+        const response = await getRequest(`/game?name=${data.game}`);
+        setLocationsList(response[0].locations);
+      } catch {
+        return;
+      }
     } else if (e.target.value === "Ball") {
-      axios
-        .get(`/game?name=${data.game}`)
-        .then((res) => {
-          setBallList(res.data[0].balls);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+      try {
+        const response = await getRequest(`/game?name=${data.game}`);
+        setBallList(response[0].balls);
+      } catch {
+        return;
+      }
     } else if (e.target.value === "Method Category") {
-      axios
-        .get(`/game?name=${data.game}`)
-        .then((res) => {
-          const method = res.data[0].methods.find(
-            (method) => method.name === data.method.name
-          );
-          setMethodCatList(method.categories);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+      try {
+        const response = await getRequest(`/game?name=${data.game}`);
+        const method = response[0].methods.find(
+          (method) => method.name === data.method.name
+        );
+        setMethodCatList(method.categories);
+      } catch {
+        return;
+      }
     } else if (
       e.target.value === "Date Caught" ||
       e.target.value === "Date Failed"
