@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import "../../pages/stats/map.css";
 
 // Mui
@@ -25,6 +24,9 @@ import GeoLocationDisplay from "./GeoLocationDisplay";
 // Hooks
 import { useAuth } from "../../hooks/useAuth";
 
+// Functions
+import { makeRequest } from "../../functions/requestFunctions";
+
 export default function CompleteDeadDisplay({ data, refetch }) {
   const { username } = useAuth();
   const theme = useTheme();
@@ -35,14 +37,13 @@ export default function CompleteDeadDisplay({ data, refetch }) {
   console.log(data);
 
   /* DELETE THE SHINY */
-  const handleDeleteClick = () => {
-    axios["delete"](`/deadshiny/${data._id}`)
-      .then((res) => {
-        navigate("/shiny/dead");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const handleDeleteClick = async () => {
+    try {
+      await makeRequest("delete", `/deadshiny/${data._id}`);
+      navigate("/shiny/dead");
+    } catch {
+      return;
+    }
   };
 
   return (
@@ -133,6 +134,7 @@ export default function CompleteDeadDisplay({ data, refetch }) {
                 data={data}
                 username={username}
                 refetch={refetch}
+                isDead
               />
             </Grid>
 

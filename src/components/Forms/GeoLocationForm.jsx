@@ -18,10 +18,15 @@ export default function GeoLocationForm({ data, setData }) {
   const [newGeoLocation, setNewGeoLocation] = useState(false);
 
   useEffect(() => {
-    axios["get"](`/shiny?geoLocationList=true`).then((res) => {
-      const geoLocationsData = res.data[0]["geoLocation"];
-      setGeoLocationsList(geoLocationsData);
-    });
+    axios
+      .get(`/shiny?geoLocationList=true`)
+      .then((res) => {
+        const geoLocationsData = res.data[0]["geoLocation"];
+        setGeoLocationsList(geoLocationsData);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }, []);
 
   let initialLocationState = {
@@ -55,7 +60,7 @@ export default function GeoLocationForm({ data, setData }) {
           });
         })
         .catch((error) => {
-          console.log(error);
+          console.error(error);
         });
     }
   };

@@ -1,8 +1,14 @@
 import { useState } from "react";
-import axios from "axios";
 
 // Mui
-import { Box, Typography, IconButton, Grid, useTheme } from "@mui/material";
+import {
+  Box,
+  Typography,
+  IconButton,
+  Grid,
+  useTheme,
+  Alert,
+} from "@mui/material";
 import { tokens } from "../../theme";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 
@@ -14,43 +20,63 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import GeoLocationForm from "../Forms/GeoLocationForm";
 import CustomDialog from "../Dialogs/CustomDialog";
 
-export default function GeoLocationDisplay({ data, username, refetch }) {
+// Functions
+import { makeRequest } from "../../functions/requestFunctions";
+
+export default function GeoLocationDisplay({
+  data,
+  username,
+  refetch,
+  isDead = false,
+}) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [openGeoLocationEdit, setOpenGeoLocationEdit] = useState(false);
   const [geoLocationData, setGeoLocationData] = useState({});
 
+  const [alertShown, setAlertShown] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState("warning");
+
   /* EDIT THE GEOLOCATION */
-  const handleGeoLocationEdit = () => {
-    let fetchData = false;
+  const handleGeoLocationEdit = async () => {
+    setAlertShown(false);
+
     if (
-      geoLocationData.geoLocation.name !== "" &&
-      geoLocationData.geoLocation.displayName !== ""
+      !geoLocationData.geoLocation?.name ||
+      !geoLocationData.geoLocation?.displayName
     ) {
-      fetchData = JSON.stringify(geoLocationData.geoLocation);
+      setAlertSeverity("warning");
+      setAlertMessage("Data is not filled in correctly.");
+      setAlertShown(true);
+      return;
     }
 
-    if (fetchData) {
-      let config = {
-        method: "patch",
-        maxBodyLength: Infinity,
-        url: `/shiny/${data._id}?action=geoLocationsEdit`,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: fetchData,
-      };
+    const url = !isDead
+      ? `/shiny/${data._id}?action=geoLocationsEdit`
+      : `/deadshiny/${data._id}?action=geoLocationsEdit`;
 
-      axios
-        .request(config)
-        .then((response) => {
-          console.log(JSON.stringify(response.data));
-          refetch();
-          setOpenGeoLocationEdit(false);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    try {
+      await makeRequest("patch", url, geoLocationData.geoLocation);
+
+      refetch();
+      setOpenGeoLocationEdit(false);
+    } catch (error) {
+      setAlertSeverity("error");
+      setAlertMessage(error.message);
+      setAlertShown(true);
+    }
+  };
+
+  const alertDisplay = () => {
+    if (alertShown) {
+      return (
+        <Alert variant="filled" severity={alertSeverity}>
+          {alertMessage}
+        </Alert>
+      );
+    } else {
+      return null;
     }
   };
 
@@ -80,10 +106,13 @@ export default function GeoLocationDisplay({ data, username, refetch }) {
                 handleClose={() => setOpenGeoLocationEdit(false)}
                 title={"Edit the Geo Location"}
                 content={
-                  <GeoLocationForm
-                    data={geoLocationData}
-                    setData={setGeoLocationData}
-                  />
+                  <>
+                    <GeoLocationForm
+                      data={geoLocationData}
+                      setData={setGeoLocationData}
+                    />
+                    {alertDisplay()}
+                  </>
                 }
                 action={"Edit"}
               />

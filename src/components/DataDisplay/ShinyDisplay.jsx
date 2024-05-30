@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../pages/stats/map.css";
@@ -33,11 +33,15 @@ import IconsDisplay from "./IconsDisplay";
 // Hooks
 import { useAuth } from "../../hooks/useAuth";
 
-export default function CompleteShinyCard({ data, refetch }) {
+// Functions
+import { makeRequest } from "../../functions/requestFunctions";
+
+export default function CompleteShinyCard({ data: initialData, refetch }) {
   const { username } = useAuth();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
+  const [data, setData] = useState(initialData);
   const [openDelete, setOpenDelete] = useState(false);
   const [openEvolutionEdit, setOpenEvolutionEdit] = useState(false);
   const [evolutions, setEvolutions] = useState(undefined);
@@ -45,58 +49,60 @@ export default function CompleteShinyCard({ data, refetch }) {
   const [forms, setForms] = useState(undefined);
   const [formsEdit, setFormsEdit] = useState([]);
 
-  console.log(data);
+  useEffect(() => {
+    setData(initialData);
+  }, [initialData]);
 
   /* DELETE THE SHINY */
-  const handleDeleteClick = () => {
-    axios["delete"](`/shiny/${data._id}`)
-      .then((res) => {
-        navigate("/shiny");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const handleDeleteClick = async () => {
+    try {
+      await makeRequest("delete", `/shiny/${data._id}`);
+      navigate("/shiny/dead");
+    } catch {
+      return;
+    }
   };
 
   /* EDIT THE SHINY */
-  const handleEvolutionsEdit = () => {
-    let evolutionData = JSON.stringify({
+  const handleEvolutionsEdit = async () => {
+    let evolutionData = {
       evolutions: evolutionsEdit,
       forms: formsEdit,
-    });
-
-    let config = {
-      method: "patch",
-      maxBodyLength: Infinity,
-      url: `/shiny/${data._id}?action=evolutionsEdit`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: evolutionData,
     };
 
-    axios
-      .request(config)
-      .then((res) => {
-        refetch();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    try {
+      const res = await makeRequest(
+        "patch",
+        `/shiny/${data._id}?action=evolutionsEdit`,
+        evolutionData
+      );
 
-    setOpenEvolutionEdit(false);
-    setEvolutionsEdit([]);
-    setFormsEdit([]);
+      setData(res);
+      setOpenEvolutionEdit(false);
+      setEvolutionsEdit([]);
+      setFormsEdit([]);
+    } catch (error) {
+      return;
+    }
   };
 
   const CheckboxDisplay = ({ data, name, state, setState }) => {
-    if (!data || data.length === 0) {
+    if (!data) {
       return (
         <Grid item xs={12}>
           <Typography variant="h5" fontWeight="bold">
             {name}
           </Typography>
-          <Typography>{`No ${name} Found`}</Typography>
+          <Typography mt="9px" mb="19px">{`Loading ...`}</Typography>
+        </Grid>
+      );
+    } else if (Array.isArray(data) && data.length === 0) {
+      return (
+        <Grid item xs={12}>
+          <Typography variant="h5" fontWeight="bold">
+            {name}
+          </Typography>
+          <Typography mt="9px" mb="19px">{`No ${name} Found`}</Typography>
         </Grid>
       );
     } else {
@@ -156,12 +162,17 @@ export default function CompleteShinyCard({ data, refetch }) {
                 <IconButton
                   size="small"
                   onClick={() => {
-                    axios["get"](
-                      `/pokedex?name=${data.name}&evolutions=true&game=${data.game}`
-                    ).then((res) => {
-                      setEvolutions(res.data.evolutions);
-                      setForms(res.data.forms);
-                    });
+                    axios
+                      .get(
+                        `/pokedex?name=${data.name}&evolutions=true&game=${data.game}`
+                      )
+                      .then((res) => {
+                        setEvolutions(res.data.evolutions);
+                        setForms(res.data.forms);
+                      })
+                      .catch((err) => {
+                        console.error(err);
+                      });
                     setOpenEvolutionEdit(true);
                   }}
                 >

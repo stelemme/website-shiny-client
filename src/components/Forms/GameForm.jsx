@@ -19,7 +19,7 @@ export default function GameForm({
   setLocationsList,
   setClearMethod,
   setBallList,
-  isForCounter = false
+  isForCounter = false,
 }) {
   const [gameId, setGameId] = useState(undefined);
 
@@ -27,12 +27,13 @@ export default function GameForm({
 
   useEffect(() => {
     if (gameId) {
-      axios["get"](`/game/${gameId}?action=pokemons`)
+      axios
+        .get(`/game/${gameId}?action=pokemons`)
         .then((res) => {
           setPokemonsList(res.data.pokemons);
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
         });
     }
   }, [gameId, setPokemonsList]);
@@ -79,7 +80,7 @@ export default function GameForm({
             setLocationsList(value.locations);
             setMethodsList(value.methods);
             if (setBallList) {
-                setBallList(value.balls);
+              setBallList(value.balls);
             }
           }
         }}

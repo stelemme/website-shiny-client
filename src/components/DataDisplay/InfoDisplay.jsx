@@ -17,6 +17,9 @@ import LocationsForm from "../Forms/LocationForm";
 import BallForm from "../Forms/BallForm";
 import SubMethodForm from "../Forms/SubMethodForm";
 
+// Functions
+import { makeRequest } from "../../functions/requestFunctions";
+
 export default function InfoDisplay({
   data: initialData,
   username,
@@ -25,12 +28,15 @@ export default function InfoDisplay({
 }) {
   const [data, setData] = useState(initialData);
   const [openEdit, setOpenEdit] = useState(false);
-  const [collection, setCollection] = useState("Gender");
+  const [collection, setCollection] = useState("Level");
   const [genderCheck, setGenderCheck] = useState(false);
   const [locationsList, setLocationsList] = useState([]);
   const [ballList, setBallList] = useState([]);
   const [methodCatList, setMethodCatList] = useState([]);
+
   const [alertShown, setAlertShown] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState("warning");
 
   let initialState = {
     endDate: new Date(),
@@ -106,7 +112,7 @@ export default function InfoDisplay({
           }
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
         });
     } else if (e.target.value === "Location") {
       axios
@@ -115,7 +121,7 @@ export default function InfoDisplay({
           setLocationsList(res.data[0].locations);
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
         });
     } else if (e.target.value === "Ball") {
       axios
@@ -124,7 +130,7 @@ export default function InfoDisplay({
           setBallList(res.data[0].balls);
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
         });
     } else if (e.target.value === "Method Category") {
       axios
@@ -136,7 +142,7 @@ export default function InfoDisplay({
           setMethodCatList(method.categories);
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
         });
     } else if (
       e.target.value === "Date Caught" ||
@@ -147,32 +153,27 @@ export default function InfoDisplay({
   };
 
   /* EDIT THE VALUE */
-  const handleEdit = () => {
-    if (Object.keys(editData).length !== 0) {
-      setAlertShown(false);
-      let editPatchData = JSON.stringify(editData);
+  const handleEdit = async () => {
+    if (Object.keys(editData).length === 0) {
+      setAlertMessage("The data is not filled in.");
+      setAlertSeverity("warning");
+      setAlertShown(true);
+      return;
+    }
 
-      let config = {
-        method: "patch",
-        maxBodyLength: Infinity,
-        url: `/shiny/${data._id}?editByString=${collection}`,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: editPatchData,
-      };
+    setAlertShown(false);
+    const url = !isDead
+      ? `/shiny/${data._id}?editByString=${collection}`
+      : `/deadshiny/${data._id}?editByString=${collection}`;
 
-      axios
-        .request(config)
-        .then((res) => {
-          setData(res.data);
-          setOpenEdit(false);
-          refetch();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } else {
+    try {
+      const res = await makeRequest("patch", url, editData);
+      setData(res);
+      setOpenEdit(false);
+      refetch();
+    } catch (error) {
+      setAlertSeverity("error");
+      setAlertMessage(error.message);
       setAlertShown(true);
     }
   };
@@ -200,8 +201,8 @@ export default function InfoDisplay({
   const alertDisplay = () => {
     if (alertShown) {
       return (
-        <Alert variant="filled" severity={"warning"}>
-          The data is not filled in.
+        <Alert variant="filled" severity={alertSeverity}>
+          {alertMessage}
         </Alert>
       );
     } else {

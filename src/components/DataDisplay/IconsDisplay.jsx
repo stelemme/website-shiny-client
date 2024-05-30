@@ -16,6 +16,9 @@ import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 // Components
 import CustomDialog from "../Dialogs/CustomDialog";
 
+// Functions
+import { makeRequest } from "../../functions/requestFunctions";
+
 export default function IconsDisplay({
   data,
   username,
@@ -29,61 +32,47 @@ export default function IconsDisplay({
   const [hoveredItem, setHoveredItem] = useState(null);
 
   /* EDIT THE ICON */
-  const handleIconsEdit = () => {
-    let iconData = JSON.stringify({
+  const handleIconsEdit = async () => {
+    let iconData = {
       name: iconsEdit["name"],
       sprite: iconsEdit["sprite"],
-    });
-
-    let config = {
-      method: "patch",
-      maxBodyLength: Infinity,
-      url: `/shiny/${data._id}?action=${type}Edit`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: iconData,
     };
 
-    axios
-      .request(config)
-      .then((res) => {
-        exisitingData?.push(iconsEdit);
-        setOpenIconEdit(false);
-        refetch();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    try {
+      await makeRequest(
+        "patch",
+        `/shiny/${data._id}?action=${type}Edit`,
+        iconData
+      );
+      exisitingData?.push(iconsEdit);
+      setOpenIconEdit(false);
+      refetch();
+    } catch {
+      return;
+    }
   };
 
-  const handleIconsDelete = () => {
-    if (hoveredItem) {
-      let iconData = JSON.stringify({
-        name: hoveredItem["name"],
-        sprite: hoveredItem["sprite"],
-      });
+  const handleIconsDelete = async () => {
+    if (!hoveredItem) {
+      return;
+    }
 
-      let config = {
-        method: "patch",
-        maxBodyLength: Infinity,
-        url: `/shiny/${data._id}?action=${type}Delete`,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: iconData,
-      };
+    let iconData = {
+      name: hoveredItem["name"],
+      sprite: hoveredItem["sprite"],
+    };
 
-      axios
-        .request(config)
-        .then((res) => {
-          const index = exisitingData.indexOf(hoveredItem);
-          exisitingData.splice(index, 1);
-          refetch();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    try {
+      await makeRequest(
+        "patch",
+        `/shiny/${data._id}?action=${type}Delete`,
+        iconData
+      );
+      const index = exisitingData.indexOf(hoveredItem);
+      exisitingData.splice(index, 1);
+      refetch();
+    } catch {
+      return;
     }
   };
 
@@ -104,8 +93,9 @@ export default function IconsDisplay({
               <IconButton
                 size="small"
                 onClick={() => {
-                  axios["get"](`/game?name=${data.game}&action=${type}`).then(
-                    (res) => {
+                  axios
+                    .get(`/game?name=${data.game}&action=${type}`)
+                    .then((res) => {
                       const allIcons = res.data[0][type];
                       const filteredIcons = allIcons.filter(
                         (icon) =>
@@ -114,8 +104,10 @@ export default function IconsDisplay({
                           )
                       );
                       setIcons(filteredIcons);
-                    }
-                  );
+                    })
+                    .catch((err) => {
+                      console.error(err);
+                    });
                   setOpenIconEdit(true);
                 }}
               >
