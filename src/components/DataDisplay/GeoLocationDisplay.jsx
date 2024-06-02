@@ -1,54 +1,50 @@
 import { useState } from "react";
+import { useSetRecoilState } from "recoil";
+import { alertOpen, alertSeverity, alertMessage } from "../../utils/atoms";
 
 // Mui
-import {
-  Box,
-  Typography,
-  IconButton,
-  Grid,
-  useTheme,
-  Alert,
-} from "@mui/material";
+import { Box, Typography, IconButton, Grid, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 
 // leaflet imports
 import L from "leaflet";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 
 // Components
 import GeoLocationForm from "../Forms/GeoLocationForm";
 import CustomDialog from "../Dialogs/CustomDialog";
 
-// Functions
-import { makeRequest } from "../../functions/requestFunctions";
+// Hooks
+import { useMakeRequest } from "../../hooks/useAxios";
 
 export default function GeoLocationDisplay({
-  data,
+  data: initialData,
   username,
   refetch,
   isDead = false,
 }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const makeRequest = useMakeRequest();
+
+  const [data, setData] = useState(initialData);
   const [openGeoLocationEdit, setOpenGeoLocationEdit] = useState(false);
   const [geoLocationData, setGeoLocationData] = useState({});
 
-  const [alertShown, setAlertShown] = useState(false);
-  const [alertMessage, setAlertMessage] = useState("");
-  const [alertSeverity, setAlertSeverity] = useState("warning");
+  const setAlertOpen = useSetRecoilState(alertOpen);
+  const setAlertSeverity = useSetRecoilState(alertSeverity);
+  const setAlertMessage = useSetRecoilState(alertMessage);
 
   /* EDIT THE GEOLOCATION */
   const handleGeoLocationEdit = async () => {
-    setAlertShown(false);
-
     if (
       !geoLocationData.geoLocation?.name ||
       !geoLocationData.geoLocation?.displayName
     ) {
-      setAlertSeverity("warning");
+      setAlertSeverity("error");
       setAlertMessage("Data is not filled in correctly.");
-      setAlertShown(true);
+      setAlertOpen(true);
       return;
     }
 
@@ -57,28 +53,26 @@ export default function GeoLocationDisplay({
       : `/deadshiny/${data._id}?action=geoLocationsEdit`;
 
     try {
-      await makeRequest("patch", url, geoLocationData.geoLocation);
+      const response = await makeRequest(
+        "patch",
+        url,
+        geoLocationData.geoLocation,
+        "edit"
+      );
 
+      setData(response);
       refetch();
       setOpenGeoLocationEdit(false);
     } catch (error) {
-      setAlertSeverity("error");
-      setAlertMessage(error.message);
-      setAlertShown(true);
+      return;
     }
   };
 
-  const alertDisplay = () => {
-    if (alertShown) {
-      return (
-        <Alert variant="filled" severity={alertSeverity}>
-          {alertMessage}
-        </Alert>
-      );
-    } else {
-      return null;
-    }
-  };
+  function ChangeView({ center, zoom }) {
+    const map = useMap();
+    map.setView(center, zoom);
+    return null;
+  }
 
   return (
     <Grid item xs={12} container spacing={2}>
@@ -111,7 +105,6 @@ export default function GeoLocationDisplay({
                       data={geoLocationData}
                       setData={setGeoLocationData}
                     />
-                    {alertDisplay()}
                   </>
                 }
                 action={"Edit"}
@@ -132,6 +125,7 @@ export default function GeoLocationDisplay({
             doubleClickZoom={false}
             style={{ height: "200px", width: "100%", zIndex: 1 }}
           >
+            <ChangeView center={data.geoLocation.position} zoom={16} />
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               detectRetina={true}

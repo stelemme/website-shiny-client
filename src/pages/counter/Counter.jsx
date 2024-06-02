@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import axios from "axios";
 
 // Mui
 import {
@@ -43,6 +42,7 @@ import {
 
 // Hooks
 import { useAuth } from "../../hooks/useAuth";
+import { useMakeRequest, useGetRequest } from "../../hooks/useAxios";
 
 export default function Counter() {
   const { counterId } = useParams();
@@ -52,6 +52,9 @@ export default function Counter() {
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
   const { username } = useAuth();
+  const makeRequest = useMakeRequest();
+  const getRequest = useGetRequest();
+
   const [backgroundColor, setBackgroundColor] = useState(colors.primary[400]);
   const [backgroundColorSearchLevel, setBackgroundColorSearchLevel] = useState(
     colors.primary[400]
@@ -90,14 +93,15 @@ export default function Counter() {
   const [elapsedTime, setElapsedTime] = useState(0);
   const [encountersToday, setEncountersToday] = useState(0);
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     const completedValue = searchParams.get("completed");
     setCompleted(completedValue);
     if (completed) {
       const fetchCounterData = async () => {
         try {
-          const res = await axios.get(`/shiny/${counterId}`);
-          setData(res.data);
+          const response = await getRequest(`/shiny/${counterId}`);
+          setData(response);
         } catch (error) {
           console.error(error);
         }
@@ -106,8 +110,8 @@ export default function Counter() {
     } else {
       const fetchCounterData = async () => {
         try {
-          const res = await axios.get(`/counters/${counterId}`);
-          setData(res.data);
+          const response = await getRequest(`/counters/${counterId}`);
+          setData(response);
         } catch (error) {
           console.error(error);
         }
@@ -188,7 +192,7 @@ export default function Counter() {
   }, [data, hasData]);
 
   /* COUNTER CLICK */
-  const handleCountClick = () => {
+  const handleCountClick = async () => {
     setBackgroundColor(colors.primary[900]);
     setCount((prevState) => {
       return prevState + increment;
@@ -208,30 +212,40 @@ export default function Counter() {
         return prevState + 1;
       });
 
-      axios["patch"](`/counters/${counterId}?action=addSearchLevel`)
-        .then((res) => {
-          setData(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      try {
+        const response = await makeRequest(
+          "patch",
+          `/counters/${counterId}?action=addSearchLevel`,
+          null,
+          null,
+          true
+        );
+        setData(response);
+      } catch {
+        return;
+      }
     }
 
     setTimeout(() => {
       setBackgroundColor(colors.primary[400]);
     }, 200);
 
-    axios["patch"](`/counters/${counterId}?action=add`)
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    try {
+      const response = await makeRequest(
+        "patch",
+        `/counters/${counterId}?action=add`,
+        null,
+        null,
+        true
+      );
+      setData(response);
+    } catch {
+      return;
+    }
   };
 
   /* COUNTER UNDO */
-  const handleUndoClick = () => {
+  const handleUndoClick = async () => {
     setCount((prevState) => {
       return prevState - increment;
     });
@@ -241,13 +255,18 @@ export default function Counter() {
     setEncountersToday((prevState) => {
       return prevState - increment;
     });
-    axios["patch"](`/counters/${counterId}?action=undo`)
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+
+    try {
+      const response = await makeRequest(
+        "patch",
+        `/counters/${counterId}?action=undo`,
+        null,
+        "undo"
+      );
+      setData(response);
+    } catch {
+      return;
+    }
   };
 
   /* COMPLETE THE COUNTER */
@@ -260,164 +279,119 @@ export default function Counter() {
   };
 
   /* DELETE THE COUNTER */
-  const handleDeleteClick = () => {
+  const handleDeleteClick = async () => {
     if (completed) {
-      axios["delete"](`/shiny/${counterId}`)
-        .then((res) => {
-          navigate("/counters");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      try {
+        await makeRequest("delete", `/shiny/${counterId}`);
+        navigate("/counters");
+      } catch {
+        return;
+      }
     } else {
-      axios["delete"](`/counters/${counterId}`)
-        .then((res) => {
-          navigate("/counters");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      try {
+        await makeRequest("delete", `/counters/${counterId}`);
+        navigate("/counters");
+      } catch {
+        return;
+      }
     }
   };
 
   /* EDIT THE COUNTER */
-  const handleEditClick = () => {
+  const handleEditClick = async () => {
     if (countEdit !== count) {
-      let data = JSON.stringify({
-        count: countEdit,
-      });
+      let data = { count: countEdit };
 
-      let config = {
-        method: "patch",
-        maxBodyLength: Infinity,
-        url: `/counters/${counterId}?action=encounterEdit`,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: data,
-      };
-
-      axios
-        .request(config)
-        .then((res) => {
-          console.log(res.data);
-          setCount(countEdit);
-          setOpenEdit(false);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      try {
+        await makeRequest(
+          "patch",
+          `/counters/${counterId}?action=encounterEdit`,
+          data,
+          "edit"
+        );
+        setCount(countEdit);
+        setOpenEdit(false);
+      } catch {
+        return;
+      }
     } else if (countAdd !== 0) {
-      let data = JSON.stringify({
-        add: countAdd,
-      });
+      let data = { add: countAdd };
 
-      let config = {
-        method: "patch",
-        maxBodyLength: Infinity,
-        url: `/counters/${counterId}?action=encounterAdd`,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: data,
-      };
-
-      axios
-        .request(config)
-        .then((res) => {
-          console.log(res.data);
-          setCount(count + countAdd);
-          setOpenEdit(false);
-          setCountAdd(0);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      try {
+        await makeRequest(
+          "patch",
+          `/counters/${counterId}?action=encounterAdd`,
+          data,
+          "edit"
+        );
+        setCount(count + countAdd);
+        setOpenEdit(false);
+        setCountAdd(0);
+      } catch {
+        return;
+      }
     }
   };
 
-  const handleDateEditClick = () => {
-    let data = JSON.stringify({
+  const handleDateEditClick = async () => {
+    let data = {
       startDate: startDateEdit.startDate,
       endDate: endDateEdit.endDate,
-    });
-
-    let config = {
-      method: "patch",
-      maxBodyLength: Infinity,
-      url: `/counters/${counterId}?action=dateEdit`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: data,
     };
 
-    axios
-      .request(config)
-      .then((res) => {
-        setStartDate(new Date(res.data.startDate).toLocaleDateString("nl-BE"));
-        setEndDate(new Date(res.data.endDate).toLocaleDateString("nl-BE"));
-        setOpenDateEdit(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    try {
+      const response = await makeRequest(
+        "patch",
+        `/counters/${counterId}?action=dateEdit`,
+        data,
+        "edit"
+      );
+      setStartDate(new Date(response.startDate).toLocaleDateString("nl-BE"));
+      setEndDate(new Date(response.endDate).toLocaleDateString("nl-BE"));
+      setOpenDateEdit(false);
+    } catch {
+      return;
+    }
   };
 
-  const handleIncrementEditClick = () => {
-    let data = JSON.stringify({
-      increment: incrementEdit.increment,
-    });
+  const handleIncrementEditClick = async () => {
+    let data = { increment: incrementEdit.increment };
 
-    let config = {
-      method: "patch",
-      maxBodyLength: Infinity,
-      url: `/counters/${counterId}?action=incrementEdit`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: data,
-    };
-
-    axios
-      .request(config)
-      .then((res) => {
-        setIncrement(res.data.increment);
-        setOpenIncrementEdit(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    try {
+      const response = await makeRequest(
+        "patch",
+        `/counters/${counterId}?action=incrementEdit`,
+        data,
+        "edit"
+      );
+      setIncrement(response.increment);
+      setOpenIncrementEdit(false);
+    } catch {
+      return;
+    }
   };
 
-  const handleThresholdEdit = () => {
-    let data = JSON.stringify({
+  const handleThresholdEdit = async () => {
+    let data = {
       lowerTimeThreshold: thresholdEdit.lowerTimeThreshold,
       upperTimeThreshold: thresholdEdit.upperTimeThreshold,
-    });
-
-    let config = {
-      method: "patch",
-      maxBodyLength: Infinity,
-      url: `/counters/${counterId}?action=thresholdEdit`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: data,
     };
 
-    axios
-      .request(config)
-      .then((res) => {
-        setOpenThresholdEdit(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    try {
+      await makeRequest(
+        "patch",
+        `/counters/${counterId}?action=thresholdEdit`,
+        data,
+        "edit"
+      );
+      setOpenThresholdEdit(false);
+    } catch {
+      return;
+    }
   };
 
   /* SEARCH LEVEL CLICK */
-  const handleSearchLevelClick = () => {
+  const handleSearchLevelClick = async () => {
     setBackgroundColorSearchLevel(colors.primary[900]);
     setSearchLevel((prevState) => {
       return prevState + 1;
@@ -430,40 +404,35 @@ export default function Counter() {
       setBackgroundColorSearchLevel(colors.primary[400]);
     }, 200);
 
-    axios["patch"](`/counters/${counterId}?action=addSearchLevel`)
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    try {
+      const response = await makeRequest(
+        "patch",
+        `/counters/${counterId}?action=addSearchLevel`,
+        null,
+        null,
+        true
+      );
+      setData(response);
+    } catch {
+      return;
+    }
   };
 
-  const handleSearchLevelEditClick = () => {
-    let data = JSON.stringify({
-      searchLevel: searchLevelEdit,
-    });
+  const handleSearchLevelEditClick = async () => {
+    let data = { searchLevel: searchLevelEdit };
 
-    let config = {
-      method: "patch",
-      maxBodyLength: Infinity,
-      url: `/counters/${counterId}?action=searchLevelEdit`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: data,
-    };
-
-    axios
-      .request(config)
-      .then((res) => {
-        console.log(res.data);
-        setSearchLevel(searchLevelEdit);
-        setOpenSearchLevelEdit(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    try {
+      await makeRequest(
+        "patch",
+        `/counters/${counterId}?action=searchLevelEdit`,
+        data,
+        "edit"
+      );
+      setSearchLevel(searchLevelEdit);
+      setOpenSearchLevelEdit(false);
+    } catch {
+      return;
+    }
   };
 
   /* TIMER */

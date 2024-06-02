@@ -58,6 +58,9 @@ import CounterStats from "./pages/stats/CounterStats";
 import Map from "./pages/stats/Map";
 import ShinyStats from "./pages/stats/ShinyStats";
 
+// Components
+import CustomAlert from "./components/Alert";
+
 if (!process.env.REACT_APP_ENV || process.env.REACT_APP_ENV === "dev") {
   axios.defaults.baseURL = process.env.REACT_APP_BACKEND;
 } else {
@@ -240,6 +243,7 @@ function Layout() {
                 }}
               >
                 <Topbar />
+                <CustomAlert/>
               </div>
               <ScrollRestoration />
               <ErrorBoundary FallbackComponent={ErrorPage}>

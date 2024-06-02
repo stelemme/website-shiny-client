@@ -1,8 +1,8 @@
 // Mui
 import { TextField, Autocomplete } from "@mui/material";
 
-// Functions
-import { getRequest } from "../../functions/requestFunctions";
+// Hooks
+import { useGetRequest } from "../../hooks/useAxios";
 
 export default function PokemonForm({
   data,
@@ -12,6 +12,8 @@ export default function PokemonForm({
   isForCounter = false,
   isAsCounter = false,
 }) {
+  const getRequest = useGetRequest();
+
   if (!isForCounter) {
     return (
       <Autocomplete

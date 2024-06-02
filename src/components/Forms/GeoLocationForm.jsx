@@ -12,13 +12,16 @@ import {
   Grid,
 } from "@mui/material";
 
-// Functions
-import { getRequest } from "../../functions/requestFunctions";
+// Hooks
+import { useGetRequest } from "../../hooks/useAxios";
 
 export default function GeoLocationForm({ data, setData }) {
+  const getRequest = useGetRequest();
+
   const [geoLocationsList, setGeoLocationsList] = useState(undefined);
   const [newGeoLocation, setNewGeoLocation] = useState(false);
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     async function fetchData() {
       try {

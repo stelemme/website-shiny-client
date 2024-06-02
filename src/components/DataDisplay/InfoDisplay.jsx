@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useSetRecoilState } from "recoil";
+import { alertOpen, alertSeverity, alertMessage } from "../../utils/atoms";
 
 // Mui
-import { Box, Typography, IconButton, Grid, Alert } from "@mui/material";
+import { Box, Typography, IconButton, Grid } from "@mui/material";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 
 // Components
@@ -16,8 +18,8 @@ import LocationsForm from "../Forms/LocationForm";
 import BallForm from "../Forms/BallForm";
 import SubMethodForm from "../Forms/SubMethodForm";
 
-// Functions
-import { makeRequest, getRequest } from "../../functions/requestFunctions";
+// Hooks
+import { useMakeRequest, useGetRequest } from "../../hooks/useAxios";
 
 export default function InfoDisplay({
   data: initialData,
@@ -25,6 +27,9 @@ export default function InfoDisplay({
   refetch,
   isDead = false,
 }) {
+  const makeRequest = useMakeRequest();
+  const getRequest = useGetRequest();
+
   const [data, setData] = useState(initialData);
   const [openEdit, setOpenEdit] = useState(false);
   const [collection, setCollection] = useState("Level");
@@ -33,9 +38,9 @@ export default function InfoDisplay({
   const [ballList, setBallList] = useState([]);
   const [methodCatList, setMethodCatList] = useState([]);
 
-  const [alertShown, setAlertShown] = useState(false);
-  const [alertMessage, setAlertMessage] = useState("");
-  const [alertSeverity, setAlertSeverity] = useState("warning");
+  const setAlertOpen = useSetRecoilState(alertOpen);
+  const setAlertSeverity = useSetRecoilState(alertSeverity);
+  const setAlertMessage = useSetRecoilState(alertMessage);
 
   let initialState = {
     endDate: new Date(),
@@ -147,25 +152,22 @@ export default function InfoDisplay({
   const handleEdit = async () => {
     if (Object.keys(editData).length === 0) {
       setAlertMessage("The data is not filled in.");
-      setAlertSeverity("warning");
-      setAlertShown(true);
+      setAlertSeverity("error");
+      setAlertOpen(true);
       return;
     }
 
-    setAlertShown(false);
     const url = !isDead
       ? `/shiny/${data._id}?editByString=${collection}`
       : `/deadshiny/${data._id}?editByString=${collection}`;
 
     try {
-      const res = await makeRequest("patch", url, editData);
-      setData(res);
+      const response = await makeRequest("patch", url, editData, "edit");
+      setData(response);
       setOpenEdit(false);
       refetch();
     } catch (error) {
-      setAlertSeverity("error");
-      setAlertMessage(error.message);
-      setAlertShown(true);
+      return;
     }
   };
 
@@ -187,18 +189,6 @@ export default function InfoDisplay({
         </Grid>
       </Grid>
     );
-  };
-
-  const alertDisplay = () => {
-    if (alertShown) {
-      return (
-        <Alert variant="filled" severity={alertSeverity}>
-          {alertMessage}
-        </Alert>
-      );
-    } else {
-      return null;
-    }
   };
 
   return (
@@ -248,9 +238,6 @@ export default function InfoDisplay({
                       {isDead
                         ? collectionComponentsDead[collection]
                         : collectionComponents[collection]}
-                    </Grid>
-                    <Grid item xs={12}>
-                      {alertDisplay()}
                     </Grid>
                   </Grid>
                 }

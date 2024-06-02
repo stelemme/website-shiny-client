@@ -1,4 +1,4 @@
-import axios from "axios";
+// Mui
 import {
   Box,
   FormControl,
@@ -10,6 +10,9 @@ import {
   TextField,
 } from "@mui/material";
 
+// Hooks
+import { useGetRequest } from "../../hooks/useAxios";
+
 export default function RadarGroupForm({
   data,
   setData,
@@ -17,6 +20,8 @@ export default function RadarGroupForm({
   setGroupList,
   username,
 }) {
+  const getRequest = useGetRequest();
+
   return (
     <Box>
       <FormControl sx={{ mb: "5px", mr: "5px" }}>
@@ -24,30 +29,8 @@ export default function RadarGroupForm({
         <RadioGroup
           row
           value={data.method.group}
-          onChange={(e, value) => {
-            if (JSON.parse(value)) {
-              axios["get"](`shiny?group=true&trainer=${username}`)
-                .then((res) => {
-                  setGroupList([...res.data]);
-                  setData((prevState) => {
-                    return {
-                      ...prevState,
-                      ...{
-                        method: {
-                          ...prevState.method,
-                          group: JSON.parse(value),
-                        },
-                        group: `${username}-${
-                          data.name
-                        }-${data.endDate.toLocaleDateString("nl-NL")}`,
-                      },
-                    };
-                  });
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
-            } else {
+          onChange={async (e, value) => {
+            if (!JSON.parse(value)) {
               setGroupList(undefined);
               setData((prevState) => {
                 delete prevState.group;
@@ -61,6 +44,28 @@ export default function RadarGroupForm({
                   },
                 };
               });
+            }
+            try {
+              const response = await getRequest(
+                `shiny?group=true&trainer=${username}`
+              );
+              setGroupList([...response]);
+              setData((prevState) => {
+                return {
+                  ...prevState,
+                  ...{
+                    method: {
+                      ...prevState.method,
+                      group: JSON.parse(value),
+                    },
+                    group: `${username}-${
+                      data.name
+                    }-${data.endDate.toLocaleDateString("nl-NL")}`,
+                  },
+                };
+              });
+            } catch {
+              return;
             }
           }}
         >

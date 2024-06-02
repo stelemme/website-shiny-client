@@ -5,9 +5,7 @@ import { TextField, Autocomplete } from "@mui/material";
 
 // Hooks
 import { useGame } from "../../hooks/useData";
-
-// Functions
-import { getRequest } from "../../functions/requestFunctions";
+import { useGetRequest } from "../../hooks/useAxios";
 
 export default function GameForm({
   data,
@@ -23,10 +21,12 @@ export default function GameForm({
   setBallList,
   isForCounter = false,
 }) {
+  const getRequest = useGetRequest();
   const [gameId, setGameId] = useState(undefined);
 
   const { data: games } = useGame("?action=form");
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     async function fetchData() {
       if (!gameId) {

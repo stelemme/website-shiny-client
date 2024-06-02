@@ -30,15 +30,16 @@ import IconsDisplay from "./IconsDisplay";
 
 // Hooks
 import { useAuth } from "../../hooks/useAuth";
-
-// Functions
-import { makeRequest, getRequest } from "../../functions/requestFunctions";
+import { useMakeRequest, useGetRequest } from "../../hooks/useAxios";
 
 export default function CompleteShinyCard({ data: initialData, refetch }) {
   const { username } = useAuth();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
+  const makeRequest = useMakeRequest();
+  const getRequest = useGetRequest();
+
   const [data, setData] = useState(initialData);
   const [openDelete, setOpenDelete] = useState(false);
   const [openEvolutionEdit, setOpenEvolutionEdit] = useState(false);
@@ -72,7 +73,8 @@ export default function CompleteShinyCard({ data: initialData, refetch }) {
       const res = await makeRequest(
         "patch",
         `/shiny/${data._id}?action=evolutionsEdit`,
-        evolutionData
+        evolutionData,
+        "edit"
       );
 
       setData(res);

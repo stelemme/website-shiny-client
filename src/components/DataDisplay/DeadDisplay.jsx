@@ -23,15 +23,15 @@ import GeoLocationDisplay from "./GeoLocationDisplay";
 
 // Hooks
 import { useAuth } from "../../hooks/useAuth";
-
-// Functions
-import { makeRequest } from "../../functions/requestFunctions";
+import { useMakeRequest } from "../../hooks/useAxios";
 
 export default function CompleteDeadDisplay({ data, refetch }) {
   const { username } = useAuth();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
+  const makeRequest = useMakeRequest()
+  
   const [openDelete, setOpenDelete] = useState(false);
 
   console.log(data);

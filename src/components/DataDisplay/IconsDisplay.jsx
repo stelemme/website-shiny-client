@@ -15,8 +15,8 @@ import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 // Components
 import CustomDialog from "../Dialogs/CustomDialog";
 
-// Functions
-import { makeRequest, getRequest } from "../../functions/requestFunctions";
+// Hooks
+import { useMakeRequest, useGetRequest } from "../../hooks/useAxios";
 
 export default function IconsDisplay({
   data,
@@ -25,6 +25,9 @@ export default function IconsDisplay({
   refetch,
   exisitingData,
 }) {
+  const makeRequest = useMakeRequest();
+  const getRequest = useGetRequest();
+
   const [openIconEdit, setOpenIconEdit] = useState(false);
   const [icons, setIcons] = useState(undefined);
   const [iconsEdit, setIconsEdit] = useState([]);
@@ -41,7 +44,8 @@ export default function IconsDisplay({
       await makeRequest(
         "patch",
         `/shiny/${data._id}?action=${type}Edit`,
-        iconData
+        iconData,
+        "edit"
       );
       exisitingData?.push(iconsEdit);
       setOpenIconEdit(false);
@@ -66,7 +70,8 @@ export default function IconsDisplay({
       await makeRequest(
         "patch",
         `/shiny/${data._id}?action=${type}Delete`,
-        iconData
+        iconData,
+        "delete"
       );
       const index = exisitingData.indexOf(hoveredItem);
       exisitingData.splice(index, 1);
