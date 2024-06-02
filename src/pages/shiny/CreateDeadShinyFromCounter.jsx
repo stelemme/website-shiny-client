@@ -1,5 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
+import { alertOpen, alertSeverity, alertMessage } from "../../utils/atoms";
 
 // Mui
 import { Box, Button, Grid } from "@mui/material";
@@ -35,6 +37,10 @@ export default function CreateDeadShinyFromCounter() {
   const navigateRef = useRef(navigate);
   const makeRequest = useMakeRequest();
   const getRequest = useGetRequest();
+
+  const setAlertOpen = useSetRecoilState(alertOpen);
+  const setAlertSeverity = useSetRecoilState(alertSeverity);
+  const setAlertMessage = useSetRecoilState(alertMessage);
 
   let initialLocationState = {
     name: "",
@@ -139,115 +145,127 @@ export default function CreateDeadShinyFromCounter() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (data.geoLocation.name !== "" && data.geoLocation.displayName !== "") {
-      const newStats = {
-        probability: calculateProb(
-          data.method.odds,
-          data.method.rolls,
-          data.method.shinyCharm,
-          data.method?.charmRolls,
-          data.totalEncounters,
-          data.method?.function,
-          data.method?.searchLevel
-        ),
-        percentage: calculatePercentage(
-          data.totalEncounters,
-          data.method.odds,
-          data.method.rolls,
-          data.method.shinyCharm,
-          data.method?.charmRolls,
-          data.method?.function,
-          data.method?.searchLevel
-        ),
-        meanEncounterTime: calculateMeanEncounterTime(
+    if (data.geoLocation.name === "" && data.geoLocation.displayName === "") {
+      setAlertSeverity("warning");
+      setAlertMessage("You forgot to fill in the geo location.");
+      setAlertOpen(true);
+
+      return;
+    } else if (!data.gender) {
+      setAlertSeverity("warning");
+      setAlertMessage("You forgot to fill in the gender.");
+      setAlertOpen(true);
+
+      return;
+    }
+
+    const newStats = {
+      probability: calculateProb(
+        data.method.odds,
+        data.method.rolls,
+        data.method.shinyCharm,
+        data.method?.charmRolls,
+        data.totalEncounters,
+        data.method?.function,
+        data.method?.searchLevel
+      ),
+      percentage: calculatePercentage(
+        data.totalEncounters,
+        data.method.odds,
+        data.method.rolls,
+        data.method.shinyCharm,
+        data.method?.charmRolls,
+        data.method?.function,
+        data.method?.searchLevel
+      ),
+      meanEncounterTime: calculateMeanEncounterTime(
+        data.encounters,
+        data.upperTimeThreshold,
+        data.lowerTimeThreshold,
+        data.increment
+      ),
+      daysHunting: calculateDateDifference(data.endDate, data.startDate),
+      totalHuntTime: Math.round(
+        calculateMeanEncounterTime(
           data.encounters,
           data.upperTimeThreshold,
           data.lowerTimeThreshold,
           data.increment
-        ),
-        daysHunting: calculateDateDifference(data.endDate, data.startDate),
-        totalHuntTime: Math.round(
-          calculateMeanEncounterTime(
-            data.encounters,
-            data.upperTimeThreshold,
-            data.lowerTimeThreshold,
-            data.increment
-          ) * data.totalEncounters
-        ),
-      };
+        ) * data.totalEncounters
+      ),
+    };
 
-      if (data.method.function) {
-        let chainLimit = 0;
-        switch (data.method.function) {
-          case "pokeradar-gen4":
-            chainLimit = 40;
-            break;
-          case "pokeradar-gen6":
-            chainLimit = 40;
-            break;
-          case "pokeradar-gen8":
-            chainLimit = 40;
-            break;
-          case "chainfishing":
-            chainLimit = 20;
-            break;
-          case "sos-chain-sm":
-            chainLimit = 30;
-            break;
-          case "sos-chain":
-            chainLimit = 30;
-            break;
-          default:
-            console.log(chainLimit);
-        }
-
-        if (data.totalEncounters >= chainLimit) {
-          setData((prevState) => {
-            return {
-              ...prevState,
-              ...{
-                method: {
-                  ...prevState.method,
-                  correctedEncounters: data.totalEncounters - chainLimit,
-                },
-                stats: {
-                  ...newStats,
-                  percentage: calculatePercentage(
-                    data.totalEncounters - chainLimit,
-                    data.method.odds,
-                    data.method.rolls,
-                    data.method.shinyCharm,
-                    data.method?.charmRolls,
-                    data.method?.function,
-                    data.method?.searchLevel
-                  ),
-                },
-              },
-            };
-          });
-        } else {
-          setData((prevState) => {
-            return {
-              ...prevState,
-              ...{
-                method: {
-                  ...prevState.method,
-                  correctedEncounters: 0,
-                },
-                stats: {
-                  ...newStats,
-                  percentage: 0,
-                },
-              },
-            };
-          });
-        }
-      } else {
-        setData((prevState) => ({
-          ...prevState,
-          stats: newStats,
-        }));
+    if (data.method.function) {
+      let chainLimit = 0;
+      switch (data.method.function) {
+        case "pokeradar-gen4":
+          chainLimit = 40;
+          break;
+        case "pokeradar-gen6":
+          chainLimit = 40;
+          break;
+        case "pokeradar-gen8":
+          chainLimit = 40;
+          break;
+        case "chainfishing":
+          chainLimit = 20;
+          break;
+        case "sos-chain-sm":
+          chainLimit = 30;
+          break;
+        case "sos-chain":
+          chainLimit = 30;
+          break;
+        default:
+          console.log(chainLimit);
       }
+
+      if (data.totalEncounters >= chainLimit) {
+        setData((prevState) => {
+          return {
+            ...prevState,
+            ...{
+              method: {
+                ...prevState.method,
+                correctedEncounters: data.totalEncounters - chainLimit,
+              },
+              stats: {
+                ...newStats,
+                percentage: calculatePercentage(
+                  data.totalEncounters - chainLimit,
+                  data.method.odds,
+                  data.method.rolls,
+                  data.method.shinyCharm,
+                  data.method?.charmRolls,
+                  data.method?.function,
+                  data.method?.searchLevel
+                ),
+              },
+            },
+          };
+        });
+      } else {
+        setData((prevState) => {
+          return {
+            ...prevState,
+            ...{
+              method: {
+                ...prevState.method,
+                correctedEncounters: 0,
+              },
+              stats: {
+                ...newStats,
+                percentage: 0,
+              },
+            },
+          };
+        });
+      }
+    } else {
+      setData((prevState) => ({
+        ...prevState,
+        stats: newStats,
+      }));
     }
   };
 
@@ -305,7 +323,7 @@ export default function CreateDeadShinyFromCounter() {
 
             {/* START DATE */}
             <Grid item xs={6}>
-              <StartDateForm data={data} setData={setData} />
+              <StartDateForm data={data} setData={setData} isForCounter />
             </Grid>
 
             {/* END DATE */}

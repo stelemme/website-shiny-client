@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useSetRecoilState } from "recoil";
+import { alertOpen, alertSeverity, alertMessage } from "../../utils/atoms";
 
 // Mui
 import { Box, Button, Grid } from "@mui/material";
@@ -29,10 +30,19 @@ import {
   calculateDateDifference,
 } from "../../functions/statFunctions";
 
+// Hooks
+import { useMakeRequest, useGetRequest } from "../../hooks/useAxios";
+
 export default function CreateShinyFromCounter() {
   const { counterId } = useParams();
   const navigate = useNavigate();
   const navigateRef = useRef(navigate);
+  const makeRequest = useMakeRequest();
+  const getRequest = useGetRequest();
+
+  const setAlertOpen = useSetRecoilState(alertOpen);
+  const setAlertSeverity = useSetRecoilState(alertSeverity);
+  const setAlertMessage = useSetRecoilState(alertMessage);
 
   let initialLocationState = {
     name: "",
@@ -64,76 +74,50 @@ export default function CreateShinyFromCounter() {
   const [locationsList, setLocationsList] = useState(undefined);
   const [ballList, setBallList] = useState(undefined);
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     const fetchCounterData = async () => {
       try {
-        const res = await axios.get(`/counters/${counterId}`);
-        res.data.startDate = new Date(res.data.startDate);
-        res.data.endDate = new Date(res.data.endDate);
+        const response = await getRequest(`/counters/${counterId}`);
+        response.startDate = new Date(response.startDate);
+        response.endDate = new Date(response.endDate);
 
         setData((prevState) => {
           return {
             ...prevState,
-            ...res.data,
+            ...response,
           };
         });
 
-        axios["get"](`/pokedex?name=${res.data.name}`)
-          .then((res) => {
-            if (res.data[0].gender === "100:0") {
-              setData((prevState) => {
-                return {
-                  ...prevState,
-                  ...{
-                    gender: "male",
-                  },
-                };
-              });
-            } else if (res.data[0].gender === "0:100") {
-              setData((prevState) => {
-                return {
-                  ...prevState,
-                  ...{
-                    gender: "female",
-                  },
-                };
-              });
-            } else if (res.data[0].gender === "Genderless") {
-              setData((prevState) => {
-                return {
-                  ...prevState,
-                  ...{
-                    gender: "genderless",
-                  },
-                };
-              });
-            } else {
-              setGenderCheck(true);
-              setData((prevState) => {
-                return {
-                  ...prevState,
-                  ...{
-                    gender: undefined,
-                  },
-                };
-              });
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        const response2 = await getRequest(`/pokedex?name=${response.name}`);
 
-        axios["get"](`/game?name=${res.data.game}`)
-          .then((res) => {
-            setPokemonsList(res.data[0].pokemons);
-            setLocationsList(res.data[0].locations);
-            setBallList(res.data[0].balls);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      } catch (error) {
-        console.error(error);
+        let gender = undefined;
+        if (response2.gender === "100:0") {
+          gender = "male";
+        } else if (response2.gender === "0:100") {
+          gender = "female";
+        } else if (response2.gender === "Genderless") {
+          gender = "genderless";
+        } else {
+          setGenderCheck(true);
+        }
+
+        setData((prevState) => {
+          return {
+            ...prevState,
+            ...{
+              gender: gender,
+            },
+          };
+        });
+
+        const response3 = await getRequest(`/game?name=${response.game}`);
+
+        setPokemonsList(response3[0].pokemons);
+        setLocationsList(response3[0].locations);
+        setBallList(response3[0].balls);
+      } catch {
+        return;
       }
     };
     if (counterId) {
@@ -142,24 +126,18 @@ export default function CreateShinyFromCounter() {
   }, [counterId]);
 
   useEffect(() => {
-    const endFunction = (id) => {
-      navigateRef.current(`/shiny/${id}`);
+    const handleDefSubmit = async () => {
+      if (!data.stats) {
+        return;
+      }
+
+      const response = await makeRequest("post", `/shiny`, data, "creation");
+
+      await makeRequest("delete", `/counters/${counterId}`);
+      navigateRef.current(`/shiny/${response._id}`);
     };
 
-    if (data.stats) {
-      axios
-        .post(`/shiny`, data)
-        .then((res) => {
-          console.log("test", res.data);
-          axios["delete"](`/counters/${counterId}`).catch((err) => {
-            console.log(err);
-          });
-          endFunction(res.data._id);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+    handleDefSubmit();
   }, [data, counterId]);
 
   console.log(data);
@@ -167,119 +145,127 @@ export default function CreateShinyFromCounter() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (
-      data.geoLocation.name !== "" &&
-      data.geoLocation.displayName !== "" &&
-      data.gender
-    ) {
-      const newStats = {
-        probability: calculateProb(
-          data.method.odds,
-          data.method.rolls,
-          data.method.shinyCharm,
-          data.method?.charmRolls,
-          data.totalEncounters,
-          data.method?.function,
-          data.method?.searchLevel
-        ),
-        percentage: calculatePercentage(
-          data.totalEncounters,
-          data.method.odds,
-          data.method.rolls,
-          data.method.shinyCharm,
-          data.method?.charmRolls,
-          data.method?.function,
-          data.method?.searchLevel
-        ),
-        meanEncounterTime: calculateMeanEncounterTime(
+    if (data.geoLocation.name === "" && data.geoLocation.displayName === "") {
+      setAlertSeverity("warning");
+      setAlertMessage("You forgot to fill in the geo location.");
+      setAlertOpen(true);
+
+      return;
+    } else if (!data.gender) {
+      setAlertSeverity("warning");
+      setAlertMessage("You forgot to fill in the gender.");
+      setAlertOpen(true);
+
+      return;
+    }
+
+    const newStats = {
+      probability: calculateProb(
+        data.method.odds,
+        data.method.rolls,
+        data.method.shinyCharm,
+        data.method?.charmRolls,
+        data.totalEncounters,
+        data.method?.function,
+        data.method?.searchLevel
+      ),
+      percentage: calculatePercentage(
+        data.totalEncounters,
+        data.method.odds,
+        data.method.rolls,
+        data.method.shinyCharm,
+        data.method?.charmRolls,
+        data.method?.function,
+        data.method?.searchLevel
+      ),
+      meanEncounterTime: calculateMeanEncounterTime(
+        data.encounters,
+        data.upperTimeThreshold,
+        data.lowerTimeThreshold,
+        data.increment
+      ),
+      daysHunting: calculateDateDifference(data.endDate, data.startDate),
+      totalHuntTime: Math.round(
+        calculateMeanEncounterTime(
           data.encounters,
           data.upperTimeThreshold,
           data.lowerTimeThreshold,
           data.increment
-        ),
-        daysHunting: calculateDateDifference(data.endDate, data.startDate),
-        totalHuntTime: Math.round(
-          calculateMeanEncounterTime(
-            data.encounters,
-            data.upperTimeThreshold,
-            data.lowerTimeThreshold,
-            data.increment
-          ) * data.totalEncounters
-        ),
-      };
+        ) * data.totalEncounters
+      ),
+    };
 
-      if (data.method.function) {
-        let chainLimit = 0;
-        switch (data.method.function) {
-          case "pokeradar-gen4":
-            chainLimit = 40;
-            break;
-          case "pokeradar-gen6":
-            chainLimit = 40;
-            break;
-          case "pokeradar-gen8":
-            chainLimit = 40;
-            break;
-          case "chainfishing":
-            chainLimit = 20;
-            break;
-          case "sos-chain-sm":
-            chainLimit = 30;
-            break;
-          case "sos-chain":
-            chainLimit = 30;
-            break;
-          default:
-            console.log(chainLimit);
-        }
-
-        if (data.totalEncounters >= chainLimit) {
-          setData((prevState) => {
-            return {
-              ...prevState,
-              ...{
-                method: {
-                  ...prevState.method,
-                  correctedEncounters: data.totalEncounters - chainLimit,
-                },
-                stats: {
-                  ...newStats,
-                  percentage: calculatePercentage(
-                    data.totalEncounters - chainLimit,
-                    data.method.odds,
-                    data.method.rolls,
-                    data.method.shinyCharm,
-                    data.method?.charmRolls,
-                    data.method?.function,
-                    data.method?.searchLevel
-                  ),
-                },
-              },
-            };
-          });
-        } else {
-          setData((prevState) => {
-            return {
-              ...prevState,
-              ...{
-                method: {
-                  ...prevState.method,
-                  correctedEncounters: 0,
-                },
-                stats: {
-                  ...newStats,
-                  percentage: 0,
-                },
-              },
-            };
-          });
-        }
-      } else {
-        setData((prevState) => ({
-          ...prevState,
-          stats: newStats,
-        }));
+    if (data.method.function) {
+      let chainLimit = 0;
+      switch (data.method.function) {
+        case "pokeradar-gen4":
+          chainLimit = 40;
+          break;
+        case "pokeradar-gen6":
+          chainLimit = 40;
+          break;
+        case "pokeradar-gen8":
+          chainLimit = 40;
+          break;
+        case "chainfishing":
+          chainLimit = 20;
+          break;
+        case "sos-chain-sm":
+          chainLimit = 30;
+          break;
+        case "sos-chain":
+          chainLimit = 30;
+          break;
+        default:
+          console.log(chainLimit);
       }
+
+      if (data.totalEncounters >= chainLimit) {
+        setData((prevState) => {
+          return {
+            ...prevState,
+            ...{
+              method: {
+                ...prevState.method,
+                correctedEncounters: data.totalEncounters - chainLimit,
+              },
+              stats: {
+                ...newStats,
+                percentage: calculatePercentage(
+                  data.totalEncounters - chainLimit,
+                  data.method.odds,
+                  data.method.rolls,
+                  data.method.shinyCharm,
+                  data.method?.charmRolls,
+                  data.method?.function,
+                  data.method?.searchLevel
+                ),
+              },
+            },
+          };
+        });
+      } else {
+        setData((prevState) => {
+          return {
+            ...prevState,
+            ...{
+              method: {
+                ...prevState.method,
+                correctedEncounters: 0,
+              },
+              stats: {
+                ...newStats,
+                percentage: 0,
+              },
+            },
+          };
+        });
+      }
+    } else {
+      setData((prevState) => ({
+        ...prevState,
+        stats: newStats,
+      }));
     }
   };
 
@@ -343,7 +329,7 @@ export default function CreateShinyFromCounter() {
 
             {/* START DATE */}
             <Grid item xs={6}>
-              <StartDateForm data={data} setData={setData} />
+              <StartDateForm data={data} setData={setData} isForCounter />
             </Grid>
 
             {/* END DATE */}
