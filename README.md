@@ -2,6 +2,13 @@
 
 ## Changelogs
 
+### Version 1.11.2 (02.06.2024)
+
+**Error handling:**
+- Bij elke interactie met de back-end wordt er een alert weergegeven (succes of error) om beter te kunnen debuggen.
+
+---
+
 ### Version 1.11.1 (28.05.2024)
 
 **Dead Shiny Display:**
