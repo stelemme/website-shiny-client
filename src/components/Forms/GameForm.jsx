@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 
 // Mui
 import { TextField, Autocomplete } from "@mui/material";
 
 // Hooks
 import { useGame } from "../../hooks/useData";
+import { useGetRequest } from "../../hooks/useAxios";
 
 export default function GameForm({
   data,
@@ -19,22 +19,29 @@ export default function GameForm({
   setLocationsList,
   setClearMethod,
   setBallList,
-  isForCounter = false
+  isForCounter = false,
 }) {
+  const getRequest = useGetRequest();
   const [gameId, setGameId] = useState(undefined);
 
   const { data: games } = useGame("?action=form");
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
-    if (gameId) {
-      axios["get"](`/game/${gameId}?action=pokemons`)
-        .then((res) => {
-          setPokemonsList(res.data.pokemons);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    async function fetchData() {
+      if (!gameId) {
+        return;
+      }
+
+      try {
+        const response = await getRequest(`/game/${gameId}?action=pokemons`);
+        setPokemonsList(response.pokemons);
+      } catch {
+        return;
+      }
     }
+
+    fetchData();
   }, [gameId, setPokemonsList]);
 
   if (!isForCounter) {
@@ -79,7 +86,7 @@ export default function GameForm({
             setLocationsList(value.locations);
             setMethodsList(value.methods);
             if (setBallList) {
-                setBallList(value.balls);
+              setBallList(value.balls);
             }
           }
         }}

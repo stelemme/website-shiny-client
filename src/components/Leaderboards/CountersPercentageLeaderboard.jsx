@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 
 // Components imports
 import Leaderboard from "./LeaderBoard";
@@ -13,7 +12,12 @@ import { calculateMultiplePercentage } from "../../functions/statFunctions";
 // Images
 import { medalImages } from "../../assets/imgExporter";
 
+// Hooks
+import { useGetRequest } from "../../hooks/useAxios";
+
 export default function CountersPercentageLeaderboard() {
+  const getRequest = useGetRequest();
+
   const [defCounterStats, setDefCounterStats] = useState([]);
   const [totalCounterStats, setTotalCounterStats] = useState([]);
 
@@ -24,6 +28,7 @@ export default function CountersPercentageLeaderboard() {
   const latestShiny = latestShinyData?.data;
   let latestDate = new Date(null);
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     if (!latestShiny) return;
     const fetchData = async () => {
@@ -38,7 +43,7 @@ export default function CountersPercentageLeaderboard() {
 
         try {
           const dateString = new Date(item.endDate).toLocaleDateString("en-US");
-          const response = await axios.get(`/counters`, {
+          const response = await getRequest(`/counters`, {
             params: {
               statsCountersPercentage: true,
               trainer: item.trainer,
@@ -51,12 +56,12 @@ export default function CountersPercentageLeaderboard() {
             data: calculateMultiplePercentage(response.data),
           });
         } catch (error) {
-          console.error("Error fetching data:", error);
+          return
         }
       }
 
       try {
-        const response = await axios.get(`/counters`, {
+        const response = await getRequest(`/counters`, {
           params: {
             statsCountersPercentage: true,
             statsPeriodDay: newestEndDate,
@@ -65,7 +70,7 @@ export default function CountersPercentageLeaderboard() {
 
         setTotalCounterStats(response.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        return
       }
 
       setDefCounterStats(updatedDefCounterStats);

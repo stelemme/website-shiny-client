@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from "axios";
 
 // Mui
 import {
@@ -16,6 +15,9 @@ import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 // Components
 import CustomDialog from "../Dialogs/CustomDialog";
 
+// Hooks
+import { useMakeRequest, useGetRequest } from "../../hooks/useAxios";
+
 export default function IconsDisplay({
   data,
   username,
@@ -23,67 +25,76 @@ export default function IconsDisplay({
   refetch,
   exisitingData,
 }) {
+  const makeRequest = useMakeRequest();
+  const getRequest = useGetRequest();
+
   const [openIconEdit, setOpenIconEdit] = useState(false);
   const [icons, setIcons] = useState(undefined);
   const [iconsEdit, setIconsEdit] = useState([]);
   const [hoveredItem, setHoveredItem] = useState(null);
 
   /* EDIT THE ICON */
-  const handleIconsEdit = () => {
-    let iconData = JSON.stringify({
+  const handleIconsEdit = async () => {
+    let iconData = {
       name: iconsEdit["name"],
       sprite: iconsEdit["sprite"],
-    });
-
-    let config = {
-      method: "patch",
-      maxBodyLength: Infinity,
-      url: `/shiny/${data._id}?action=${type}Edit`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: iconData,
     };
 
-    axios
-      .request(config)
-      .then((res) => {
-        exisitingData?.push(iconsEdit);
-        setOpenIconEdit(false);
-        refetch();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    try {
+      await makeRequest(
+        "patch",
+        `/shiny/${data._id}?action=${type}Edit`,
+        iconData,
+        "edit"
+      );
+      exisitingData?.push(iconsEdit);
+      setOpenIconEdit(false);
+      refetch();
+    } catch {
+      return;
+    }
   };
 
-  const handleIconsDelete = () => {
-    if (hoveredItem) {
-      let iconData = JSON.stringify({
-        name: hoveredItem["name"],
-        sprite: hoveredItem["sprite"],
-      });
+  /* DELETE THE ICON */
+  const handleIconsDelete = async () => {
+    if (!hoveredItem) {
+      return;
+    }
 
-      let config = {
-        method: "patch",
-        maxBodyLength: Infinity,
-        url: `/shiny/${data._id}?action=${type}Delete`,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: iconData,
-      };
+    let iconData = {
+      name: hoveredItem["name"],
+      sprite: hoveredItem["sprite"],
+    };
 
-      axios
-        .request(config)
-        .then((res) => {
-          const index = exisitingData.indexOf(hoveredItem);
-          exisitingData.splice(index, 1);
-          refetch();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    try {
+      await makeRequest(
+        "patch",
+        `/shiny/${data._id}?action=${type}Delete`,
+        iconData,
+        "delete"
+      );
+      const index = exisitingData.indexOf(hoveredItem);
+      exisitingData.splice(index, 1);
+      refetch();
+    } catch {
+      return;
+    }
+  };
+
+  const handleOpenEdit = async () => {
+    try {
+      const response = await getRequest(
+        `/game?name=${data.game}&action=${type}`
+      );
+      const allIcons = response[0][type];
+      const filteredIcons = allIcons.filter(
+        (icon) =>
+          !exisitingData?.some((excluded) => excluded.name === icon.name)
+      );
+      setIcons(filteredIcons);
+      setOpenIconEdit(true);
+    } catch {
+      return;
     }
   };
 
@@ -101,24 +112,7 @@ export default function IconsDisplay({
           </Typography>
           {username === data.trainer && (
             <Box ml="10px" display="flex">
-              <IconButton
-                size="small"
-                onClick={() => {
-                  axios["get"](`/game?name=${data.game}&action=${type}`).then(
-                    (res) => {
-                      const allIcons = res.data[0][type];
-                      const filteredIcons = allIcons.filter(
-                        (icon) =>
-                          !exisitingData?.some(
-                            (excluded) => excluded.name === icon.name
-                          )
-                      );
-                      setIcons(filteredIcons);
-                    }
-                  );
-                  setOpenIconEdit(true);
-                }}
-              >
+              <IconButton size="small" onClick={handleOpenEdit}>
                 <EditRoundedIcon fontSize="small" />
               </IconButton>
               <CustomDialog

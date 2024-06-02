@@ -226,7 +226,7 @@ const columns = [
   },
 ];
 
-export default function ShinyTable() {
+export default function Table() {
   const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);

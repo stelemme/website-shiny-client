@@ -1,35 +1,88 @@
-import { useState, useEffect } from "react";
 import axios from "axios";
+import { useSetRecoilState } from "recoil";
+import { alertOpen, alertSeverity, alertMessage } from "../utils/atoms";
 
-axios.defaults.baseURL = process.env.REACT_APP_PUBLIC_BACKEND;
+export const useMakeRequest = () => {
+  const setAlertOpen = useSetRecoilState(alertOpen);
+  const setAlertSeverity = useSetRecoilState(alertSeverity);
+  const setAlertMessage = useSetRecoilState(alertMessage);
 
-export default function useAxios({
-  url,
-  method,
-  body = null,
-  headers = null,
-}) {
-  const [response, setResponse] = useState(null);
-  const [error, setError] = useState("");
-  const [loading, setloading] = useState(true);
+  const makeRequest = async (method, url, data = null, action = "request", silence = false) => {
+    console.log(data ? data : "No data.");
 
+    try {
+      const config = {
+        method,
+        maxBodyLength: Infinity,
+        url,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        ...(data && { data: JSON.stringify(data) }),
+      };
 
-  const fetchData = () => {
-    axios[method](url, JSON.parse(headers), JSON.parse(body))
-      .then((res) => {
-        setResponse(res.data);
-      })
-      .catch((err) => {
-        setError(err);
-      })
-      .finally(() => {
-        setloading(false);
-      });
+      const response = await axios.request(config);
+
+      console.log(response);
+
+      if (!response.data && method !== "delete") {
+        throw new Error("Empty response data");
+      }
+
+      if (!silence) {
+        if (method === "delete") {
+          setAlertMessage("The delete was successful!");
+        } else {
+          setAlertMessage(`The ${action} was successful!`);
+        }
+
+        setAlertSeverity("success");
+        setAlertOpen(true);
+      }
+
+      return response.data;
+    } catch (error) {
+      console.error(error);
+
+      setAlertMessage(error.message || "Request failed");
+      setAlertSeverity("error");
+      setAlertOpen(true);
+
+      throw new Error(error.message || "Request failed");
+    }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, [method, url, body, headers]);
+  return makeRequest;
+};
 
-  return { response, error, loading };
-}
+export const useGetRequest = () => {
+  const setAlertOpen = useSetRecoilState(alertOpen);
+  const setAlertSeverity = useSetRecoilState(alertSeverity);
+  const setAlertMessage = useSetRecoilState(alertMessage);
+
+  const getRequest = async (url, params = null) => {
+    console.log("GET-request pending to: ", url);
+
+    try {
+      const response = await axios.get(url, params);
+
+      if (!response.data) {
+        throw new Error("Empty response data");
+      }
+
+      console.log("Request successful!");
+
+      return response.data;
+    } catch (error) {
+      console.error(error);
+
+      setAlertMessage(error.message || "Get Request failed");
+      setAlertSeverity("error");
+      setAlertOpen(true);
+
+      throw new Error(error.message || "Get Request failed");
+    }
+  };
+
+  return getRequest;
+};

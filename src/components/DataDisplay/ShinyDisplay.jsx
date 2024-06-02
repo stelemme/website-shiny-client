@@ -1,7 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import "../../scenes/stats/map.css";
 
 // Mui
 import {
@@ -32,12 +30,17 @@ import IconsDisplay from "./IconsDisplay";
 
 // Hooks
 import { useAuth } from "../../hooks/useAuth";
+import { useMakeRequest, useGetRequest } from "../../hooks/useAxios";
 
-export default function CompleteShinyCard({ data, refetch }) {
+export default function CompleteShinyCard({ data: initialData, refetch }) {
   const { username } = useAuth();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
+  const makeRequest = useMakeRequest();
+  const getRequest = useGetRequest();
+
+  const [data, setData] = useState(initialData);
   const [openDelete, setOpenDelete] = useState(false);
   const [openEvolutionEdit, setOpenEvolutionEdit] = useState(false);
   const [evolutions, setEvolutions] = useState(undefined);
@@ -45,58 +48,75 @@ export default function CompleteShinyCard({ data, refetch }) {
   const [forms, setForms] = useState(undefined);
   const [formsEdit, setFormsEdit] = useState([]);
 
-  console.log(data);
+  useEffect(() => {
+    setData(initialData);
+  }, [initialData]);
 
   /* DELETE THE SHINY */
-  const handleDeleteClick = () => {
-    axios["delete"](`/shiny/${data._id}`)
-      .then((res) => {
-        navigate("/shiny");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const handleDeleteClick = async () => {
+    try {
+      await makeRequest("delete", `/shiny/${data._id}`);
+      navigate("/shiny");
+    } catch {
+      return;
+    }
   };
 
   /* EDIT THE SHINY */
-  const handleEvolutionsEdit = () => {
-    let evolutionData = JSON.stringify({
+  const handleEvolutionsEdit = async () => {
+    let evolutionData = {
       evolutions: evolutionsEdit,
       forms: formsEdit,
-    });
-
-    let config = {
-      method: "patch",
-      maxBodyLength: Infinity,
-      url: `/shiny/${data._id}?action=evolutionsEdit`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: evolutionData,
     };
 
-    axios
-      .request(config)
-      .then((res) => {
-        refetch();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    try {
+      const res = await makeRequest(
+        "patch",
+        `/shiny/${data._id}?action=evolutionsEdit`,
+        evolutionData,
+        "edit"
+      );
 
-    setOpenEvolutionEdit(false);
-    setEvolutionsEdit([]);
-    setFormsEdit([]);
+      setData(res);
+      setOpenEvolutionEdit(false);
+      setEvolutionsEdit([]);
+      setFormsEdit([]);
+    } catch (error) {
+      return;
+    }
+  };
+
+  /* GET THE EVOLUTIONS & FORMS */
+  const handleEvolutionOpen = async () => {
+    try {
+      const response = await getRequest(
+        `/pokedex?name=${data.name}&evolutions=true&game=${data.game}`
+      );
+      setEvolutions(response.evolutions);
+      setForms(response.forms);
+      setOpenEvolutionEdit(true);
+    } catch {
+      return;
+    }
   };
 
   const CheckboxDisplay = ({ data, name, state, setState }) => {
-    if (!data || data.length === 0) {
+    if (!data) {
       return (
         <Grid item xs={12}>
           <Typography variant="h5" fontWeight="bold">
             {name}
           </Typography>
-          <Typography>{`No ${name} Found`}</Typography>
+          <Typography mt="9px" mb="19px">{`Loading ...`}</Typography>
+        </Grid>
+      );
+    } else if (Array.isArray(data) && data.length === 0) {
+      return (
+        <Grid item xs={12}>
+          <Typography variant="h5" fontWeight="bold">
+            {name}
+          </Typography>
+          <Typography mt="9px" mb="19px">{`No ${name} Found`}</Typography>
         </Grid>
       );
     } else {
@@ -153,18 +173,7 @@ export default function CompleteShinyCard({ data, refetch }) {
             </Typography>
             <Box ml="10px" display="flex">
               {username === data.trainer && (
-                <IconButton
-                  size="small"
-                  onClick={() => {
-                    axios["get"](
-                      `/pokedex?name=${data.name}&evolutions=true&game=${data.game}`
-                    ).then((res) => {
-                      setEvolutions(res.data.evolutions);
-                      setForms(res.data.forms);
-                    });
-                    setOpenEvolutionEdit(true);
-                  }}
-                >
+                <IconButton size="small" onClick={handleEvolutionOpen}>
                   <FileUploadIcon />
                 </IconButton>
               )}
@@ -301,7 +310,7 @@ export default function CompleteShinyCard({ data, refetch }) {
             )}
 
             {/* RIBBONS */}
-            {(username === data.trainer || data?.specs) &&
+            {(username === data.trainer || data?.ribbons) &&
               parseInt(data.gen.slice(-2).trim()) > 2 && (
                 <Grid item xs={12}>
                   <IconsDisplay
@@ -315,7 +324,7 @@ export default function CompleteShinyCard({ data, refetch }) {
               )}
 
             {/* MARKS */}
-            {(username === data.trainer || data?.specs) &&
+            {(username === data.trainer || data?.marks) &&
               parseInt(data.gen.slice(-2).trim()) > 7 && (
                 <Grid item xs={12}>
                   <IconsDisplay

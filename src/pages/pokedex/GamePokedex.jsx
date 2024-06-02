@@ -10,7 +10,7 @@ import PokedexCard from "../../components/Cards/PokedexCard";
 //Hooks
 import { usePokedex, useGame } from "../../hooks/useData";
 
-export default function GameId() {
+export default function GamePokedex() {
   const { gameId } = useParams();
 
   const { isLoading: pokedexLoading, data: pokedex } =

@@ -1,18 +1,18 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useSetRecoilState } from "recoil";
+import { alertOpen, alertSeverity, alertMessage } from "../../utils/atoms";
 
 // Mui
-import { Box, Button, Grid, Alert } from "@mui/material";
+import { Box, Button, Grid } from "@mui/material";
 
 // Components
 import Header from "../../components/Header";
-import RadarGroupForm from "../../components/Forms/RadarGroupForm";
 import RadarForm from "../../components/Forms/RadarForm";
 import LetsGoForm from "../../components/Forms/LetsGoForm";
 import SosForm from "../../components/Forms/SosForm";
-import LaForm from "../../components/Forms/LaForm";
 import WormholeForm from "../../components/Forms/WormholeForm";
+import LaForm from "../../components/Forms/LaForm";
 import SvForm from "../../components/Forms/SvForm";
 import SvOutbreakForm from "../../components/Forms/SvOutbreakForm";
 import GameForm from "../../components/Forms/GameForm";
@@ -22,13 +22,11 @@ import LocationsForm from "../../components/Forms/LocationForm";
 import ShinyCharmForm from "../../components/Forms/ShinyCharmForm";
 import MethodForm from "../../components/Forms/MethodForm";
 import SubMethodForm from "../../components/Forms/SubMethodForm";
-import BallForm from "../../components/Forms/BallForm";
-import NatureForm from "../../components/Forms/NatureForm";
 import LevelForm from "../../components/Forms/LevelForm";
 import GeoLocationForm from "../../components/Forms/GeoLocationForm";
 import StartDateForm from "../../components/Forms/StartDateForm";
 import EndDateForm from "../../components/Forms/EndDateForm";
-import NicknameForm from "../../components/Forms/NicknameForm";
+import FailForm from "../../components/Forms/FailForm";
 
 // Functions
 import {
@@ -39,23 +37,23 @@ import methodHunts from "../../functions/methodHunts";
 
 // Hooks
 import { useAuth } from "../../hooks/useAuth";
+import { useMakeRequest } from "../../hooks/useAxios";
 
-export default function CreateShiny() {
+export default function CreateDeadShiny() {
   const { username } = useAuth();
   const navigate = useNavigate();
   const navigateRef = useRef(navigate);
+  const makeRequest = useMakeRequest();
+
+  const setAlertOpen = useSetRecoilState(alertOpen);
+  const setAlertSeverity = useSetRecoilState(alertSeverity);
+  const setAlertMessage = useSetRecoilState(alertMessage);
 
   let initialLocationState = {
     name: "",
     displayName: "",
     position: [],
   };
-
-  const initialAlert = {
-    severity: undefined,
-    message: undefined,
-  };
-  const initialAlertRef = useRef(initialAlert);
 
   let initialState = {
     trainer: username,
@@ -69,9 +67,6 @@ export default function CreateShiny() {
     },
     startDate: null,
     endDate: new Date(),
-    evolutions: [],
-    forms: [],
-    nickname: "",
     geoLocation: initialLocationState,
     level: null,
     gender: "genderless",
@@ -83,16 +78,9 @@ export default function CreateShiny() {
   const [methodsList, setMethodsList] = useState(undefined);
   const [methodCatList, setMethodCatList] = useState(undefined);
   const [pokemonsList, setPokemonsList] = useState(undefined);
-  const [ballList, setBallList] = useState(undefined);
-  const [ballCheck, setBallCheck] = useState(false);
-  const [natureCheck, setNatureCheck] = useState(false);
-  const [groupList, setGroupList] = useState(undefined);
 
   const [clearMethod, setClearMethod] = useState("method");
   const [genderCheck, setGenderCheck] = useState(false);
-
-  const [alert, setAlert] = useState(initialAlert);
-  const [alertSkip, setAlertSkip] = useState(false);
 
   console.log(data);
 
@@ -108,64 +96,47 @@ export default function CreateShiny() {
       if (data.method.group) {
         setData((prevState) => {
           delete prevState.stats;
-          delete prevState.ball;
-          delete prevState.sprite.ball;
-          delete prevState.nature;
           return {
             ...prevState,
             ...{
               gender: genderCheck ? undefined : prevState.gender,
-              nickname: "",
             },
           };
         });
-        setBallCheck((prevState) => !prevState);
-        setNatureCheck((prevState) => !prevState);
-        setAlert({
-          severity: "success",
-          message:
-            "The shiny is succesfully added to the site. You can now add another one to the group.",
-        });
-        setAlertSkip(true);
       } else {
-        navigateRef.current(`/shiny/${id}`);
+        navigateRef.current(`/shiny/dead/${id}`);
       }
     };
 
-    if (data.stats) {
-      axios
-        .post(`/shiny`, data)
-        .then((res) => {
-          console.log(res.data);
-          endFunction(res.data._id);
-        })
-        .catch((err) => {
-          setAlert({
-            severity: "error",
-            message: "Something went wrong. Refresh the site and try again.",
-          });
-          console.log(err);
-        });
-    } else if (!alertSkip) {
-      setAlert(initialAlertRef);
-    } else {
-      setAlertSkip(false);
-    }
+    const handleSubmit = async () => {
+      if (!data.stats) {
+        return;
+      }
+
+      try {
+        const response = await makeRequest(
+          "post",
+          `/deadshiny`,
+          data,
+          "creation"
+        );
+        endFunction(response._id);
+      } catch {
+        return;
+      }
+    };
+
+    handleSubmit()
   }, [data, genderCheck]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    setAlert({
-      severity: "info",
-      message: "Loading...",
-    });
+    setAlertSeverity("info")
+    setAlertMessage("Loading...")
+    setAlertOpen(true)
 
-    if (
-      data.geoLocation.name !== "" &&
-      data.geoLocation.displayName !== "" &&
-      data.gender
-    ) {
+    if (data.geoLocation.name !== "" && data.geoLocation.displayName !== "") {
       const newStats = {
         probability: calculateProb(
           data.method.odds,
@@ -294,31 +265,13 @@ export default function CreateShiny() {
           stats: newStats,
         }));
       }
-    } else if (!data.gender) {
-      setAlert({
-        severity: "warning",
-        message: "You forgot to fill in the gender.",
-      });
     } else if (
       data.geoLocation.name === "" &&
       data.geoLocation.displayName === ""
     ) {
-      setAlert({
-        severity: "warning",
-        message: "You forgot to fill in the geo location.",
-      });
-    }
-  };
-
-  const alertDisplay = () => {
-    if (alert.severity) {
-      return (
-        <Alert variant="filled" severity={alert.severity}>
-          {alert.message}
-        </Alert>
-      );
-    } else {
-      return null;
+      setAlertSeverity("warning")
+      setAlertMessage("You forgot to fill in the geo location.")
+      setAlertOpen(true)
     }
   };
 
@@ -328,8 +281,8 @@ export default function CreateShiny() {
         {/* HEADER */}
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Header
-            title="ADD A NEW SHINY"
-            subtitle="Here you can add a new shiny pokémon."
+            title="ADD A FALLEN SHINY"
+            subtitle="Here you can add a fallen shiny pokémon."
           />
         </Box>
 
@@ -346,7 +299,6 @@ export default function CreateShiny() {
             setMethodCatList={setMethodCatList}
             setLocationsList={setLocationsList}
             setClearMethod={setClearMethod}
-            setBallList={setBallList}
           />
 
           {/* POKEMONS */}
@@ -377,7 +329,6 @@ export default function CreateShiny() {
             setData={setData}
             methodsList={methodsList}
             setMethodCatList={setMethodCatList}
-            setGroupList={setGroupList}
             clearMethod={clearMethod}
           />
 
@@ -427,20 +378,10 @@ export default function CreateShiny() {
           ) : null}
 
           <Grid container spacing={"10px"}>
-            {/* BALL */}
-            <Grid item xs={6}>
-              <BallForm
-                setData={setData}
-                ballList={ballList}
-                ballCheck={ballCheck}
-              />
+            {/* FAIL METHOD */}
+            <Grid item xs={12}>
+              <FailForm setData={setData} />
             </Grid>
-
-            {/* NATURE */}
-            <Grid item xs={6}>
-              <NatureForm setData={setData} natureCheck={natureCheck} />
-            </Grid>
-
             {/* LEVEL */}
             <Grid item xs={12}>
               <LevelForm data={data} setData={setData} />
@@ -460,19 +401,6 @@ export default function CreateShiny() {
           {/* END DATE */}
           <EndDateForm data={data} setData={setData} />
 
-          {/* NICKNAME */}
-          <NicknameForm data={data} setData={setData} />
-
-          {data.method.function === "pokeradar-gen4" ? (
-            <RadarGroupForm
-              data={data}
-              setData={setData}
-              groupList={groupList}
-              setGroupList={setGroupList}
-              username={username}
-            />
-          ) : null}
-
           {/* SUBMIT */}
           <Button
             type="submit"
@@ -485,7 +413,6 @@ export default function CreateShiny() {
             Submit
           </Button>
         </form>
-        {alertDisplay()}
       </Box>
     </Box>
   );

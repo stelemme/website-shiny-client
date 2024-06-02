@@ -6,7 +6,7 @@ import CompleteShinyCard from "../../components/DataDisplay/ShinyDisplay";
 // Hooks
 import { useShinyId, useShiny } from "../../hooks/useData";
 
-export default function ShinyId() {
+export default function Shiny() {
   const { shinyId } = useParams();
 
   const { data: shiny, refetch } = useShinyId(shinyId);

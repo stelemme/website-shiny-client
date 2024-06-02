@@ -13,7 +13,7 @@ export default function GenderForm({ data, setData, genderCheck }) {
       <FormLabel focused={false}>Gender</FormLabel>
       <RadioGroup
         row
-        value={data.gender}
+        value={data.gender ? data.gender : ""}
         onChange={(e) => {
           setData((prevState) => {
             return {

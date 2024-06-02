@@ -1,8 +1,9 @@
 import { useState } from "react";
-import axios from "axios";
+import { useSetRecoilState } from "recoil";
+import { alertOpen, alertSeverity, alertMessage } from "../../utils/atoms";
 
 // Mui
-import { Box, Typography, IconButton, Grid, Alert } from "@mui/material";
+import { Box, Typography, IconButton, Grid } from "@mui/material";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 
 // Components
@@ -17,15 +18,29 @@ import LocationsForm from "../Forms/LocationForm";
 import BallForm from "../Forms/BallForm";
 import SubMethodForm from "../Forms/SubMethodForm";
 
-export default function InfoDisplay({ data: initialData, username, refetch }) {
+// Hooks
+import { useMakeRequest, useGetRequest } from "../../hooks/useAxios";
+
+export default function InfoDisplay({
+  data: initialData,
+  username,
+  refetch,
+  isDead = false,
+}) {
+  const makeRequest = useMakeRequest();
+  const getRequest = useGetRequest();
+
   const [data, setData] = useState(initialData);
   const [openEdit, setOpenEdit] = useState(false);
-  const [collection, setCollection] = useState("Nickname");
+  const [collection, setCollection] = useState("Level");
   const [genderCheck, setGenderCheck] = useState(false);
   const [locationsList, setLocationsList] = useState([]);
   const [ballList, setBallList] = useState([]);
   const [methodCatList, setMethodCatList] = useState([]);
-  const [alertShown, setAlertShown] = useState(false);
+
+  const setAlertOpen = useSetRecoilState(alertOpen);
+  const setAlertSeverity = useSetRecoilState(alertSeverity);
+  const setAlertMessage = useSetRecoilState(alertMessage);
 
   let initialState = {
     endDate: new Date(),
@@ -58,92 +73,101 @@ export default function InfoDisplay({ data: initialData, username, refetch }) {
     "Date Caught": <EndDateForm data={editData} setData={setEditData} />,
   };
 
-  const handleChange = (e) => {
+  const collectionComponentsDead = {
+    Gender: (
+      <GenderForm
+        data={editData}
+        setData={setEditData}
+        genderCheck={genderCheck}
+      />
+    ),
+    Level: <LevelForm data={editData} setData={setEditData} />,
+    "Method Category": (
+      <SubMethodForm
+        data={editData}
+        setData={setEditData}
+        methodCatList={methodCatList}
+      />
+    ),
+    Location: (
+      <LocationsForm setData={setEditData} locationsList={locationsList} />
+    ),
+    "Date Failed": <EndDateForm data={editData} setData={setEditData} />,
+  };
+
+  const handleChange = async (e) => {
     setCollection(e.target.value);
     setEditData({});
 
     if (e.target.value === "Gender") {
-      axios
-        .get(`/pokedex?name=${data.name}`)
-        .then((res) => {
-          const pokemonData = res.data[0];
+      try {
+        const response = await getRequest(`/pokedex?name=${data.name}`);
+        const pokemonData = response[0];
 
-          if (
-            pokemonData.gender === "100:0" ||
-            pokemonData.gender === "0:100" ||
-            pokemonData.gender === "Genderless"
-          ) {
-            setGenderCheck(false);
-          } else {
-            setGenderCheck(true);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        if (
+          pokemonData.gender === "100:0" ||
+          pokemonData.gender === "0:100" ||
+          pokemonData.gender === "Genderless"
+        ) {
+          setGenderCheck(false);
+        } else {
+          setGenderCheck(true);
+        }
+      } catch {
+        return;
+      }
     } else if (e.target.value === "Location") {
-      axios
-        .get(`/game?name=${data.game}`)
-        .then((res) => {
-          setLocationsList(res.data[0].locations);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      try {
+        const response = await getRequest(`/game?name=${data.game}`);
+        setLocationsList(response[0].locations);
+      } catch {
+        return;
+      }
     } else if (e.target.value === "Ball") {
-      axios
-        .get(`/game?name=${data.game}`)
-        .then((res) => {
-          setBallList(res.data[0].balls);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      try {
+        const response = await getRequest(`/game?name=${data.game}`);
+        setBallList(response[0].balls);
+      } catch {
+        return;
+      }
     } else if (e.target.value === "Method Category") {
-      axios
-        .get(`/game?name=${data.game}`)
-        .then((res) => {
-          const method = res.data[0].methods.find(
-            (method) => method.name === data.method.name
-          );
-          setMethodCatList(method.categories);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else if (e.target.value === "Date Caught") {
+      try {
+        const response = await getRequest(`/game?name=${data.game}`);
+        const method = response[0].methods.find(
+          (method) => method.name === data.method.name
+        );
+        setMethodCatList(method.categories);
+      } catch {
+        return;
+      }
+    } else if (
+      e.target.value === "Date Caught" ||
+      e.target.value === "Date Failed"
+    ) {
       setEditData(initialState);
     }
   };
 
   /* EDIT THE VALUE */
-  const handleEdit = () => {
-    if (Object.keys(editData).length !== 0) {
-      setAlertShown(false);
-      let editPatchData = JSON.stringify(editData);
+  const handleEdit = async () => {
+    if (Object.keys(editData).length === 0) {
+      setAlertMessage("The data is not filled in.");
+      setAlertSeverity("error");
+      setAlertOpen(true);
+      return;
+    }
 
-      let config = {
-        method: "patch",
-        maxBodyLength: Infinity,
-        url: `/shiny/${data._id}?editByString=${collection}`,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: editPatchData,
-      };
+    const url = !isDead
+      ? `/shiny/${data._id}?editByString=${collection}`
+      : `/deadshiny/${data._id}?editByString=${collection}`;
 
-      axios
-        .request(config)
-        .then((res) => {
-          setData(res.data);
-          setOpenEdit(false);
-          refetch();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } else {
-      setAlertShown(true);
+    try {
+      const response = await makeRequest("patch", url, editData, "edit");
+      setData(response);
+      setOpenEdit(false);
+      refetch();
+    } catch (error) {
+      return;
     }
   };
 
@@ -165,18 +189,6 @@ export default function InfoDisplay({ data: initialData, username, refetch }) {
         </Grid>
       </Grid>
     );
-  };
-
-  const alertDisplay = () => {
-    if (alertShown) {
-      return (
-        <Alert variant="filled" severity={"warning"}>
-          The data is not filled in.
-        </Alert>
-      );
-    } else {
-      return null;
-    }
   };
 
   return (
@@ -212,17 +224,20 @@ export default function InfoDisplay({ data: initialData, username, refetch }) {
                       <GeneralSelect
                         label={"Collections"}
                         handleChange={handleChange}
-                        list={Object.keys(collectionComponents)}
+                        list={
+                          isDead
+                            ? Object.keys(collectionComponentsDead)
+                            : Object.keys(collectionComponents)
+                        }
                         value={collection}
                         width={"100%"}
                         size={"normal"}
                       />
                     </Grid>
                     <Grid item xs={12}>
-                      {collectionComponents[collection]}
-                    </Grid>
-                    <Grid item xs={12}>
-                      {alertDisplay()}
+                      {isDead
+                        ? collectionComponentsDead[collection]
+                        : collectionComponents[collection]}
                     </Grid>
                   </Grid>
                 }
@@ -235,7 +250,7 @@ export default function InfoDisplay({ data: initialData, username, refetch }) {
       <Grid item xs={6}>
         <InfoDict infoCat={"Dex No."} infoName={`#${data?.pokedexNo}`} />
         <InfoDict infoCat={"Pokémon"} infoName={data?.name} />
-        <InfoDict infoCat={"Nature"} infoName={data?.nature} />
+        {!isDead && <InfoDict infoCat={"Nature"} infoName={data?.nature} />}
         <InfoDict
           infoCat={"Gender"}
           infoName={
@@ -247,10 +262,12 @@ export default function InfoDisplay({ data: initialData, username, refetch }) {
           }
         />
         <InfoDict infoCat={"Level"} infoName={`lvl. ${data?.level}`} />
-        <InfoDict
-          infoCat={"Nickname"}
-          infoName={data?.nickname ? data?.nickname : "-"}
-        />
+        {!isDead && (
+          <InfoDict
+            infoCat={"Nickname"}
+            infoName={data?.nickname ? data?.nickname : "-"}
+          />
+        )}
       </Grid>
       <Grid item xs={6}>
         <InfoDict
@@ -266,7 +283,7 @@ export default function InfoDisplay({ data: initialData, username, refetch }) {
           infoName={data?.stats.percentage ? `${data?.stats.percentage}%` : "-"}
         />
         <InfoDict
-          infoCat={"Date Caught"}
+          infoCat={!isDead ? "Date Caught" : "Date Failed"}
           infoName={new Date(data?.endDate).toLocaleDateString("nl-BE")}
         />
       </Grid>

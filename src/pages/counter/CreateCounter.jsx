@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 // Mui
 import { Box, Button, Grid } from "@mui/material";
@@ -18,10 +17,12 @@ import ThresholdForm from "../../components/Forms/ThresholdForm";
 
 // Hooks
 import { useAuth } from "../../hooks/useAuth";
+import { useMakeRequest } from "../../hooks/useAxios";
 
-export default function CreateCounters() {
+export default function CreateCounter() {
   const { username } = useAuth();
   const navigate = useNavigate();
+  const makeRequest = useMakeRequest();
 
   const initialState = {
     trainer: username,
@@ -54,17 +55,15 @@ export default function CreateCounters() {
     });
   }, [username]);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    axios["post"](`/counters`, data)
-      .then((res) => {
-        console.log(res.data);
-        navigate(`/counters/${res.data._id}`);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    try {
+      const response = await makeRequest("post", `/counters`, data, "creation");
+      navigate(`/counters/${response._id}`);
+    } catch {
+      return;
+    }
   };
 
   return (

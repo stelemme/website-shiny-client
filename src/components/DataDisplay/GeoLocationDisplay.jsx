@@ -1,5 +1,6 @@
 import { useState } from "react";
-import axios from "axios";
+import { useSetRecoilState } from "recoil";
+import { alertOpen, alertSeverity, alertMessage } from "../../utils/atoms";
 
 // Mui
 import { Box, Typography, IconButton, Grid, useTheme } from "@mui/material";
@@ -8,51 +9,70 @@ import EditRoundedIcon from "@mui/icons-material/EditRounded";
 
 // leaflet imports
 import L from "leaflet";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 
 // Components
 import GeoLocationForm from "../Forms/GeoLocationForm";
 import CustomDialog from "../Dialogs/CustomDialog";
 
-export default function GeoLocationDisplay({ data, username, refetch }) {
+// Hooks
+import { useMakeRequest } from "../../hooks/useAxios";
+
+export default function GeoLocationDisplay({
+  data: initialData,
+  username,
+  refetch,
+  isDead = false,
+}) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const makeRequest = useMakeRequest();
+
+  const [data, setData] = useState(initialData);
   const [openGeoLocationEdit, setOpenGeoLocationEdit] = useState(false);
   const [geoLocationData, setGeoLocationData] = useState({});
 
+  const setAlertOpen = useSetRecoilState(alertOpen);
+  const setAlertSeverity = useSetRecoilState(alertSeverity);
+  const setAlertMessage = useSetRecoilState(alertMessage);
+
   /* EDIT THE GEOLOCATION */
-  const handleGeoLocationEdit = () => {
-    let fetchData = false;
+  const handleGeoLocationEdit = async () => {
     if (
-      geoLocationData.geoLocation.name !== "" &&
-      geoLocationData.geoLocation.displayName !== ""
+      !geoLocationData.geoLocation?.name ||
+      !geoLocationData.geoLocation?.displayName
     ) {
-      fetchData = JSON.stringify(geoLocationData.geoLocation);
+      setAlertSeverity("error");
+      setAlertMessage("Data is not filled in correctly.");
+      setAlertOpen(true);
+      return;
     }
 
-    if (fetchData) {
-      let config = {
-        method: "patch",
-        maxBodyLength: Infinity,
-        url: `/shiny/${data._id}?action=geoLocationsEdit`,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: fetchData,
-      };
+    const url = !isDead
+      ? `/shiny/${data._id}?action=geoLocationsEdit`
+      : `/deadshiny/${data._id}?action=geoLocationsEdit`;
 
-      axios
-        .request(config)
-        .then((response) => {
-          console.log(JSON.stringify(response.data));
-          refetch();
-          setOpenGeoLocationEdit(false);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    try {
+      const response = await makeRequest(
+        "patch",
+        url,
+        geoLocationData.geoLocation,
+        "edit"
+      );
+
+      setData(response);
+      refetch();
+      setOpenGeoLocationEdit(false);
+    } catch (error) {
+      return;
     }
   };
+
+  function ChangeView({ center, zoom }) {
+    const map = useMap();
+    map.setView(center, zoom);
+    return null;
+  }
 
   return (
     <Grid item xs={12} container spacing={2}>
@@ -80,10 +100,12 @@ export default function GeoLocationDisplay({ data, username, refetch }) {
                 handleClose={() => setOpenGeoLocationEdit(false)}
                 title={"Edit the Geo Location"}
                 content={
-                  <GeoLocationForm
-                    data={geoLocationData}
-                    setData={setGeoLocationData}
-                  />
+                  <>
+                    <GeoLocationForm
+                      data={geoLocationData}
+                      setData={setGeoLocationData}
+                    />
+                  </>
                 }
                 action={"Edit"}
               />
@@ -103,6 +125,7 @@ export default function GeoLocationDisplay({ data, username, refetch }) {
             doubleClickZoom={false}
             style={{ height: "200px", width: "100%", zIndex: 1 }}
           >
+            <ChangeView center={data.geoLocation.position} zoom={16} />
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               detectRetina={true}

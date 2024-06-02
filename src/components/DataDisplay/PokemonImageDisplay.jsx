@@ -15,7 +15,7 @@ export default function ImageDisplay({data}) {
               e.target.src = `https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-all-home/${data.sprite.pokemon}.png`;
             }}
           />
-          <img
+          {data.ball && <img
             alt=""
             src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/balls/pixel/${data.sprite.ball}.png`}
             style={{
@@ -25,7 +25,7 @@ export default function ImageDisplay({data}) {
               left: 0,
               width: "30px",
             }}
-          />
+          />}
         </div>
       </Grid>
       <Grid item xs={6}>
