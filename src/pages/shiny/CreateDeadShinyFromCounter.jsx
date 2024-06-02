@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
 
 // Mui
 import { Box, Button, Grid } from "@mui/material";
@@ -27,10 +26,15 @@ import {
   calculateDateDifference,
 } from "../../functions/statFunctions";
 
+// Hooks
+import { useMakeRequest, useGetRequest } from "../../hooks/useAxios";
+
 export default function CreateDeadShinyFromCounter() {
   const { counterDeadId } = useParams();
   const navigate = useNavigate();
   const navigateRef = useRef(navigate);
+  const makeRequest = useMakeRequest();
+  const getRequest = useGetRequest();
 
   let initialLocationState = {
     name: "",
@@ -60,75 +64,49 @@ export default function CreateDeadShinyFromCounter() {
   const [pokemonsList, setPokemonsList] = useState(undefined);
   const [locationsList, setLocationsList] = useState(undefined);
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     const fetchCounterData = async () => {
       try {
-        const res = await axios.get(`/counters/${counterDeadId}`);
-        res.data.startDate = new Date(res.data.startDate);
-        res.data.endDate = new Date(res.data.endDate);
+        const response = await getRequest(`/counters/${counterDeadId}`);
+        response.startDate = new Date(response.startDate);
+        response.endDate = new Date(response.endDate);
 
         setData((prevState) => {
           return {
             ...prevState,
-            ...res.data,
+            ...response,
           };
         });
 
-        axios["get"](`/pokedex?name=${res.data.name}`)
-          .then((res) => {
-            if (res.data[0].gender === "100:0") {
-              setData((prevState) => {
-                return {
-                  ...prevState,
-                  ...{
-                    gender: "male",
-                  },
-                };
-              });
-            } else if (res.data[0].gender === "0:100") {
-              setData((prevState) => {
-                return {
-                  ...prevState,
-                  ...{
-                    gender: "female",
-                  },
-                };
-              });
-            } else if (res.data[0].gender === "Genderless") {
-              setData((prevState) => {
-                return {
-                  ...prevState,
-                  ...{
-                    gender: "genderless",
-                  },
-                };
-              });
-            } else {
-              setGenderCheck(true);
-              setData((prevState) => {
-                return {
-                  ...prevState,
-                  ...{
-                    gender: undefined,
-                  },
-                };
-              });
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        const response2 = await getRequest(`/pokedex?name=${response.name}`);
 
-        axios["get"](`/game?name=${res.data.game}`)
-          .then((res) => {
-            setPokemonsList(res.data[0].pokemons);
-            setLocationsList(res.data[0].locations);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      } catch (error) {
-        console.error(error);
+        let gender = undefined;
+        if (response2.gender === "100:0") {
+          gender = "male";
+        } else if (response2.gender === "0:100") {
+          gender = "female";
+        } else if (response2.gender === "Genderless") {
+          gender = "genderless";
+        } else {
+          setGenderCheck(true);
+        }
+
+        setData((prevState) => {
+          return {
+            ...prevState,
+            ...{
+              gender: gender,
+            },
+          };
+        });
+
+        const response3 = await getRequest(`/game?name=${response.game}`);
+
+        setPokemonsList(response3[0].pokemons);
+        setLocationsList(response3[0].locations);
+      } catch {
+        return;
       }
     };
     if (counterDeadId) {
@@ -137,24 +115,23 @@ export default function CreateDeadShinyFromCounter() {
   }, [counterDeadId]);
 
   useEffect(() => {
-    const endFunction = (id) => {
-      navigateRef.current(`/shiny/dead/${id}`);
+    const handleDefSubmit = async () => {
+      if (!data.stats) {
+        return;
+      }
+
+      const response = await makeRequest(
+        "post",
+        `/deadshiny`,
+        data,
+        "creation"
+      );
+
+      await makeRequest("delete", `/counters/${counterDeadId}`);
+      navigateRef.current(`/shiny/dead/${response._id}`);
     };
 
-    if (data.stats) {
-      axios
-        .post(`/deadshiny`, data)
-        .then((res) => {
-          console.log("test", res.data);
-          axios["delete"](`/counters/${counterDeadId}`).catch((err) => {
-            console.log(err);
-          });
-          endFunction(res.data._id);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+    handleDefSubmit();
   }, [data, counterDeadId]);
 
   console.log(data);

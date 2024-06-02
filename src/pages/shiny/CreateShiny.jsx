@@ -1,9 +1,10 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useSetRecoilState } from "recoil";
+import { alertOpen, alertSeverity, alertMessage } from "../../utils/atoms";
 
 // Mui
-import { Box, Button, Grid, Alert } from "@mui/material";
+import { Box, Button, Grid } from "@mui/material";
 
 // Components
 import Header from "../../components/Header";
@@ -39,23 +40,23 @@ import methodHunts from "../../functions/methodHunts";
 
 // Hooks
 import { useAuth } from "../../hooks/useAuth";
+import { useMakeRequest } from "../../hooks/useAxios";
 
 export default function CreateShiny() {
   const { username } = useAuth();
   const navigate = useNavigate();
   const navigateRef = useRef(navigate);
+  const makeRequest = useMakeRequest();
+
+  const setAlertOpen = useSetRecoilState(alertOpen);
+  const setAlertSeverity = useSetRecoilState(alertSeverity);
+  const setAlertMessage = useSetRecoilState(alertMessage);
 
   let initialLocationState = {
     name: "",
     displayName: "",
     position: [],
   };
-
-  const initialAlert = {
-    severity: undefined,
-    message: undefined,
-  };
-  const initialAlertRef = useRef(initialAlert);
 
   let initialState = {
     trainer: username,
@@ -91,9 +92,6 @@ export default function CreateShiny() {
   const [clearMethod, setClearMethod] = useState("method");
   const [genderCheck, setGenderCheck] = useState(false);
 
-  const [alert, setAlert] = useState(initialAlert);
-  const [alertSkip, setAlertSkip] = useState(false);
-
   console.log(data);
 
   useEffect(() => {
@@ -121,45 +119,29 @@ export default function CreateShiny() {
         });
         setBallCheck((prevState) => !prevState);
         setNatureCheck((prevState) => !prevState);
-        setAlert({
-          severity: "success",
-          message:
-            "The shiny is succesfully added to the site. You can now add another one to the group.",
-        });
-        setAlertSkip(true);
       } else {
         navigateRef.current(`/shiny/${id}`);
       }
     };
 
-    if (data.stats) {
-      axios
-        .post(`/shiny`, data)
-        .then((res) => {
-          console.log(res.data);
-          endFunction(res.data._id);
-        })
-        .catch((err) => {
-          setAlert({
-            severity: "error",
-            message: "Something went wrong. Refresh the site and try again.",
-          });
-          console.log(err);
-        });
-    } else if (!alertSkip) {
-      setAlert(initialAlertRef);
-    } else {
-      setAlertSkip(false);
-    }
+    const handleSubmit = async () => {
+      if (!data.stats) {
+        return;
+      }
+
+      const response = await makeRequest("post", `/shiny`, data, "creation");
+      endFunction(response._id);
+    };
+
+    handleSubmit();
   }, [data, genderCheck]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    setAlert({
-      severity: "info",
-      message: "Loading...",
-    });
+    setAlertSeverity("info");
+    setAlertMessage("Loading...");
+    setAlertOpen(true);
 
     if (
       data.geoLocation.name !== "" &&
@@ -295,30 +277,16 @@ export default function CreateShiny() {
         }));
       }
     } else if (!data.gender) {
-      setAlert({
-        severity: "warning",
-        message: "You forgot to fill in the gender.",
-      });
+      setAlertSeverity("warning");
+      setAlertMessage("You forgot to fill in the gender.");
+      setAlertOpen(true);
     } else if (
       data.geoLocation.name === "" &&
       data.geoLocation.displayName === ""
     ) {
-      setAlert({
-        severity: "warning",
-        message: "You forgot to fill in the geo location.",
-      });
-    }
-  };
-
-  const alertDisplay = () => {
-    if (alert.severity) {
-      return (
-        <Alert variant="filled" severity={alert.severity}>
-          {alert.message}
-        </Alert>
-      );
-    } else {
-      return null;
+      setAlertSeverity("warning");
+      setAlertMessage("You forgot to fill in the geo location.");
+      setAlertOpen(true);
     }
   };
 
@@ -485,7 +453,6 @@ export default function CreateShiny() {
             Submit
           </Button>
         </form>
-        {alertDisplay()}
       </Box>
     </Box>
   );
