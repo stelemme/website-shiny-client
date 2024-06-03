@@ -53,7 +53,7 @@ export default function CountersPercentageLeaderboard() {
 
           updatedDefCounterStats.push({
             trainer: item.trainer,
-            data: calculateMultiplePercentage(response.data),
+            data: calculateMultiplePercentage(response),
           });
         } catch (error) {
           return
