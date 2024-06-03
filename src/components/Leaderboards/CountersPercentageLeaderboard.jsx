@@ -68,7 +68,7 @@ export default function CountersPercentageLeaderboard() {
           },
         });
 
-        setTotalCounterStats(response.data);
+        setTotalCounterStats(response);
       } catch (error) {
         return
       }
