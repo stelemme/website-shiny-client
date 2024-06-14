@@ -2,6 +2,14 @@
 
 ## Changelogs
 
+### Version 1.11.3 (15.06.2024)
+
+**Bug Fix:**
+- Error komt niet meer bij het openen van een completed counter.
+- Witte loading background bij het openen van app is nu zelfde achtergrondkleur als de site.
+
+---
+
 ### Version 1.11.2 (02.06.2024)
 
 **Error handling:**
