@@ -97,7 +97,7 @@ export default function Counter() {
   useEffect(() => {
     const completedValue = searchParams.get("completed");
     setCompleted(completedValue);
-    if (completed) {
+    if (searchParams.get("completed") === "true") {
       const fetchCounterData = async () => {
         try {
           const response = await getRequest(`/shiny/${counterId}`);
@@ -107,7 +107,7 @@ export default function Counter() {
         }
       };
       fetchCounterData();
-    } else {
+    } else if (!searchParams.get("completed")) {
       const fetchCounterData = async () => {
         try {
           const response = await getRequest(`/counters/${counterId}`);
