@@ -5,6 +5,13 @@
 ### Version 1.11.3 (15.06.2024)
 
 **Bug Fix:**
+- Laoding error in backend gefixt.
+
+---
+
+### Version 1.11.3 (15.06.2024)
+
+**Bug Fix:**
 - Error komt niet meer bij het openen van een completed counter.
 - Witte loading background bij het openen van app is nu zelfde achtergrondkleur als de site.
 
