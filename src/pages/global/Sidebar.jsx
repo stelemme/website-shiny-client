@@ -14,19 +14,15 @@ import CalculateOutlinedIcon from "@mui/icons-material/CalculateOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import LibraryAddOutlinedIcon from "@mui/icons-material/LibraryAddOutlined";
 import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone";
-import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
-import TableChartOutlinedIcon from '@mui/icons-material/TableChartOutlined';
-import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
-import AssessmentIcon from '@mui/icons-material/Assessment';
-import FactCheckOutlinedIcon from '@mui/icons-material/FactCheckOutlined';
-import PermIdentityRoundedIcon from '@mui/icons-material/PermIdentityRounded';
-import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
-import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
-import PermMediaOutlinedIcon from '@mui/icons-material/PermMediaOutlined';
-import LocalHospitalSharpIcon from '@mui/icons-material/LocalHospitalSharp';
-
-// Hooks
-import { useAuth } from "../../hooks/useAuth";
+import AutoAwesomeOutlinedIcon from "@mui/icons-material/AutoAwesomeOutlined";
+import TableChartOutlinedIcon from "@mui/icons-material/TableChartOutlined";
+import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
+import AssessmentIcon from "@mui/icons-material/Assessment";
+import FactCheckOutlinedIcon from "@mui/icons-material/FactCheckOutlined";
+import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
+import PermMediaOutlinedIcon from "@mui/icons-material/PermMediaOutlined";
+import LocalHospitalSharpIcon from "@mui/icons-material/LocalHospitalSharp";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -58,7 +54,6 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 };
 
 export default function CustomSidebar() {
-  const { username } = useAuth();
   const domains = {
     "": "Home",
     shiny: "Shiny Pokémon",
@@ -100,8 +95,8 @@ export default function CustomSidebar() {
       backgroundColor={colors.primary[400]}
       rootStyles={{
         borderWidth: "0px",
-        position: 'fixed',
-        height: '100%',
+        position: "fixed",
+        height: "100%",
       }}
     >
       <Menu iconShape="square" menuItemStyles={menuItemStyles}>
@@ -261,27 +256,6 @@ export default function CustomSidebar() {
           color={colors.grey[300]}
           sx={{ m: "15px 0 5px 20px" }}
         >
-          {isCollapsed ? "Info" : "Information"}
-        </Typography>
-        <Item
-          title="User Settings"
-          to={`/user/${username}`}
-          icon={<PermIdentityRoundedIcon />}
-          selected={selected}
-          setSelected={setSelected}
-        />
-        <Item
-          title="Changelogs"
-          to="/changelogs"
-          icon={<ArticleOutlinedIcon />}
-          selected={selected}
-          setSelected={setSelected}
-        />
-        <Typography
-          variant="h6"
-          color={colors.grey[300]}
-          sx={{ m: "15px 0 5px 20px" }}
-        >
           {isCollapsed ? "RIP" : "Rest in Peace"}
         </Typography>
         <Item
@@ -295,6 +269,20 @@ export default function CustomSidebar() {
           title="Add a Dead Shiny"
           to="/shiny/dead/create"
           icon={<LibraryAddOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Typography
+          variant="h6"
+          color={colors.grey[300]}
+          sx={{ m: "15px 0 5px 20px" }}
+        >
+          {isCollapsed ? "Info" : "Information"}
+        </Typography>
+        <Item
+          title="Changelogs"
+          to="/changelogs"
+          icon={<ArticleOutlinedIcon />}
           selected={selected}
           setSelected={setSelected}
         />

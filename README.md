@@ -2,6 +2,25 @@
 
 ## Changelogs
 
+### Version 1.12.0 (24.06.2024)
+
+**Sidebar:**
+- Herordering van sidebar.
+
+**Topbar:**
+- User information kan nu vanaf hier worden aangeklikt ipv in de sidebar.
+
+**Cookies:**
+- Worden nu in real time aangepast dus refresh na het veranderen van bv. shiny group cookie is niet meer nodig.
+
+**Search:**
+- Bij het zoeken naar shinies wordt er maar 1 shiny meer getoont per groep.
+
+**Bug Fix:**
+- Threshold kan nu ook worden aangepast bij completed counters.
+
+---
+
 ### Version 1.11.4 (16.06.2024)
 
 **Bug Fix:**

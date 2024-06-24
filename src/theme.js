@@ -1,6 +1,6 @@
 import { createContext, useState, useMemo } from "react";
 import { createTheme } from "@mui/material/styles"
-import Cookies from "js-cookie"
+import { useCookies } from 'react-cookie';
 
 // color design tokens
 export const tokens = (mode) => ({
@@ -280,14 +280,17 @@ export const ColorModeContext = createContext({
 });
 
 export const useMode = () => {
-  const [mode, setMode] = useState(Cookies.get("theme") ? Cookies.get("theme") : "dark");
+  const [cookies, setCookies] = useCookies(["theme", "password"]);
 
+  const [mode, setMode] = useState(cookies.theme ? cookies.theme : "dark");
+
+  /* eslint-disable react-hooks/exhaustive-deps */
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
         setMode((prev) => (prev === "light" ? "dark" : "light"))
-        const themeCookie = Cookies.get("theme")
-        Cookies.set("theme", themeCookie === "light" ? "dark" : "light")
+        const themeCookie = cookies.theme
+        setCookies("theme", themeCookie === "light" ? "dark" : "light")
       },
     }),
     []

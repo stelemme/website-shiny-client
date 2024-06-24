@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Cookies from "js-cookie";
+import { useCookies } from "react-cookie";
 
 // mui imports
 import {
@@ -30,6 +30,11 @@ export default function User() {
   const { trainer } = useParams();
   const { username } = useAuth();
   const [trainerChoice, setTrainerChoice] = useState(trainer);
+  const [cookies, setCookies] = useCookies([
+    "groupShinies",
+    "gameSpriteDisplay",
+    "evolutionSpriteDisplay",
+  ]);
 
   const imageCheck = {
     Joaquin: "kwakquin",
@@ -38,22 +43,10 @@ export default function User() {
     Stef: "t-loc",
   };
 
-  const groupShinies = Cookies.get("groupShinies")
-    ? Cookies.get("groupShinies")
-    : false;
-
-  const gameSpriteDisplay = Cookies.get("gameSpriteDisplay")
-    ? Cookies.get("gameSpriteDisplay")
-    : false;
-
-  const evolutionSpriteDisplay = Cookies.get("evolutionSpriteDisplay")
-    ? Cookies.get("evolutionSpriteDisplay")
-    : false;
-
-  const [groupCheck, setGroupCheck] = useState(groupShinies === "true");
-  const [spriteCheck, setSpriteCheck] = useState(gameSpriteDisplay === "true");
+  const [groupCheck, setGroupCheck] = useState(cookies.groupShinies);
+  const [spriteCheck, setSpriteCheck] = useState(cookies.gameSpriteDisplay);
   const [evolutionSpriteCheck, setEvolutionSpriteCheck] = useState(
-    evolutionSpriteDisplay === "true"
+    cookies.evolutionSpriteDisplay
   );
   const [trainerCheck, setTrainerCheck] = useState(trainerChoice !== username);
 
@@ -65,19 +58,19 @@ export default function User() {
 
   const handleGroupChange = (e) => {
     setGroupCheck(e.target.checked);
-    Cookies.set("groupShinies", e.target.checked, { expires: foreverDate });
+    setCookies("groupShinies", e.target.checked, { expires: foreverDate });
   };
 
   const handleSpriteChange = (e) => {
     setSpriteCheck(e.target.checked);
-    Cookies.set("gameSpriteDisplay", e.target.checked, {
+    setCookies("gameSpriteDisplay", e.target.checked, {
       expires: foreverDate,
     });
   };
 
   const handleEvolutionSpriteChange = (e) => {
     setEvolutionSpriteCheck(e.target.checked);
-    Cookies.set("evolutionSpriteDisplay", e.target.checked, {
+    setCookies("evolutionSpriteDisplay", e.target.checked, {
       expires: foreverDate,
     });
   };

@@ -1,15 +1,8 @@
 import { useQuery } from "react-query";
 import axios from "axios";
-import Cookies from "js-cookie";
+import { useCookies } from "react-cookie";
 
-/* ALL SHINY DATA */
-const groupShinies = Cookies.get("groupShinies")
-  ? Cookies.get("groupShinies")
-  : false;
-
-const groupCheck = groupShinies === "true";
-
-const fetchShinies = (query) => {
+const fetchShinies = (query, groupCheck) => {
   if (groupCheck) {
     return axios.get(`/shiny?groupShinies=true&${query}`);
   } else {
@@ -18,10 +11,12 @@ const fetchShinies = (query) => {
 };
 
 export const useShiny = (query) => {
-  return useQuery(["shinies", query], () => fetchShinies(query));
+  const [cookies] = useCookies(["groupShinies"]);
+
+  return useQuery(["shinies", query], () => fetchShinies(query, cookies.groupShinies));
 };
 
-const fetchDeadShinies = (query) => {
+const fetchDeadShinies = (query, groupCheck) => {
   if (groupCheck) {
     return axios.get(`/deadshiny?groupShinies=true&${query}`);
   } else {
@@ -30,10 +25,11 @@ const fetchDeadShinies = (query) => {
 };
 
 export const useDeadShiny = (query) => {
-  return useQuery(["deadshinies", query], () => fetchDeadShinies(query));
+  const [cookies] = useCookies(["groupShinies"]);
+
+  return useQuery(["deadshinies", query], () => fetchDeadShinies(query, cookies.groupCheck));
 };
 
-/* INDIVIDUAL SHINY DATA */
 const fetchShiny = (shinyId) => {
   return axios.get(`/shiny/${shinyId}?action=noEncounters`);
 };
@@ -41,8 +37,7 @@ const fetchShiny = (shinyId) => {
 export const useShinyId = (shinyId) => {
   return useQuery(["shiny", shinyId], () => fetchShiny(shinyId));
 };
- 
-/* INDIVIDUAL DEAD SHINY DATA */
+
 const fetchDeadShiny = (shinyId) => {
   return axios.get(`/deadshiny/${shinyId}?action=noEncounters`);
 };
@@ -51,7 +46,6 @@ export const useDeadShinyId = (shinyId) => {
   return useQuery(["deadshiny", shinyId], () => fetchDeadShiny(shinyId));
 };
 
-/* ALL COUNTER DATA */
 const fetchCounters = (query) => {
   return axios.get(`/counters${query}`);
 };
@@ -62,7 +56,6 @@ export const useCounter = (query, dependency = true) => {
   });
 };
 
-/* ALL USER DATA */
 const fetchUsers = (query) => {
   return axios.get(`/user${query}`);
 };
@@ -71,7 +64,6 @@ export const useUser = (query) => {
   return useQuery(["users", query], () => fetchUsers(query));
 };
 
-/* ALL GAME DATA */
 const fetchGames = (query) => {
   return axios.get(`/game${query}`);
 };
@@ -82,7 +74,6 @@ export const useGame = (query, dependency = true) => {
   });
 };
 
-/* ALL POKEDEX DATA */
 const fetchPokedex = (query) => {
   return axios.get(`/pokedex${query}`);
 };

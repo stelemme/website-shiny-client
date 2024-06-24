@@ -1,4 +1,4 @@
-import Cookies from "js-cookie";
+import { useCookies } from "react-cookie";
 
 // Mui
 import { Box, Dialog, DialogTitle, DialogContent } from "@mui/material";
@@ -14,19 +14,16 @@ export default function SortMenu({
   cookieGen,
   options,
 }) {
-  const trainerFilter = Cookies.get(cookieTrainer)
-    ? Cookies.get(cookieTrainer)
-    : "All";
-  const genFilter = Cookies.get(cookieGen) ? Cookies.get(cookieGen) : "All";
+  const [cookies, setCookies] = useCookies([cookieTrainer, cookieGen]);
 
   const foreverDate = new Date('9999-12-31T23:59:59');
   const handleTrainerChange = (e) => {
-    Cookies.set(cookieTrainer, e.target.value, { expires: foreverDate });
+    setCookies(cookieTrainer, e.target.value, { expires: foreverDate });
     setOpen(false);
   };
 
   const handleGenChange = (e) => {
-    Cookies.set(cookieGen, e.target.value, { expires: foreverDate });
+    setCookies(cookieGen, e.target.value, { expires: foreverDate });
     setOpen(false);
   };
 
@@ -40,7 +37,7 @@ export default function SortMenu({
             label="User"
             handleChange={handleTrainerChange}
             width={180}
-            defaultValue={trainerFilter}
+            defaultValue={cookies[cookieTrainer]}
           />
         </Box>}
         {options.includes("gen") && <Box mt="15px">
@@ -49,7 +46,7 @@ export default function SortMenu({
             label="Generation"
             handleChange={handleGenChange}
             width={180}
-            defaultValue={genFilter}
+            defaultValue={cookies[cookieGen]}
           />
         </Box>}
       </DialogContent>

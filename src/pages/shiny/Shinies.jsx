@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Cookies from "js-cookie";
-import LazyLoad from 'react-lazyload';
+import { useCookies } from "react-cookie";
+import LazyLoad from "react-lazyload";
 
 // Mui
 import { Box, Typography, IconButton } from "@mui/material";
@@ -24,19 +24,12 @@ export default function Shinies() {
   const [anchorElSort, setAnchorElSort] = useState(null);
   const openSort = Boolean(anchorElSort);
   const [openFilter, setOpenFilter] = useState(false);
-
-  const shinySort = Cookies.get("shinySort")
-    ? Cookies.get("shinySort")
-    : "newest";
-  const shinyTrainerFilter = Cookies.get("shinyTrainerFilter")
-    ? Cookies.get("shinyTrainerFilter")
-    : "All";
-  const shinyGenFilter = Cookies.get("shinyGenFilter")
-    ? Cookies.get("shinyGenFilter")
-    : "All";
-  const evolutionSpriteDisplay = Cookies.get("evolutionSpriteDisplay")
-    ? Cookies.get("evolutionSpriteDisplay")
-    : false;
+  const [cookie] = useCookies([
+    "shinySort",
+    "shinyTrainerFilter",
+    "shinyGenFilter",
+    "evolutionSpriteDisplay",
+  ]);
 
   const { isLoading: shinyLoading, data: shinyData } =
     useShiny("preview=shiny");
@@ -51,13 +44,19 @@ export default function Shinies() {
     } else {
       return data?.reduce(function (filtered, item) {
         if (
-          (shinyTrainerFilter === "All" ||
-            item.trainer === shinyTrainerFilter) &&
-          (shinyGenFilter === "All" || item.gen === shinyGenFilter)
+          (cookie.shinyTrainerFilter === "All" ||
+            item.trainer === cookie.shinyTrainerFilter) &&
+          (cookie.shinyGenFilter === "All" ||
+            item.gen === cookie.shinyGenFilter)
         ) {
           filtered.push(
-            <div style={{ marginBottom: window.innerWidth < 600 ? "10px" : "20px" }} key={item._id}>
-              {evolutionSpriteDisplay === "false" ? (
+            <div
+              style={{
+                marginBottom: window.innerWidth < 600 ? "10px" : "20px",
+              }}
+              key={item._id}
+            >
+              {cookie.evolutionSpriteDisplay === "false" ? (
                 <LazyLoad height={window.innerWidth < 600 ? 50 : 100}>
                   <ShinyCard
                     id={item._id}
@@ -96,7 +95,7 @@ export default function Shinies() {
   return (
     <Box
       maxWidth={
-        evolutionSpriteDisplay === "false"
+        cookie.evolutionSpriteDisplay === "false"
           ? { md: "630px", sm: "420px" }
           : { lg: "920px" }
       }
@@ -136,7 +135,7 @@ export default function Shinies() {
 
         {/* CARDS */}
         <ShinyDisplay
-          data={sortData(shinyData?.data, shinySort)}
+          data={sortData(shinyData?.data, cookie.shinySort)}
           loading={shinyLoading}
         />
       </Box>

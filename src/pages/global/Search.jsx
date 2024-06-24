@@ -1,5 +1,5 @@
 import { useSearchParams } from "react-router-dom";
-import { useState } from "react";
+import { useState, Fragment } from "react";
 
 // Mui
 import {
@@ -60,12 +60,18 @@ export default function Search() {
         </Typography>
       );
     } else {
-      return data?.map((item) => {
-        console.log(item);
+      const uniqueData = data?.reduce((acc, item) => {
+        if (!acc.some((el) => el.group === item.group)) {
+          acc.push(item);
+        }
+        return acc;
+      }, []);
+
+      return uniqueData?.map((item) => {
         return (
-          <>
+          <Fragment key={item._id}>
             {!countersSearch && (
-              <div key={item._id} style={{ marginBottom: "20px" }}>
+              <div style={{ marginBottom: "20px" }}>
                 <ShinyCard
                   id={item._id}
                   name={item.name}
@@ -77,7 +83,7 @@ export default function Search() {
               </div>
             )}
             {countersSearch && item.totalEncounters > 0 && (
-              <div key={item._id} style={{ marginBottom: "20px" }}>
+              <div style={{ marginBottom: "20px" }}>
                 <CounterCard
                   id={item._id}
                   name={item.name}
@@ -88,7 +94,7 @@ export default function Search() {
                 />
               </div>
             )}
-          </>
+          </Fragment>
         );
       });
     }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Cookies from "js-cookie";
+import { useCookies } from "react-cookie";
 
 // Mui
 import {
@@ -48,6 +48,7 @@ export default function Checklist() {
   const colors = tokens(theme.palette.mode);
   const [openGraph, setOpenGraph] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
+  const [cookie] = useCookies(["checklistGenFilter"]);
 
   const medalList = [
     medalImages["adventure-1-d.png"],
@@ -56,33 +57,29 @@ export default function Checklist() {
     medalImages["adventure-1-b.png"],
   ];
 
-  const checklistGenFilter = Cookies.get("checklistGenFilter")
-    ? Cookies.get("checklistGenFilter")
-    : "All";
-
-  const { data: pokedex } = usePokedex(`?gen=${checklistGenFilter}`);
+  const { data: pokedex } = usePokedex(`?gen=${cookie.checklistGenFilter}`);
 
   const { data: shinyListData } = useShiny(
-    `shinyList=true&gen=${checklistGenFilter}`
+    `shinyList=true&gen=${cookie.checklistGenFilter}`
   );
   const { data: shinyListJoaquinData } = useShiny(
-    `shinyList=true&trainer=Joaquin&gen=${checklistGenFilter}`
+    `shinyList=true&trainer=Joaquin&gen=${cookie.checklistGenFilter}`
   );
   const { data: shinyListKorneelData } = useShiny(
-    `shinyList=true&trainer=Korneel&gen=${checklistGenFilter}`
+    `shinyList=true&trainer=Korneel&gen=${cookie.checklistGenFilter}`
   );
   const { data: shinyListSimonData } = useShiny(
-    `shinyList=true&trainer=Simon&gen=${checklistGenFilter}`
+    `shinyList=true&trainer=Simon&gen=${cookie.checklistGenFilter}`
   );
   const { data: shinyListStefData } = useShiny(
-    `shinyList=true&trainer=Stef&gen=${checklistGenFilter}`
+    `shinyList=true&trainer=Stef&gen=${cookie.checklistGenFilter}`
   );
 
-  const shinyList = shinyListData?.data[0].names
-  const shinyListJoaquin = shinyListJoaquinData?.data[0]?.names
-  const shinyListKorneel = shinyListKorneelData?.data[0]?.names
-  const shinyListSimon = shinyListSimonData?.data[0]?.names
-  const shinyListStef = shinyListStefData?.data[0]?.names
+  const shinyList = shinyListData?.data[0].names;
+  const shinyListJoaquin = shinyListJoaquinData?.data[0]?.names;
+  const shinyListKorneel = shinyListKorneelData?.data[0]?.names;
+  const shinyListSimon = shinyListSimonData?.data[0]?.names;
+  const shinyListStef = shinyListStefData?.data[0]?.names;
 
   const graphData = [
     {
@@ -158,7 +155,7 @@ export default function Checklist() {
               fullWidth
             >
               <DialogTitle fontWeight={"bold"} variant="h4">
-                {`Checklist - ${checklistGenFilter} Pokémon`}
+                {`Checklist - ${cookie.checklistGenFilter} Pokémon`}
               </DialogTitle>
               <DialogContent>
                 <ResponsiveContainer

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Cookies from "js-cookie";
+import { useCookies } from "react-cookie";
 
 // Mui
 import { Box, Grid, Typography, IconButton } from "@mui/material";
@@ -25,19 +25,12 @@ export default function Counters() {
   const openSortCompleted = Boolean(anchorElCompleted);
   const [openFilterOngoing, setOpenFilterOngoing] = useState(false);
   const [openFilterCompleted, setOpenFilterCompleted] = useState(false);
-
-  const ongoingCounterSort = Cookies.get("ongoingCounterSort")
-    ? Cookies.get("ongoingCounterSort")
-    : "newest";
-  const completedCounterSort = Cookies.get("completedCounterSort")
-    ? Cookies.get("completedCounterSort")
-    : "newest";
-  const ongoingTrainerFilter = Cookies.get("ongoingTrainerFilter")
-    ? Cookies.get("ongoingTrainerFilter")
-    : "All";
-  const completedTrainerFilter = Cookies.get("completedTrainerFilter")
-    ? Cookies.get("completedTrainerFilter")
-    : "All";
+  const [cookie] = useCookies([
+    "ongoingCounterSort",
+    "completedCounterSort",
+    "ongoingTrainerFilter",
+    "completedTrainerFilter",
+  ]);
 
   const { isLoading: ongoingCountersLoading, data: ongoingCountersData } =
     useCounter("?preview=true");
@@ -126,11 +119,13 @@ export default function Counters() {
           <CountersDisplay
             data={sortData(
               ongoingCountersData?.data,
-              ongoingCounterSort
+              cookie.ongoingCounterSort
             )}
             loading={ongoingCountersLoading}
             isCompleted={false}
-            filter={ongoingTrainerFilter}
+            filter={
+              cookie.ongoingTrainerFilter ? cookie.ongoingTrainerFilter : "All"
+            }
           />
         </Grid>
         {/* COMPLETED CARDS */}
@@ -169,11 +164,11 @@ export default function Counters() {
           <CountersDisplay
             data={sortData(
               completedCountersData?.data,
-              completedCounterSort
+              cookie.completedCounterSort
             )}
             loading={completedCountersLoading}
             isCompleted={true}
-            filter={completedTrainerFilter}
+            filter={cookie.completedTrainerFilter}
           />
         </Grid>
       </Box>

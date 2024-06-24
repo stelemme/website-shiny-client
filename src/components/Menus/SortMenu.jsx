@@ -1,4 +1,4 @@
-import Cookies from "js-cookie"
+import { useCookies } from "react-cookie";
 
 // Mui
 import {
@@ -19,14 +19,15 @@ export default function SortMenu({
   cookie,
   options,
 }) {
-  const foreverDate = new Date('9999-12-31T23:59:59');
+  const [, setCookies] = useCookies([cookie]);
+  const foreverDate = new Date("9999-12-31T23:59:59");
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   const handleClick = (sortType) => () => {
-    Cookies.set(cookie, sortType, { expires: foreverDate })
+    setCookies(cookie, sortType, { expires: foreverDate });
     setAnchorEl(null);
   };
 
@@ -111,7 +112,7 @@ export default function SortMenu({
       )}
       {options.indexOf("abc") !== -1 && (
         <Box>
-          <Divider sx={{ mb: "10px"}}/>
+          <Divider sx={{ mb: "10px" }} />
           <MenuItem onClick={handleClick("abcAsc")}>
             <ListItemIcon>
               <ArrowUpwardIcon />
