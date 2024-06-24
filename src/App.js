@@ -35,9 +35,9 @@ import NotFoundPage from "./pages/global/NotFoundPage";
 import Search from "./pages/global/Search";
 import CustomSidebar from "./pages/global/Sidebar";
 import Topbar from "./pages/global/Topbar";
+import User from "./pages/global/User";
 // Info Pages
 import ChangeLog from "./pages/info/ChangeLog";
-import User from "./pages/info/User";
 // Pokedex Pages
 import GamePokedex from "./pages/pokedex/GamePokedex";
 import Pokédex from "./pages/pokedex/Pokedex";

@@ -376,11 +376,16 @@ export default function Counter() {
       lowerTimeThreshold: thresholdEdit.lowerTimeThreshold,
       upperTimeThreshold: thresholdEdit.upperTimeThreshold,
     };
+    let database = "counters";
+
+    if (searchParams.get("completed") === "true") {
+      database = "shiny";
+    }
 
     try {
       await makeRequest(
         "patch",
-        `/counters/${counterId}?action=thresholdEdit`,
+        `/${database}/${counterId}?action=thresholdEdit`,
         data,
         "edit"
       );
