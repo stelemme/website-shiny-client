@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Cookies from "js-cookie";
+import { useCookies } from "react-cookie";
 
 // mui imports
 import { Box, useTheme, Typography, Grid } from "@mui/material";
@@ -25,26 +25,23 @@ export default function CollectionCard({
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const foreverDate = new Date("9999-12-31T23:59:59");
+  const [cookies, setCookies] = useCookies(["collectionSelect"]);
 
   const [query, setQuery] = useState("");
 
   const { data: shinyData } = useShiny(`collection=${collectionStr}${query}`);
   const collectionData = shinyData?.data[0]?.collectionData;
 
-  const collectionSelect = Cookies.get("collectionSelect")
-    ? Cookies.get("collectionSelect")
-    : "All";
-
   useEffect(() => {
-    if (collectionSelect === "All") {
+    if (cookies.collectionSelect === "All") {
       setQuery("");
     } else {
-      setQuery(`&trainer=${collectionSelect}`);
+      setQuery(`&trainer=${cookies.collectionSelect}`);
     }
-  }, [collectionSelect]);
+  }, [cookies.collectionSelect]);
 
   const handleChange = (e) => {
-    Cookies.set("collectionSelect", e.target.value, { expires: foreverDate });
+    setCookies("collectionSelect", e.target.value, { expires: foreverDate });
     if (e.target.value === "All") {
       setQuery("");
     } else {
@@ -73,7 +70,7 @@ export default function CollectionCard({
         <UserSelect
           label={"User"}
           handleChange={handleChange}
-          defaultValue={collectionSelect}
+          defaultValue={cookies.collectionSelect}
         />
       </Box>
       <Grid container spacing={"12px"}>

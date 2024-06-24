@@ -12,6 +12,7 @@ import { useState, useEffect } from "react";
 import { QueryClientProvider, QueryClient } from "react-query";
 import axios from "axios";
 import "leaflet/dist/leaflet.css";
+import { CookiesProvider, useCookies } from "react-cookie";
 
 // Firebase imports
 import { onAuthStateChanged } from "firebase/auth";
@@ -183,12 +184,56 @@ function Layout() {
   const toggle = useRecoilValue(sidebarCollapse);
   const [collapse, setCollapse] = useState(false);
 
+  const [cookies, setCookie] = useCookies([
+    "checklistGenFilter",
+    "collectionSelect",
+    "completedCounterSort",
+    "completedTrainerFilter",
+    "evolutionSpriteDisplay",
+    "gameSprite",
+    "gameSpriteDisplay",
+    "groupShinies",
+    "ongoingCounterSort",
+    "ongoingTrainerFilter",
+    "shinyGenFilter",
+    "shinySort",
+    "shinyTrainerFilter",
+    "theme",
+  ]);
+
   const width = collapse
     ? "calc(100vw - 5px)"
     : toggle
     ? "calc(100vw - 100px)"
     : "calc(100vw - 260px)";
   const left = collapse ? "0px" : toggle ? "90px" : "250px";
+
+  useEffect(() => {
+    const foreverDate = new Date("9999-12-31T23:59:59");
+
+    const defaultCookies = {
+      checklistGenFilter: "All",
+      collectionSelect: "All",
+      completedCounterSort: "newest",
+      completedTrainerFilter: "All",
+      evolutionSpriteDisplay: "false",
+      gameSprite: "false",
+      gameSpriteDisplay: "false",
+      groupShinies: "false",
+      ongoingCounterSort: "newest",
+      ongoingTrainerFilter: "All",
+      shinyGenFilter: "All",
+      shinySort: "newest",
+      shinyTrainerFilter: "All",
+      theme: "dark",
+    };
+
+    for (const [key, value] of Object.entries(defaultCookies)) {
+      if (!cookies[key]) {
+        setCookie(key, value, { expires: foreverDate });
+      }
+    }
+  }, [cookies, setCookie]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -211,46 +256,48 @@ function Layout() {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
-          <CssBaseline />
-          <div
-            style={{
-              display: "flex",
-            }}
-          >
+          <CookiesProvider defaultSetOptions={{ path: "/" }}>
+            <CssBaseline />
             <div
               style={{
-                zIndex: 2000,
-              }}
-            >
-              <CustomSidebar />
-            </div>
-            <main
-              style={{
-                width: width,
-                position: "relative",
-                left: left,
-                top: "70px",
-                height: "100%",
+                display: "flex",
               }}
             >
               <div
                 style={{
-                  position: "fixed",
-                  top: 0,
-                  width: width,
-                  left: left,
-                  zIndex: 1000,
+                  zIndex: 2000,
                 }}
               >
-                <Topbar />
-                <CustomAlert/>
+                <CustomSidebar />
               </div>
-              <ScrollRestoration />
-              <ErrorBoundary FallbackComponent={ErrorPage}>
-                <Outlet />
-              </ErrorBoundary>
-            </main>
-          </div>
+              <main
+                style={{
+                  width: width,
+                  position: "relative",
+                  left: left,
+                  top: "70px",
+                  height: "100%",
+                }}
+              >
+                <div
+                  style={{
+                    position: "fixed",
+                    top: 0,
+                    width: width,
+                    left: left,
+                    zIndex: 1000,
+                  }}
+                >
+                  <Topbar />
+                  <CustomAlert />
+                </div>
+                <ScrollRestoration />
+                <ErrorBoundary FallbackComponent={ErrorPage}>
+                  <Outlet />
+                </ErrorBoundary>
+              </main>
+            </div>
+          </CookiesProvider>
         </QueryClientProvider>
       </ThemeProvider>
     </ColorModeContext.Provider>
