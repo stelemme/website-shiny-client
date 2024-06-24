@@ -34,8 +34,6 @@ export default function ShinyCardEvolutions({
   const navigate = useNavigate();
   const [cookies] = useCookies(['groupShinies', 'gameSpriteDisplay']);
 
-  console.log(cookies.gameSpriteDisplay)
-
   let trainerHeight = "100%";
   if (trainer) {
     trainerHeight = "50";

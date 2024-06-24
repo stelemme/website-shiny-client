@@ -18,8 +18,14 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import LogoutIcon from "@mui/icons-material/Logout";
+import LoginIcon from "@mui/icons-material/Login";
+
+// Hooks
+import { useAuth } from "../../hooks/useAuth";
 
 export default function Topbar() {
+  const { username } = useAuth();
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.up("sm"));
   const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.up("md"));
   const theme = useTheme();
@@ -32,9 +38,9 @@ export default function Topbar() {
     e.preventDefault();
 
     if (e.target.search.value) {
-      navigate(`/search?search=${e.target.search.value}`)
+      navigate(`/search?search=${e.target.search.value}`);
     } else {
-      navigate("/search")
+      navigate("/search");
     }
   };
 
@@ -87,9 +93,12 @@ export default function Topbar() {
         <IconButton onClick={() => navigate("/")}>
           <HomeOutlinedIcon />
         </IconButton>
-        
-        <IconButton onClick={() => navigate("/auth")}>
+
+        <IconButton onClick={() => navigate(`/user/${username}`)}>
           <PersonOutlinedIcon />
+        </IconButton>
+        <IconButton onClick={() => navigate("/auth")}>
+          {username ? <LogoutIcon /> : <LoginIcon />}
         </IconButton>
       </Box>
     </Box>
