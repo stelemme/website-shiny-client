@@ -61,7 +61,9 @@ export default function Search() {
       );
     } else {
       const uniqueData = data?.reduce((acc, item) => {
-        if (!acc.some((el) => el.group === item.group)) {
+        if (!item.group) {
+          acc.push(item);
+        } else if (!acc.some((el) => el.group === item.group)) {
           acc.push(item);
         }
         return acc;

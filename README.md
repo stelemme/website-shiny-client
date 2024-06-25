@@ -2,6 +2,13 @@
 
 ## Changelogs
 
+### Version 1.12.1 (25.06.2024)
+
+**Bug Fix:**
+- Search filtert nu geen meerdere null waardes.
+
+---
+
 ### Version 1.12.0 (24.06.2024)
 
 **Sidebar:**
