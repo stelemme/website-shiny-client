@@ -1,7 +1,10 @@
+import { useCookies } from "react-cookie";
 import "./map.css";
 
 // mui imports
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography, IconButton } from "@mui/material";
+import NoTransferIcon from "@mui/icons-material/NoTransfer";
+import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";
 
 // leaflet imports
 import L from "leaflet";
@@ -77,17 +80,20 @@ const createClusterCustomIcon = function (cluster) {
 };
 
 export default function Map() {
+  const [cookies, setCookies] = useCookies(["travelFilter"]);
+  const foreverDate = new Date("9999-12-31T23:59:59");
+
   const { data: joaquinLocationsData } = useShiny(
-    `geoMapLocations=true&trainer=Joaquin`
+    `geoMapLocations=true&trainer=Joaquin&travelFilter=${cookies.travelFilter}`
   );
   const { data: korneelLocationsData } = useShiny(
-    `geoMapLocations=true&trainer=Korneel`
+    `geoMapLocations=true&trainer=Korneel&travelFilter=${cookies.travelFilter}`
   );
   const { data: simonLocationsData } = useShiny(
-    `geoMapLocations=true&trainer=Simon`
+    `geoMapLocations=true&trainer=Simon&travelFilter=${cookies.travelFilter}`
   );
   const { data: stefLocationsData } = useShiny(
-    `geoMapLocations=true&trainer=Stef`
+    `geoMapLocations=true&trainer=Stef&travelFilter=${cookies.travelFilter}`
   );
 
   const joaquinLocations = joaquinLocationsData?.data;
@@ -104,6 +110,26 @@ export default function Map() {
             title="GEO LOCATION MAP"
             subtitle="On the map you can find all the location where shinies have been caught."
           />
+          <Box style={{ display: "flex", alignItems: "center" }}>
+            {!cookies.travelFilter && (
+              <IconButton
+                onClick={(e) =>
+                  setCookies("travelFilter", "true", { expires: foreverDate })
+                }
+              >
+                <NoTransferIcon />
+              </IconButton>
+            )}
+            {cookies.travelFilter && (
+              <IconButton
+                onClick={(e) =>
+                  setCookies("travelFilter", "false", { expires: foreverDate })
+                }
+              >
+                <DirectionsBusIcon />
+              </IconButton>
+            )}
+          </Box>
         </Box>
 
         <Grid container>

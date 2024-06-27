@@ -2,6 +2,13 @@
 
 ## Changelogs
 
+### Version 1.13.1 (27.06.2024)
+
+**Shiny Map:**
+- Er is een knop toegevoegd om shinies te filteren die tijdens het reizen zijn gevangen. Volgende woorden worden gefilterd: "Auto", "Bus", "Fiets", "Tram", "Trein", "Vliegtuig"
+
+---
+
 ### Version 1.12.1 (25.06.2024)
 
 **Bug Fix:**
