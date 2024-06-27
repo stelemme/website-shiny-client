@@ -83,16 +83,16 @@ export default function Map() {
   const [cookies, setCookies] = useCookies(["travelFilter"]);
   const foreverDate = new Date("9999-12-31T23:59:59");
 
-  const { data: joaquinLocationsData } = useShiny(
+  const { data: joaquinLocationsData, isLoading: loadingJoaquin } = useShiny(
     `geoMapLocations=true&trainer=Joaquin&travelFilter=${cookies.travelFilter}`
   );
-  const { data: korneelLocationsData } = useShiny(
+  const { data: korneelLocationsData, isLoading: loadingKorneel } = useShiny(
     `geoMapLocations=true&trainer=Korneel&travelFilter=${cookies.travelFilter}`
   );
-  const { data: simonLocationsData } = useShiny(
+  const { data: simonLocationsData, isLoading: loadingSimon } = useShiny(
     `geoMapLocations=true&trainer=Simon&travelFilter=${cookies.travelFilter}`
   );
-  const { data: stefLocationsData } = useShiny(
+  const { data: stefLocationsData, isLoading: loadingStef } = useShiny(
     `geoMapLocations=true&trainer=Stef&travelFilter=${cookies.travelFilter}`
   );
 
@@ -100,6 +100,9 @@ export default function Map() {
   const korneelLocations = korneelLocationsData?.data;
   const simonLocations = simonLocationsData?.data;
   const stefLocations = stefLocationsData?.data;
+
+  const loadingMarkers =
+    !loadingJoaquin && !loadingKorneel && !loadingSimon && !loadingStef;
 
   return (
     <Box mx="auto" my="20px">
@@ -143,127 +146,129 @@ export default function Map() {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 detectRetina={true}
               />
-              <MarkerClusterGroup
-                iconCreateFunction={createClusterCustomIcon}
-                maxClusterRadius={30}
-              >
-                {joaquinLocations?.map((location) => {
-                  return (
-                    <Marker
-                      key={location._id}
-                      alt="joaquin"
-                      position={location.geoLocation.position}
-                      icon={L.divIcon({
-                        html: `<div  class="donut-chart-container">
+              {loadingMarkers && (
+                <MarkerClusterGroup
+                  iconCreateFunction={createClusterCustomIcon}
+                  maxClusterRadius={30}
+                >
+                  {joaquinLocations?.map((location) => {
+                    return (
+                      <Marker
+                        key={location._id}
+                        alt="joaquin"
+                        position={location.geoLocation.position}
+                        icon={L.divIcon({
+                          html: `<div  class="donut-chart-container">
                                   <div class="donut-chart" style="--percentage1: 100%; --percentage2: 0%; --percentage3: 0%; --percentage4: 0%;"></div>
                                   <div class="donut-chart-center"></div>
                                 <div class="text">1</div>`,
-                        className: "marker_1",
-                        iconSize: L.point(20, 20, true),
-                      })}
-                    >
-                      <Popup>
-                        <Typography
-                          fontWeight="bold"
-                          style={{ marginBottom: 0 }}
-                        >
-                          {location.geoLocation.name}
-                        </Typography>
-                        <Typography gutterBottom style={{ marginTop: 0 }}>
-                          {location.trainer + " - " + location.name}
-                        </Typography>
-                      </Popup>
-                    </Marker>
-                  );
-                })}
-                {korneelLocations?.map((location) => {
-                  return (
-                    <Marker
-                      key={location._id}
-                      alt="korneel"
-                      position={location.geoLocation.position}
-                      icon={L.divIcon({
-                        html: `<div  class="donut-chart-container">
+                          className: "marker_1",
+                          iconSize: L.point(20, 20, true),
+                        })}
+                      >
+                        <Popup>
+                          <Typography
+                            fontWeight="bold"
+                            style={{ marginBottom: 0 }}
+                          >
+                            {location.geoLocation.name}
+                          </Typography>
+                          <Typography gutterBottom style={{ marginTop: 0 }}>
+                            {location.trainer + " - " + location.name}
+                          </Typography>
+                        </Popup>
+                      </Marker>
+                    );
+                  })}
+                  {korneelLocations?.map((location) => {
+                    return (
+                      <Marker
+                        key={location._id}
+                        alt="korneel"
+                        position={location.geoLocation.position}
+                        icon={L.divIcon({
+                          html: `<div  class="donut-chart-container">
                                   <div class="donut-chart" style="--percentage1: 0%; --percentage2: 100%; --percentage3: 0%; --percentage4: 0%;"></div>
                                   <div class="donut-chart-center"></div>
                                 <div class="text">1</div>`,
-                        className: "marker_1",
-                        iconSize: L.point(20, 20, true),
-                      })}
-                    >
-                      <Popup>
-                        <Typography
-                          fontWeight="bold"
-                          style={{ marginBottom: 0 }}
-                        >
-                          {location.geoLocation.name}
-                        </Typography>
-                        <Typography gutterBottom style={{ marginTop: 0 }}>
-                          {location.trainer + " - " + location.name}
-                        </Typography>
-                      </Popup>
-                    </Marker>
-                  );
-                })}
-                {simonLocations?.map((location) => {
-                  return (
-                    <Marker
-                      key={location._id}
-                      alt="simon"
-                      position={location.geoLocation.position}
-                      icon={L.divIcon({
-                        html: `<div  class="donut-chart-container">
+                          className: "marker_1",
+                          iconSize: L.point(20, 20, true),
+                        })}
+                      >
+                        <Popup>
+                          <Typography
+                            fontWeight="bold"
+                            style={{ marginBottom: 0 }}
+                          >
+                            {location.geoLocation.name}
+                          </Typography>
+                          <Typography gutterBottom style={{ marginTop: 0 }}>
+                            {location.trainer + " - " + location.name}
+                          </Typography>
+                        </Popup>
+                      </Marker>
+                    );
+                  })}
+                  {simonLocations?.map((location) => {
+                    return (
+                      <Marker
+                        key={location._id}
+                        alt="simon"
+                        position={location.geoLocation.position}
+                        icon={L.divIcon({
+                          html: `<div  class="donut-chart-container">
                                   <div class="donut-chart" style="--percentage1: 0%; --percentage2: 0%; --percentage3: 100%; --percentage4: 0%;"></div>
                                   <div class="donut-chart-center"></div>
                                 <div class="text">1</div>`,
-                        className: "marker_1",
-                        iconSize: L.point(20, 20, true),
-                      })}
-                    >
-                      <Popup>
-                        <Typography
-                          fontWeight="bold"
-                          style={{ marginBottom: 0 }}
-                        >
-                          {location.geoLocation.name}
-                        </Typography>
-                        <Typography gutterBottom style={{ marginTop: 0 }}>
-                          {location.trainer + " - " + location.name}
-                        </Typography>
-                      </Popup>
-                    </Marker>
-                  );
-                })}
-                {stefLocations?.map((location) => {
-                  return (
-                    <Marker
-                      key={location._id}
-                      alt="stef"
-                      position={location.geoLocation.position}
-                      icon={L.divIcon({
-                        html: `<div  class="donut-chart-container">
+                          className: "marker_1",
+                          iconSize: L.point(20, 20, true),
+                        })}
+                      >
+                        <Popup>
+                          <Typography
+                            fontWeight="bold"
+                            style={{ marginBottom: 0 }}
+                          >
+                            {location.geoLocation.name}
+                          </Typography>
+                          <Typography gutterBottom style={{ marginTop: 0 }}>
+                            {location.trainer + " - " + location.name}
+                          </Typography>
+                        </Popup>
+                      </Marker>
+                    );
+                  })}
+                  {stefLocations?.map((location) => {
+                    return (
+                      <Marker
+                        key={location._id}
+                        alt="stef"
+                        position={location.geoLocation.position}
+                        icon={L.divIcon({
+                          html: `<div  class="donut-chart-container">
                                   <div class="donut-chart" style="--percentage1: 0%; --percentage2: 0%; --percentage3: 0%; --percentage4: 100%;"></div>
                                   <div class="donut-chart-center"></div>
                                 <div class="text">1</div>`,
-                        className: "marker_1",
-                        iconSize: L.point(20, 20, true),
-                      })}
-                    >
-                      <Popup>
-                        <Typography
-                          fontWeight="bold"
-                          style={{ marginBottom: 0 }}
-                        >
-                          {location.geoLocation.name}
-                        </Typography>
-                        <Typography gutterBottom style={{ marginTop: 0 }}>
-                          {location.trainer + " - " + location.name}
-                        </Typography>
-                      </Popup>
-                    </Marker>
-                  );
-                })}
-              </MarkerClusterGroup>
+                          className: "marker_1",
+                          iconSize: L.point(20, 20, true),
+                        })}
+                      >
+                        <Popup>
+                          <Typography
+                            fontWeight="bold"
+                            style={{ marginBottom: 0 }}
+                          >
+                            {location.geoLocation.name}
+                          </Typography>
+                          <Typography gutterBottom style={{ marginTop: 0 }}>
+                            {location.trainer + " - " + location.name}
+                          </Typography>
+                        </Popup>
+                      </Marker>
+                    );
+                  })}
+                </MarkerClusterGroup>
+              )}
             </MapContainer>
           </Grid>
         </Grid>

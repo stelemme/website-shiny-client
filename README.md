@@ -6,6 +6,7 @@
 
 **Shiny Map:**
 - Er is een knop toegevoegd om shinies te filteren die tijdens het reizen zijn gevangen. Volgende woorden worden gefilterd: "Auto", "Bus", "Fiets", "Tram", "Trein", "Vliegtuig"
+- Markers worden pas getoont als alles geladen is, zodat er geen rare flikkering meer is de eerste seconde.
 
 ---
 
