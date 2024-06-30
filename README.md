@@ -8,8 +8,14 @@
 - Er is een knop toegevoegd om shinies te filteren die tijdens het reizen zijn gevangen. Volgende woorden worden gefilterd: "Auto", "Bus", "Fiets", "Tram", "Trein", "Vliegtuig"
 - Markers worden pas getoont als alles geladen is, zodat er geen rare flikkering meer is de eerste seconde.
 
+**Counter Graph:**
+- Aantal uur per dag gehunt kan nu bekeken worden in de graph.
+
+**Specs/Ribbons/Marks:**
+- Naam is nu zichtbaar bij het aanklikken van marks ribbons specs.
+
 **Bug Fix:**
-- Dubbele method category input field is nu veranderd door method en method catergory.
+- Dubbele method category input field bug, is nu veranderd door method en method catergory.
 
 ---
 

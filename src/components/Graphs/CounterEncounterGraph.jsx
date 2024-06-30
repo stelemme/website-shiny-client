@@ -19,7 +19,11 @@ import {
   getMaxEncounters,
 } from "../../functions/statFunctions";
 
-export default function CounterEncounterGraph({ data, trainer }) {
+export default function CounterEncounterGraph({
+  data,
+  trainer,
+  timeDifference,
+}) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -36,6 +40,29 @@ export default function CounterEncounterGraph({ data, trainer }) {
   }
 
   const encounterData = formatEncounterData(data?.encounters);
+  const maxEncounters = getMaxEncounters(encounterData)?.value;
+
+  const CustomToolTip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="custom-tooltip">
+          <p className="label">{`${new Date(label).toLocaleDateString()}`}</p>
+          <p
+            style={{ margin: 0, color: payload[0].color }}
+          >{`Encounters: ${payload[0].value}`}</p>
+          <p style={{ margin: 0, color: payload[0].color }}>{`Time: ${
+            timeDifference
+              ? new Date(timeDifference * 1000 * payload[0].value)
+                  .toISOString()
+                  .slice(11, 19)
+              : "Undefined"
+          }`}</p>
+        </div>
+      );
+    }
+
+    return null;
+  };
 
   return (
     <Box>
@@ -81,6 +108,8 @@ export default function CounterEncounterGraph({ data, trainer }) {
             labelFormatter={(value) => {
               return `${new Date(value).toLocaleDateString()}`;
             }}
+            payload={[{ time: "test" }]}
+            content={<CustomToolTip />}
           />
           <Bar dataKey="value" fill={color} maxBarSize={200} />
         </BarChart>
@@ -89,7 +118,7 @@ export default function CounterEncounterGraph({ data, trainer }) {
         <>
           <Typography fontWeight={"bold"}>Encounters Record</Typography>
           <Typography>
-            {getMaxEncounters(encounterData)?.value} on{" "}
+            {maxEncounters} on{" "}
             {new Date(getMaxEncounters(encounterData)?.date).toLocaleDateString(
               "en-BE",
               {
@@ -98,7 +127,14 @@ export default function CounterEncounterGraph({ data, trainer }) {
                 month: "long",
                 day: "numeric",
               }
-            )}
+            )}{" "}
+            (
+            {timeDifference
+              ? new Date(timeDifference * 1000 * maxEncounters)
+                  .toISOString()
+                  .slice(11, 19)
+              : "Undefined"}
+            )
           </Typography>
         </>
       )}
