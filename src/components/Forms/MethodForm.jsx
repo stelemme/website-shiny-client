@@ -180,9 +180,9 @@ export default function MethodForm({
         color="secondary"
         fullWidth
         disabled
-        value={data.method.category}
-        key={data.method.category}
-        label="Method Category"
+        value={data.method.name}
+        key={data.method.name}
+        label="Method"
       />
     );
   }

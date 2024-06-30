@@ -2,11 +2,14 @@
 
 ## Changelogs
 
-### Version 1.13.1 (27.06.2024)
+### Version 1.13.0 (30.06.2024)
 
 **Shiny Map:**
 - Er is een knop toegevoegd om shinies te filteren die tijdens het reizen zijn gevangen. Volgende woorden worden gefilterd: "Auto", "Bus", "Fiets", "Tram", "Trein", "Vliegtuig"
 - Markers worden pas getoont als alles geladen is, zodat er geen rare flikkering meer is de eerste seconde.
+
+**Bug Fix:**
+- Dubbele method category input field is nu veranderd door method en method catergory.
 
 ---
 
