@@ -24,6 +24,14 @@ import Eeveelutions from "../../components/Collections/Eeveelutions";
 import Unowns from "../../components/Collections/Unowns";
 import Flabebes from "../../components/Collections/Flabebes";
 import Vivillons from "../../components/Collections/Vivillons";
+import Marks from "../../components/Collections/Marks";
+import RibbonsGen3 from "../../components/Collections/RibbonsGen3";
+import RibbonsGen4 from "../../components/Collections/RibbonsGen4";
+import RibbonsGen5 from "../../components/Collections/RibbonsGen5";
+import RibbonsGen6 from "../../components/Collections/RibbonsGen6";
+import RibbonsGen7 from "../../components/Collections/RibbonsGen7";
+import RibbonsGen8 from "../../components/Collections/RibbonsGen8";
+import RibbonsGen9 from "../../components/Collections/RibbonsGen9";
 
 export default function Collections() {
   const [cookies, setCookie] = useCookies(["collectionSelect"]);
@@ -47,6 +55,14 @@ export default function Collections() {
     "Galarian Forms": Galarians,
     "Hisuian Forms": Hisuians,
     "_Paldean Forms": Paldeans,
+    "Ribbons (Gen3)": RibbonsGen3,
+    "Ribbons (Gen4)": RibbonsGen4,
+    "Ribbons (Gen5)": RibbonsGen5,
+    "Ribbons (Gen6)": RibbonsGen6,
+    "Ribbons (Gen7)": RibbonsGen7,
+    "Ribbons (Gen8)": RibbonsGen8,
+    "Ribbons (Gen9)": RibbonsGen9,
+    _Marks: Marks,
     Eeveelutions: Eeveelutions,
     Unowns: Unowns,
     Flabébés: Flabebes,

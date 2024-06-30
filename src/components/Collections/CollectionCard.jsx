@@ -21,6 +21,7 @@ export default function CollectionCard({
   xs,
   numbers = true,
   imgHeight = window.innerWidth < 600 ? 50 : 70,
+  additionalCollectionStr = null,
 }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -29,7 +30,11 @@ export default function CollectionCard({
 
   const [query, setQuery] = useState("");
 
-  const { data: shinyData } = useShiny(`collection=${collectionStr}${query}`);
+  const { data: shinyData } = useShiny(
+    `collection=${collectionStr}${query}${
+      additionalCollectionStr ? `&additionalStr=${additionalCollectionStr}` : ""
+    }`
+  );
   const collectionData = shinyData?.data[0]?.collectionData;
 
   useEffect(() => {
@@ -41,7 +46,9 @@ export default function CollectionCard({
   }, [cookies.collectionUserSelect]);
 
   const handleChange = (e) => {
-    setCookies("collectionUserSelect", e.target.value, { expires: foreverDate });
+    setCookies("collectionUserSelect", e.target.value, {
+      expires: foreverDate,
+    });
     if (e.target.value === "All") {
       setQuery("");
     } else {

@@ -27,6 +27,8 @@
     - Ultra Beasts
     - Past Paradox Pokémon
     - Future Paradox Pokémon
+    - Ribbons
+    - Marks
 
 **Bug Fix:**
 - Dubbele method category input field bug, is nu veranderd door method en method catergory.

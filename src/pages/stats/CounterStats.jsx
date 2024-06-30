@@ -27,10 +27,10 @@ export default function CounterStats() {
             <ConvertedEncLeaderBoard />
           </Grid>
           <Grid item xl={4} xs={12}>
-            <CountersAmountLeaderboard />
+            <CountersPercentageLeaderboard />
           </Grid>
           <Grid item xl={4} xs={12}>
-            <CountersPercentageLeaderboard />
+            <CountersAmountLeaderboard />
           </Grid>
         </Grid>
       </Box>
