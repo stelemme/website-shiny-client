@@ -139,6 +139,8 @@ export default function CustomSidebar() {
           selected={selected}
           setSelected={setSelected}
         />
+
+        {/* SHINY APPLICATION */}
         <Typography
           variant="h6"
           color={colors.grey[300]}
@@ -154,16 +156,9 @@ export default function CustomSidebar() {
           setSelected={setSelected}
         />
         <Item
-          title="Shiny Data Table"
-          to="/shiny/table"
-          icon={<TableChartOutlinedIcon />}
-          selected={selected}
-          setSelected={setSelected}
-        />
-        <Item
-          title="Shiny Checklist"
-          to="/shiny/checklist"
-          icon={<FactCheckOutlinedIcon />}
+          title="Shiny Stats"
+          to="/stats"
+          icon={<AssessmentOutlinedIcon />}
           selected={selected}
           setSelected={setSelected}
         />
@@ -174,6 +169,8 @@ export default function CustomSidebar() {
           selected={selected}
           setSelected={setSelected}
         />
+
+        {/* COUNTER APPLICATION */}
         <Typography
           variant="h6"
           color={colors.grey[300]}
@@ -189,33 +186,28 @@ export default function CustomSidebar() {
           setSelected={setSelected}
         />
         <Item
-          title="Add a Counter"
-          to="/counters/create"
-          icon={<LibraryAddOutlinedIcon />}
-          selected={selected}
-          setSelected={setSelected}
-        />
-        <Typography
-          variant="h6"
-          color={colors.grey[300]}
-          sx={{ m: "15px 0 5px 20px" }}
-        >
-          {isCollapsed ? "Stats" : "Statistics"}
-        </Typography>
-        <Item
-          title="Shiny Stats"
-          to="/stats"
-          icon={<AssessmentOutlinedIcon />}
-          selected={selected}
-          setSelected={setSelected}
-        />
-        <Item
           title="Counter Stats"
           to="/stats/counter"
           icon={<AssessmentIcon />}
           selected={selected}
           setSelected={setSelected}
         />
+        <Item
+          title="Add a Counter"
+          to="/counters/create"
+          icon={<LibraryAddOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+
+        {/* STATISTICS */}
+        <Typography
+          variant="h6"
+          color={colors.grey[300]}
+          sx={{ m: "15px 0 5px 20px" }}
+        >
+          {isCollapsed ? "Data" : "Data Sets"}
+        </Typography>
         <Item
           title="Shiny Map"
           to={`/map`}
@@ -227,6 +219,20 @@ export default function CustomSidebar() {
           title="Shiny Collections"
           to="/stats/collections"
           icon={<PermMediaOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Item
+          title="Shiny Checklist"
+          to="/shiny/checklist"
+          icon={<FactCheckOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Item
+          title="Shiny Data Table"
+          to="/shiny/table"
+          icon={<TableChartOutlinedIcon />}
           selected={selected}
           setSelected={setSelected}
         />

@@ -2,6 +2,41 @@
 
 ## Changelogs
 
+### Version 1.13.0 (30.06.2024)
+
+**Sidebar:**
+- Herverdeling van pagina's naar een volgens mij logischere opdeling.
+
+**Shiny Map:**
+- Er is een knop toegevoegd om shinies te filteren die tijdens het reizen zijn gevangen. Volgende woorden worden gefilterd: "Auto", "Bus", "Fiets", "Tram", "Trein", "Vliegtuig"
+- Markers worden pas getoont als alles geladen is, zodat er geen rare flikkering meer is de eerste seconde.
+
+**Counter Graph:**
+- Aantal uur per dag gehunt kan nu bekeken worden in de graph.
+
+**Specs/Ribbons/Marks:**
+- Naam is nu zichtbaar bij het aanklikken van marks ribbons specs.
+
+**Pokedex:**
+- Aangevuld tot SV DLC.
+
+**Collections:**
+- Volgende collections zijn toegevoegd:
+    - Legends
+    - Mythicals
+    - Ultra Beasts
+    - Past Paradox Pokémon
+    - Future Paradox Pokémon
+    - Ribbons
+    - Marks
+
+**Bug Fix:**
+- Dubbele method category input field bug, is nu veranderd door method en method catergory.
+- DexNav kan nu worden ingegeven zonder eerst een counter aan te maken.
+- Counter percentages zijn nu wel correct, ervoor zat hier nog een bug in da hij ook nog encounters van 2u voor de laatste shiny meetelde.
+
+---
+
 ### Version 1.12.1 (25.06.2024)
 
 **Bug Fix:**

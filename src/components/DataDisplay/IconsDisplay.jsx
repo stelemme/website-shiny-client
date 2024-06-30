@@ -8,6 +8,7 @@ import {
   Grid,
   Autocomplete,
   TextField,
+  Tooltip,
 } from "@mui/material";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
@@ -162,13 +163,18 @@ export default function IconsDisplay({
                 onMouseEnter={() => setHoveredItem(icon)}
                 onMouseLeave={() => setHoveredItem(null)}
               >
-                <img
-                  alt=""
-                  src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/${type}/${icon.sprite}.png`}
-                  width={"50px"}
+                <Tooltip
+                  placement="top"
                   title={icon.name}
-                  style={{ imageRendering: "pixelated" }}
-                />
+                  arrow
+                  open={hoveredItem === icon || false}
+                >
+                  <img
+                    alt=""
+                    src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/${type}/${icon.sprite}.png`}
+                    width={"50px"}
+                  />
+                </Tooltip>
                 {username === data.trainer && (
                   <IconButton
                     size="small"

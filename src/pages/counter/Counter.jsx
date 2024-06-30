@@ -1026,7 +1026,7 @@ export default function Counter() {
                     Encounter Graph
                   </DialogTitle>
                   <DialogContent width="100%">
-                    <CounterEncounterGraph data={data} trainer={data.trainer} />
+                    <CounterEncounterGraph data={data} trainer={data.trainer} timeDifference={timeDifference} />
                   </DialogContent>
                 </Dialog>
               </Box>

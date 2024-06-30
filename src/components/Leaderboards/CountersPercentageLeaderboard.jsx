@@ -26,7 +26,6 @@ export default function CountersPercentageLeaderboard() {
   );
 
   const latestShiny = latestShinyData?.data;
-  let latestDate = new Date(null);
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
@@ -34,7 +33,7 @@ export default function CountersPercentageLeaderboard() {
     const fetchData = async () => {
       const updatedDefCounterStats = [];
       let newestEndDate = new Date(latestShiny[0].endDate);
-
+      
       for (const item of latestShiny) {
         const itemEndDate = new Date(item.endDate);
         if (itemEndDate > newestEndDate) {
@@ -42,12 +41,11 @@ export default function CountersPercentageLeaderboard() {
         }
 
         try {
-          const dateString = new Date(item.endDate).toLocaleDateString("en-US");
           const response = await getRequest(`/counters`, {
             params: {
               statsCountersPercentage: true,
               trainer: item.trainer,
-              statsPeriodDay: dateString,
+              statsPeriodDay: itemEndDate,
             },
           });
 
@@ -67,6 +65,9 @@ export default function CountersPercentageLeaderboard() {
             statsPeriodDay: newestEndDate,
           },
         });
+
+        console.log(newestEndDate)
+        console.log(response)
 
         setTotalCounterStats(response);
       } catch (error) {
@@ -94,7 +95,7 @@ export default function CountersPercentageLeaderboard() {
         medalImages["battle-3-s.png"],
         medalImages["battle-3-b.png"],
       ]}
-      total={`${calculateMultiplePercentage(totalCounterStats, latestDate)} %`}
-    />
+      total={`${calculateMultiplePercentage(totalCounterStats)} %`}
+    />    
   );
 }
