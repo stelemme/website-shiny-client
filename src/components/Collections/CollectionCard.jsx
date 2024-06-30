@@ -25,7 +25,7 @@ export default function CollectionCard({
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const foreverDate = new Date("9999-12-31T23:59:59");
-  const [cookies, setCookies] = useCookies(["collectionSelect"]);
+  const [cookies, setCookies] = useCookies(["collectionUserSelect"]);
 
   const [query, setQuery] = useState("");
 
@@ -33,15 +33,15 @@ export default function CollectionCard({
   const collectionData = shinyData?.data[0]?.collectionData;
 
   useEffect(() => {
-    if (cookies.collectionSelect === "All") {
+    if (cookies.collectionUserSelect === "All") {
       setQuery("");
     } else {
-      setQuery(`&trainer=${cookies.collectionSelect}`);
+      setQuery(`&trainer=${cookies.collectionUserSelect}`);
     }
-  }, [cookies.collectionSelect]);
+  }, [cookies.collectionUserSelect]);
 
   const handleChange = (e) => {
-    setCookies("collectionSelect", e.target.value, { expires: foreverDate });
+    setCookies("collectionUserSelect", e.target.value, { expires: foreverDate });
     if (e.target.value === "All") {
       setQuery("");
     } else {
@@ -70,7 +70,7 @@ export default function CollectionCard({
         <UserSelect
           label={"User"}
           handleChange={handleChange}
-          defaultValue={cookies.collectionSelect}
+          defaultValue={cookies.collectionUserSelect}
         />
       </Box>
       <Grid container spacing={"12px"}>

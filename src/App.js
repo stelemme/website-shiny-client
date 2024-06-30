@@ -187,6 +187,7 @@ function Layout() {
   const [cookies, setCookie] = useCookies([
     "checklistGenFilter",
     "collectionSelect",
+    "collectionUserSelect",
     "completedCounterSort",
     "completedTrainerFilter",
     "evolutionSpriteDisplay",
@@ -199,6 +200,7 @@ function Layout() {
     "shinySort",
     "shinyTrainerFilter",
     "theme",
+    "travelFilter"
   ]);
 
   const width = collapse
@@ -213,7 +215,8 @@ function Layout() {
 
     const defaultCookies = {
       checklistGenFilter: "All",
-      collectionSelect: "All",
+      collectionSelect: "Pokéballs",
+      collectionUserSelect: "All",
       completedCounterSort: "newest",
       completedTrainerFilter: "All",
       evolutionSpriteDisplay: "false",
@@ -231,7 +234,7 @@ function Layout() {
 
     for (const [key, value] of Object.entries(defaultCookies)) {
       if (!cookies[key]) {
-        setCookie(key, value, { expires: foreverDate });
+        setCookie(key, value, { expires: foreverDate, path: "/" });
       }
     }
   }, [cookies, setCookie]);

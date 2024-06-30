@@ -1,4 +1,5 @@
-import { useState, createElement } from "react";
+import { createElement } from "react";
+import { useCookies } from "react-cookie";
 
 // mui imports
 import { Box, Grid } from "@mui/material";
@@ -8,6 +9,11 @@ import Header from "../../components/Header";
 import GeneralSelect from "../../components/Selects/GeneralSelect";
 import Pokeballs from "../../components/Collections/Pokeballs";
 import Natures from "../../components/Collections/Natures";
+import Legends from "../../components/Collections/Legends";
+import Mythicals from "../../components/Collections/Mythicals";
+import UltraBeasts from "../../components/Collections/UltraBeasts";
+import PastParadoxes from "../../components/Collections/PastParadoxes";
+import FutureParadoxes from "../../components/Collections/FutureParadoxes";
 import Megas from "../../components/Collections/Megas";
 import Gigantamax from "../../components/Collections/Gigantamax";
 import Alolans from "../../components/Collections/Alolans";
@@ -20,26 +26,36 @@ import Flabebes from "../../components/Collections/Flabebes";
 import Vivillons from "../../components/Collections/Vivillons";
 
 export default function Collections() {
-  const [collection, setCollection] = useState("Pokéballs");
+  const [cookies, setCookie] = useCookies(["collectionSelect"]);
+  const foreverDate = new Date("9999-12-31T23:59:59");
 
   const handleChange = (e) => {
-    setCollection(e.target.value);
+    setCookie("collectionSelect", e.target.value, { expires: foreverDate });
   };
 
   const collectionComponents = {
-    "Pokéballs": Pokeballs,
-    "_Natures": Natures,
+    Pokéballs: Pokeballs,
+    _Natures: Natures,
+    Legends: Legends,
+    Mythicals: Mythicals,
+    "Ultra Beasts": UltraBeasts,
+    "Past Paradox Pokémon": PastParadoxes,
+    "_Future Paradox Pokémon": FutureParadoxes,
     "Mega Evolutions": Megas,
     "_Gigantamax Pokémon": Gigantamax,
     "Alolan Forms": Alolans,
     "Galarian Forms": Galarians,
-    "Hisuian Forms": Hisuians,    
+    "Hisuian Forms": Hisuians,
     "_Paldean Forms": Paldeans,
-    "Eeveelutions": Eeveelutions,
-    "Unowns": Unowns,
-    "Flabébés": Flabebes,
-    "Vivillons": Vivillons,
+    Eeveelutions: Eeveelutions,
+    Unowns: Unowns,
+    Flabébés: Flabebes,
+    Vivillons: Vivillons,
   };
+
+  if (!collectionComponents[cookies.collectionSelect]) {
+    setCookie("collectionSelect", "Pokéballs", { expires: foreverDate });
+  }
 
   return (
     <Box maxWidth={"100%"} mx="auto" my="20px">
@@ -63,14 +79,14 @@ export default function Collections() {
               label={"Collections"}
               handleChange={handleChange}
               list={Object.keys(collectionComponents)}
-              value={collection}
+              value={cookies.collectionSelect}
               width={200}
               size={"normal"}
             />
           </Grid>
           <Grid item xs={12}>
             {/* COLLECTIONS */}
-            {createElement(collectionComponents[collection])}
+            {createElement(collectionComponents[cookies.collectionSelect])}
           </Grid>
         </Grid>
       </Box>
