@@ -115,6 +115,10 @@ const ribbons = [
     "sprite": "world-ability-ribbon"
   },
   {
+    "name": "Effort Ribbon",
+    "sprite": "effort-ribbon"
+  },
+  {
     "name": "Alert Ribbon",
     "sprite": "alert-ribbon"
   },
