@@ -16,6 +16,7 @@
 
 **Bug Fix:**
 - Dubbele method category input field bug, is nu veranderd door method en method catergory.
+- DexNav kan nu worden ingegeven zonder eerst een counter aan te maken.
 
 ---
 

@@ -9,6 +9,7 @@ import { Box, Button, Grid } from "@mui/material";
 // Components
 import Header from "../../components/Header";
 import RadarForm from "../../components/Forms/RadarForm";
+import DexNavForm from "../../components/Forms/DexNavForm";
 import LetsGoForm from "../../components/Forms/LetsGoForm";
 import SosForm from "../../components/Forms/SosForm";
 import WormholeForm from "../../components/Forms/WormholeForm";
@@ -151,6 +152,23 @@ export default function CreateDeadShiny() {
 
       if (data.method.function) {
         switch (data.method.function) {
+          case "dexnav":
+            setData((prevState) => ({
+              ...prevState,
+              stats: {
+                ...newStats,
+                probability: calculateProb(
+                  data.method.odds,
+                  data.method.rolls,
+                  data.method.shinyCharm,
+                  data.method?.charmRolls,
+                  data.totalEncounters,
+                  data.method?.function,
+                  data.method?.searchLevel
+                ),
+              },
+            }));
+            break;
           case "letsgospawn":
             setData((prevState) => ({
               ...prevState,
@@ -342,6 +360,11 @@ export default function CreateDeadShiny() {
           data.method.function === "pokeradar-gen6" ||
           data.method.function === "pokeradar-gen8" ? (
             <RadarForm setData={setData} />
+          ) : null}
+
+          {/* DEXNAV FORM*/}
+          {data.method.function === "dexnav" ? (
+            <DexNavForm data={data} setData={setData} />
           ) : null}
 
           {/* LET'S GO FORM*/}

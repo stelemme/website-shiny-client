@@ -10,6 +10,7 @@ import { Box, Button, Grid } from "@mui/material";
 import Header from "../../components/Header";
 import RadarGroupForm from "../../components/Forms/RadarGroupForm";
 import RadarForm from "../../components/Forms/RadarForm";
+import DexNavForm from "../../components/Forms/DexNavForm";
 import LetsGoForm from "../../components/Forms/LetsGoForm";
 import SosForm from "../../components/Forms/SosForm";
 import LaForm from "../../components/Forms/LaForm";
@@ -155,13 +156,31 @@ export default function CreateShiny() {
           data.method.shinyCharm,
           data.method?.charmRolls,
           data.totalEncounters,
-          data.method?.function
+          data.method?.function,
+          data.method?.searchLevel
         ),
         daysHunting: calculateDateDifference(data.endDate, data.startDate),
       };
 
       if (data.method.function) {
         switch (data.method.function) {
+          case "dexnav":
+            setData((prevState) => ({
+              ...prevState,
+              stats: {
+                ...newStats,
+                probability: calculateProb(
+                  data.method.odds,
+                  data.method.rolls,
+                  data.method.shinyCharm,
+                  data.method?.charmRolls,
+                  data.totalEncounters,
+                  data.method?.function,
+                  data.method?.searchLevel
+                ),
+              },
+            }));
+            break;
           case "letsgospawn":
             setData((prevState) => ({
               ...prevState,
@@ -268,7 +287,9 @@ export default function CreateShiny() {
             }));
             break;
           default:
-            console.log("Failed");
+            setAlertSeverity("error");
+            setAlertMessage("Something went wrong calculating the method stats.");
+            setAlertOpen(true);
         }
       } else {
         setData((prevState) => ({
@@ -359,6 +380,11 @@ export default function CreateShiny() {
           data.method.function === "pokeradar-gen6" ||
           data.method.function === "pokeradar-gen8" ? (
             <RadarForm setData={setData} />
+          ) : null}
+
+          {/* DEXNAV FORM*/}
+          {data.method.function === "dexnav" ? (
+            <DexNavForm data={data} setData={setData} />
           ) : null}
 
           {/* LET'S GO FORM*/}
