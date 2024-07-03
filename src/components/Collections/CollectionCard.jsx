@@ -32,7 +32,7 @@ export default function CollectionCard({
 
   const { data: shinyData } = useShiny(
     `collection=${collectionStr}${query}${
-      additionalCollectionStr ? `&additionalStr=${additionalCollectionStr}` : ""
+      additionalCollectionStr ? `&collectionFilter=${additionalCollectionStr}` : ""
     }`
   );
   const collectionData = shinyData?.data[0]?.collectionData;

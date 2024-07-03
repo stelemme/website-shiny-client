@@ -57,22 +57,22 @@ export default function Checklist() {
     medalImages["adventure-1-b.png"],
   ];
 
-  const { data: pokedex } = usePokedex(`?gen=${cookie.checklistGenFilter}`);
+  const { data: pokedex } = usePokedex(`?filter=${cookie.checklistGenFilter}`);
 
   const { data: shinyListData } = useShiny(
-    `shinyList=true&gen=${cookie.checklistGenFilter}`
+    `list=names&filter=${cookie.checklistGenFilter}`
   );
   const { data: shinyListJoaquinData } = useShiny(
-    `shinyList=true&trainer=Joaquin&gen=${cookie.checklistGenFilter}`
+    `list=names&trainer=Joaquin&filter=${cookie.checklistGenFilter}`
   );
   const { data: shinyListKorneelData } = useShiny(
-    `shinyList=true&trainer=Korneel&gen=${cookie.checklistGenFilter}`
+    `list=names&trainer=Korneel&filter=${cookie.checklistGenFilter}`
   );
   const { data: shinyListSimonData } = useShiny(
-    `shinyList=true&trainer=Simon&gen=${cookie.checklistGenFilter}`
+    `list=names&trainer=Simon&filter=${cookie.checklistGenFilter}`
   );
   const { data: shinyListStefData } = useShiny(
-    `shinyList=true&trainer=Stef&gen=${cookie.checklistGenFilter}`
+    `list=names&trainer=Stef&filter=${cookie.checklistGenFilter}`
   );
 
   const shinyList = shinyListData?.data[0].names;

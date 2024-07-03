@@ -47,7 +47,7 @@ export default function RadarGroupForm({
             }
             try {
               const response = await getRequest(
-                `shiny?group=true&trainer=${username}`
+                `shiny?groupList=true&trainer=${username}`
               );
               setGroupList([...response]);
               setData((prevState) => {

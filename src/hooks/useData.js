@@ -4,7 +4,7 @@ import { useCookies } from "react-cookie";
 
 const fetchShinies = (query, groupCheck) => {
   if (groupCheck) {
-    return axios.get(`/shiny?groupShinies=true&${query}`);
+    return axios.get(`/shiny?filter=group&${query}`);
   } else {
     return axios.get(`/shiny?${query}`);
   }
@@ -18,7 +18,7 @@ export const useShiny = (query) => {
 
 const fetchDeadShinies = (query, groupCheck) => {
   if (groupCheck) {
-    return axios.get(`/deadshiny?groupShinies=true&${query}`);
+    return axios.get(`/deadshiny?filter=group&${query}`);
   } else {
     return axios.get(`/deadshiny?${query}`);
   }
