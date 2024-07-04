@@ -13,7 +13,7 @@ export default function Shiny() {
   const data = shiny?.data;
 
   const { data: groupShiniesData, refetch: refetch2 } = useShiny(
-    `list=groups&group=${data?.group}`
+    `groups=pokemon&group=${data?.group}`
   );
   const groupShinies = groupShiniesData?.data;
 

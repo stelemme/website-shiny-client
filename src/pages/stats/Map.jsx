@@ -83,16 +83,16 @@ export default function Map() {
   const foreverDate = new Date("9999-12-31T23:59:59");
 
   const { data: joaquinLocationsData, isLoading: loadingJoaquin } = useShiny(
-    `geoMapLocations=true&trainer=Joaquin&travelFilter=${cookies.travelFilter}`
+    `geoLocation=map&trainer=Joaquin&filter=${cookies.travelFilter}`
   );
   const { data: korneelLocationsData, isLoading: loadingKorneel } = useShiny(
-    `geoMapLocations=true&trainer=Korneel&travelFilter=${cookies.travelFilter}`
+    `geoLocation=map&trainer=Korneel&filter=${cookies.travelFilter}`
   );
   const { data: simonLocationsData, isLoading: loadingSimon } = useShiny(
-    `geoMapLocations=true&trainer=Simon&travelFilter=${cookies.travelFilter}`
+    `geoLocation=map&trainer=Simon&filter=${cookies.travelFilter}`
   );
   const { data: stefLocationsData, isLoading: loadingStef } = useShiny(
-    `geoMapLocations=true&trainer=Stef&travelFilter=${cookies.travelFilter}`
+    `geoLocation=map&trainer=Stef&filter=${cookies.travelFilter}`
   );
 
   const joaquinLocations = joaquinLocationsData?.data;

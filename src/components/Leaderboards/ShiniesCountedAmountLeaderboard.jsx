@@ -13,7 +13,7 @@ export default function ShiniesCountedAmountLeaderboard() {
   const [gen, setGen] = useState("All");
 
   const { isLoading: shinyStatsLoading, data: shinyStatsData } = useShiny(
-    `statsShinyAmount=true&filter=counters&statsGen=${gen}`
+    `stats=totalAmount&filter=counters&statsGen=${gen}`
   );
 
   const handleChange = (e) => {

@@ -25,7 +25,7 @@ export default function GeoLocationForm({ data, setData }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await getRequest(`/shiny?geoLocationList=true`);
+        const response = await getRequest(`/shiny?geoLocation=list&filter=transport`);
         setGeoLocationsList(response[0]["geoLocation"]);
       } catch {
         return;
