@@ -22,7 +22,7 @@ export default function CountersPercentageLeaderboard() {
   const [totalCounterStats, setTotalCounterStats] = useState([]);
 
   const { isLoading: latestShinyLoading, data: latestShinyData } = useShiny(
-    `action=latest&onlyCounters=true`
+    `filter=latest&filter=counters`
   );
 
   const latestShiny = latestShinyData?.data;

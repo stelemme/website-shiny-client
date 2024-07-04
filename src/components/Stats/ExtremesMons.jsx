@@ -20,13 +20,13 @@ import { formatTime } from "../../functions/statFunctions";
 // Hooks
 import { useShiny } from "../../hooks/useData";
 
-export default function UserRecords() {
+export default function ExtremesMons() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [query, setQuery] = useState("");
   const [trainer, setTrainer] = useState("All");
 
-  const { isLoading: userStatsLoading, data: userStatsData } = useShiny(`action=userRecords${query}`);
+  const { isLoading: userStatsLoading, data: userStatsData } = useShiny(`stats=extremesMons${query}`);
   const userStats = userStatsData?.data[0]
 
   const handleChange = (e) => {

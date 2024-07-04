@@ -6,7 +6,7 @@ import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import CounterCard from "../../components/Cards/CounterCard";
 import ShinyCard from "../../components/Cards/ShinyCard";
-import UserRecords from "../../components/Stats/UserRecordsStats";
+import Extremes from "../../components/Stats/ExtremesMons";
 import EncountersGraph from "../../components/Graphs/EncountersGraph";
 
 // Hooks
@@ -184,7 +184,7 @@ export default function Home() {
             </Box>
           </Grid>
           <Grid item xl={4} xs={12}>
-            <UserRecords />
+            <Extremes />
           </Grid>
           <Grid item xs={12}>
             <EncountersGraph />

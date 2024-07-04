@@ -5,8 +5,8 @@ import { Box, Grid } from "@mui/material";
 import Header from "../../components/Header";
 
 import EncountersGraph from "../../components/Graphs/EncountersGraph";
-import UserRecords from "../../components/Stats/UserRecordsStats";
-import UserStats from "../../components/Stats/UserStats";
+import ExtremesMons from "../../components/Stats/ExtremesMons";
+import Extremes from "../../components/Stats/Extremes";
 import DateGraph from "../../components/Graphs/DateGraph";
 import ShiniesAmountLeaderboard from "../../components/Leaderboards/ShiniesAmountLeaderboard";
 import ShiniesCountedAmountLeaderboard from "../../components/Leaderboards/ShiniesCountedAmountLeaderboard";
@@ -27,7 +27,7 @@ export default function ShinyStats() {
 
         <Grid container spacing={"20px"}>
           <Grid item xl={4} xs={12}>
-            <UserRecords />
+            <ExtremesMons />
           </Grid>
           <Grid item xl={8} xs={12}>
             <EncountersGraph />
@@ -42,7 +42,7 @@ export default function ShinyStats() {
             <AverageEncLeaderboard />
           </Grid>
           <Grid item xl={12} xs={12}>
-            <UserStats />
+            <Extremes />
           </Grid>
           <Grid item xl={12} xs={12}>
             <GameStats />

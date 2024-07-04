@@ -11,14 +11,14 @@ import UserSelect from "../Selects/UserSelect";
 // Hooks
 import { useShiny } from "../../hooks/useData";
 
-export default function UserStats() {
+export default function Extremes() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [query, setQuery] = useState("");
   const [trainer, setTrainer] = useState("All");
 
   const { isLoading: userStatsLoading, data: userStatsData } = useShiny(
-    `action=userStats${query}`
+    `stats=extremes${query}`
   );
   const userStats = userStatsData?.data[0];
 
