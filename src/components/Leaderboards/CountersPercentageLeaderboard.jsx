@@ -22,20 +22,21 @@ export default function CountersPercentageLeaderboard() {
   const [totalCounterStats, setTotalCounterStats] = useState([]);
 
   const { isLoading: latestShinyLoading, data: latestShinyData } = useShiny(
-    `filter=latest&filter=counters`
+    `filter=counters&filter=latest`
   );
 
   const latestShiny = latestShinyData?.data;
+  console.log(latestShiny)
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     if (!latestShiny) return;
     const fetchData = async () => {
       const updatedDefCounterStats = [];
-      let newestEndDate = new Date(latestShiny[0].endDate);
+      let newestEndDate = new Date(latestShiny[0]?.endDate);
       
       for (const item of latestShiny) {
-        const itemEndDate = new Date(item.endDate);
+        const itemEndDate = new Date(item?.endDate);
         if (itemEndDate > newestEndDate) {
           newestEndDate = itemEndDate;
         }

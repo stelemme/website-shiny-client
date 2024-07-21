@@ -115,6 +115,9 @@ export default function GeoLocationDisplay({
       </Grid>
       {data.geoLocation.name && (
         <Grid item xs={12}>
+          <Typography fontWeight="bold" mb={1}>
+            {data.geoLocation.name}
+          </Typography>
           <MapContainer
             center={data.geoLocation.position}
             zoom={16}
@@ -139,9 +142,6 @@ export default function GeoLocationDisplay({
               })}
             >
               <Popup>
-                <Typography fontWeight="bold" style={{ marginBottom: 0 }}>
-                  {data.geoLocation.name}
-                </Typography>
                 <Typography gutterBottom style={{ marginTop: 0 }}>
                   {data.geoLocation.displayName}
                 </Typography>

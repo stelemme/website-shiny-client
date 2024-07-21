@@ -8,7 +8,6 @@ import { Box, Button, Grid } from "@mui/material";
 import Header from "../../components/Header";
 import GameForm from "../../components/Forms/GameForm";
 import PokemonForm from "../../components/Forms/PokemonForm";
-import LocationsForm from "../../components/Forms/LocationForm";
 import ShinyCharmForm from "../../components/Forms/ShinyCharmForm";
 import MethodForm from "../../components/Forms/MethodForm";
 import SubMethodForm from "../../components/Forms/SubMethodForm";
@@ -40,7 +39,6 @@ export default function CreateCounter() {
 
   const [data, setData] = useState(initialState);
   const [shinyCharmCheck, setShinyCharmCheck] = useState(false);
-  const [locationsList, setLocationsList] = useState(undefined);
   const [methodsList, setMethodsList] = useState(undefined);
   const [methodCatList, setMethodCatList] = useState(undefined);
   const [pokemonsList, setPokemonsList] = useState(undefined);
@@ -87,7 +85,6 @@ export default function CreateCounter() {
             setPokemonsList={setPokemonsList}
             setMethodsList={setMethodsList}
             setMethodCatList={setMethodCatList}
-            setLocationsList={setLocationsList}
             setClearMethod={setClearMethod}
           />
 
@@ -97,9 +94,6 @@ export default function CreateCounter() {
             pokemonsList={pokemonsList}
             isAsCounter
           />
-
-          {/* LOCATIONS */}
-          <LocationsForm setData={setData} locationsList={locationsList} />
 
           {/* SHINYCHARM */}
           {shinyCharmCheck && (

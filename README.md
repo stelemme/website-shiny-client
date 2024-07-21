@@ -2,6 +2,24 @@
 
 ## Changelogs
 
+### Version 1.14.0 (21.07.2024)
+
+**Collections:**
+- Aantal collected op totale aantal is nu te zien in de titel van de collection. Het percentage is ook toegevoegd.
+
+**Aanpassingen:**
+- Ingeven van in game locatie is niet meer nodig bij het aanmaken van een counter.
+- Naam van geo locatie is nu zichtbaar boven de kleine map snippet ipv op de marker te moeten klikken.
+
+**Bug Fixes:**
+- Shiny groepering per maand wordt nu gedaan in GMT+2 ipv GMT (Abra Stef nu bij juli ipv juni)
+- Als nieuwe legends, mythicals ... worden toegevoegd komen ze nu ook bij de juiste collection.
+
+**Backend:**
+- Volledige herstructurering van backend data ophaling. Hierdoor kunnen er nieuwe bugs zijn ontstaan.
+
+---
+
 ### Version 1.13.0 (30.06.2024)
 
 **Sidebar:**

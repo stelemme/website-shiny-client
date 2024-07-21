@@ -56,6 +56,10 @@ export default function CollectionCard({
     }
   };
 
+  const totalNumber = placeholdList.length
+  const completedNumber = Object.keys(collectionData ? collectionData : {}).length
+  const percentage =  completedNumber / totalNumber * 100
+
   return (
     <Box
       p="20px"
@@ -71,8 +75,8 @@ export default function CollectionCard({
         mb={"14px"}
         height={"28px"}
       >
-        <Typography variant="h4" fontWeight={"bold"}>
-          {title}
+        <Typography variant={window.innerWidth < 600 ? "h6" : "h4"} fontWeight={"bold"}>
+          {title} -  ({completedNumber}/{totalNumber}, {Math.round(percentage)}%)
         </Typography>
         <UserSelect
           label={"User"}

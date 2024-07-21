@@ -52,10 +52,12 @@ export default function GameForm({
           setData(initialState);
           setGameId(undefined);
           setShinyCharmCheck(false);
-          setLocationsList(undefined);
           setMethodsList(undefined);
           setMethodCatList(undefined);
           setPokemonsList(undefined);
+          if (setLocationsList) {
+            setLocationsList(undefined);
+          }
           if (setGenderCheck) {
             setGenderCheck(false);
           }
@@ -83,7 +85,9 @@ export default function GameForm({
             });
             setGameId(value._id);
             setShinyCharmCheck(value.shinyCharm);
-            setLocationsList(value.locations);
+            if (setLocationsList) {
+              setLocationsList(value.locations);
+            }
             setMethodsList(value.methods);
             if (setBallList) {
               setBallList(value.balls);
