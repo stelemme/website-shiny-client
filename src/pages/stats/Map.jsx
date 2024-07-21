@@ -113,19 +113,22 @@ export default function Map() {
             subtitle="On the map you can find all the location where shinies have been caught."
           />
           <Box style={{ display: "flex", alignItems: "center" }}>
-            {!cookies.travelFilter && (
+            {cookies.travelFilter === "transport" ? (
               <IconButton
                 onClick={(e) =>
-                  setCookies("travelFilter", "true", { expires: foreverDate })
+                  setCookies("travelFilter", "no transport", {
+                    expires: foreverDate,
+                  })
                 }
               >
                 <NoTransferIcon />
               </IconButton>
-            )}
-            {cookies.travelFilter && (
+            ) : (
               <IconButton
                 onClick={(e) =>
-                  setCookies("travelFilter", "false", { expires: foreverDate })
+                  setCookies("travelFilter", "transport", {
+                    expires: foreverDate,
+                  })
                 }
               >
                 <DirectionsBusIcon />

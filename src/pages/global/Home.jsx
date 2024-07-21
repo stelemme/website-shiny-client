@@ -22,9 +22,8 @@ export default function Home() {
     `?trainers=true&preview=true&amount=1&sort=newest`
   );
 
-  const { isLoading: latestShinyLoading, data: latestShiny } = useShiny(
-    `action=latest`
-  );
+  const { isLoading: latestShinyLoading, data: latestShiny } =
+    useShiny(`filter=latest`);
 
   const CountersDisplay = ({ data, loading, loadingArray = [1] }) => {
     if (loading) {

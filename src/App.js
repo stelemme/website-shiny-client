@@ -229,7 +229,7 @@ function Layout() {
       shinySort: "newest",
       shinyTrainerFilter: "All",
       theme: "dark",
-      travelFilter: "false",
+      travelFilter: "transport",
     };
 
     for (const [key, value] of Object.entries(defaultCookies)) {
