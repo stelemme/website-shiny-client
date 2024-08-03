@@ -29,12 +29,12 @@ export default function GameStats() {
   const { data: games } = useGame("?action=select");
 
   const { isLoading: gameStatsLoading, data: gameStatsData } = useShiny(
-    `action=gameStats&gameFilter=${game?.name}`
+    `stats=gameUser&gameFilter=${game?.name}`
   );
   const gameStats = gameStatsData?.data[0];
 
   const { isLoading: gameStatsTotalLoading, data: gameStatsTotalData } =
-    useShiny(`action=gameStatsTotal&gameFilter=${game?.name}`);
+    useShiny(`stats=gameTotal&gameFilter=${game?.name}`);
   const gameStatsTotal = gameStatsTotalData?.data[0];
 
   const StatsDisplay = ({ data }) => {

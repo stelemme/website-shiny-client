@@ -39,7 +39,7 @@ export default function ShinyCardEvolutions({
     trainerHeight = "50";
   }
 
-  const { data: groupData } = useShiny(`groupShiniesEvolutions=${group}`);
+  const { data: groupData } = useShiny(`groups=evolutions&group=${group}`);
 
   if (cookies.groupShinies && groupData?.data[0]?.evolutions) {
     evolutions = makeUnique(groupData?.data[0]?.evolutions, "name");

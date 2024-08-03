@@ -6,7 +6,7 @@ import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import CounterCard from "../../components/Cards/CounterCard";
 import ShinyCard from "../../components/Cards/ShinyCard";
-import UserRecords from "../../components/Stats/UserRecordsStats";
+import Extremes from "../../components/Stats/ExtremesMons";
 import EncountersGraph from "../../components/Graphs/EncountersGraph";
 
 // Hooks
@@ -22,9 +22,8 @@ export default function Home() {
     `?trainers=true&preview=true&amount=1&sort=newest`
   );
 
-  const { isLoading: latestShinyLoading, data: latestShiny } = useShiny(
-    `action=latest`
-  );
+  const { isLoading: latestShinyLoading, data: latestShiny } =
+    useShiny(`filter=latest`);
 
   const CountersDisplay = ({ data, loading, loadingArray = [1] }) => {
     if (loading) {
@@ -184,7 +183,7 @@ export default function Home() {
             </Box>
           </Grid>
           <Grid item xl={4} xs={12}>
-            <UserRecords />
+            <Extremes />
           </Grid>
           <Grid item xs={12}>
             <EncountersGraph />

@@ -21,8 +21,18 @@ export default function PokemonForm({
         autoHighlight
         onChange={async (e, value, reason) => {
           setData((prevState) => {
-            const { name, pokedexNo, types, sprite, ...updatedData } =
-              prevState;
+            const {
+              name,
+              pokedexNo,
+              types,
+              sprite,
+              legendary,
+              mythical,
+              ultraBeast,
+              pastParadox,
+              futureParadox,
+              ...updatedData
+            } = prevState;
             const updatedSprites = { ...sprite };
             delete updatedSprites.pokemon;
 
@@ -70,6 +80,11 @@ export default function PokemonForm({
                 ...prevState.sprite,
                 pokemon: pokemonData.sprite,
               },
+              legendary: pokemonData.legendary,
+              mythical: pokemonData.mythical,
+              ultraBeast: pokemonData.ultraBeast,
+              pastParadox: pokemonData.pastParadox,
+              futureParadox: pokemonData.futureParadox,
               ...(!isAsCounter && { gender }),
             }));
           } catch {
@@ -125,6 +140,11 @@ export default function PokemonForm({
                 ...prevState.sprite,
                 pokemon: pokemonData.sprite,
               },
+              legendary: pokemonData.legendary,
+              mythical: pokemonData.mythical,
+              ultraBeast: pokemonData.ultraBeast,
+              pastParadox: pokemonData.pastParadox,
+              futureParadox: pokemonData.futureParadox,
               ...(!isAsCounter && { gender }),
             }));
           } catch {

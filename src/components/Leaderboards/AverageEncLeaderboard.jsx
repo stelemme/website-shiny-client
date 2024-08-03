@@ -13,7 +13,7 @@ export default function AverageEncLeaderboard() {
   const [gen, setGen] = useState("All");
 
   const { isLoading: shinyStatsLoading, data: shinyStatsData } = useShiny(
-    `statsAverageEnc=true&statsGen=${gen}`
+    `stats=averageEnc&statsGen=${gen}`
   );
 
   const handleChange = (e) => {

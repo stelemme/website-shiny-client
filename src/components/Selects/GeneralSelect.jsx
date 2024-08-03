@@ -15,7 +15,7 @@ export default function GeneralSelect({
     PaperProps: {
       style: {
         maxHeight: 400,
-        width: width,
+        maxWidth: width,
       },
     },
   };
