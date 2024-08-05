@@ -2,6 +2,16 @@
 
 ## Changelogs
 
+### Version 1.15.0 (05.08.2024)
+
+**Pokémon Images:**
+- Tot gen 8 worden er nu animated sprites getoont. Vanaf gen 8 zijn animated sprites te zwaar om clean te laden. Momenteel wordt alles animated, alsde da ambetant vindt kan ik een instelling maken waarbij ge animated sprites kunt uitzetten. Schrijf da maar in de docs dan.
+
+**Aanpassingen:**
+- Alle percentages zijn nu op twee cijfers na de comma.
+
+---
+
 ### Version 1.14.0 (21.07.2024)
 
 **Collections:**

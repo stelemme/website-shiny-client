@@ -280,7 +280,14 @@ export default function InfoDisplay({
         />
         <InfoDict
           infoCat={"Percentage"}
-          infoName={data?.stats.percentage ? `${data?.stats.percentage}%` : "-"}
+          infoName={
+            data?.stats.percentage
+              ? `${data?.stats.percentage.toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}%`
+              : "-"
+          }
         />
         <InfoDict
           infoCat={!isDead ? "Date Caught" : "Date Failed"}

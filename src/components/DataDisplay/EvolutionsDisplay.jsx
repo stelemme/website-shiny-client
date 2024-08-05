@@ -1,6 +1,9 @@
 // Mui
 import { Box, Typography, Grid } from "@mui/material";
 
+// Components
+import PokemonImage from "../General/PokemonImage";
+
 export default function EvolutionsDisplay({ data }) {
   return (
     <Grid container>
@@ -20,23 +23,18 @@ export default function EvolutionsDisplay({ data }) {
         {data.evolutions.map((item) => {
           return (
             <Grid item xs={6} key={item._id}>
-              <img
-                alt=""
-                src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/${data.sprite.dir}/${item.sprite}.png`}
+              <PokemonImage
+                directory={data.sprite.dir}
+                sprite={item.sprite}
+                gameSort={data.gameSort}
+                shiny
                 width="50%"
-                style={{ imageRendering: "pixelated" }}
-                onError={(e) => {
-                  e.target.src = `https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-all-home/${item.sprite}.png`;
-                }}
               />
-              <img
-                alt=""
-                src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon/${data.sprite.dir}/${item.sprite}.png`}
+              <PokemonImage
+                directory={data.sprite.dir}
+                sprite={item.sprite}
+                gameSort={data.gameSort}
                 width="50%"
-                style={{ imageRendering: "pixelated" }}
-                onError={(e) => {
-                  e.target.src = `https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon/gen-all-home/${item.sprite}.png`;
-                }}
               />
             </Grid>
           );

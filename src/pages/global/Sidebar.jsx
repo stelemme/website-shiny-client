@@ -23,6 +23,7 @@ import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import PermMediaOutlinedIcon from "@mui/icons-material/PermMediaOutlined";
 import LocalHospitalSharpIcon from "@mui/icons-material/LocalHospitalSharp";
+import ConstructionIcon from "@mui/icons-material/Construction";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -292,6 +293,24 @@ export default function CustomSidebar() {
           selected={selected}
           setSelected={setSelected}
         />
+        {process.env.REACT_APP_ENV === "dev" ? (
+          <>
+            <Typography
+              variant="h6"
+              color={colors.grey[300]}
+              sx={{ m: "15px 0 5px 20px" }}
+            >
+              {isCollapsed ? "Dev" : "Development"}
+            </Typography>
+            <Item
+              title="Data Manipulation"
+              to="/dev/data"
+              icon={<ConstructionIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+          </>
+        ) : null}
       </Menu>
     </Sidebar>
   );
