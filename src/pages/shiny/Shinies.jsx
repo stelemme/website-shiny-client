@@ -56,7 +56,7 @@ export default function Shinies() {
               }}
               key={item._id}
             >
-              {cookie.evolutionSpriteDisplay === "false" ? (
+              {!cookie.evolutionSpriteDisplay ? (
                 <LazyLoad height={window.innerWidth < 600 ? 50 : 100}>
                   <ShinyCard
                     id={item._id}

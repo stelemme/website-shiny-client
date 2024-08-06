@@ -2,6 +2,23 @@
 
 ## Changelogs
 
+### Version 1.15.0 (06.08.2024)
+
+**Pokémon Images:**
+- Animated sprites zijn toegevoegd, zien onderdeel "settings" voor meer info.
+- Gender differences zijn toegevoegd
+
+**Settings:**
+- Settings zijn opnieuw geordend om het overzichtelijker te maken. Animated sprites kunnen hier worden aan en uit gezet. Animated sprites vanaf gen 8 zijn zwaar om te laden, daarom staan deze default uit. Als er dingen fuckt gaan, best keer cookies verwijderen.
+
+**Radar Shinies:**
+- Aantal shinies in de groep wordt nu vanboven weergegeven.
+
+**Aanpassingen:**
+- Alle percentages zijn nu op twee cijfers na de comma.
+
+---
+
 ### Version 1.14.0 (21.07.2024)
 
 **Collections:**

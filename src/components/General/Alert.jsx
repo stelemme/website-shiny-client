@@ -1,5 +1,5 @@
 import { useRecoilState, useRecoilValue } from "recoil";
-import { alertOpen, alertSeverity, alertMessage } from "../utils/atoms";
+import { alertOpen, alertSeverity, alertMessage } from "../../utils/atoms";
 
 // mui imports
 import { Snackbar, Alert, Portal } from "@mui/material";

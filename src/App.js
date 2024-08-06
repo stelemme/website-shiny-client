@@ -27,6 +27,8 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import Counter from "./pages/counter/Counter";
 import Counters from "./pages/counter/Counters";
 import CreateCounter from "./pages/counter/CreateCounter";
+// Development Pages
+import DataManipulation from "./pages/dev/DataManipulation";
 // Global Pages
 import ErrorPage from "./pages/global/ErrorPage";
 import Home from "./pages/global/Home";
@@ -60,7 +62,7 @@ import Map from "./pages/stats/Map";
 import ShinyStats from "./pages/stats/ShinyStats";
 
 // Components
-import CustomAlert from "./components/Alert";
+import CustomAlert from "./components/General/Alert";
 
 if (!process.env.REACT_APP_ENV || process.env.REACT_APP_ENV === "dev") {
   axios.defaults.baseURL = process.env.REACT_APP_BACKEND;
@@ -95,17 +97,13 @@ const loader = async () => {
   return null;
 };
 
-const router = createBrowserRouter([
+const routes = [
   {
     element: <Layout />,
     children: [
       { path: "/auth", Component: Login },
       { path: "/", Component: Home, loader: loader },
-      {
-        path: "/search",
-        Component: Search,
-        loader: loader,
-      },
+      { path: "/search", Component: Search, loader: loader },
       {
         path: "/shiny",
         loader: loader,
@@ -170,7 +168,17 @@ const router = createBrowserRouter([
       { path: "*", Component: NotFoundPage },
     ],
   },
-]);
+];
+
+if (process.env.REACT_APP_ENV === "dev") {
+  routes[0].children.push({
+    path: "/dev",
+    loader: loader,
+    children: [{ path: "data", Component: DataManipulation }],
+  });
+}
+
+const router = createBrowserRouter(routes);
 
 export default function App() {
   return <RouterProvider router={router} />;
@@ -185,13 +193,14 @@ function Layout() {
   const [collapse, setCollapse] = useState(false);
 
   const [cookies, setCookie] = useCookies([
+    "animatedSpriteDisplayPreGen8", 
+    "animatedSpriteDisplayPostGen8", 
     "checklistGenFilter",
     "collectionSelect",
     "collectionUserSelect",
     "completedCounterSort",
     "completedTrainerFilter",
     "evolutionSpriteDisplay",
-    "gameSprite",
     "gameSpriteDisplay",
     "groupShinies",
     "ongoingCounterSort",
@@ -200,7 +209,7 @@ function Layout() {
     "shinySort",
     "shinyTrainerFilter",
     "theme",
-    "travelFilter"
+    "travelFilter",
   ]);
 
   const width = collapse
@@ -214,14 +223,15 @@ function Layout() {
     const foreverDate = new Date("9999-12-31T23:59:59");
 
     const defaultCookies = {
+      animatedSpriteDisplayPreGen8: "false",
+      animatedSpriteDisplayPostGen8: "true",
       checklistGenFilter: "All",
       collectionSelect: "Pokéballs",
       collectionUserSelect: "All",
       completedCounterSort: "newest",
       completedTrainerFilter: "All",
-      evolutionSpriteDisplay: "false",
-      gameSprite: "false",
-      gameSpriteDisplay: "false",
+      evolutionSpriteDisplay: "true",
+      gameSpriteDisplay: "true",
       groupShinies: "false",
       ongoingCounterSort: "newest",
       ongoingTrainerFilter: "All",
@@ -233,7 +243,7 @@ function Layout() {
     };
 
     for (const [key, value] of Object.entries(defaultCookies)) {
-      if (!cookies[key]) {
+      if (!cookies[key] && cookies[key] !== false) {
         setCookie(key, value, { expires: foreverDate, path: "/" });
       }
     }

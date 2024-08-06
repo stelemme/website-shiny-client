@@ -84,14 +84,14 @@ export default function ShinyCard({
 
         {/* SHINY SPRITE */}
         <Box display="flex" alignItems="center" justifyContent="center">
-          {!cookies.gameSpriteDisplay && (
+          {cookies.gameSpriteDisplay && (
             <img
               alt=""
               src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-all-home/${monSprite}.png`}
               height={String(imgSize) + "px"}
             />
           )}
-          {cookies.gameSpriteDisplay && (
+          {!cookies.gameSpriteDisplay && (
             <img
               alt=""
               src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/${dir}/${monSprite}.png`}
