@@ -26,6 +26,7 @@ export default function PokemonForm({
               pokedexNo,
               types,
               sprite,
+              genderDifference,
               legendary,
               mythical,
               ultraBeast,

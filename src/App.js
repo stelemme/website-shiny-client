@@ -243,7 +243,6 @@ function Layout() {
     };
 
     for (const [key, value] of Object.entries(defaultCookies)) {
-      console.log(cookies[key])
       if (!cookies[key] && cookies[key] !== false) {
         setCookie(key, value, { expires: foreverDate, path: "/" });
       }

@@ -48,6 +48,8 @@ export default function CompleteShinyCard({ data: initialData, refetch }) {
   const [forms, setForms] = useState(undefined);
   const [formsEdit, setFormsEdit] = useState([]);
 
+  console.log(evolutionsEdit)
+
   useEffect(() => {
     setData(initialData);
   }, [initialData]);

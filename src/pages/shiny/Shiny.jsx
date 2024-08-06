@@ -17,6 +17,8 @@ export default function Shiny() {
   );
   const groupShinies = groupShiniesData?.data;
 
+  console.log(data)
+
   return data?.group ? (
     groupShinies?.map((item) => (
       <CompleteShinyCard key={item._id} data={item} refetch={refetch} />
