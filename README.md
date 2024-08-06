@@ -5,7 +5,7 @@
 ### Version 1.15.0 (06.08.2024)
 
 **Pokémon Images:**
-- Animated sprites zijn toegevoegd, zien onderdeel "settings" voor meer info.
+- Animated sprites zijn toegevoegd, zie onderdeel "settings" voor meer info.
 - Gender differences zijn toegevoegd
 
 **Settings:**
