@@ -1,5 +1,8 @@
 import { useParams } from "react-router-dom";
 
+// Mui
+import { Box, Typography } from "@mui/material";
+
 // Components
 import CompleteShinyCard from "../../components/DataDisplay/ShinyDisplay";
 
@@ -17,12 +20,19 @@ export default function Shiny() {
   );
   const groupShinies = groupShiniesData?.data;
 
-  console.log(data)
+  console.log(data);
 
   return data?.group ? (
-    groupShinies?.map((item) => (
-      <CompleteShinyCard key={item._id} data={item} refetch={refetch} />
-    ))
+    <>
+      <Box maxWidth={{ sm: "420px" }} mx="auto" my="20px">
+        <Box display="flex" flexDirection="column" mx="20px">
+          <Typography variant="h5" fontWeight="bold">#Radar shinies: {groupShinies?.length ? groupShinies?.length : "..."} </Typography>
+        </Box>
+      </Box>
+      {groupShinies?.map((item) => (
+        <CompleteShinyCard key={item._id} data={item} refetch={refetch} />
+      ))}
+    </>
   ) : (
     <CompleteShinyCard data={data} refetch={refetch2} />
   );
