@@ -223,8 +223,8 @@ function Layout() {
     const foreverDate = new Date("9999-12-31T23:59:59");
 
     const defaultCookies = {
-      animatedSpriteDisplayPreGen8: "false",
-      animatedSpriteDisplayPostGen8: "true",
+      animatedSpriteDisplayPreGen8: "true",
+      animatedSpriteDisplayPostGen8: "false",
       checklistGenFilter: "All",
       collectionSelect: "Pokéballs",
       collectionUserSelect: "All",
