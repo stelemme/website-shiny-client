@@ -13,6 +13,7 @@ export default function ImageDisplay({ data }) {
             directory={data.sprite.dir}
             sprite={data.sprite.pokemon}
             gameSort={data.gameSort}
+            genderDifference={data.genderDifference}
             shiny
           />
           {data.ball && (
@@ -35,6 +36,7 @@ export default function ImageDisplay({ data }) {
           directory={data.sprite.dir}
           sprite={data.sprite.pokemon}
           gameSort={data.gameSort}
+          genderDifference={data.genderDifference}
         />
       </Grid>
     </Grid>

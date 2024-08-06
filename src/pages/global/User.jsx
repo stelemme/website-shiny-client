@@ -34,6 +34,8 @@ export default function User() {
     "groupShinies",
     "gameSpriteDisplay",
     "evolutionSpriteDisplay",
+    "animatedSpriteDisplayPreGen8",
+    "animatedSpriteDisplayPostGen8",
   ]);
 
   const imageCheck = {
@@ -47,6 +49,12 @@ export default function User() {
   const [spriteCheck, setSpriteCheck] = useState(cookies.gameSpriteDisplay);
   const [evolutionSpriteCheck, setEvolutionSpriteCheck] = useState(
     cookies.evolutionSpriteDisplay
+  );
+  const [animatedPreGen8Check, setAnimatedPreGen8Check] = useState(
+    cookies.animatedSpriteDisplayPreGen8
+  );
+  const [animatedPostGen8Check, setAnimatedPostGen8Check] = useState(
+    cookies.animatedSpriteDisplayPostGen8
   );
   const [trainerCheck, setTrainerCheck] = useState(trainerChoice !== username);
 
@@ -71,6 +79,20 @@ export default function User() {
   const handleEvolutionSpriteChange = (e) => {
     setEvolutionSpriteCheck(e.target.checked);
     setCookies("evolutionSpriteDisplay", e.target.checked, {
+      expires: foreverDate,
+    });
+  };
+
+  const handleAnimatedPreGen8Change = (e) => {
+    setAnimatedPreGen8Check(e.target.checked);
+    setCookies("animatedSpriteDisplayPreGen8", e.target.checked, {
+      expires: foreverDate,
+    });
+  };
+
+  const handleAnimatedPostGen8Change = (e) => {
+    setAnimatedPostGen8Check(e.target.checked);
+    setCookies("animatedSpriteDisplayPostGen8", e.target.checked, {
       expires: foreverDate,
     });
   };
@@ -181,6 +203,9 @@ export default function User() {
                   backgroundColor={colors.primary[500]}
                   borderRadius="5px"
                 >
+                  <Typography variant="h6" fontWeight={"bold"}>
+                    DATA FILTERING
+                  </Typography>
                   <FormGroup>
                     <FormControlLabel
                       control={
@@ -193,12 +218,15 @@ export default function User() {
                         />
                       }
                       label={
-                        <Typography variant="h6" fontWeight={"bold"}>
-                          GROUP THE RADAR SHINIES
+                        <Typography variant="h6">
+                          Group the radar shinies
                         </Typography>
                       }
                     />
                   </FormGroup>
+                  <Typography variant="h6" fontWeight={"bold"}>
+                    SHINY SPRITE PREVIEW SETTINGS
+                  </Typography>
                   <FormGroup>
                     <FormControlLabel
                       control={
@@ -211,8 +239,8 @@ export default function User() {
                         />
                       }
                       label={
-                        <Typography variant="h6" fontWeight={"bold"}>
-                          DISPLAY GAMESPRITE ON THE SHINY PAGE
+                        <Typography variant="h6">
+                          Display as Pokémon Home sprites
                         </Typography>
                       }
                     />
@@ -229,8 +257,47 @@ export default function User() {
                         />
                       }
                       label={
-                        <Typography variant="h6" fontWeight={"bold"}>
-                          DISPLAY EVOLUTIONS AND FORMS ON THE SHINY PAGE
+                        <Typography variant="h6">
+                          Display evolutions and forms
+                        </Typography>
+                      }
+                    />
+                  </FormGroup>
+                  <Typography variant="h6" fontWeight={"bold"}>
+                    SHINY SPRITE SETTINGS
+                  </Typography>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          color="secondary"
+                          checked={animatedPreGen8Check}
+                          onChange={handleAnimatedPreGen8Change}
+                          inputProps={{ "aria-label": "controlled" }}
+                          disabled={trainerCheck}
+                        />
+                      }
+                      label={
+                        <Typography variant="h6">
+                          Animate sprites before Pokémon Sword and Shield
+                        </Typography>
+                      }
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          color="secondary"
+                          checked={animatedPostGen8Check}
+                          onChange={handleAnimatedPostGen8Change}
+                          inputProps={{ "aria-label": "controlled" }}
+                          disabled={trainerCheck}
+                        />
+                      }
+                      label={
+                        <Typography variant="h6">
+                          Animate sprites after Pokémon Sword and Shield
                         </Typography>
                       }
                     />

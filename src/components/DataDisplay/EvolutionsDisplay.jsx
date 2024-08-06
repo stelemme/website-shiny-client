@@ -27,6 +27,7 @@ export default function EvolutionsDisplay({ data }) {
                 directory={data.sprite.dir}
                 sprite={item.sprite}
                 gameSort={data.gameSort}
+                genderDifference={item.genderDifference}
                 shiny
                 width="50%"
               />
@@ -34,6 +35,7 @@ export default function EvolutionsDisplay({ data }) {
                 directory={data.sprite.dir}
                 sprite={item.sprite}
                 gameSort={data.gameSort}
+                genderDifference={item.genderDifference}
                 width="50%"
               />
             </Grid>
