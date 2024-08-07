@@ -2,6 +2,11 @@
 
 ## Changelogs
 
+### Version 1.16.0 (07.08.2024)
+
+**Bug Fixes:**
+- Megas tonen terug shiny en niet-shiny sprites.
+
 ### Version 1.15.0 (06.08.2024)
 
 **Pokémon Images:**

@@ -83,3 +83,11 @@ export const usePokedex = (query, dependency = true) => {
     enabled: !!dependency,
   });
 };
+
+const fetchPokemon = (pokemonId) => {
+  return axios.get(`/pokedex/${pokemonId}`);
+};
+
+export const usePokemonId = (pokemonId) => {
+  return useQuery(["pokemon", pokemonId], () => fetchPokemon(pokemonId));
+};

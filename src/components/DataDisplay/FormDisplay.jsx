@@ -34,7 +34,6 @@ export default function FormDisplay({ data }) {
                 directory={data.sprite.dir}
                 sprite={item.sprite}
                 gameSort={data.gameSort}
-                shiny
                 width="50%"
               />
             </Grid>

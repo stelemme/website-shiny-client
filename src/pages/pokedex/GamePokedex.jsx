@@ -13,39 +13,44 @@ import { usePokedex, useGame } from "../../hooks/useData";
 export default function GamePokedex() {
   const { gameId } = useParams();
 
-  const { isLoading: pokedexLoading, data: pokedex } =
-    usePokedex(`?game=${gameId}`, gameId);
+  const { isLoading: pokedexLoading, data: pokedex } = usePokedex(
+    `?game=${gameId}`,
+    gameId
+  );
 
-  const { isLoading: gameLoading, data: game } =
-    useGame(`/${gameId}?action=dir`, gameId);
+  const { isLoading: gameLoading, data: game } = useGame(
+    `/${gameId}?action=dir`,
+    gameId
+  );
 
-    if (pokedexLoading || gameLoading) {
-      return (
-        <Box maxWidth={{ lg: "840px", md: "630px", sm: "420px", xs: "310px" }}
+  console.log(game);
+
+  if (pokedexLoading || gameLoading) {
+    return (
+      <Box
+        maxWidth={{ lg: "840px", md: "630px", sm: "420px", xs: "310px" }}
         mx="auto"
-        my="20px">
-          <Box display="flex" flexDirection="column" mx="20px">
-            {/* HEADER */}
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Header
-                title="POKEDEX"
-                subtitle="Welcome to the national Pokédex!"
-              />
-            </Box>
-            <Typography
-              variant="h5"
-              style={{ marginBottom: "20px" }}
-            >
-              Loading ...
-            </Typography>
+        my="20px"
+      >
+        <Box display="flex" flexDirection="column" mx="20px">
+          {/* HEADER */}
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Header
+              title="POKEDEX"
+              subtitle="Welcome to the national Pokédex!"
+            />
           </Box>
+          <Typography variant="h5" style={{ marginBottom: "20px" }}>
+            Loading ...
+          </Typography>
         </Box>
-      );
-    }
+      </Box>
+    );
+  }
 
   return (
     <Box
@@ -72,13 +77,14 @@ export default function GamePokedex() {
             pokedex?.data.map((pokemon) => {
               return (
                 <Grid key={pokemon._id} item lg={3} md={4} sm={6} xs={6}>
-                    <PokedexCard
-                      id={pokemon._id}
-                      name={pokemon.name}
-                      pokedexNo={pokemon.pokedexNo}
-                      sprite={pokemon.sprite}
-                      dir={game.data.dir}
-                    />
+                  <PokedexCard
+                    id={pokemon._id}
+                    name={pokemon.name}
+                    pokedexNo={pokemon.pokedexNo}
+                    sprite={pokemon.sprite}
+                    dir={game.data.dir}
+                    sort={game.data.sort}
+                  />
                 </Grid>
               );
             })

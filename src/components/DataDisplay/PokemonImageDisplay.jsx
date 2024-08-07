@@ -4,16 +4,21 @@ import { Grid } from "@mui/material";
 // Components
 import PokemonImage from "../General/PokemonImage";
 
-export default function ImageDisplay({ data }) {
+export default function ImageDisplay({
+  data,
+  pokedex = false,
+  imageDir = null,
+  gameSort = null,
+}) {
   return (
     <Grid container>
       <Grid item xs={6}>
         <div style={{ position: "relative" }}>
           <PokemonImage
-            directory={data.sprite.dir}
-            sprite={data.sprite.pokemon}
-            gameSort={data.gameSort}
-            genderDifference={data.genderDifference}
+            directory={pokedex ? imageDir : data.sprite.dir}
+            sprite={pokedex ? data.sprite : data.sprite.pokemon}
+            gameSort={pokedex ? gameSort : data.gameSort}
+            genderDifference={pokedex ? false : data.genderDifference}
             shiny
           />
           {data.ball && (
@@ -33,10 +38,10 @@ export default function ImageDisplay({ data }) {
       </Grid>
       <Grid item xs={6}>
         <PokemonImage
-          directory={data.sprite.dir}
-          sprite={data.sprite.pokemon}
-          gameSort={data.gameSort}
-          genderDifference={data.genderDifference}
+          directory={pokedex ? imageDir : data.sprite.dir}
+          sprite={pokedex ? data.sprite : data.sprite.pokemon}
+          gameSort={pokedex ? gameSort : data.gameSort}
+          genderDifference={pokedex ? false : data.genderDifference}
         />
       </Grid>
     </Grid>

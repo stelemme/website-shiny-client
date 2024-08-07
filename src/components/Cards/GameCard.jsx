@@ -33,9 +33,11 @@ export default function GameCard({ id, gen, name, sprite, bgColor=400 }) {
           width="100%"
           justifyContent="center"
           alignItems="center"
+          height={window.innerWidth < 600 ? "100px" : "150px"}
         >
+          
           <img
-            width="100%"
+            height={window.innerWidth < 600 ? "100px" : "150px"}
             alt=""
             src={gameImages[`${sprite}.png`]}
           />
