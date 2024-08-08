@@ -55,7 +55,13 @@ export default function Pokemon() {
 
             {/* POKEMON SPRITES */}
             <Grid item xs={12}>
-              <PokemonImageDisplay data={data} pokedex imageDir={imageDir} sort={gameSort} />
+              <PokemonImageDisplay
+                directory={imageDir}
+                sprite={data.sprite}
+                sort={gameSort}
+                genderDifference={false}
+                ball={false}
+              />
             </Grid>
           </Grid>
         </Box>

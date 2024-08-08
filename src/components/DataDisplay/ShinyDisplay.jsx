@@ -48,7 +48,7 @@ export default function CompleteShinyCard({ data: initialData, refetch }) {
   const [forms, setForms] = useState(undefined);
   const [formsEdit, setFormsEdit] = useState([]);
 
-  console.log(evolutionsEdit)
+  console.log(evolutionsEdit);
 
   useEffect(() => {
     setData(initialData);
@@ -236,7 +236,12 @@ export default function CompleteShinyCard({ data: initialData, refetch }) {
 
             {/* POKEMON SPRITES */}
             <Grid item xs={12}>
-              <PokemonImageDisplay data={data} />
+              <PokemonImageDisplay
+                directory={data.sprite.dir}
+                sprite={data.sprite.pokemon}
+                gameSort={data.gameSort}
+                genderDifference={data.genderDifference}
+              />
             </Grid>
 
             <Grid item xs={12}>

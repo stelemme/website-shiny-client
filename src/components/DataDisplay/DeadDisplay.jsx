@@ -29,8 +29,8 @@ export default function CompleteDeadDisplay({ data, refetch }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
-  const makeRequest = useMakeRequest()
-  
+  const makeRequest = useMakeRequest();
+
   const [openDelete, setOpenDelete] = useState(false);
 
   console.log(data);
@@ -87,7 +87,12 @@ export default function CompleteDeadDisplay({ data, refetch }) {
 
             {/* POKEMON SPRITES */}
             <Grid item xs={12}>
-              <PokemonImageDisplay data={data} />
+              <PokemonImageDisplay
+                directory={data.sprite.dir}
+                sprite={data.sprite.pokemon}
+                gameSort={data.gameSort}
+                genderDifference={data.genderDifference}
+              />
             </Grid>
 
             <Grid item xs={12}>

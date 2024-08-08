@@ -5,23 +5,24 @@ import { Grid } from "@mui/material";
 import PokemonImage from "../General/PokemonImage";
 
 export default function ImageDisplay({
-  data,
-  pokedex = false,
-  imageDir = null,
-  gameSort = null,
+  directory,
+  sprite,
+  gameSort,
+  genderDifference,
+  ball = true,
 }) {
   return (
     <Grid container>
       <Grid item xs={6}>
         <div style={{ position: "relative" }}>
           <PokemonImage
-            directory={pokedex ? imageDir : data.sprite.dir}
-            sprite={pokedex ? data.sprite : data.sprite.pokemon}
-            gameSort={pokedex ? gameSort : data.gameSort}
-            genderDifference={pokedex ? false : data.genderDifference}
+            directory={directory}
+            sprite={sprite}
+            gameSort={gameSort}
+            genderDifference={genderDifference}
             shiny
           />
-          {data.ball && (
+          {ball && data.ball && (
             <img
               alt={data.sprite.ball}
               src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/balls/pixel/${data.sprite.ball}.png`}
@@ -38,10 +39,10 @@ export default function ImageDisplay({
       </Grid>
       <Grid item xs={6}>
         <PokemonImage
-          directory={pokedex ? imageDir : data.sprite.dir}
-          sprite={pokedex ? data.sprite : data.sprite.pokemon}
-          gameSort={pokedex ? gameSort : data.gameSort}
-          genderDifference={pokedex ? false : data.genderDifference}
+          directory={directory}
+          sprite={sprite}
+          gameSort={gameSort}
+          genderDifference={genderDifference}
         />
       </Grid>
     </Grid>
