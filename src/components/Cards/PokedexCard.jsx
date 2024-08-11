@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import LazyLoad from 'react-lazyload';
+import LazyLoad from "react-lazyload";
 
 // mui imports
 import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 
-export default function PokedexCard({ id, pokedexNo, name, sprite, dir }) {
+export default function PokedexCard({ id, pokedexNo, name, sprite, dir, sort = 100 }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
@@ -14,8 +14,8 @@ export default function PokedexCard({ id, pokedexNo, name, sprite, dir }) {
   const [isHovered, setIsHovered] = useState(false);
 
   const baseUrl = isHovered
-    ? 'https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon/'
-    : 'https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/';
+    ? "https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon/"
+    : "https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/";
 
   const imageUrl = `${baseUrl}${dir}/${sprite}.png`;
 
@@ -25,7 +25,7 @@ export default function PokedexCard({ id, pokedexNo, name, sprite, dir }) {
       width="100%"
       backgroundColor={colors.primary[400]}
       borderRadius="5px"
-      onClick={() => navigate(`/counters/${id}`)}
+      onClick={() => navigate(`/pokedex/${id}?dir=${dir}&sort=${sort}`)}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       sx={{
@@ -37,21 +37,23 @@ export default function PokedexCard({ id, pokedexNo, name, sprite, dir }) {
     >
       <Box>
         {/* GAME IMAGE */}
-        <LazyLoad height={"100%"} offset={300}>
-          <Box
-            display="inline-flex"
-            width="100%"
-            justifyContent="center"
-            alignItems="center"
-          >
+
+        <Box
+          display="inline-flex"
+          justifyContent="center"
+          alignItems="center"
+          height={window.innerWidth < 600 ? "100px" : "150px"}
+          width="100%"
+        >
+          <LazyLoad offset={225}>
             <img
-              width="100%"
+              height={window.innerWidth < 600 ? "100px" : "150px"}
               alt=""
               src={imageUrl}
               style={{ imageRendering: "pixelated" }}
             />
-          </Box>
-        </LazyLoad>
+          </LazyLoad>
+        </Box>
         {/* POKEDEX NO */}
         <Typography fontWeight={"bold"} color={colors.grey[400]}>
           #{pokedexNo}

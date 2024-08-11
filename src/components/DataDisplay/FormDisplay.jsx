@@ -4,7 +4,11 @@ import { Box, Typography, Grid } from "@mui/material";
 // Components
 import PokemonImage from "../General/PokemonImage";
 
-export default function FormDisplay({ data }) {
+export default function FormDisplay({ forms, directory, gameSort }) {
+  if (forms.length === 0) {
+    return null
+  }
+
   return (
     <Grid container>
       <Grid item xs={12}>
@@ -20,21 +24,20 @@ export default function FormDisplay({ data }) {
         </Box>
       </Grid>
       <Grid item xs={12} container>
-        {data.forms.map((item) => {
+        {forms.map((item) => {
           return (
             <Grid item xs={6} key={item._id}>
               <PokemonImage
-                directory={data.sprite.dir}
+                directory={directory}
                 sprite={item.sprite}
-                gameSort={data.gameSort}
+                gameSort={gameSort}
                 shiny
                 width="50%"
               />
               <PokemonImage
-                directory={data.sprite.dir}
+                directory={directory}
                 sprite={item.sprite}
-                gameSort={data.gameSort}
-                shiny
+                gameSort={gameSort}
                 width="50%"
               />
             </Grid>

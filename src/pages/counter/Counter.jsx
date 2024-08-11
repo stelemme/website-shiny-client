@@ -29,6 +29,7 @@ import StartDateForm from "../../components/Forms/StartDateForm";
 import EndDateForm from "../../components/Forms/EndDateForm";
 import IncrementForm from "../../components/Forms/IncrementForm";
 import ThresholdForm from "../../components/Forms/ThresholdForm";
+import PokemonImage from "../../components/General/PokemonImage";
 
 // Functions
 import {
@@ -791,14 +792,12 @@ export default function Counter() {
                     Counter Information
                   </DialogTitle>
                   <DialogContent>
-                    <img
-                      alt=""
-                      src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/${data.sprite.dir}/${data.sprite.pokemon}.png`}
-                      width="100%"
-                      style={{ imageRendering: "pixelated" }}
-                      onError={(e) => {
-                        e.target.src = `https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-all-home/${data.sprite.pokemon}.png`;
-                      }}
+                    <PokemonImage
+                      directory={data.sprite.dir}
+                      sprite={data.sprite.pokemon}
+                      gameSort={data.gameSort}
+                      genderDifference={false}
+                      shiny
                     />
                     <Grid container>
                       <Grid item xs={12} mb={"5px"}>
@@ -1026,7 +1025,11 @@ export default function Counter() {
                     Encounter Graph
                   </DialogTitle>
                   <DialogContent width="100%">
-                    <CounterEncounterGraph data={data} trainer={data.trainer} timeDifference={timeDifference} />
+                    <CounterEncounterGraph
+                      data={data}
+                      trainer={data.trainer}
+                      timeDifference={timeDifference}
+                    />
                   </DialogContent>
                 </Dialog>
               </Box>

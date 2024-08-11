@@ -65,7 +65,6 @@ export default function Shinies() {
                     dir={item.sprite.dir}
                     monSprite={item.sprite.pokemon}
                     trainer={item.trainer}
-                    IRLLocation={item.IRLLocation}
                   />
                 </LazyLoad>
               ) : (
@@ -80,7 +79,6 @@ export default function Shinies() {
                     evolutions={item.evolutions}
                     forms={item.forms}
                     group={item.group}
-                    IRLLocation={item.IRLLocation}
                   />
                 </LazyLoad>
               )}

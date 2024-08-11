@@ -4,22 +4,28 @@ import { Grid } from "@mui/material";
 // Components
 import PokemonImage from "../General/PokemonImage";
 
-export default function ImageDisplay({ data }) {
+export default function ImageDisplay({
+  directory,
+  sprite,
+  gameSort,
+  genderDifference,
+  ball = false,
+}) {
   return (
     <Grid container>
       <Grid item xs={6}>
         <div style={{ position: "relative" }}>
           <PokemonImage
-            directory={data.sprite.dir}
-            sprite={data.sprite.pokemon}
-            gameSort={data.gameSort}
-            genderDifference={data.genderDifference}
+            directory={directory}
+            sprite={sprite}
+            gameSort={gameSort}
+            genderDifference={genderDifference}
             shiny
           />
-          {data.ball && (
+          {ball && (
             <img
-              alt={data.sprite.ball}
-              src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/balls/pixel/${data.sprite.ball}.png`}
+              alt={ball}
+              src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/balls/pixel/${ball}.png`}
               style={{
                 imageRendering: "pixelated",
                 position: "absolute",
@@ -33,10 +39,10 @@ export default function ImageDisplay({ data }) {
       </Grid>
       <Grid item xs={6}>
         <PokemonImage
-          directory={data.sprite.dir}
-          sprite={data.sprite.pokemon}
-          gameSort={data.gameSort}
-          genderDifference={data.genderDifference}
+          directory={directory}
+          sprite={sprite}
+          gameSort={gameSort}
+          genderDifference={genderDifference}
         />
       </Grid>
     </Grid>

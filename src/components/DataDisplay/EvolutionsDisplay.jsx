@@ -4,7 +4,11 @@ import { Box, Typography, Grid } from "@mui/material";
 // Components
 import PokemonImage from "../General/PokemonImage";
 
-export default function EvolutionsDisplay({ data }) {
+export default function EvolutionsDisplay({ evolutions, directory, gameSort }) {
+  if (evolutions.length === 0) {
+    return null;
+  }
+
   return (
     <Grid container>
       <Grid item xs={12}>
@@ -20,21 +24,21 @@ export default function EvolutionsDisplay({ data }) {
         </Box>
       </Grid>
       <Grid item xs={12} container>
-        {data.evolutions.map((item) => {
+        {evolutions.map((item) => {
           return (
-            <Grid item xs={6} key={item._id}>
+            <Grid item xs={6} key={item?._id}>
               <PokemonImage
-                directory={data.sprite.dir}
+                directory={directory}
                 sprite={item.sprite}
-                gameSort={data.gameSort}
+                gameSort={gameSort}
                 genderDifference={item.genderDifference}
                 shiny
                 width="50%"
               />
               <PokemonImage
-                directory={data.sprite.dir}
+                directory={directory}
                 sprite={item.sprite}
-                gameSort={data.gameSort}
+                gameSort={gameSort}
                 genderDifference={item.genderDifference}
                 width="50%"
               />

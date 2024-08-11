@@ -9,8 +9,7 @@ import PokedexCard from "../../components/Cards/PokedexCard";
 import { usePokedex } from "../../hooks/useData";
 
 export default function Pokédex() {
-  const { isLoading: pokedexLoading, data: pokedex } =
-    usePokedex(`?action=forms`);
+  const { isLoading: pokedexLoading, data: pokedex } = usePokedex(``);
 
   if (pokedexLoading) {
     return (

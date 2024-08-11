@@ -43,6 +43,7 @@ import ChangeLog from "./pages/info/ChangeLog";
 // Pokedex Pages
 import GamePokedex from "./pages/pokedex/GamePokedex";
 import Pokédex from "./pages/pokedex/Pokedex";
+import Pokemon from "./pages/pokedex/Pokemon";
 import SelectPokedex from "./pages/pokedex/SelectPokedex";
 // Shiny Pages
 import Checklist from "./pages/shiny/Checklist";
@@ -142,6 +143,7 @@ const routes = [
         loader: loader,
         children: [
           { index: true, Component: Pokédex },
+          { path: ":pokemonId", Component: Pokemon },
           { path: "regional", Component: SelectPokedex },
           { path: "regional/:gameId", Component: GamePokedex },
         ],

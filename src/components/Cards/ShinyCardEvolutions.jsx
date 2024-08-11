@@ -28,6 +28,7 @@ export default function ShinyCardEvolutions({
   group,
   bgColor = "400",
   imgSize = window.innerWidth < 600 ? "40px" : "80px",
+  gameImgSize = window.innerWidth < 600 ? "22px" : "33px",
 }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -73,7 +74,7 @@ export default function ShinyCardEvolutions({
           <img
             alt=""
             src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/games/${gameSprite}.png`}
-            height={window.innerWidth < 600 ? "22px" : "33px"}
+            height={gameImgSize}
           />
         </Box>
         {/* COUNTER NAME */}

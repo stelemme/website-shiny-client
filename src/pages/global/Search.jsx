@@ -1,5 +1,5 @@
 import { useSearchParams } from "react-router-dom";
-import { useState, Fragment } from "react";
+import { useState } from "react";
 
 // Mui
 import {
@@ -7,7 +7,6 @@ import {
   IconButton,
   InputBase,
   useTheme,
-  Typography,
   RadioGroup,
   FormControlLabel,
   Radio,
@@ -17,24 +16,15 @@ import SearchIcon from "@mui/icons-material/Search";
 
 // Components
 import Header from "../../components/Header";
-import ShinyCard from "../../components/Cards/ShinyCard";
-import CounterCard from "../../components/Cards/CounterCard";
-
-// Hooks
-import { useShiny, useCounter } from "../../hooks/useData";
+import ShinySearchDisplay from "../../components/DataDisplay/ShinySearchDisplay";
+import CounterSearchDisplay from "../../components/DataDisplay/CounterSearchDisplay";
+import PokedexSearchDisplay from "../../components/DataDisplay/PokedexSearchDisplay";
 
 export default function Search() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [countersSearch, setCountersSearch] = useState(false);
-
-  const { isLoading: shinyLoading, data: shinyData } = useShiny(
-    `search=${searchParams.get("search") ? searchParams.get("search") : false}`
-  );
-  const { isLoading: counterLoading, data: counterData } = useCounter(
-    `?search=${searchParams.get("search") ? searchParams.get("search") : false}`
-  );
+  const [searchType, setSearchType] = useState("shinies");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -43,62 +33,6 @@ export default function Search() {
       setSearchParams({ search: e.target.search.value });
     } else {
       setSearchParams({});
-    }
-  };
-
-  const ShinyDisplay = ({ data, loading, error, text }) => {
-    if (loading) {
-      return (
-        <Typography variant="h5" style={{ marginBottom: "20px" }}>
-          Loading ...
-        </Typography>
-      );
-    } else if (error) {
-      return (
-        <Typography variant="h5" style={{ marginBottom: "20px" }}>
-          No {text} Found
-        </Typography>
-      );
-    } else {
-      const uniqueData = data?.reduce((acc, item) => {
-        if (!item.group) {
-          acc.push(item);
-        } else if (!acc.some((el) => el.group === item.group)) {
-          acc.push(item);
-        }
-        return acc;
-      }, []);
-
-      return uniqueData?.map((item) => {
-        return (
-          <Fragment key={item._id}>
-            {!countersSearch && (
-              <div style={{ marginBottom: "20px" }}>
-                <ShinyCard
-                  id={item._id}
-                  name={item.name}
-                  gameSprite={item.sprite.game}
-                  dir={item.sprite.dir}
-                  monSprite={item.sprite.pokemon}
-                  trainer={item.trainer}
-                />
-              </div>
-            )}
-            {countersSearch && item.totalEncounters > 0 && (
-              <div style={{ marginBottom: "20px" }}>
-                <CounterCard
-                  id={item._id}
-                  name={item.name}
-                  gameSprite={item.sprite.game}
-                  count={item.totalEncounters}
-                  trainer={item.trainer}
-                  query={"?completed=true"}
-                />
-              </div>
-            )}
-          </Fragment>
-        );
-      });
     }
   };
 
@@ -115,20 +49,25 @@ export default function Search() {
 
         <RadioGroup
           row
-          value={countersSearch}
+          value={searchType}
           onChange={(e, value) => {
-            setCountersSearch(JSON.parse(value));
+            setSearchType(value);
           }}
         >
           <FormControlLabel
-            value={false}
+            value={"shinies"}
             control={<Radio color="secondary" />}
             label="Shinies"
           />
           <FormControlLabel
-            value={true}
+            value={"counters"}
             control={<Radio color="secondary" />}
             label="Counters"
+          />
+          <FormControlLabel
+            value={"pokedex"}
+            control={<Radio color="secondary" />}
+            label="Pokedex"
           />
         </RadioGroup>
 
@@ -151,22 +90,27 @@ export default function Search() {
             </IconButton>
           </Box>
         </form>
-        <ShinyDisplay
-          data={
-            countersSearch
-              ? shinyData?.data.concat(counterData?.data)
-              : shinyData?.data
-          }
-          loading={
-            countersSearch ? shinyLoading && counterLoading : shinyLoading
-          }
-          error={
-            countersSearch
-              ? !shinyData?.data.length && !counterData?.data.length
-              : !shinyData?.data.length
-          }
-          text={countersSearch ? "Counters" : "Pokémons"}
-        />
+        {searchType === "shinies" && (
+          <ShinySearchDisplay
+            pokemon={
+              searchParams.get("search") ? searchParams.get("search") : false
+            }
+          />
+        )}
+        {searchType === "counters" && (
+          <CounterSearchDisplay
+            pokemon={
+              searchParams.get("search") ? searchParams.get("search") : false
+            }
+          />
+        )}
+        {searchType === "pokedex" && (
+          <PokedexSearchDisplay
+            pokemon={
+              searchParams.get("search") ? searchParams.get("search") : false
+            }
+          />
+        )}
       </Box>
     </Box>
   );
