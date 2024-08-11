@@ -24,13 +24,14 @@ export default function Shiny() {
 
   return data?.group ? (
     <>
-      <Box maxWidth={{ sm: "420px" }} mx="auto" my="20px">
-        <Box display="flex" flexDirection="column" mx="20px">
-          <Typography variant="h5" fontWeight="bold">#Radar shinies: {groupShinies?.length ? groupShinies?.length : "..."} </Typography>
-        </Box>
-      </Box>
-      {groupShinies?.map((item) => (
-        <CompleteShinyCard key={item._id} data={item} refetch={refetch} />
+      {groupShinies?.map((item, index) => (
+        <CompleteShinyCard
+          key={item._id}
+          data={item}
+          refetch={refetch}
+          count={groupShinies?.length}
+          index={index}
+        />
       ))}
     </>
   ) : (

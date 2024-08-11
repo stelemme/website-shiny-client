@@ -9,6 +9,12 @@
 - Individuele pokedex entry pagina's zijn toegevoegd. Hier kan worden bekeken welke shinies/counters er van die species in de database zitten. Ook kunnen hier alle evolutions/forms/gamesprites die in de database zitten bekeken worden.
 - Op de Search pagina kan er nu ook op pokedex entry worden gezocht.
 
+**Counter:**
+- Animated sprites worden getoont bij info.
+
+**Shiny Page:**
+- Radar pokemon hebben nu een unieke nummer naast hun naam, totaal nummer vanboven is verwijderd.
+
 **Bug Fixes:**
 
 - Thundurus form toegevoegd

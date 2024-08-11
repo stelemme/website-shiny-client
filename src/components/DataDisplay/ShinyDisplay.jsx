@@ -32,7 +32,12 @@ import IconsDisplay from "./IconsDisplay";
 import { useAuth } from "../../hooks/useAuth";
 import { useMakeRequest, useGetRequest } from "../../hooks/useAxios";
 
-export default function CompleteShinyCard({ data: initialData, refetch }) {
+export default function CompleteShinyCard({
+  data: initialData,
+  refetch,
+  count = false,
+  index = false,
+}) {
   const { username } = useAuth();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -169,7 +174,7 @@ export default function CompleteShinyCard({ data: initialData, refetch }) {
             alignItems="center"
           >
             <Typography variant="h3" color={colors.grey[100]} fontWeight="bold">
-              {data.name.toUpperCase()}
+              {data.name.toUpperCase()} {count ? `(${index + 1}/${count})` : ""}
             </Typography>
             <Box ml="10px" display="flex">
               {username === data.trainer && (
