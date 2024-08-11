@@ -1,8 +1,5 @@
 import { useParams } from "react-router-dom";
 
-// Mui
-import { Box, Typography } from "@mui/material";
-
 // Components
 import CompleteShinyCard from "../../components/DataDisplay/ShinyDisplay";
 
