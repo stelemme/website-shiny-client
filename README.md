@@ -2,6 +2,14 @@
 
 ## Changelogs
 
+### Version 1.17.0 (11.08.2024)
+
+**Bug Fixes:**
+- Thundurus form toegevoegd
+- Wurmple genderdifference gefixt
+
+---
+
 ### Version 1.16.0 (07.08.2024)
 
 **Bug Fixes:**
@@ -20,7 +28,7 @@
 - Aantal shinies in de groep wordt nu vanboven weergegeven.
 
 **Aanpassingen:**
-- Alle percentages zijn nu op twee cijfers na de comma.
+- Alle percentages zijn nu op twee cijfers na de komma.
 
 ---
 

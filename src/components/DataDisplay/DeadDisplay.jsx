@@ -91,6 +91,7 @@ export default function CompleteDeadDisplay({ data, refetch }) {
                 directory={data.sprite.dir}
                 sprite={data.sprite.pokemon}
                 gameSort={data.gameSort}
+                ball={data.sprite.ball}
                 genderDifference={data.genderDifference}
               />
             </Grid>

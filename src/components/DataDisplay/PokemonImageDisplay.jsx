@@ -9,7 +9,7 @@ export default function ImageDisplay({
   sprite,
   gameSort,
   genderDifference,
-  ball = true,
+  ball = false,
 }) {
   return (
     <Grid container>
@@ -22,10 +22,10 @@ export default function ImageDisplay({
             genderDifference={genderDifference}
             shiny
           />
-          {ball && data.ball && (
+          {ball && (
             <img
-              alt={data.sprite.ball}
-              src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/balls/pixel/${data.sprite.ball}.png`}
+              alt={ball}
+              src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/balls/pixel/${ball}.png`}
               style={{
                 imageRendering: "pixelated",
                 position: "absolute",

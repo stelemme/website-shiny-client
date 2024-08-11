@@ -7,9 +7,12 @@ import { tokens } from "../../theme";
 
 // Components
 import PokemonImageDisplay from "../../components/DataDisplay/PokemonImageDisplay";
+import AllSpritesDisplay from "../../components/DataDisplay/AllSpritesDisplay";
+import ShinySearchDisplay from "../../components/DataDisplay/ShinySearchDisplay";
+import CounterSearchDisplay from "../../components/DataDisplay/CounterSearchDisplay";
 
 // Hooks
-import { usePokemonId } from "../../hooks/useData";
+import { usePokemonId, useGame } from "../../hooks/useData";
 
 export default function Pokemon() {
   const { pokemonId } = useParams();
@@ -19,12 +22,18 @@ export default function Pokemon() {
   const colors = tokens(theme.palette.mode);
 
   const { data: pokemon } = usePokemonId(pokemonId);
-  const data = pokemon?.data;
+  const pokemonData = pokemon?.data;
+
+  const { data: games } = useGame(
+    `?pokemonFilter=${pokemonData?.name}`,
+    pokemonData
+  );
+  const gamesList = games?.data;
+
+  console.log(gamesList);
 
   const [imageDir, setImageDir] = useState("gan-all-home");
   const [gameSort, setGameSort] = useState(100);
-
-  console.log(data);
 
   useEffect(() => {
     const dirValue = searchParams.get("dir");
@@ -35,7 +44,7 @@ export default function Pokemon() {
 
   return (
     <Box maxWidth={{ sm: "420px" }} mx="auto" my="20px">
-      {data && (
+      {pokemonData && (
         <Box display="flex" flexDirection="column" mx="20px">
           {/* HEADER */}
           <Box
@@ -45,7 +54,7 @@ export default function Pokemon() {
             alignItems="center"
           >
             <Typography variant="h3" color={colors.grey[100]} fontWeight="bold">
-              {data.name}
+              {pokemonData.name}
             </Typography>
           </Box>
           <Grid container spacing={2}>
@@ -57,10 +66,38 @@ export default function Pokemon() {
             <Grid item xs={12}>
               <PokemonImageDisplay
                 directory={imageDir}
-                sprite={data.sprite}
-                sort={gameSort}
+                sprite={pokemonData.sprite}
+                gameSort={gameSort}
                 genderDifference={false}
-                ball={false}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <Divider />
+            </Grid>
+
+            {/* SEARCH DISPLAY */}
+            <Grid item xs={12}>
+              <ShinySearchDisplay pokemon={pokemonData.name} />
+            </Grid>
+
+            <Grid item xs={12}>
+              <Divider />
+            </Grid>
+
+            <Grid item xs={12}>
+              <CounterSearchDisplay pokemon={pokemonData.name} />
+            </Grid>
+
+            <Grid item xs={12}>
+              <Divider />
+            </Grid>
+
+            {/* ALL GAME SPRITES */}
+            <Grid item xs={12}>
+              <AllSpritesDisplay
+                pokemon={pokemonData.name}
+                sprite={pokemonData.sprite}
               />
             </Grid>
           </Grid>

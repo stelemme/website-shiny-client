@@ -240,6 +240,7 @@ export default function CompleteShinyCard({ data: initialData, refetch }) {
                 directory={data.sprite.dir}
                 sprite={data.sprite.pokemon}
                 gameSort={data.gameSort}
+                ball={data.sprite.ball}
                 genderDifference={data.genderDifference}
               />
             </Grid>
