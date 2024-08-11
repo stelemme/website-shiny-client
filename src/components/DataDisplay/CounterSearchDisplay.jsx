@@ -32,29 +32,30 @@ export default function CounterSearchDisplay({ pokemon }) {
       );
     } else {
       const uniqueData = data?.reduce((acc, item) => {
-        if (!item.group) {
+        if (!item?.group) {
           acc.push(item);
-        } else if (!acc.some((el) => el.group === item.group)) {
+        } else if (!acc.some((el) => el.group === item?.group)) {
           acc.push(item);
         }
         return acc;
       }, []);
 
       return uniqueData?.map((item) => {
+        if (!item?._id || item?.totalEncounters === 0) {
+          return null;
+        }
         return (
-          <Fragment key={item._id}>
-            {item.totalEncounters > 0 && (
-              <Box mt={"20px"}>
-                <CounterCard
-                  id={item._id}
-                  name={item.name}
-                  gameSprite={item.sprite.game}
-                  count={item.totalEncounters}
-                  trainer={item.trainer}
-                  query={"?completed=true"}
-                />
-              </Box>
-            )}
+          <Fragment key={item?._id}>
+            <Box mt={"20px"}>
+              <CounterCard
+                id={item._id}
+                name={item.name}
+                gameSprite={item.sprite.game}
+                count={item?.totalEncounters}
+                trainer={item.trainer}
+                query={"?completed=true"}
+              />
+            </Box>
           </Fragment>
         );
       });

@@ -10,13 +10,17 @@ import PokemonImageDisplay from "../../components/DataDisplay/PokemonImageDispla
 import AllSpritesDisplay from "../../components/DataDisplay/AllSpritesDisplay";
 import ShinySearchDisplay from "../../components/DataDisplay/ShinySearchDisplay";
 import CounterSearchDisplay from "../../components/DataDisplay/CounterSearchDisplay";
+import EvolutionsDisplay from "../../components/DataDisplay/EvolutionsDisplay";
+import FormDisplay from "../../components/DataDisplay/FormDisplay";
 
 // Hooks
-import { usePokemonId, useGame } from "../../hooks/useData";
+import { usePokemonId } from "../../hooks/useData";
+import { useGetRequest } from "../../hooks/useAxios";
 
 export default function Pokemon() {
   const { pokemonId } = useParams();
   const [searchParams] = useSearchParams();
+  const getRequest = useGetRequest();
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -24,23 +28,32 @@ export default function Pokemon() {
   const { data: pokemon } = usePokemonId(pokemonId);
   const pokemonData = pokemon?.data;
 
-  const { data: games } = useGame(
-    `?pokemonFilter=${pokemonData?.name}`,
-    pokemonData
-  );
-  const gamesList = games?.data;
-
-  console.log(gamesList);
-
   const [imageDir, setImageDir] = useState("gan-all-home");
   const [gameSort, setGameSort] = useState(100);
+
+  const [evolutions, setEvolutions] = useState([]);
+  const [forms, setForms] = useState([]);
 
   useEffect(() => {
     const dirValue = searchParams.get("dir");
     const sortValue = searchParams.get("sort");
     setImageDir(dirValue);
     setGameSort(sortValue);
-  }, [searchParams]);
+
+    const handleGetEvolutions = async () => {
+      try {
+        const response = await getRequest(
+          `/pokedex?name=${pokemonData.name}&evolutions=true`
+        );
+        setEvolutions(response.evolutions);
+        setForms(response.forms);
+      } catch {
+        return;
+      }
+    };
+
+    handleGetEvolutions();
+  }, [searchParams, pokemonData]);
 
   return (
     <Box maxWidth={{ sm: "420px" }} mx="auto" my="20px">
@@ -89,6 +102,38 @@ export default function Pokemon() {
               <CounterSearchDisplay pokemon={pokemonData.name} />
             </Grid>
 
+            {evolutions.length !== 0 && (
+              <Grid item xs={12}>
+                <Divider />
+              </Grid>
+            )}
+
+            {/* EVOLUTIONS DISPLAY */}
+            <Grid item xs={12}>
+              <EvolutionsDisplay
+                evolutions={evolutions}
+                directory={imageDir}
+                sprite={pokemonData.sprite}
+                gameSort={gameSort}
+                genderDifference={false}
+              />
+            </Grid>
+
+            {forms.length !== 0 && (
+              <Grid item xs={12}>
+                <Divider />
+              </Grid>
+            )}
+
+            {/* FORMS DISPLAY */}
+            <Grid item xs={12}>
+              <FormDisplay
+                forms={forms}
+                directory={imageDir}
+                sprite={pokemonData.sprite}
+                gameSort={gameSort}
+              />
+            </Grid>
             <Grid item xs={12}>
               <Divider />
             </Grid>

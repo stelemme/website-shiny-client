@@ -48,8 +48,6 @@ export default function CompleteShinyCard({ data: initialData, refetch }) {
   const [forms, setForms] = useState(undefined);
   const [formsEdit, setFormsEdit] = useState([]);
 
-  console.log(evolutionsEdit);
-
   useEffect(() => {
     setData(initialData);
   }, [initialData]);
@@ -260,11 +258,13 @@ export default function CompleteShinyCard({ data: initialData, refetch }) {
                 <Divider />
               </Grid>
             )}
-            {data.evolutions.length > 0 && (
-              <Grid item xs={12}>
-                <EvolutionsDisplay data={data} />
-              </Grid>
-            )}
+            <Grid item xs={12}>
+              <EvolutionsDisplay
+                evolutions={data.evolutions}
+                directory={data.sprite.dir}
+                gameSort={data.gameSort}
+              />
+            </Grid>
 
             {/* FORM SPRITES */}
             {data.forms.length > 0 && (
@@ -272,11 +272,13 @@ export default function CompleteShinyCard({ data: initialData, refetch }) {
                 <Divider />
               </Grid>
             )}
-            {data.forms.length > 0 && (
-              <Grid item xs={12}>
-                <FormDisplay data={data} />
-              </Grid>
-            )}
+            <Grid item xs={12}>
+              <FormDisplay
+                forms={data.forms}
+                directory={data.sprite.dir}
+                gameSort={data.gameSort}
+              />
+            </Grid>
 
             <Grid item xs={12}>
               <Divider />
