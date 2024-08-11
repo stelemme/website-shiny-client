@@ -18,12 +18,13 @@ import SearchIcon from "@mui/icons-material/Search";
 import Header from "../../components/Header";
 import ShinySearchDisplay from "../../components/DataDisplay/ShinySearchDisplay";
 import CounterSearchDisplay from "../../components/DataDisplay/CounterSearchDisplay";
+import PokedexSearchDisplay from "../../components/DataDisplay/PokedexSearchDisplay";
 
 export default function Search() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [countersSearch, setCountersSearch] = useState(false);
+  const [searchType, setSearchType] = useState("shinies");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -48,20 +49,25 @@ export default function Search() {
 
         <RadioGroup
           row
-          value={countersSearch}
+          value={searchType}
           onChange={(e, value) => {
-            setCountersSearch(JSON.parse(value));
+            setSearchType(value);
           }}
         >
           <FormControlLabel
-            value={false}
+            value={"shinies"}
             control={<Radio color="secondary" />}
             label="Shinies"
           />
           <FormControlLabel
-            value={true}
+            value={"counters"}
             control={<Radio color="secondary" />}
             label="Counters"
+          />
+          <FormControlLabel
+            value={"pokedex"}
+            control={<Radio color="secondary" />}
+            label="Pokedex"
           />
         </RadioGroup>
 
@@ -84,15 +90,22 @@ export default function Search() {
             </IconButton>
           </Box>
         </form>
-        {!countersSearch && (
+        {searchType === "shinies" && (
           <ShinySearchDisplay
             pokemon={
               searchParams.get("search") ? searchParams.get("search") : false
             }
           />
         )}
-        {countersSearch && (
+        {searchType === "counters" && (
           <CounterSearchDisplay
+            pokemon={
+              searchParams.get("search") ? searchParams.get("search") : false
+            }
+          />
+        )}
+        {searchType === "pokedex" && (
+          <PokedexSearchDisplay
             pokemon={
               searchParams.get("search") ? searchParams.get("search") : false
             }

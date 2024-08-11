@@ -29,7 +29,7 @@ const dirMapping = {
   "gen-9-sv": "Pokémon Scarlet & Violet",
 };
 
-export default function AllSpritesDisplay({ pokemon, sprite }) {
+export default function AllSpritesDisplay({ pokemon, sprite, id,  }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -59,12 +59,6 @@ export default function AllSpritesDisplay({ pokemon, sprite }) {
               height="100%"
               backgroundColor={colors.primary[400]}
               borderRadius="5px"
-              sx={{
-                "&:hover": {
-                  cursor: "pointer",
-                  backgroundColor: colors.primary[900],
-                },
-              }}
             >
               <Box height="45px" display="flex" alignItems="center">
                 <Typography variant="h6" fontWeight={"bold"}>

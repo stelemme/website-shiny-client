@@ -34,6 +34,7 @@ export default function Pokemon() {
   const [evolutions, setEvolutions] = useState([]);
   const [forms, setForms] = useState([]);
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     const dirValue = searchParams.get("dir");
     const sortValue = searchParams.get("sort");

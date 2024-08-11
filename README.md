@@ -4,7 +4,13 @@
 
 ### Version 1.17.0 (11.08.2024)
 
+**Pokedex:**
+
+- Individuele pokedex entry pagina's zijn toegevoegd. Hier kan worden bekeken welke shinies/counters er van die species in de database zitten. Ook kunnen hier alle evolutions/forms/gamesprites die in de database zitten bekeken worden.
+- Op de Search pagina kan er nu ook op pokedex entry worden gezocht.
+
 **Bug Fixes:**
+
 - Thundurus form toegevoegd
 - Wurmple genderdifference gefixt
 
@@ -13,21 +19,26 @@
 ### Version 1.16.0 (07.08.2024)
 
 **Bug Fixes:**
+
 - Megas tonen terug shiny en niet-shiny sprites.
 
 ### Version 1.15.0 (06.08.2024)
 
 **Pokémon Images:**
+
 - Animated sprites zijn toegevoegd, zie onderdeel "settings" voor meer info.
 - Gender differences zijn toegevoegd
 
 **Settings:**
+
 - Settings zijn opnieuw geordend om het overzichtelijker te maken. Animated sprites kunnen hier worden aan en uit gezet. Animated sprites vanaf gen 8 zijn zwaar om te laden, daarom staan deze default uit. Als er dingen fuckt gaan, best keer cookies verwijderen.
 
 **Radar Shinies:**
+
 - Aantal shinies in de groep wordt nu vanboven weergegeven.
 
 **Aanpassingen:**
+
 - Alle percentages zijn nu op twee cijfers na de komma.
 
 ---
@@ -35,17 +46,21 @@
 ### Version 1.14.0 (21.07.2024)
 
 **Collections:**
+
 - Aantal collected op totale aantal is nu te zien in de titel van de collection. Het percentage is ook toegevoegd.
 
 **Aanpassingen:**
+
 - Ingeven van in game locatie is niet meer nodig bij het aanmaken van een counter.
 - Naam van geo locatie is nu zichtbaar boven de kleine map snippet ipv op de marker te moeten klikken.
 
 **Bug Fixes:**
+
 - Shiny groepering per maand wordt nu gedaan in GMT+2 ipv GMT (Abra Stef nu bij juli ipv juni)
 - Als nieuwe legends, mythicals ... worden toegevoegd komen ze nu ook bij de juiste collection.
 
 **Backend:**
+
 - Volledige herstructurering van backend data ophaling. Hierdoor kunnen er nieuwe bugs zijn ontstaan.
 
 ---
@@ -53,32 +68,39 @@
 ### Version 1.13.0 (30.06.2024)
 
 **Sidebar:**
+
 - Herverdeling van pagina's naar een volgens mij logischere opdeling.
 
 **Shiny Map:**
+
 - Er is een knop toegevoegd om shinies te filteren die tijdens het reizen zijn gevangen. Volgende woorden worden gefilterd: "Auto", "Bus", "Fiets", "Tram", "Trein", "Vliegtuig"
 - Markers worden pas getoont als alles geladen is, zodat er geen rare flikkering meer is de eerste seconde.
 
 **Counter Graph:**
+
 - Aantal uur per dag gehunt kan nu bekeken worden in de graph.
 
 **Specs/Ribbons/Marks:**
+
 - Naam is nu zichtbaar bij het aanklikken van marks ribbons specs.
 
 **Pokedex:**
+
 - Aangevuld tot SV DLC.
 
 **Collections:**
+
 - Volgende collections zijn toegevoegd:
-    - Legends
-    - Mythicals
-    - Ultra Beasts
-    - Past Paradox Pokémon
-    - Future Paradox Pokémon
-    - Ribbons
-    - Marks
+  - Legends
+  - Mythicals
+  - Ultra Beasts
+  - Past Paradox Pokémon
+  - Future Paradox Pokémon
+  - Ribbons
+  - Marks
 
 **Bug Fix:**
+
 - Dubbele method category input field bug, is nu veranderd door method en method catergory.
 - DexNav kan nu worden ingegeven zonder eerst een counter aan te maken.
 - Counter percentages zijn nu wel correct, ervoor zat hier nog een bug in da hij ook nog encounters van 2u voor de laatste shiny meetelde.
@@ -88,6 +110,7 @@
 ### Version 1.12.1 (25.06.2024)
 
 **Bug Fix:**
+
 - Search filtert nu geen meerdere null waardes.
 
 ---
@@ -95,18 +118,23 @@
 ### Version 1.12.0 (24.06.2024)
 
 **Sidebar:**
+
 - Herordering van sidebar.
 
 **Topbar:**
+
 - User information kan nu vanaf hier worden aangeklikt ipv in de sidebar.
 
 **Cookies:**
+
 - Worden nu in real time aangepast dus refresh na het veranderen van bv. shiny group cookie is niet meer nodig.
 
 **Search:**
+
 - Bij het zoeken naar shinies wordt er maar 1 shiny meer getoont per groep.
 
 **Bug Fix:**
+
 - Threshold kan nu ook worden aangepast bij completed counters.
 
 ---
@@ -114,6 +142,7 @@
 ### Version 1.11.4 (16.06.2024)
 
 **Bug Fix:**
+
 - Laoding error in backend gefixt.
 
 ---
@@ -121,6 +150,7 @@
 ### Version 1.11.3 (15.06.2024)
 
 **Bug Fix:**
+
 - Error komt niet meer bij het openen van een completed counter.
 - Witte loading background bij het openen van app is nu zelfde achtergrondkleur als de site.
 
@@ -129,6 +159,7 @@
 ### Version 1.11.2 (02.06.2024)
 
 **Error handling:**
+
 - Bij elke interactie met de back-end wordt er een alert weergegeven (succes of error) om beter te kunnen debuggen.
 
 ---
@@ -136,6 +167,7 @@
 ### Version 1.11.1 (28.05.2024)
 
 **Dead Shiny Display:**
+
 - Gebruikt nu dezelfde componenten als de gewone shiny display.
 - Shiny's is vervangen door Shinies.
 
@@ -144,14 +176,17 @@
 ### Version 1.11.0 (25.05.2024)
 
 **Individual Shiny Page:**
+
 - Trainer staat nu vermeld bij informatie
 - Train sprites van chorneef zijn ook toegevoegd (geen voor gen 2/7/8/9, deze gebruiken de laatst voorkomende gen)
 
 **Individual Counter Page:**
+
 - Increment kan worden aangepast door erop te klikken
 - Thresholds kunnen worden aangepast door op de edit button naast de "Mean encounter time" te klikken.
 
 **Dialogs & Forms:**
+
 - Alle dialogs en forms zijn (onzichtbaar) aangepast (om mijn code leesbaar te houden). Zou kunnen dat er hierdoor nieuwe bugs zijn ingeslopen, laat die zo snel mogelijk weten.
 
 ---
@@ -159,34 +194,41 @@
 ### Version 1.10.0 (19.05.2024)
 
 **Geolocation List:**
+
 - "Vliegtuig" wordt nu uit de lijst gefilterd.
 
 **Shiny Map:**
+
 - Map start nu uitgezoomd op heel europa om zo alle shinies direct te zien zonder te moeten uitzoomen. Middelpunt van de kaart blijft Gent.
 
 **Sprites:**
+
 - Shiny Shellos & Gastrodon hebben nu de juiste sprite.
 
 **Individual Shiny Page:**
+
 - Link naar counter door ook counter icon te klikken
 - Evolution/form button is aangepast
 - Marks zijn vervangen door onderstaande. Ze kunnen nu ook verwijderd worden door op het kruisje te klikken bij het hoveren met muis (of klikker op gsm).
-    - Specs
-    - Ribbons
-    - Marks
-- Alle attributen die volgens mij aanspasbaar zijn, kunnen nu worden aangepast door op de edit button te klikken naast shiny information. 
+  - Specs
+  - Ribbons
+  - Marks
+- Alle attributen die volgens mij aanspasbaar zijn, kunnen nu worden aangepast door op de edit button te klikken naast shiny information.
 
 ---
 
 ### Version 1.9.0 (09.05.2024)
 
 **Counter Stats:**
+
 - Percentage wordt nu berekend vanaf laatste shiny.
 
 **Shiny Page:**
+
 - Shiny Cards worden compacter weergegeven op gsm zodat alles beter zichtbaar is.
 
 **Collections:**
+
 - Select value blijft behouden bij het switchen tussen collections.
 
 ---
@@ -194,15 +236,19 @@
 ### Version 1.8.0 (06.05.2024)
 
 **Dead Shiny's:**
+
 - Dode Shiny's kunnen nu toegevoegd worden (al dan niet via een counter).
 
 **Bug Fixes:**
+
 - Lazy Loading
 
 **Authentication:**
+
 - Between back end and front end
 
 **Hosting:**
+
 - Auto Hosting
 
 ---
@@ -210,6 +256,7 @@
 ### Version 1.7.0 (01.04.2024)
 
 **Collections:**
+
 - Volgende collections zijn toegevoegd:
   - Mega Evolutions
   - Gigantamax Pokémon
@@ -222,14 +269,17 @@
   - Vivillons
 
 **Create Shiny Form:**
+
 - Shinies kunnen niet meer worden toegevoegd zonder eerst gender aan te klikken, om gender fouten te vermijden.
 - Grouped shinies blijven nu in de form staan na submitten. Zo kunnen er meerdere radar pokemon snel na elkaar worden toegevoegd.
 
 **Error Handeling:**
+
 - Voor sommige errors is er nu een error pagina toegevoegd.
 
 **Bug Fixes:**
-- Bij het toevoegen van Shinies worden nu enkel de u eigen groups getoond, niemeer die van andere trainers. 
+
+- Bij het toevoegen van Shinies worden nu enkel de u eigen groups getoond, niemeer die van andere trainers.
 - Leaflet logo is nu achter de topbar.
 - Evolutions card bug gefixt waarbij altijd alle radar evolutions werden getoont bij bv Eevee en Tyrogue.
 
@@ -261,7 +311,7 @@
 **Odds Graph**
 
 - Reference lijn op odds.
-- Alle graphs zijn nu gelijk gescaled. 
+- Alle graphs zijn nu gelijk gescaled.
 
 **Encounter Graph**
 
