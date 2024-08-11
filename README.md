@@ -20,6 +20,9 @@
 - Thundurus form toegevoegd
 - Wurmple genderdifference gefixt
 
+**Database:**
+- SV sprites grotendeels toegevoegd
+
 ---
 
 ### Version 1.16.0 (07.08.2024)
