@@ -25,6 +25,7 @@ export default function PokemonImage({
       : cookies.animatedSpriteDisplayPostGen8
       ? true
       : false;
+
   const imageRendering = gameSort < 29 ? "pixelated" : "auto";
 
   const fallbacks = animated

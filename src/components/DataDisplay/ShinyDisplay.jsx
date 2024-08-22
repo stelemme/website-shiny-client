@@ -32,7 +32,12 @@ import IconsDisplay from "./IconsDisplay";
 import { useAuth } from "../../hooks/useAuth";
 import { useMakeRequest, useGetRequest } from "../../hooks/useAxios";
 
-export default function CompleteShinyCard({ data: initialData, refetch }) {
+export default function CompleteShinyCard({
+  data: initialData,
+  refetch,
+  count = false,
+  index = false,
+}) {
   const { username } = useAuth();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -47,8 +52,6 @@ export default function CompleteShinyCard({ data: initialData, refetch }) {
   const [evolutionsEdit, setEvolutionsEdit] = useState([]);
   const [forms, setForms] = useState(undefined);
   const [formsEdit, setFormsEdit] = useState([]);
-
-  console.log(evolutionsEdit);
 
   useEffect(() => {
     setData(initialData);
@@ -171,7 +174,7 @@ export default function CompleteShinyCard({ data: initialData, refetch }) {
             alignItems="center"
           >
             <Typography variant="h3" color={colors.grey[100]} fontWeight="bold">
-              {data.name.toUpperCase()}
+              {data.name.toUpperCase()} {count ? `(${index + 1}/${count})` : ""}
             </Typography>
             <Box ml="10px" display="flex">
               {username === data.trainer && (
@@ -240,6 +243,7 @@ export default function CompleteShinyCard({ data: initialData, refetch }) {
                 directory={data.sprite.dir}
                 sprite={data.sprite.pokemon}
                 gameSort={data.gameSort}
+                ball={data.sprite.ball}
                 genderDifference={data.genderDifference}
               />
             </Grid>
@@ -259,11 +263,13 @@ export default function CompleteShinyCard({ data: initialData, refetch }) {
                 <Divider />
               </Grid>
             )}
-            {data.evolutions.length > 0 && (
-              <Grid item xs={12}>
-                <EvolutionsDisplay data={data} />
-              </Grid>
-            )}
+            <Grid item xs={12}>
+              <EvolutionsDisplay
+                evolutions={data.evolutions}
+                directory={data.sprite.dir}
+                gameSort={data.gameSort}
+              />
+            </Grid>
 
             {/* FORM SPRITES */}
             {data.forms.length > 0 && (
@@ -271,11 +277,13 @@ export default function CompleteShinyCard({ data: initialData, refetch }) {
                 <Divider />
               </Grid>
             )}
-            {data.forms.length > 0 && (
-              <Grid item xs={12}>
-                <FormDisplay data={data} />
-              </Grid>
-            )}
+            <Grid item xs={12}>
+              <FormDisplay
+                forms={data.forms}
+                directory={data.sprite.dir}
+                gameSort={data.gameSort}
+              />
+            </Grid>
 
             <Grid item xs={12}>
               <Divider />

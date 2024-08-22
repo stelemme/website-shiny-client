@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useCookies } from 'react-cookie';
+import { useCookies } from "react-cookie";
 
 // mui imports
 import { Box, Typography, useTheme } from "@mui/material";
@@ -14,12 +14,13 @@ export default function ShinyCard({
   trainer,
   bgColor = "400",
   imgSize = window.innerWidth < 600 ? "40px" : "80px",
+  gameImgSize = window.innerWidth < 400 ? "22px" : "33px",
   status = "alive",
 }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
-  const [cookies] = useCookies(['gameSpriteDisplay']);
+  const [cookies] = useCookies(["gameSpriteDisplay"]);
 
   let trainerHeight = "100%";
   if (trainer) {
@@ -58,7 +59,7 @@ export default function ShinyCard({
           <img
             alt=""
             src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/games/${gameSprite}.png`}
-            height={window.innerWidth < 400 ? "22px" : "33px"}
+            height={gameImgSize}
           />
         </Box>
         {/* COUNTER NAME */}
