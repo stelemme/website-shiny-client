@@ -4,10 +4,11 @@ html,
 body {
   margin: 0;
   padding: 0;
-  bottom: -70px;
+  height: 100%;
   background-color: #141b2d;
 }
-#root 
+
+#root,
 .app,
 .content {
   font-family: "Source Sans Pro", sans-serif;
