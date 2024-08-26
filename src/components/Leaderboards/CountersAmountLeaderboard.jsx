@@ -9,7 +9,7 @@ import { medalImages } from "../../assets/imgExporter";
 
 export default function CountersAmountLeaderboard() {
   const { isLoading: counterStatsLoading, data: counterStatsData } = useCounter(
-    `?statsCountersAmount=true`
+    `statsCountersAmount=true`
   );
 
   const counterStats = counterStatsData?.data;

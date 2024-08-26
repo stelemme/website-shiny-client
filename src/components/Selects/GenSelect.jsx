@@ -9,7 +9,7 @@ import { useGame } from "../../hooks/useData";
 export default function GenSelect({ label, handleChange, width=120, size="small", defaultValue="All" }) {
   const [genList, setGenList] = useState(["All"]);
 
-  const { isLoading: genLoading, data: genData } = useGame("?genList=true");
+  const { isLoading: genLoading, data: genData } = useGame("genList=true");
 
   useEffect(() => {
     if (!genLoading) {

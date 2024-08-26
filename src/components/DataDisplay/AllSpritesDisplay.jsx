@@ -33,7 +33,7 @@ export default function AllSpritesDisplay({ pokemon, sprite, id,  }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const { data: games } = useGame(`?pokemonFilter=${pokemon}`, pokemon);
+  const { data: games } = useGame(`pokemonFilter=${pokemon}`, pokemon);
   const gamesList = games?.data;
 
   return (

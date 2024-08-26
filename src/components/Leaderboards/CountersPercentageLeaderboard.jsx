@@ -26,7 +26,6 @@ export default function CountersPercentageLeaderboard() {
   );
 
   const latestShiny = latestShinyData?.data;
-  console.log(latestShiny)
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
@@ -66,10 +65,6 @@ export default function CountersPercentageLeaderboard() {
             statsPeriodDay: newestEndDate,
           },
         });
-
-        console.log(newestEndDate)
-        console.log(response)
-
         setTotalCounterStats(response);
       } catch (error) {
         return

@@ -33,7 +33,7 @@ export default function Counters() {
   ]);
 
   const { isLoading: ongoingCountersLoading, data: ongoingCountersData } =
-    useCounter("?preview=true");
+    useCounter("preview=true");
   const { isLoading: completedCountersLoading, data: completedCountersData } =
     useShiny("preview=counter&filter=counters");
 

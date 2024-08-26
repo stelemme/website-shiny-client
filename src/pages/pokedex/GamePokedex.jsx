@@ -14,7 +14,7 @@ export default function GamePokedex() {
   const { gameId } = useParams();
 
   const { isLoading: pokedexLoading, data: pokedex } = usePokedex(
-    `?game=${gameId}`,
+    `game=${gameId}`,
     gameId
   );
 
@@ -22,8 +22,6 @@ export default function GamePokedex() {
     `/${gameId}?action=dir`,
     gameId
   );
-
-  console.log(game);
 
   if (pokedexLoading || gameLoading) {
     return (

@@ -14,7 +14,7 @@ export default function EncountersLeaderboard() {
   const [query, setQuery] = useState(1);
 
   const { isLoading: counterStatsLoading, data: counterStatsData } = useCounter(
-    `?statsPeriodTotal=${query}`
+    `statsPeriodTotal=${query}`
   );
 
   const counterStats = counterStatsData?.data;

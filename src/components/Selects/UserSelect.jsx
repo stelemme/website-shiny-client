@@ -16,7 +16,7 @@ export default function UserSelect({
 }) {
   const [userList, setUserList] = useState(["All"]);
 
-  const { isLoading: userLoading, data: userData } = useUser("?userList=true");
+  const { isLoading: userLoading, data: userData } = useUser("userList=true");
 
   useEffect(() => {
     if (!userLoading) {

@@ -30,10 +30,12 @@ export const useApiQuery = (
 
 export const useShiny = (query) => useApiQuery("shinies", "shiny", query);
 
-export const useDeadShiny = (query) =>
+export const useDeadShiny = (query) => {
+  const [cookies] = useCookies(["groupShinies"]);
   useApiQuery("deadshinies", "deadshiny", query, {
     groupCheck: cookies.groupCheck,
   });
+};
 
 export const useShinyId = (shinyId) =>
   useApiQuery("shiny", `shiny/${shinyId}`, "action=noEncounters");
