@@ -195,8 +195,8 @@ function Layout() {
   const [collapse, setCollapse] = useState(false);
 
   const [cookies, setCookie] = useCookies([
-    "animatedSpriteDisplayPreGen8", 
-    "animatedSpriteDisplayPostGen8", 
+    "animatedSpriteDisplayPreGen8",
+    "animatedSpriteDisplayPostGen8",
     "checklistGenFilter",
     "collectionSelect",
     "collectionUserSelect",
@@ -291,16 +291,12 @@ function Layout() {
                   width: width,
                   position: "relative",
                   left: left,
-                  top: "70px",
-                  height: "100%",
                 }}
               >
                 <div
                   style={{
-                    position: "fixed",
+                    position: "relative", // Changed from "fixed" to "relative"
                     top: 0,
-                    width: width,
-                    left: left,
                     zIndex: 1000,
                   }}
                 >
