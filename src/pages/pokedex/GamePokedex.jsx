@@ -8,7 +8,7 @@ import Header from "../../components/Header";
 import PokedexCard from "../../components/Cards/PokedexCard";
 
 //Hooks
-import { usePokedex, useGame } from "../../hooks/useData";
+import { usePokedex, useGameId } from "../../hooks/useData";
 
 export default function GamePokedex() {
   const { gameId } = useParams();
@@ -18,8 +18,9 @@ export default function GamePokedex() {
     gameId
   );
 
-  const { isLoading: gameLoading, data: game } = useGame(
-    `/${gameId}?action=dir`,
+  const { isLoading: gameLoading, data: game } = useGameId(
+    gameId,
+    "action=dir",
     gameId
   );
 
@@ -61,7 +62,7 @@ export default function GamePokedex() {
         <Box display="flex" justifyContent="space-between" alignItems="center">
           {game ? (
             <Header
-              title={`${game.data.name.toUpperCase()} POKEDEX`}
+              title={`${game?.data.name.toUpperCase()} POKEDEX`}
               subtitle={`Welcome to the ${game.data.name} Regional Pokédex!`}
             />
           ) : (

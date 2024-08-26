@@ -51,6 +51,9 @@ export const useUser = (query) => useApiQuery("users", "user", query);
 export const useGame = (query, dependency = true) =>
   useApiQuery("game", "game", query, {}, dependency);
 
+export const useGameId = (gameId, query, dependency = true) =>
+  useApiQuery("game", `game/${gameId}`, query, {}, dependency);
+
 export const usePokedex = (query, dependency = true) =>
   useApiQuery("pokedex", "pokedex", query, {}, dependency);
 
