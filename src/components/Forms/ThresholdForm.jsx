@@ -20,7 +20,6 @@ export default function ThresholdForm({ data, setData, type }) {
       color="secondary"
       label={type === "lower" ? "Lower Threshold" : "Upper Threshold"}
       onChange={(e) => {
-        console.log(typeof(e.target.value))
         if (e.target.value >= 0 || e.target.value === "") {
           setData((prevState) => {
             return {

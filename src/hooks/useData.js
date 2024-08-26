@@ -2,92 +2,60 @@ import { useQuery } from "react-query";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 
-const fetchShinies = (query, groupCheck) => {
-  if (groupCheck) {
-    return axios.get(`/shiny?filter=group&${query}`);
-  } else {
-    return axios.get(`/shiny?${query}`);
-  }
+// Centralized fetch function
+const fetchData = (endpoint, query, groupCheck = false, options = {}) => {
+  const url = groupCheck
+    ? `/${endpoint}?filter=group&${query}`
+    : `/${endpoint}?${query}`;
+  return axios.get(url, options);
 };
 
-export const useShiny = (query) => {
+// Generalized hook for API queries
+export const useApiQuery = (
+  key,
+  endpoint,
+  query,
+  options = {},
+  dependency = true
+) => {
   const [cookies] = useCookies(["groupShinies"]);
-
-  return useQuery(["shinies", query], () => fetchShinies(query, cookies.groupShinies));
+  return useQuery({
+    queryKey: [key, query],
+    queryFn: () => fetchData(endpoint, query, cookies.groupShinies, options),
+    enabled: !!dependency,
+  });
 };
 
-const fetchDeadShinies = (query, groupCheck) => {
-  if (groupCheck) {
-    return axios.get(`/deadshiny?filter=group&${query}`);
-  } else {
-    return axios.get(`/deadshiny?${query}`);
-  }
-};
+// Specific hooks using the generalized useApiQuery
+
+export const useShiny = (query) => useApiQuery("shinies", "shiny", query);
 
 export const useDeadShiny = (query) => {
   const [cookies] = useCookies(["groupShinies"]);
-
-  return useQuery(["deadshinies", query], () => fetchDeadShinies(query, cookies.groupCheck));
-};
-
-const fetchShiny = (shinyId) => {
-  return axios.get(`/shiny/${shinyId}?action=noEncounters`);
-};
-
-export const useShinyId = (shinyId) => {
-  return useQuery(["shiny", shinyId], () => fetchShiny(shinyId));
-};
-
-const fetchDeadShiny = (shinyId) => {
-  return axios.get(`/deadshiny/${shinyId}?action=noEncounters`);
-};
-
-export const useDeadShinyId = (shinyId) => {
-  return useQuery(["deadshiny", shinyId], () => fetchDeadShiny(shinyId));
-};
-
-const fetchCounters = (query) => {
-  return axios.get(`/counters${query}`);
-};
-
-export const useCounter = (query, dependency = true) => {
-  return useQuery(["counters", query], () => fetchCounters(query), {
-    enabled: !!dependency,
+  useApiQuery("deadshinies", "deadshiny", query, {
+    groupCheck: cookies.groupCheck,
   });
 };
 
-const fetchUsers = (query) => {
-  return axios.get(`/user${query}`);
-};
+export const useShinyId = (shinyId) =>
+  useApiQuery("shiny", `shiny/${shinyId}`, "action=noEncounters");
 
-export const useUser = (query) => {
-  return useQuery(["users", query], () => fetchUsers(query));
-};
+export const useDeadShinyId = (shinyId) =>
+  useApiQuery("deadshiny", `deadshiny/${shinyId}`, "action=noEncounters");
 
-const fetchGames = (query) => {
-  return axios.get(`/game${query}`);
-};
+export const useCounter = (query, dependency = true) =>
+  useApiQuery("counters", "counters", query, {}, dependency);
 
-export const useGame = (query, dependency = true) => {
-  return useQuery(["game", query], () => fetchGames(query), {
-    enabled: !!dependency,
-  });
-};
+export const useUser = (query) => useApiQuery("users", "user", query);
 
-const fetchPokedex = (query) => {
-  return axios.get(`/pokedex${query}`);
-};
+export const useGame = (query, dependency = true) =>
+  useApiQuery("game", "game", query, {}, dependency);
 
-export const usePokedex = (query, dependency = true) => {
-  return useQuery(["pokedex", query], () => fetchPokedex(query), {
-    enabled: !!dependency,
-  });
-};
+export const useGameId = (gameId, query, dependency = true) =>
+  useApiQuery("game", `game/${gameId}`, query, {}, dependency);
 
-const fetchPokemon = (pokemonId) => {
-  return axios.get(`/pokedex/${pokemonId}`);
-};
+export const usePokedex = (query, dependency = true) =>
+  useApiQuery("pokedex", "pokedex", query, {}, dependency);
 
-export const usePokemonId = (pokemonId) => {
-  return useQuery(["pokemon", pokemonId], () => fetchPokemon(pokemonId));
-};
+export const usePokemonId = (pokemonId) =>
+  useApiQuery("pokemon", `pokedex/${pokemonId}`);

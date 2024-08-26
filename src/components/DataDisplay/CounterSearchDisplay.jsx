@@ -14,7 +14,7 @@ export default function CounterSearchDisplay({ pokemon }) {
     `search=${pokemon}`
   );
   const { isLoading: counterLoading, data: counterData } = useCounter(
-    `?search=${pokemon}`
+    `search=${pokemon}`
   );
 
   const ShinyDisplay = ({ data, loading, error, text }) => {

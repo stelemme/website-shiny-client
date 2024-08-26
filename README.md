@@ -2,6 +2,13 @@
 
 ## Changelogs
 
+### Version 1.17.1 (26.08.2024)
+
+**Bug Fixes:**
+- Zie google docs
+
+---
+
 ### Version 1.17.0 (11.08.2024)
 
 **Pokedex:**

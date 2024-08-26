@@ -19,7 +19,7 @@ export default function Home() {
   const colors = tokens(theme.palette.mode);
 
   const { isLoading: latestCounterLoading, data: latestCounter } = useCounter(
-    `?trainers=true&preview=true&amount=1&sort=newest`
+    `trainers=true&preview=true&amount=1&sort=newest`
   );
 
   const { isLoading: latestShinyLoading, data: latestShiny } =

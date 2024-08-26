@@ -9,7 +9,7 @@ import GameCard from "../../components/Cards/GameCard";
 import { useGame } from "../../hooks/useData";
 
 export default function SelectPokedex() {
-  const { isLoading: gamesLoading, data: games } = useGame(`?action=select`);
+  const { isLoading: gamesLoading, data: games } = useGame(`action=select`);
 
   if (gamesLoading) {
     return (

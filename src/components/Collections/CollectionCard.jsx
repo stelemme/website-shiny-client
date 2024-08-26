@@ -57,6 +57,7 @@ export default function CollectionCard({
   };
 
   const totalNumber = placeholdList.length
+  console.log(collectionData)
   const completedNumber = Object.keys(collectionData ? collectionData : {}).length
   const percentage =  completedNumber / totalNumber * 100
 

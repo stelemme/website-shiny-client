@@ -23,7 +23,6 @@ export default function GenderForm({ data, setData, genderCheck }) {
           let genderDifference = false;
           if (e.target.value === "female") {
             const response = await getRequest(`/pokedex?name=${data.name}`);
-            console.log(response)
             genderDifference = response[0].genderDifference;
           }
 

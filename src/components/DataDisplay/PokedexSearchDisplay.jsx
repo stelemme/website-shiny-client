@@ -9,7 +9,7 @@ import { usePokedex } from "../../hooks/useData";
 
 export default function PokedexSearchDisplay({ pokemon }) {
   const { isLoading: pokemonLoading, data: pokemonData } = usePokedex(
-    `?search=${pokemon}`
+    `search=${pokemon}`
   );
 
   const ShinyDisplay = ({ data, loading, error, text }) => {
