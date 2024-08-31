@@ -10,21 +10,21 @@ import { calculateMultiplePercentage } from "../../functions/statFunctions";
 // Images
 import { medalImages } from "../../assets/imgExporter";
 
-export default function CountersPercentageLeaderboard() {
+export default function CountersTotalPercentageLeaderboard() {
   const { isLoading: counterStatsLoading, data: counterStatsData } = useCounter(
-    `statsTotalCountersPercentage=true`
+    `stats=totalPercentage`
   );
 
   const counterStats = counterStatsData?.data;
   const defCounterStats = [];
-  const totalCounterStats = []
+  const totalCounterStats = [];
 
   counterStats?.forEach((item) => {
     defCounterStats.push({
       trainer: item.trainer,
       data: calculateMultiplePercentage(item.encounterData),
     });
-    totalCounterStats.push(...item.encounterData)
+    totalCounterStats.push(...item.encounterData);
   });
 
   return (

@@ -12,7 +12,7 @@ import { medalImages } from "../../assets/imgExporter";
 
 export default function ConvertedEncLeaderBoard() {
   const { isLoading: counterStatsLoading, data: counterStatsData } = useCounter(
-    `statsCountersConverted=true`
+    `stats=totalEnc`
   );
 
   const counterStats = counterStatsData?.data;

@@ -7,7 +7,7 @@ import Leaderboard from "./LeaderBoard";
 import { useShiny } from "../../hooks/useData";
 
 // Functions
-import { calculateMultiplePercentage } from "../../functions/statFunctions";
+import { calculateMultiplePercentage, formatDateToString } from "../../functions/statFunctions";
 
 // Images
 import { medalImages } from "../../assets/imgExporter";
@@ -33,7 +33,7 @@ export default function CountersPercentageLeaderboard() {
     const fetchData = async () => {
       const updatedDefCounterStats = [];
       let newestEndDate = new Date(latestShiny[0]?.endDate);
-      
+
       for (const item of latestShiny) {
         const itemEndDate = new Date(item?.endDate);
         if (itemEndDate > newestEndDate) {
@@ -43,9 +43,9 @@ export default function CountersPercentageLeaderboard() {
         try {
           const response = await getRequest(`/counters`, {
             params: {
-              statsCountersPercentage: true,
+              stats: "percentage",
               trainer: item.trainer,
-              statsPeriodDay: itemEndDate,
+              date: formatDateToString(itemEndDate),
             },
           });
 
@@ -54,20 +54,20 @@ export default function CountersPercentageLeaderboard() {
             data: calculateMultiplePercentage(response),
           });
         } catch (error) {
-          return
+          return;
         }
       }
 
       try {
         const response = await getRequest(`/counters`, {
           params: {
-            statsCountersPercentage: true,
-            statsPeriodDay: newestEndDate,
+            stats: "percentage",
+            date: formatDateToString(newestEndDate),
           },
         });
         setTotalCounterStats(response);
       } catch (error) {
-        return
+        return;
       }
 
       setDefCounterStats(updatedDefCounterStats);
@@ -92,6 +92,6 @@ export default function CountersPercentageLeaderboard() {
         medalImages["battle-3-b.png"],
       ]}
       total={`${calculateMultiplePercentage(totalCounterStats)} %`}
-    />    
+    />
   );
 }
