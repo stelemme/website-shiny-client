@@ -20,7 +20,7 @@ export const useApiQuery = (
 ) => {
   const [cookies] = useCookies(["groupShinies"]);
   return useQuery({
-    queryKey: [key, query],
+    queryKey: [key, query, endpoint],
     queryFn: () => fetchData(endpoint, query, cookies.groupShinies, options),
     enabled: !!dependency,
   });
