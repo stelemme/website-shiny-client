@@ -9,12 +9,17 @@ import { useCounter } from "../../hooks/useData";
 // Images
 import { medalImages } from "../../assets/imgExporter";
 
+// Functions
+import { formatDateToString } from "../../functions/statFunctions";
+
 export default function EncountersLeaderboard() {
+  const today = formatDateToString(new Date());
   const [period, setPeriod] = useState("Today");
-  const [query, setQuery] = useState(1);
+  const [dateQuery, setDateQuery] = useState(today);
+  const [periodQuery, setPeriodQuery] = useState(1);
 
   const { isLoading: counterStatsLoading, data: counterStatsData } = useCounter(
-    `statsPeriodTotal=${query}`
+    `stats=encDuringPeriodTotal&date=${dateQuery}&period=${periodQuery}`
   );
 
   const counterStats = counterStatsData?.data;
@@ -22,19 +27,29 @@ export default function EncountersLeaderboard() {
   const handleChange = (e) => {
     setPeriod(e.target.value);
     if (e.target.value === "Last 7 Days") {
-      setQuery(7);
+      setDateQuery(today);
+      setPeriodQuery(7);
     } else if (e.target.value === "Last 30 Days") {
-      setQuery(30);
+      setDateQuery(today);
+      setPeriodQuery(30);
     } else if (e.target.value === "Last 90 Days") {
-      setQuery(90);
+      setDateQuery(today);
+      setPeriodQuery(90);
     } else if (e.target.value === "Last Year") {
-      setQuery(365);
+      setDateQuery(today);
+      setPeriodQuery(365);
     } else if (e.target.value === "All Time") {
-      setQuery(999999);
+      setDateQuery(today);
+      setPeriodQuery(999999);
     } else if (e.target.value === "Yesterday") {
-      setQuery("yesterday");
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+
+      setDateQuery(formatDateToString(yesterday));
+      setPeriodQuery(1);
     } else {
-      setQuery(1);
+      setDateQuery(today);
+      setPeriodQuery(1);
     }
   };
 

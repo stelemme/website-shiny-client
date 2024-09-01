@@ -53,7 +53,7 @@ export default function CounterSearchDisplay({ pokemon }) {
                 gameSprite={item.sprite.game}
                 count={item?.totalEncounters}
                 trainer={item.trainer}
-                query={"?completed=true"}
+                query={item.origin ? "" : "?completed=true"}
               />
             </Box>
           </Fragment>

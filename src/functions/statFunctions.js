@@ -112,7 +112,7 @@ export function calculatePercentage(
 
 export function calculateMultiplePercentage(encounterData) {
   if (encounterData.length < 1) {
-    return "0.00"
+    return "0.00";
   }
   let totalRecalcValues = 1;
 
@@ -245,7 +245,7 @@ export function getMaxEncounters(encounterArray) {
     }
   }
 
-   return maxObject
+  return maxObject;
 }
 
 export function calculateOverlapPercentage(arr1, arr2) {
@@ -257,4 +257,13 @@ export function calculateOverlapPercentage(arr1, arr2) {
   const percentage = (commonElements.length / arr2.length) * 100;
 
   return percentage;
+}
+
+export function formatDateToString(date) {
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+
+  const formattedDate = `${day}-${month}-${year}`;
+  return formattedDate;
 }

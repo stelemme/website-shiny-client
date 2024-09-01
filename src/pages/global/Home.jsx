@@ -18,9 +18,8 @@ export default function Home() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const { isLoading: latestCounterLoading, data: latestCounter } = useCounter(
-    `trainers=true&preview=true&amount=1&sort=newest`
-  );
+  const { isLoading: latestCounterLoading, data: latestCounter } =
+    useCounter(`filter=latest`);
 
   const { isLoading: latestShinyLoading, data: latestShiny } =
     useShiny(`filter=latest`);
@@ -50,6 +49,7 @@ export default function Home() {
               count={item?.totalEncounters}
               trainer={item?.trainer}
               bgColor={500}
+              query={item?.source === "shinies" ? "?completed=true" : ""}
             />
           </Grid>
         );
