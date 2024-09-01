@@ -7,6 +7,7 @@
 **Bug Fixes:**
 
 - Zie google docs
+- Dead shinies kunnen terug worden bekeken.
 
 ---
 
