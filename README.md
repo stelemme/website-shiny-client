@@ -2,9 +2,18 @@
 
 ## Changelogs
 
+### Version 1.17.2 (01.09.2024)
+
+**Bug Fixes:**
+
+- Zie google docs
+
+---
+
 ### Version 1.17.1 (26.08.2024)
 
 **Bug Fixes:**
+
 - Zie google docs
 
 ---
@@ -17,9 +26,11 @@
 - Op de Search pagina kan er nu ook op pokedex entry worden gezocht.
 
 **Counter:**
+
 - Animated sprites worden getoont bij info.
 
 **Shiny Page:**
+
 - Radar pokemon hebben nu een unieke nummer naast hun naam, totaal nummer vanboven is verwijderd.
 
 **Bug Fixes:**
@@ -28,6 +39,7 @@
 - Wurmple genderdifference gefixt
 
 **Database:**
+
 - SV sprites grotendeels toegevoegd
 
 ---
