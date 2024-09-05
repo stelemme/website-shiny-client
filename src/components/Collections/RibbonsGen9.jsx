@@ -4,59 +4,59 @@ import CollectionCard from "./CollectionCard";
 const ribbons = [
   {
     name: "Paldea Champion Ribbon",
-    sprite: "paldea-champion-ribbon",
+    sprite: "gen-9/paldea-champion-ribbon",
   },
   {
     name: "Effort Ribbon",
-    sprite: "effort-ribbon",
+    sprite: "gen-9/effort-ribbon",
   },
   {
     name: "Best Friend Ribbon",
-    sprite: "best-friend-ribbon",
+    sprite: "gen-9/best-friend-ribbon",
   },
   {
     name: "Master Rank Ribbon",
-    sprite: "master-rank-ribbon",
+    sprite: "gen-9/master-rank-ribbon",
   },
   {
     name: "Once-in-a-Lifetime Ribbon",
-    sprite: "once-in-a-lifetime-ribbon",
+    sprite: "gen-9/once-in-a-lifetime-ribbon",
   },
   {
     name: "Partner Ribbon",
-    sprite: "partner-ribbon",
+    sprite: "gen-9/partner-ribbon",
   },
   {
     name: "Classic Ribbon",
-    sprite: "classic-ribbon",
+    sprite: "gen-9/classic-ribbon",
   },
   {
     name: "Premier Ribbon",
-    sprite: "premier-ribbon",
+    sprite: "gen-9/premier-ribbon",
   },
   {
     name: "Event Ribbon",
-    sprite: "event-ribbon",
+    sprite: "gen-9/event-ribbon",
   },
   {
     name: "Birthday Ribbon",
-    sprite: "birthday-ribbon",
+    sprite: "gen-9/birthday-ribbon",
   },
   {
     name: "Special Ribbon",
-    sprite: "special-ribbon",
+    sprite: "gen-9/special-ribbon",
   },
   {
     name: "Souvenir Ribbon",
-    sprite: "souvenir-ribbon",
+    sprite: "gen-9/souvenir-ribbon",
   },
   {
     name: "Wishing Ribbon",
-    sprite: "wishing-ribbon",
+    sprite: "gen-9/wishing-ribbon",
   },
   {
     name: "Battle Champion Ribbon",
-    sprite: "battle-champion-ribbon",
+    sprite: "gen-9/battle-champion-ribbon",
   },
 ];
 

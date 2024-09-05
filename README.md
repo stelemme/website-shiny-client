@@ -4,6 +4,10 @@
 
 ### Version 1.18.0 (05.09.2024)
 
+**Ribbons:**
+
+- Ribbons hebben nu altijd hun sprite die overeenkomt met de game
+
 **Shinies Form:**
 
 - Error message als geo locatie fout in ingevuld
