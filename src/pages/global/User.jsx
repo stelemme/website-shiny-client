@@ -36,6 +36,7 @@ export default function User() {
     "evolutionSpriteDisplay",
     "animatedSpriteDisplayPreGen8",
     "animatedSpriteDisplayPostGen8",
+    "mapOnGent",
   ]);
 
   const imageCheck = {
@@ -57,6 +58,7 @@ export default function User() {
     cookies.animatedSpriteDisplayPostGen8
   );
   const [trainerCheck, setTrainerCheck] = useState(trainerChoice !== username);
+  const [mapOnGentCheck, setMapOnGentCheck] = useState(cookies.mapOnGent);
 
   useEffect(() => {
     setTrainerCheck(trainerChoice !== username);
@@ -93,6 +95,13 @@ export default function User() {
   const handleAnimatedPostGen8Change = (e) => {
     setAnimatedPostGen8Check(e.target.checked);
     setCookies("animatedSpriteDisplayPostGen8", e.target.checked, {
+      expires: foreverDate,
+    });
+  };
+
+  const handleMapOnGentChange = (e) => {
+    setMapOnGentCheck(e.target.checked);
+    setCookies("mapOnGent", e.target.checked, {
       expires: foreverDate,
     });
   };
@@ -298,6 +307,27 @@ export default function User() {
                       label={
                         <Typography variant="h6">
                           Animate sprites after Pokémon Sword and Shield
+                        </Typography>
+                      }
+                    />
+                  </FormGroup>
+                  <Typography variant="h6" fontWeight={"bold"}>
+                    MAP SETTINGS
+                  </Typography>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          color="secondary"
+                          checked={mapOnGentCheck}
+                          onChange={handleMapOnGentChange}
+                          inputProps={{ "aria-label": "controlled" }}
+                          disabled={trainerCheck}
+                        />
+                      }
+                      label={
+                        <Typography variant="h6">
+                          Map opens on Gent
                         </Typography>
                       }
                     />

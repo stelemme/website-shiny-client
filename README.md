@@ -4,6 +4,11 @@
 
 ### Version 1.18.0 (05.09.2024)
 
+**Shiny Map:**
+
+- In instelling kan nu worden gekozen of de map opent in Gent of op Europa
+- Op de kaart zijn twee zoom knoppen toegevoegd waarmee snel naar Gent of Europa kan gezoomd worden
+
 **Shiny Stats:**
 
 - Totale average #encounters wordt nu effectief berekend en niet meer gemiddelde van de 4.
