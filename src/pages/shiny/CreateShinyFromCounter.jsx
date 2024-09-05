@@ -145,9 +145,11 @@ export default function CreateShinyFromCounter() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (data.geoLocation.name === "" && data.geoLocation.displayName === "") {
+    if (data.geoLocation.name === "" || data.geoLocation.displayName === "") {
       setAlertSeverity("warning");
-      setAlertMessage("You forgot to fill in the geo location.");
+      setAlertMessage(
+        "You forgot to fill in the geo location or it is filled in incorrectly"
+      );
       setAlertOpen(true);
 
       return;

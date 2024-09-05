@@ -4,6 +4,10 @@
 
 ### Version 1.18.0 (05.09.2024)
 
+**Shinies Form:**
+
+- Error message als geo locatie fout in ingevuld
+
 **Shiny Map:**
 
 - In instelling kan nu worden gekozen of de map opent in Gent of op Europa

@@ -284,11 +284,13 @@ export default function CreateDeadShiny() {
         }));
       }
     } else if (
-      data.geoLocation.name === "" &&
+      data.geoLocation.name === "" ||
       data.geoLocation.displayName === ""
     ) {
       setAlertSeverity("warning")
-      setAlertMessage("You forgot to fill in the geo location.")
+      setAlertMessage(
+        "You forgot to fill in the geo location or it is filled in incorrectly"
+      );
       setAlertOpen(true)
     }
   };
