@@ -261,7 +261,10 @@ export default function InfoDisplay({
               : "-"
           }
         />
-        <InfoDict infoCat={"Level"} infoName={`lvl. ${data?.level}`} />
+        <InfoDict
+          infoCat={"Level"}
+          infoName={data?.level ? `lvl. ${data?.level}` : "-"}
+        />
         {!isDead && (
           <InfoDict
             infoCat={"Nickname"}

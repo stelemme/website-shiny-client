@@ -16,26 +16,21 @@ export default function AverageEncLeaderboard() {
     `stats=averageEnc&statsGen=${gen}`
   );
 
+  const { isLoading: shinyTotalStatsLoading, data: shinyTotalStatsData } =
+    useShiny(`stats=averageEncTotal&statsGen=${gen}`);
+
   const handleChange = (e) => {
     setGen(e.target.value);
   };
 
   const shinyStats = shinyStatsData?.data;
-
-  const nonZeroStats = shinyStats?.filter((stat) => stat.data !== 0);
-
-  const total = nonZeroStats?.reduce((accumulator, currentValue) => {
-    return accumulator + currentValue.data;
-  }, 0);
-
-  const average =
-    nonZeroStats?.length > 0 ? Math.round(total / nonZeroStats?.length) : 0;
+  const shinyTotalStats = shinyTotalStatsData?.data[0]?.avgEncounters;
 
   return (
     <Leaderboard
       data={shinyStats}
       dataSubstitute={"-"}
-      loading={shinyStatsLoading}
+      loading={shinyStatsLoading && shinyTotalStatsLoading}
       title={"AVERAGE #ENC."}
       selectBool={true}
       selectLabel={"Gen"}
@@ -59,7 +54,7 @@ export default function AverageEncLeaderboard() {
         medalImages["adventure-4-s.png"],
         medalImages["adventure-4-b.png"],
       ]}
-      total={average ? average : "-"}
+      total={shinyTotalStats ? shinyTotalStats : "-"}
     />
   );
 }
