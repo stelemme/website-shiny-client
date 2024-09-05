@@ -109,6 +109,7 @@ export default function Map() {
   const [map, setMap] = useState(null);
   const center = [51.080158037454105, 3.7204157561604343];
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   const onZoomInClick = useCallback(() => {
     if (map) map.setView(center, 12);
   }, [map]);
