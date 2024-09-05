@@ -29,6 +29,19 @@ export default function Leaderboard({
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  data =
+    data?.length > 0
+      ? data
+      : [
+          { data: 0, trainer: "Joaquin" },
+
+          { data: 0, trainer: "Korneel" },
+
+          { data: 0, trainer: "Simon" },
+
+          { data: 0, trainer: "Stef" },
+        ];
+
   const StatsDisplay = ({ data, loading }) => {
     if (loading) {
       return (

@@ -4,63 +4,63 @@ import CollectionCard from "./CollectionCard";
 const ribbons = [
   {
     name: "Alola Champion Ribbon",
-    sprite: "alola-champion-ribbon",
+    sprite: "gen-7/alola-champion-ribbon",
   },
   {
     name: "Battle Royal Master Ribbon",
-    sprite: "battle-royal-master-ribbon",
+    sprite: "gen-7/battle-royal-master-ribbon",
   },
   {
     name: "Battle Tree Great Ribbon",
-    sprite: "battle-tree-great-ribbon",
+    sprite: "gen-7/battle-tree-great-ribbon",
   },
   {
     name: "Battle Tree Master Ribbon",
-    sprite: "battle-tree-master-ribbon",
+    sprite: "gen-7/battle-tree-master-ribbon",
   },
   {
     name: "Effort Ribbon",
-    sprite: "effort-ribbon",
+    sprite: "gen-7/effort-ribbon",
   },
   {
     name: "Footprint Ribbon",
-    sprite: "footprint-ribbon",
+    sprite: "gen-7/footprint-ribbon",
   },
   {
     name: "Best Friend Ribbon",
-    sprite: "best-friend-ribbon",
+    sprite: "gen-7/best-friend-ribbon",
   },
   {
     name: "Classic Ribbon",
-    sprite: "classic-ribbon",
+    sprite: "gen-7/classic-ribbon",
   },
   {
     name: "Premier Ribbon",
-    sprite: "premier-ribbon",
+    sprite: "gen-7/premier-ribbon",
   },
   {
     name: "Event Ribbon",
-    sprite: "event-ribbon",
+    sprite: "gen-7/event-ribbon",
   },
   {
     name: "Birthday Ribbon",
-    sprite: "birthday-ribbon",
+    sprite: "gen-7/birthday-ribbon",
   },
   {
     name: "Special Ribbon",
-    sprite: "special-ribbon",
+    sprite: "gen-7/special-ribbon",
   },
   {
     name: "Souvenir Ribbon",
-    sprite: "souvenir-ribbon",
+    sprite: "gen-7/souvenir-ribbon",
   },
   {
     name: "Wishing Ribbon",
-    sprite: "wishing-ribbon",
+    sprite: "gen-7/wishing-ribbon",
   },
   {
     name: "Battle Champion Ribbon",
-    sprite: "battle-champion-ribbon",
+    sprite: "gen-7/battle-champion-ribbon",
   },
 ];
 

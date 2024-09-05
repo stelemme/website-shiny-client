@@ -288,7 +288,9 @@ export default function CreateShiny() {
             break;
           default:
             setAlertSeverity("error");
-            setAlertMessage("Something went wrong calculating the method stats.");
+            setAlertMessage(
+              "Something went wrong calculating the method stats."
+            );
             setAlertOpen(true);
         }
       } else {
@@ -302,11 +304,13 @@ export default function CreateShiny() {
       setAlertMessage("You forgot to fill in the gender.");
       setAlertOpen(true);
     } else if (
-      data.geoLocation.name === "" &&
+      data.geoLocation.name === "" ||
       data.geoLocation.displayName === ""
     ) {
       setAlertSeverity("warning");
-      setAlertMessage("You forgot to fill in the geo location.");
+      setAlertMessage(
+        "You forgot to fill in the geo location or it is filled in incorrectly"
+      );
       setAlertOpen(true);
     }
   };

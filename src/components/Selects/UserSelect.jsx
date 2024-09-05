@@ -16,17 +16,19 @@ export default function UserSelect({
 }) {
   const [userList, setUserList] = useState(["All"]);
 
-  const { isLoading: userLoading, data: userData } = useUser("userList=true");
+  const { isLoading: userLoading, data: userData } = useUser("list=users");
+
+  const userListData = userData?.data[0].names;
 
   useEffect(() => {
     if (!userLoading) {
       if (addAll) {
-        setUserList(["All", ...userData.data]);
+        setUserList(["All", ...userListData]);
       } else {
-        setUserList(userData.data)
+        setUserList(userListData);
       }
     }
-  }, [userData, userLoading, addAll]);
+  }, [userListData, userLoading, addAll]);
 
   return (
     <FormControl size={size} style={{ minWidth: width }} color="secondary">

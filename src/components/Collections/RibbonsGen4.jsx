@@ -3,182 +3,182 @@ import CollectionCard from "./CollectionCard";
 
 const ribbons = [
   {
-    "name": "Sinnoh Champion Ribbon",
-    "sprite": "sinnoh-champion-ribbon"
+    name: "Sinnoh Champion Ribbon",
+    sprite: "gen-4/sinnoh-champion-ribbon",
   },
   {
-    "name": "Cool Ribbon",
-    "sprite": "cool-ribbon"
+    name: "Cool Ribbon",
+    sprite: "gen-4/cool-ribbon",
   },
   {
-    "name": "Cool Ribbon Great",
-    "sprite": "cool-ribbon-great"
+    name: "Cool Ribbon Great",
+    sprite: "gen-4/cool-ribbon-great",
   },
   {
-    "name": "Cool Ribbon Ultra",
-    "sprite": "cool-ribbon-ultra"
+    name: "Cool Ribbon Ultra",
+    sprite: "gen-4/cool-ribbon-ultra",
   },
   {
-    "name": "Cool Ribbon Master",
-    "sprite": "cool-ribbon-master"
+    name: "Cool Ribbon Master",
+    sprite: "gen-4/cool-ribbon-master",
   },
   {
-    "name": "Beauty Ribbon",
-    "sprite": "beauty-ribbon"
+    name: "Beauty Ribbon",
+    sprite: "gen-4/beauty-ribbon",
   },
   {
-    "name": "Beauty Ribbon Great",
-    "sprite": "beauty-ribbon-great"
+    name: "Beauty Ribbon Great",
+    sprite: "gen-4/beauty-ribbon-great",
   },
   {
-    "name": "Beauty Ribbon Ultra",
-    "sprite": "beauty-ribbon-ultra"
+    name: "Beauty Ribbon Ultra",
+    sprite: "gen-4/beauty-ribbon-ultra",
   },
   {
-    "name": "Beauty Ribbon Master",
-    "sprite": "beauty-ribbon-master"
+    name: "Beauty Ribbon Master",
+    sprite: "gen-4/beauty-ribbon-master",
   },
   {
-    "name": "Cute Ribbon",
-    "sprite": "cute-ribbon"
+    name: "Cute Ribbon",
+    sprite: "gen-4/cute-ribbon",
   },
   {
-    "name": "Cute Ribbon Great",
-    "sprite": "cute-ribbon-great"
+    name: "Cute Ribbon Great",
+    sprite: "gen-4/cute-ribbon-great",
   },
   {
-    "name": "Cute Ribbon Ultra",
-    "sprite": "cute-ribbon-ultra"
+    name: "Cute Ribbon Ultra",
+    sprite: "gen-4/cute-ribbon-ultra",
   },
   {
-    "name": "Cute Ribbon Master",
-    "sprite": "cute-ribbon-master"
+    name: "Cute Ribbon Master",
+    sprite: "gen-4/cute-ribbon-master",
   },
   {
-    "name": "Smart Ribbon",
-    "sprite": "smart-ribbon"
+    name: "Smart Ribbon",
+    sprite: "gen-4/smart-ribbon",
   },
   {
-    "name": "Smart Ribbon Great",
-    "sprite": "smart-ribbon-great"
+    name: "Smart Ribbon Great",
+    sprite: "gen-4/smart-ribbon-great",
   },
   {
-    "name": "Smart Ribbon Ultra",
-    "sprite": "smart-ribbon-ultra"
+    name: "Smart Ribbon Ultra",
+    sprite: "gen-4/smart-ribbon-ultra",
   },
   {
-    "name": "Smart Ribbon Master",
-    "sprite": "smart-ribbon-master"
+    name: "Smart Ribbon Master",
+    sprite: "gen-4/smart-ribbon-master",
   },
   {
-    "name": "Tough Ribbon",
-    "sprite": "tough-ribbon"
+    name: "Tough Ribbon",
+    sprite: "gen-4/tough-ribbon",
   },
   {
-    "name": "Tough Ribbon Great",
-    "sprite": "tough-ribbon-great"
+    name: "Tough Ribbon Great",
+    sprite: "gen-4/tough-ribbon-great",
   },
   {
-    "name": "Tough Ribbon Ultra",
-    "sprite": "tough-ribbon-ultra"
+    name: "Tough Ribbon Ultra",
+    sprite: "gen-4/tough-ribbon-ultra",
   },
   {
-    "name": "Tough Ribbon Master",
-    "sprite": "tough-ribbon-master"
+    name: "Tough Ribbon Master",
+    sprite: "gen-4/tough-ribbon-master",
   },
   {
-    "name": "Tough Ribbon Master",
-    "sprite": "tough-ribbon-master"
+    name: "Tough Ribbon Master",
+    sprite: "gen-4/tough-ribbon-master",
   },
   {
-    "name": "Ability Ribbon",
-    "sprite": "ability-ribbon"
+    name: "Ability Ribbon",
+    sprite: "gen-4/ability-ribbon",
   },
   {
-    "name": "Great Ability Ribbon",
-    "sprite": "great-ability-ribbon"
+    name: "Great Ability Ribbon",
+    sprite: "gen-4/great-ability-ribbon",
   },
   {
-    "name": "Double Ability Ribbon",
-    "sprite": "double-ability-ribbon"
+    name: "Double Ability Ribbon",
+    sprite: "gen-4/double-ability-ribbon",
   },
   {
-    "name": "Multi Ability Ribbon",
-    "sprite": "multi-ability-ribbon"
+    name: "Multi Ability Ribbon",
+    sprite: "gen-4/multi-ability-ribbon",
   },
   {
-    "name": "Pair Ability Ribbon",
-    "sprite": "pair-ability-ribbon"
+    name: "Pair Ability Ribbon",
+    sprite: "gen-4/pair-ability-ribbon",
   },
   {
-    "name": "World Ability Ribbon",
-    "sprite": "world-ability-ribbon"
+    name: "World Ability Ribbon",
+    sprite: "gen-4/world-ability-ribbon",
   },
   {
-    "name": "Effort Ribbon",
-    "sprite": "effort-ribbon"
+    name: "Effort Ribbon",
+    sprite: "gen-4/effort-ribbon",
   },
   {
-    "name": "Alert Ribbon",
-    "sprite": "alert-ribbon"
+    name: "Alert Ribbon",
+    sprite: "gen-4/alert-ribbon",
   },
   {
-    "name": "Shock Ribbon",
-    "sprite": "shock-ribbon"
+    name: "Shock Ribbon",
+    sprite: "gen-4/shock-ribbon",
   },
   {
-    "name": "Downcast Ribbon",
-    "sprite": "downcast-ribbon"
+    name: "Downcast Ribbon",
+    sprite: "gen-4/downcast-ribbon",
   },
   {
-    "name": "Careless Ribbon",
-    "sprite": "careless-ribbon"
+    name: "Careless Ribbon",
+    sprite: "gen-4/careless-ribbon",
   },
   {
-    "name": "Relax Ribbon",
-    "sprite": "relax-ribbon"
+    name: "Relax Ribbon",
+    sprite: "gen-4/relax-ribbon",
   },
   {
-    "name": "Snooze Ribbon",
-    "sprite": "snooze-ribbon"
+    name: "Snooze Ribbon",
+    sprite: "gen-4/snooze-ribbon",
   },
   {
-    "name": "Smile Ribbon",
-    "sprite": "smile-ribbon"
+    name: "Smile Ribbon",
+    sprite: "gen-4/smile-ribbon",
   },
   {
-    "name": "Gorgeous Ribbon",
-    "sprite": "gorgeous-ribbon"
+    name: "Gorgeous Ribbon",
+    sprite: "gen-4/gorgeous-ribbon",
   },
   {
-    "name": "Royal Ribbon",
-    "sprite": "royal-ribbon"
+    name: "Royal Ribbon",
+    sprite: "gen-4/royal-ribbon",
   },
   {
-    "name": "Gorgeous Royal Ribbon",
-    "sprite": "gorgeous-royal-ribbon"
+    name: "Gorgeous Royal Ribbon",
+    sprite: "gen-4/gorgeous-royal-ribbon",
   },
   {
-    "name": "Footprint Ribbon",
-    "sprite": "footprint-ribbon"
+    name: "Footprint Ribbon",
+    sprite: "gen-4/footprint-ribbon",
   },
   {
-    "name": "Record Ribbon",
-    "sprite": "record-ribbon"
+    name: "Record Ribbon",
+    sprite: "gen-4/record-ribbon",
   },
   {
-    "name": "Legend Ribbon",
-    "sprite": "legend-ribbon"
+    name: "Legend Ribbon",
+    sprite: "gen-4/legend-ribbon",
   },
   {
-    "name": "Classic Ribbon",
-    "sprite": "classic-ribbon"
+    name: "Classic Ribbon",
+    sprite: "gen-4/classic-ribbon",
   },
   {
-    "name": "Premier Ribbon",
-    "sprite": "premier-ribbon"
-  }
-]
+    name: "Premier Ribbon",
+    sprite: "gen-4/premier-ribbon",
+  },
+];
 
 export default function RibbonsGen4() {
   return (

@@ -25,7 +25,9 @@ export default function GeoLocationForm({ data, setData }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await getRequest(`/shiny?geoLocation=list&filter=transport`);
+        const response = await getRequest(
+          `/shiny?geoLocation=list&filter=transport`
+        );
         setGeoLocationsList(response[0]["geoLocation"]);
       } catch {
         return;
@@ -43,7 +45,18 @@ export default function GeoLocationForm({ data, setData }) {
 
   const getGeoLocation = async (newValues) => {
     if (newValues.length !== 2) {
-      return;
+      setData((prevState) => {
+        return {
+          ...prevState,
+          geoLocation: {
+            ...prevState.geoLocation,
+            displayName: "",
+            position: [],
+          },
+        };
+      });
+
+      return
     }
 
     try {

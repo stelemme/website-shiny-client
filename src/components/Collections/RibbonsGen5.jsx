@@ -3,50 +3,50 @@ import CollectionCard from "./CollectionCard";
 
 const ribbons = [
   {
-    "name": "Classic Ribbon",
-    "sprite": "classic-ribbon"
+    name: "Classic Ribbon",
+    sprite: "gen-5/classic-ribbon",
   },
   {
-    "name": "Premier Ribbon",
-    "sprite": "premier-ribbon"
+    name: "Premier Ribbon",
+    sprite: "gen-5/premier-ribbon",
   },
   {
-    "name": "Event Ribbon",
-    "sprite": "event-ribbon"
+    name: "Event Ribbon",
+    sprite: "gen-5/event-ribbon",
   },
   {
-    "name": "Birthday Ribbon",
-    "sprite": "birthday-ribbon"
+    name: "Birthday Ribbon",
+    sprite: "gen-5/birthday-ribbon",
   },
   {
-    "name": "Special Ribbon",
-    "sprite": "special-ribbon"
+    name: "Special Ribbon",
+    sprite: "gen-5/special-ribbon",
   },
   {
-    "name": "Souvenir Ribbon",
-    "sprite": "souvenir-ribbon"
+    name: "Souvenir Ribbon",
+    sprite: "gen-5/souvenir-ribbon",
   },
   {
-    "name": "Wishing Ribbon",
-    "sprite": "wishing-ribbon"
+    name: "Wishing Ribbon",
+    sprite: "gen-5/wishing-ribbon",
   },
   {
-    "name": "Battle Champion Ribbon",
-    "sprite": "battle-champion-ribbon"
+    name: "Battle Champion Ribbon",
+    sprite: "gen-5/battle-champion-ribbon",
   },
   {
-    "name": "Regional Champion Ribbon",
-    "sprite": "regional-champion-ribbon"
+    name: "Regional Champion Ribbon",
+    sprite: "gen-5/regional-champion-ribbon",
   },
   {
-    "name": "National Champion Ribbon",
-    "sprite": "national-champion-ribbon"
+    name: "National Champion Ribbon",
+    sprite: "gen-5/national-champion-ribbon",
   },
   {
-    "name": "World Champion Ribbon",
-    "sprite": "world-champion-ribbon"
-  }
-]
+    name: "World Champion Ribbon",
+    sprite: "gen-5/world-champion-ribbon",
+  },
+];
 
 export default function RibbonsGen5() {
   return (

@@ -2,6 +2,36 @@
 
 ## Changelogs
 
+### Version 1.18.0 (05.09.2024)
+
+**Ribbons:**
+
+- Ribbons hebben nu altijd hun sprite die overeenkomt met de game
+
+**Shinies Form:**
+
+- Error message als geo locatie fout in ingevuld
+
+**Shiny Map:**
+
+- In instelling kan nu worden gekozen of de map opent in Gent of op Europa
+- Op de kaart zijn twee zoom knoppen toegevoegd waarmee snel naar Gent of Europa kan gezoomd worden
+
+**Shiny Stats:**
+
+- Totale average #encounters wordt nu effectief berekend en niet meer gemiddelde van de 4.
+
+**Counter Stats:**
+
+- Bij encounter stats worden voor "All Time" nu gewoon al u encounters opgeteld en niet meer alleen diegene waarvoor ge een timestamp hebt (aka Simon is niemeer de loser).
+
+**Bug Fixes:**
+
+- Deoxys toegevoegd aan gen 3 games
+- "-" als level nie bestaat bij dode shinies
+
+---
+
 ### Version 1.17.2 (01.09.2024)
 
 **Bug Fixes:**

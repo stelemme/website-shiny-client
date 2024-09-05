@@ -171,8 +171,13 @@ export default function IconsDisplay({
                 >
                   <img
                     alt=""
-                    src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/${type}/${icon.sprite}.png`}
+                    src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/${type}/${
+                      type === "ribbons" ? data.sprite.dir + "/" : ""
+                    }${icon.sprite}.png`}
                     width={"50px"}
+                    style={{
+                      imageRendering: type === "ribbons" ? "pixelated" : "auto",
+                    }}
                   />
                 </Tooltip>
                 {username === data.trainer && (

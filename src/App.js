@@ -237,6 +237,7 @@ function Layout() {
       groupShinies: "false",
       ongoingCounterSort: "newest",
       ongoingTrainerFilter: "All",
+      mapOnGent: "false",
       shinyGenFilter: "All",
       shinySort: "newest",
       shinyTrainerFilter: "All",
