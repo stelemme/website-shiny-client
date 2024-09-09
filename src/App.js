@@ -207,6 +207,7 @@ function Layout() {
     "groupShinies",
     "ongoingCounterSort",
     "ongoingTrainerFilter",
+    "mapOnGent",
     "shinyGenFilter",
     "shinySort",
     "shinyTrainerFilter",

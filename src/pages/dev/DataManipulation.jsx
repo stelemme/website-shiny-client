@@ -1,8 +1,8 @@
 // Mui
-import { Box, Button } from "@mui/material";
+import { Button } from "@mui/material";
 
 // Components
-import Header from "../../components/Header";
+import PageComponent from "../../components/General/PageComponent";
 
 // Hooks
 import { useShiny } from "../../hooks/useData";
@@ -46,7 +46,7 @@ export default function DataManipulation() {
 
       await element.evolutions.forEach(async (element2) => {
         let genderDifference = false;
-        
+
         try {
           const response = await getRequest(`/pokedex?name=${element2.name}`);
           const pokemonData = response[0];
@@ -81,27 +81,20 @@ export default function DataManipulation() {
   };
 
   return (
-    <Box mx="auto" my="20px">
-      <Box display="flex" flexDirection="column" mx="20px">
-        {/* HEADER */}
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Header
-            title="DEV PAGE: DATA MANIPULATION"
-            subtitle="Only accessible in development."
-          />
-        </Box>
-
-        <Button
-          type="submit"
-          variant="contained"
-          color="neutral"
-          sx={{ mb: "10px" }}
-          style={{ color: "white" }}
-          onClick={handleGenderDifferenceClick}
-        >
-          Add Gender Difference
-        </Button>
-      </Box>
-    </Box>
+    <PageComponent
+      title="DEV PAGE: DATA MANIPULATION"
+      subtitle="Only accessible in development."
+    >
+      <Button
+        type="submit"
+        variant="contained"
+        color="neutral"
+        sx={{ mb: "10px" }}
+        style={{ color: "white" }}
+        onClick={handleGenderDifferenceClick}
+      >
+        Add Gender Difference
+      </Button>
+    </PageComponent>
   );
 }

@@ -6,7 +6,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 
 // Components
-import Header from "../../components/Header";
+import PageComponent from "../../components/General/PageComponent";
 
 // Functions
 import { formatTime, formatSeconds } from "../../functions/statFunctions";
@@ -336,17 +336,11 @@ export default function Table() {
   };
 
   return (
-    <Box mx="auto" my="20px">
-      <Box display="flex" flexDirection="column" mx="20px">
-        {/* HEADER */}
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Header
-            title="SHINY DATA TABLE"
-            subtitle="Here you can find all shinies."
-          />
-        </Box>
-        <ShinyDisplay data={shinyData?.data} loading={shinyLoading} />
-      </Box>
-    </Box>
+    <PageComponent
+      title="SHINY DATA TABLE"
+      subtitle="Here you can find all shinies."
+    >
+      <ShinyDisplay data={shinyData?.data} loading={shinyLoading} />
+    </PageComponent>
   );
 }

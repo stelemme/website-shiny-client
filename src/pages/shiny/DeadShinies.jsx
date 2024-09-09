@@ -1,10 +1,10 @@
 import LazyLoad from "react-lazyload";
 
 // mui imports
-import { Box, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 
 // Components imports
-import Header from "../../components/Header";
+import PageComponent from "../../components/General/PageComponent";
 import ShinyCard from "../../components/Cards/ShinyCard";
 
 // Functions
@@ -51,22 +51,15 @@ export default function DeadShinies() {
   };
 
   return (
-    <Box maxWidth={{ md: "630px", sm: "420px" }} mx="auto" my="20px">
-      <Box display="flex" flexDirection="column" mx="20px">
-        {/* HEADER */}
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Header
-            title="Dead Shinies"
-            subtitle="Here you can find the last resting place of all fallen Shiny Pokémon."
-          />
-        </Box>
-
-        {/* CARDS */}
-        <ShinyDisplay
-          data={sortData(shinyData?.data, "gameAsc")}
-          loading={shinyLoading}
-        />
-      </Box>
-    </Box>
+    <PageComponent
+      title="Dead Shinies"
+      subtitle="Here you can find the last resting place of all fallen Shiny Pokémon."
+    >
+      {/* CARDS */}
+      <ShinyDisplay
+        data={sortData(shinyData?.data, "gameAsc")}
+        loading={shinyLoading}
+      />
+    </PageComponent>
   );
 }

@@ -2,10 +2,10 @@ import { createElement } from "react";
 import { useCookies } from "react-cookie";
 
 // mui imports
-import { Box, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 
 // Components imports
-import Header from "../../components/Header";
+import PageComponent from "../../components/General/PageComponent";
 import GeneralSelect from "../../components/Selects/GeneralSelect";
 import Pokeballs from "../../components/Collections/Pokeballs";
 import Natures from "../../components/Collections/Natures";
@@ -74,38 +74,26 @@ export default function Collections() {
   }
 
   return (
-    <Box maxWidth={"100%"} mx="auto" my="20px">
-      <Box display="flex" flexDirection="column" mx="20px">
-        {/* HEADER */}
-        <Box
-          display="flex"
-          flexDirection={{ xs: "column", md: "row" }}
-          justifyContent="space-between"
-          alignItems={{ xs: "stretch", md: "center" }}
-          mb={{ xs: "20px", md: "0px" }}
-        >
-          <Header
-            title={`COLLECTIONS PAGE`}
-            subtitle={`Here you can view and change all collections.`}
+    <PageComponent
+      title={`COLLECTIONS PAGE`}
+      subtitle={`Here you can view and change all collections.`}
+    >
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <GeneralSelect
+            label={"Collections"}
+            handleChange={handleChange}
+            list={Object.keys(collectionComponents)}
+            value={cookies.collectionSelect}
+            width={200}
+            size={"normal"}
           />
-        </Box>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <GeneralSelect
-              label={"Collections"}
-              handleChange={handleChange}
-              list={Object.keys(collectionComponents)}
-              value={cookies.collectionSelect}
-              width={200}
-              size={"normal"}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            {/* COLLECTIONS */}
-            {createElement(collectionComponents[cookies.collectionSelect])}
-          </Grid>
         </Grid>
-      </Box>
-    </Box>
+        <Grid item xs={12}>
+          {/* COLLECTIONS */}
+          {createElement(collectionComponents[cookies.collectionSelect])}
+        </Grid>
+      </Grid>
+    </PageComponent>
   );
 }
