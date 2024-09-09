@@ -1,96 +1,14 @@
 // mui imports
-import { Box, Grid, useTheme, Typography, Skeleton } from "@mui/material";
-import { tokens } from "../../theme";
+import { Box, Grid } from "@mui/material";
 
 // Components imports
 import Header from "../../components/Header";
-import CounterCard from "../../components/Cards/CounterCard";
-import ShinyCard from "../../components/Cards/ShinyCard";
 import Extremes from "../../components/Stats/ExtremesMons";
 import EncountersGraph from "../../components/Graphs/EncountersGraph";
-
-// Hooks
-import { useAuth } from "../../hooks/useAuth";
-import { useCounter, useShiny } from "../../hooks/useData";
+import LatestShinies from "../../components/Stats/LatestShinies";
+import LatestCounters from "../../components/Stats/LatestCounters";
 
 export default function Home() {
-  const { username } = useAuth();
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-
-  const { isLoading: latestCounterLoading, data: latestCounter } =
-    useCounter(`filter=latest`);
-
-  const { isLoading: latestShinyLoading, data: latestShiny } =
-    useShiny(`filter=latest`);
-
-  const CountersDisplay = ({ data, loading, loadingArray = [1] }) => {
-    if (loading) {
-      return loadingArray.map((item) => {
-        return (
-          <Grid item xs={12} key={item}>
-            <Skeleton
-              sx={{ bgcolor: colors.primary[500] }}
-              variant="rounded"
-              width={"100%"}
-              height={"72px"}
-            />
-          </Grid>
-        );
-      });
-    } else {
-      return data?.map((item) => {
-        return (
-          <Grid item xs={12} key={item?._id}>
-            <CounterCard
-              id={item?._id}
-              name={item?.name}
-              gameSprite={item?.sprite.game}
-              count={item?.totalEncounters}
-              trainer={item?.trainer}
-              bgColor={500}
-              query={item?.source === "shinies" ? "?completed=true" : ""}
-            />
-          </Grid>
-        );
-      });
-    }
-  };
-
-  const ShinyDisplay = ({ data, loading, loadingArray = [1] }) => {
-    if (loading) {
-      return loadingArray.map((item) => {
-        return (
-          <Grid item xs={12} key={item}>
-            <Skeleton
-              sx={{ bgcolor: colors.primary[500] }}
-              variant="rounded"
-              width={"100%"}
-              height={"72px"}
-            />
-          </Grid>
-        );
-      });
-    } else {
-      return data?.map((item) => {
-        return (
-          <Grid item xs={12} key={item?._id}>
-            <ShinyCard
-              id={item?._id}
-              name={item?.name}
-              gameSprite={item?.sprite.game}
-              dir={item?.sprite.dir}
-              monSprite={item?.sprite.pokemon}
-              trainer={item?.trainer}
-              bgColor={500}
-              imgSize={52}
-            />
-          </Grid>
-        );
-      });
-    }
-  };
-
   return (
     <Box mx="auto" my="20px">
       <Box display="flex" flexDirection="column" mx="20px">
@@ -101,86 +19,10 @@ export default function Home() {
 
         <Grid container spacing={"20px"}>
           <Grid item xl={4} md={6} xs={12}>
-            <Box
-              p="20px"
-              width="100%"
-              backgroundColor={colors.primary[400]}
-              borderRadius="5px"
-              height="100%"
-            >
-              <Typography variant="h4" fontWeight={"bold"} mb={"10px"}>
-                LATEST COUNTERS
-              </Typography>
-              <Typography variant="h6" fontWeight={"bold"} mb={"10px"}>
-                Your Latest Counter
-              </Typography>
-              <Grid container spacing={"15px"}>
-                <CountersDisplay
-                  data={latestCounter?.data.filter(
-                    (item) => item && item.trainer === username
-                  )}
-                  loading={latestCounterLoading}
-                />
-              </Grid>
-              <Typography
-                variant="h6"
-                fontWeight={"bold"}
-                mt={"20px"}
-                mb={"10px"}
-              >
-                Other User's Latest Counters
-              </Typography>
-              <Grid container spacing={"15px"}>
-                <CountersDisplay
-                  data={latestCounter?.data.filter(
-                    (item) => item && item.trainer !== username
-                  )}
-                  loading={latestCounterLoading}
-                  loadingArray={[1, 2, 3]}
-                />
-              </Grid>
-            </Box>
+            <LatestCounters />
           </Grid>
           <Grid item xl={4} md={6} xs={12}>
-            <Box
-              p="20px"
-              width="100%"
-              backgroundColor={colors.primary[400]}
-              borderRadius="5px"
-              height="100%"
-            >
-              <Typography variant="h4" fontWeight={"bold"} mb={"10px"}>
-                LATEST SHINY POKEMON
-              </Typography>
-              <Typography variant="h6" fontWeight={"bold"} mb={"10px"}>
-                Your Latest Shiny
-              </Typography>
-              <Grid container spacing={"15px"}>
-                <ShinyDisplay
-                  data={latestShiny?.data.filter(
-                    (item) => item.trainer === username
-                  )}
-                  loading={latestShinyLoading}
-                />
-              </Grid>
-              <Typography
-                variant="h6"
-                fontWeight={"bold"}
-                mt={"20px"}
-                mb={"10px"}
-              >
-                Other User's Latest Shiny
-              </Typography>
-              <Grid container spacing={"15px"}>
-                <ShinyDisplay
-                  data={latestShiny?.data.filter(
-                    (item) => item.trainer !== username
-                  )}
-                  loading={latestShinyLoading}
-                  loadingArray={[1, 2, 3]}
-                />
-              </Grid>
-            </Box>
+            <LatestShinies />
           </Grid>
           <Grid item xl={4} xs={12}>
             <Extremes />
