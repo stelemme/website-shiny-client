@@ -15,15 +15,19 @@ export default function PokedexSearchDisplay({ pokemon }) {
   const ShinyDisplay = ({ data, loading, error, text }) => {
     if (loading) {
       return (
-        <Typography variant="h5" mt={"20px"}>
-          Loading ...
-        </Typography>
+        <Grid item>
+          <Typography variant="h5" mt={"20px"}>
+            Loading ...
+          </Typography>
+        </Grid>
       );
     } else if (error) {
       return (
-        <Typography variant="h5" mt={"20px"}>
-          No {text} Found
-        </Typography>
+        <Grid item>
+          <Typography variant="h5" mt={"20px"}>
+            No {text} Found
+          </Typography>
+        </Grid>
       );
     } else {
       const uniqueData = data?.reduce((acc, item) => {

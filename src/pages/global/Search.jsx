@@ -24,13 +24,22 @@ export default function Search() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [searchType, setSearchType] = useState("shinies");
+  const [searchType, setSearchType] = useState(
+    searchParams.get("type") || "shinies"
+  );
+  const [inputValue, setInputValue] = useState(
+    searchParams.get("search") || ""
+  );
+
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (e.target.search.value) {
-      setSearchParams({ search: e.target.search.value });
+    if (inputValue) {
+      setSearchParams({ search: inputValue });
     } else {
       setSearchParams({});
     }
@@ -51,6 +60,13 @@ export default function Search() {
           row
           value={searchType}
           onChange={(e, value) => {
+            setSearchParams((prevParams) => {
+              return {
+                ...Object.fromEntries(prevParams),
+                type: value,
+              };
+            });
+
             setSearchType(value);
           }}
         >
@@ -84,12 +100,15 @@ export default function Search() {
               sx={{ ml: 2, flex: 1 }}
               name="search"
               placeholder="Search"
+              value={inputValue}
+              onChange={handleInputChange}
             />
             <IconButton type="submit" sx={{ p: 1 }}>
               <SearchIcon />
             </IconButton>
           </Box>
         </form>
+
         {searchType === "shinies" && (
           <ShinySearchDisplay
             pokemon={

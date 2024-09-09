@@ -2,6 +2,12 @@
 
 ## Changelogs
 
+### Version 1.18.1 (09.09.2024)
+
+**Search:**
+
+- Site onthoud nu op welk type ge aant zoeken zijt waar er gerefreshed wordt of terug wordt gekeerd naar de search pagina.
+
 ### Version 1.18.0 (05.09.2024)
 
 **Ribbons:**
