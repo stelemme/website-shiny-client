@@ -13,6 +13,7 @@ export default function UserSelect({
   size = "small",
   defaultValue = "All",
   addAll = true,
+  fullWidth = false,
 }) {
   const [userList, setUserList] = useState(["All"]);
 
@@ -31,7 +32,12 @@ export default function UserSelect({
   }, [userListData, userLoading, addAll]);
 
   return (
-    <FormControl size={size} style={{ minWidth: width }} color="secondary">
+    <FormControl
+      size={size}
+      style={{ minWidth: width }}
+      color="secondary"
+      fullWidth={fullWidth}
+    >
       <InputLabel>{label} </InputLabel>
       <Select
         color="secondary"

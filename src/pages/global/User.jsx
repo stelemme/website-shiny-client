@@ -15,6 +15,7 @@ import {
 import { tokens } from "../../theme";
 
 // Components imports
+import PageComponent from "../../components/General/PageComponent";
 import Header from "../../components/Header";
 import UserSelect from "../../components/Selects/UserSelect";
 
@@ -111,29 +112,74 @@ export default function User() {
   };
 
   return (
-    <Box maxWidth={{ md: "630px", sm: "420px" }} mx="auto" my="20px">
-      <Box display="flex" flexDirection="column" mx="20px">
-        {/* HEADER */}
-        <Box
-          display="flex"
-          flexDirection={{ xs: "column", md: "row" }}
-          justifyContent="space-between"
-          alignItems={{ xs: "stretch", md: "center" }}
-          mb={{ xs: "20px", md: "0px" }}
-        >
-          <Header
-            title={`${trainerChoice.toLocaleUpperCase()}'S TRAINER PAGE`}
-            subtitle={`Here you can view and change trainer specific data.`}
-          />
-          <UserSelect
-            label={"User"}
-            handleChange={handleTrainerChange}
-            defaultValue={trainerChoice}
-            addAll={false}
-          />
-        </Box>
-
-        <Grid container spacing={"20px"}>
+    <PageComponent
+      title={`${trainerChoice.toLocaleUpperCase()}'S TRAINER PAGE`}
+      subtitle={`Here you can view and change trainer specific data.`}
+      widthSnaps={2}
+      select={
+        <UserSelect
+          label={"User"}
+          handleChange={handleTrainerChange}
+          defaultValue={trainerChoice}
+          addAll={false}
+          fullWidth
+        />
+      }
+    >
+      <Grid container spacing={"20px"}>
+        <Grid item xs={12}>
+          <Box
+            p="20px"
+            width="100%"
+            backgroundColor={colors.primary[400]}
+            borderRadius="5px"
+            height="100%"
+          >
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              mb={"14px"}
+              height={"28px"}
+            >
+              <Typography variant="h4" fontWeight={"bold"}>
+                TRAINER SPRITES
+              </Typography>
+            </Box>
+            <Box
+              p="10px"
+              width="100%"
+              backgroundColor={colors.primary[500]}
+              borderRadius="5px"
+            >
+              <Grid container>
+                {Object.keys(trainerImages).map((item) => {
+                  if (item.includes(imageCheck[trainerChoice])) {
+                    return (
+                      <Grid item sm={2.4} xs={4} key={item}>
+                        <img
+                          height={"100px"}
+                          alt=""
+                          src={trainerImages[item]}
+                          title={item.slice(0, -4)}
+                          style={{
+                            height: "100%",
+                            width: "100%",
+                            objectFit: "cover",
+                            imageRendering: "pixelated",
+                          }}
+                        />
+                      </Grid>
+                    );
+                  } else {
+                    return null;
+                  }
+                })}
+              </Grid>
+            </Box>
+          </Box>
+        </Grid>
+        {!trainerCheck && (
           <Grid item xs={12}>
             <Box
               p="20px"
@@ -150,7 +196,7 @@ export default function User() {
                 height={"28px"}
               >
                 <Typography variant="h4" fontWeight={"bold"}>
-                  TRAINER SPRITES
+                  TRAINER SETTINGS
                 </Typography>
               </Box>
               <Box
@@ -159,185 +205,129 @@ export default function User() {
                 backgroundColor={colors.primary[500]}
                 borderRadius="5px"
               >
-                <Grid container>
-                  {Object.keys(trainerImages).map((item) => {
-                    if (item.includes(imageCheck[trainerChoice])) {
-                      return (
-                        <Grid item sm={2.4} xs={4} key={item}>
-                          <img
-                            height={"100px"}
-                            alt=""
-                            src={trainerImages[item]}
-                            title={item.slice(0, -4)}
-                            style={{
-                              height: "100%",
-                              width: "100%",
-                              objectFit: "cover",
-                              imageRendering: "pixelated",
-                            }}
-                          />
-                        </Grid>
-                      );
-                    } else {
-                      return null;
+                <Typography variant="h6" fontWeight={"bold"}>
+                  DATA FILTERING
+                </Typography>
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        color="secondary"
+                        checked={groupCheck}
+                        onChange={handleGroupChange}
+                        inputProps={{ "aria-label": "controlled" }}
+                        disabled={trainerCheck}
+                      />
                     }
-                  })}
-                </Grid>
+                    label={
+                      <Typography variant="h6">
+                        Group the radar shinies
+                      </Typography>
+                    }
+                  />
+                </FormGroup>
+                <Typography variant="h6" fontWeight={"bold"}>
+                  SHINY SPRITE PREVIEW SETTINGS
+                </Typography>
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        color="secondary"
+                        checked={spriteCheck}
+                        onChange={handleSpriteChange}
+                        inputProps={{ "aria-label": "controlled" }}
+                        disabled={trainerCheck}
+                      />
+                    }
+                    label={
+                      <Typography variant="h6">
+                        Display as Pokémon Home sprites
+                      </Typography>
+                    }
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        color="secondary"
+                        checked={evolutionSpriteCheck}
+                        onChange={handleEvolutionSpriteChange}
+                        inputProps={{ "aria-label": "controlled" }}
+                        disabled={trainerCheck}
+                      />
+                    }
+                    label={
+                      <Typography variant="h6">
+                        Display evolutions and forms
+                      </Typography>
+                    }
+                  />
+                </FormGroup>
+                <Typography variant="h6" fontWeight={"bold"}>
+                  SHINY SPRITE SETTINGS
+                </Typography>
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        color="secondary"
+                        checked={animatedPreGen8Check}
+                        onChange={handleAnimatedPreGen8Change}
+                        inputProps={{ "aria-label": "controlled" }}
+                        disabled={trainerCheck}
+                      />
+                    }
+                    label={
+                      <Typography variant="h6">
+                        Animate sprites before Pokémon Sword and Shield
+                      </Typography>
+                    }
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        color="secondary"
+                        checked={animatedPostGen8Check}
+                        onChange={handleAnimatedPostGen8Change}
+                        inputProps={{ "aria-label": "controlled" }}
+                        disabled={trainerCheck}
+                      />
+                    }
+                    label={
+                      <Typography variant="h6">
+                        Animate sprites after Pokémon Sword and Shield
+                      </Typography>
+                    }
+                  />
+                </FormGroup>
+                <Typography variant="h6" fontWeight={"bold"}>
+                  MAP SETTINGS
+                </Typography>
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        color="secondary"
+                        checked={mapOnGentCheck}
+                        onChange={handleMapOnGentChange}
+                        inputProps={{ "aria-label": "controlled" }}
+                        disabled={trainerCheck}
+                      />
+                    }
+                    label={
+                      <Typography variant="h6">Map opens on Gent</Typography>
+                    }
+                  />
+                </FormGroup>
               </Box>
             </Box>
           </Grid>
-          {!trainerCheck && (
-            <Grid item xs={12}>
-              <Box
-                p="20px"
-                width="100%"
-                backgroundColor={colors.primary[400]}
-                borderRadius="5px"
-                height="100%"
-              >
-                <Box
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                  mb={"14px"}
-                  height={"28px"}
-                >
-                  <Typography variant="h4" fontWeight={"bold"}>
-                    TRAINER SETTINGS
-                  </Typography>
-                </Box>
-                <Box
-                  p="10px"
-                  width="100%"
-                  backgroundColor={colors.primary[500]}
-                  borderRadius="5px"
-                >
-                  <Typography variant="h6" fontWeight={"bold"}>
-                    DATA FILTERING
-                  </Typography>
-                  <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          color="secondary"
-                          checked={groupCheck}
-                          onChange={handleGroupChange}
-                          inputProps={{ "aria-label": "controlled" }}
-                          disabled={trainerCheck}
-                        />
-                      }
-                      label={
-                        <Typography variant="h6">
-                          Group the radar shinies
-                        </Typography>
-                      }
-                    />
-                  </FormGroup>
-                  <Typography variant="h6" fontWeight={"bold"}>
-                    SHINY SPRITE PREVIEW SETTINGS
-                  </Typography>
-                  <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          color="secondary"
-                          checked={spriteCheck}
-                          onChange={handleSpriteChange}
-                          inputProps={{ "aria-label": "controlled" }}
-                          disabled={trainerCheck}
-                        />
-                      }
-                      label={
-                        <Typography variant="h6">
-                          Display as Pokémon Home sprites
-                        </Typography>
-                      }
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          color="secondary"
-                          checked={evolutionSpriteCheck}
-                          onChange={handleEvolutionSpriteChange}
-                          inputProps={{ "aria-label": "controlled" }}
-                          disabled={trainerCheck}
-                        />
-                      }
-                      label={
-                        <Typography variant="h6">
-                          Display evolutions and forms
-                        </Typography>
-                      }
-                    />
-                  </FormGroup>
-                  <Typography variant="h6" fontWeight={"bold"}>
-                    SHINY SPRITE SETTINGS
-                  </Typography>
-                  <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          color="secondary"
-                          checked={animatedPreGen8Check}
-                          onChange={handleAnimatedPreGen8Change}
-                          inputProps={{ "aria-label": "controlled" }}
-                          disabled={trainerCheck}
-                        />
-                      }
-                      label={
-                        <Typography variant="h6">
-                          Animate sprites before Pokémon Sword and Shield
-                        </Typography>
-                      }
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          color="secondary"
-                          checked={animatedPostGen8Check}
-                          onChange={handleAnimatedPostGen8Change}
-                          inputProps={{ "aria-label": "controlled" }}
-                          disabled={trainerCheck}
-                        />
-                      }
-                      label={
-                        <Typography variant="h6">
-                          Animate sprites after Pokémon Sword and Shield
-                        </Typography>
-                      }
-                    />
-                  </FormGroup>
-                  <Typography variant="h6" fontWeight={"bold"}>
-                    MAP SETTINGS
-                  </Typography>
-                  <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          color="secondary"
-                          checked={mapOnGentCheck}
-                          onChange={handleMapOnGentChange}
-                          inputProps={{ "aria-label": "controlled" }}
-                          disabled={trainerCheck}
-                        />
-                      }
-                      label={
-                        <Typography variant="h6">
-                          Map opens on Gent
-                        </Typography>
-                      }
-                    />
-                  </FormGroup>
-                </Box>
-              </Box>
-            </Grid>
-          )}
-        </Grid>
-      </Box>
-    </Box>
+        )}
+      </Grid>
+    </PageComponent>
   );
 }
