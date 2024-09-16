@@ -3,7 +3,7 @@ import { Box, IconButton, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 
 // Components
-import Header from "../Header";
+import Header from "./Header";
 
 const PageComponent = ({
   title,

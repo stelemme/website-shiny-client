@@ -16,7 +16,6 @@ import { tokens } from "../../theme";
 
 // Components imports
 import PageComponent from "../../components/General/PageComponent";
-import Header from "../../components/Header";
 import UserSelect from "../../components/Selects/UserSelect";
 
 // Hooks
