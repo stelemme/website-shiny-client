@@ -1,6 +1,3 @@
-// mui imports
-import { Grid } from "@mui/material";
-
 // Components imports
 import PageComponent from "../../components/General/PageComponent";
 
@@ -14,7 +11,8 @@ export default function LayoutPage() {
 
       <PageComponent
         title="LAYOUTPAGE"
-        subtitle="Welcome to the dev layoutpage"
+        subtitle="Welcome to the dev layoutpage, widthSnaps = 3"
+        widthSnaps={3}
       ></PageComponent>
     </>
   );

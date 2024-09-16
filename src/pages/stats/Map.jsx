@@ -2,7 +2,7 @@ import { useState, useMemo, useCallback } from "react";
 import { useCookies } from "react-cookie";
 
 // mui imports
-import { Box, Grid, Typography, IconButton } from "@mui/material";
+import { Grid, Typography, IconButton } from "@mui/material";
 import NoTransferIcon from "@mui/icons-material/NoTransfer";
 import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";
 import ZoomInMapIcon from "@mui/icons-material/ZoomInMap";
@@ -14,7 +14,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 
 // Components imports
-import Header from "../../components/Header";
+import PageComponent from "../../components/General/PageComponent";
 
 // Hooks
 import { useShiny } from "../../hooks/useData";
@@ -117,6 +117,18 @@ export default function Map() {
   const onZoomOutClick = useCallback(() => {
     if (map) map.setView(center, 3);
   }, [map]);
+
+  const handleTransportClick = () => {
+    if (cookies.travelFilter === "transport") {
+      setCookies("travelFilter", "no transport", {
+        expires: foreverDate,
+      });
+    } else {
+      setCookies("travelFilter", "transport", {
+        expires: foreverDate,
+      });
+    }
+  };
 
   const displayMap = useMemo(
     () => (
@@ -241,7 +253,7 @@ export default function Map() {
             })}
           </MarkerClusterGroup>
         )}
-        <div class="button-container">
+        <div className="button-container">
           <div className="zoom-button">
             <IconButton
               onClick={onZoomInClick}
@@ -267,45 +279,23 @@ export default function Map() {
   );
 
   return (
-    <Box mx="auto" my="20px">
-      <Box display="flex" flexDirection="column" mx="20px">
-        {/* HEADER */}
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Header
-            title="GEO LOCATION MAP"
-            subtitle="On the map you can find all the location where shinies have been caught."
-          />
-          <Box style={{ display: "flex", alignItems: "center" }}>
-            {cookies.travelFilter === "transport" ? (
-              <IconButton
-                onClick={(e) =>
-                  setCookies("travelFilter", "no transport", {
-                    expires: foreverDate,
-                  })
-                }
-              >
-                <NoTransferIcon />
-              </IconButton>
-            ) : (
-              <IconButton
-                onClick={(e) =>
-                  setCookies("travelFilter", "transport", {
-                    expires: foreverDate,
-                  })
-                }
-              >
-                <DirectionsBusIcon />
-              </IconButton>
-            )}
-          </Box>
-        </Box>
-
-        <Grid container>
-          <Grid item xs={12} height={"100%"}>
-            {displayMap}
-          </Grid>
+    <PageComponent
+      title="GEO LOCATION MAP"
+      subtitle="On the map you can find all the location where shinies have been caught."
+      icon1={
+        cookies.travelFilter === "transport" ? (
+          <NoTransferIcon />
+        ) : (
+          <DirectionsBusIcon />
+        )
+      }
+      onClickIcon1={handleTransportClick}
+    >
+      <Grid container>
+        <Grid item xs={12} height={"100%"}>
+          {displayMap}
         </Grid>
-      </Box>
-    </Box>
+      </Grid>
+    </PageComponent>
   );
 }
