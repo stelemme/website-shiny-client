@@ -3,6 +3,7 @@ import QuizIcon from "@mui/icons-material/Quiz";
 
 // Components imports
 import PageComponent from "../../components/General/PageComponent";
+import LoadingComponent from "../../components/General/LoadingComponent";
 import UserSelect from "../../components/Selects/UserSelect";
 
 export default function LayoutPage() {
@@ -39,6 +40,13 @@ export default function LayoutPage() {
         icon2={<QuizIcon />}
         select={<UserSelect label={"User"} fullWidth />}
       />
+
+      <PageComponent
+        title="LAYOUTPAGE"
+        subtitle="Welcome to the dev layoutpage, loading"
+      >
+        <LoadingComponent loadingCondition={true}></LoadingComponent>
+      </PageComponent>
     </>
   );
 }
