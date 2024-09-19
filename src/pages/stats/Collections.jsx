@@ -1,9 +1,6 @@
 import { createElement } from "react";
 import { useCookies } from "react-cookie";
 
-// mui imports
-import { Grid } from "@mui/material";
-
 // Components imports
 import PageComponent from "../../components/General/PageComponent";
 import GeneralSelect from "../../components/Selects/GeneralSelect";
@@ -16,7 +13,7 @@ import PastParadoxes from "../../components/Collections/PastParadoxes";
 import FutureParadoxes from "../../components/Collections/FutureParadoxes";
 import Megas from "../../components/Collections/Megas";
 import Gigantamax from "../../components/Collections/Gigantamax";
-import Alolans from "../../components/Collections/Alolans";
+import { Alolans, AlolansStats } from "../../components/Collections/Alolans";
 import Galarians from "../../components/Collections/Galarian";
 import Hisuians from "../../components/Collections/Hisuians";
 import Paldeans from "../../components/Collections/Paldeans";
@@ -51,7 +48,7 @@ export default function Collections() {
     "_Future Paradox Pokémon": FutureParadoxes,
     "Mega Evolutions": Megas,
     "_Gigantamax Pokémon": Gigantamax,
-    "Alolan Forms": Alolans,
+    "Alolan Forms": [Alolans, AlolansStats],
     "Galarian Forms": Galarians,
     "Hisuian Forms": Hisuians,
     "_Paldean Forms": Paldeans,
@@ -77,23 +74,24 @@ export default function Collections() {
     <PageComponent
       title={`COLLECTIONS PAGE`}
       subtitle={`Here you can view and change all collections.`}
-    >
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <GeneralSelect
-            label={"Collections"}
-            handleChange={handleChange}
-            list={Object.keys(collectionComponents)}
-            value={cookies.collectionSelect}
-            width={200}
-            size={"normal"}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          {/* COLLECTIONS */}
-          {createElement(collectionComponents[cookies.collectionSelect])}
-        </Grid>
-      </Grid>
-    </PageComponent>
+      select={
+        <GeneralSelect
+          label={"Collections"}
+          handleChange={handleChange}
+          list={Object.keys(collectionComponents)}
+          value={cookies.collectionSelect}
+          width={200}
+          size={"small"}
+          fullWidth
+        />
+      }
+      tabs
+      childrenTab1={createElement(
+        collectionComponents[cookies.collectionSelect][0]
+      )}
+      childrenTab2={createElement(
+        collectionComponents[cookies.collectionSelect][1]
+      )}
+    />
   );
 }

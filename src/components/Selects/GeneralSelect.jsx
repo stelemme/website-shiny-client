@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 
 export default function GeneralSelect({
@@ -8,6 +8,7 @@ export default function GeneralSelect({
   value,
   width = 120,
   size = "small",
+  fullWidth = false,
 }) {
   const displayedItems = list.slice(0, 10);
 
@@ -21,7 +22,12 @@ export default function GeneralSelect({
   };
 
   return (
-    <FormControl size={size} style={{ minWidth: width }} color="secondary">
+    <FormControl
+      size={size}
+      style={{ minWidth: width }}
+      fullWidth={fullWidth}
+      color="secondary"
+    >
       <InputLabel>{label}</InputLabel>
       <Select
         color="secondary"
@@ -41,7 +47,7 @@ export default function GeneralSelect({
             </MenuItem>
           )
         )}
-        {list.length > 10 && (
+        {list.length > 10 &&
           list.slice(10).map((item, index) =>
             String(item).charAt(0) === "_" ? (
               <MenuItem key={index + 10} value={item} divider>
@@ -52,8 +58,7 @@ export default function GeneralSelect({
                 {item}
               </MenuItem>
             )
-          )
-        )}
+          )}
       </Select>
     </FormControl>
   );

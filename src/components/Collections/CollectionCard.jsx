@@ -56,18 +56,13 @@ export default function CollectionCard({
     }
   };
 
-  const totalNumber = placeholdList.length
-  console.log(collectionData)
-  const completedNumber = Object.keys(collectionData ? collectionData : {}).length
-  const percentage =  completedNumber / totalNumber * 100
-
   return (
     <Box
       p="20px"
       width="100%"
       backgroundColor={colors.primary[400]}
-      borderRadius="5px"
       height="100%"
+      sx={{borderRadius: { xs: "0px 0px 5px 5px", sm: "0px 5px 5px 5px" }}}
     >
       <Box
         display="flex"
@@ -77,7 +72,7 @@ export default function CollectionCard({
         height={"28px"}
       >
         <Typography variant={window.innerWidth < 600 ? "h6" : "h4"} fontWeight={"bold"}>
-          {title} -  ({completedNumber}/{totalNumber}, {Math.round(percentage)}%)
+          {title}
         </Typography>
         <UserSelect
           label={"User"}

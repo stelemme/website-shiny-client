@@ -12,7 +12,6 @@ export default function LayoutPage() {
       <PageComponent
         title="LAYOUTPAGE"
         subtitle="Welcome to the dev layoutpage"
-        tabs
       />
 
       <PageComponent
@@ -20,14 +19,12 @@ export default function LayoutPage() {
         subtitle="Welcome to the dev layoutpage, with icons"
         icon1={<QuizIcon />}
         icon2={<QuizIcon />}
-        tabs
       />
 
       <PageComponent
         title="LAYOUTPAGE"
         subtitle="Welcome to the dev layoutpage, with select"
         select={<UserSelect fullWidth />}
-        tabs
       />
 
       <PageComponent
@@ -36,16 +33,20 @@ export default function LayoutPage() {
         icon1={<QuizIcon />}
         icon2={<QuizIcon />}
         select={<UserSelect fullWidth />}
-        tabs
       />
 
       <PageComponent
         title="LAYOUTPAGE"
         subtitle="Welcome to the dev layoutpage, loading"
-        tabs
       >
         <LoadingComponent loadingCondition={true}></LoadingComponent>
       </PageComponent>
+
+      <PageComponent
+        title="LAYOUTPAGE"
+        subtitle="Welcome to the dev layoutpage, with tabs"
+        tabs
+      />
     </>
   );
 }

@@ -102,8 +102,8 @@ export const tokens = (mode) => ({
         300: "#0c101b",
         400: "#f2f0f0", // manually changed
         500: "#fcfcfc",
-        600: "#1F2A40",
-        700: "#727681",
+        600: "#c2c2c2",
+        700: "#858585",
         800: "#a1a4ab",
         900: "#d0d1d5",
       },

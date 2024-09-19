@@ -19,6 +19,8 @@ const PageComponent = ({
   dev = false,
   select = null,
   tabs = false,
+  childrenTab1 = null,
+  childrenTab2 = null,
 }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -39,12 +41,10 @@ const PageComponent = ({
 
   const AntTabs = styled(Tabs)({
     "& .MuiTabs-indicator": {
-      backgroundColor: "transparent",
+      display: "none",
     },
     "& .MuiTabs-flexContainer": {
-      border: "1px solid",
       maxWidth: "600px",
-      padding: "2px 3px",
       borderRadius: 4,
     },
   });
@@ -52,25 +52,22 @@ const PageComponent = ({
   const AntTab = styled((props) => <Tab disableRipple {...props} />)(
     ({ theme }) => ({
       textTransform: "none",
-      minHeight: 31,
-      borderRadius: 4,
+      minHeight: 30,
+      borderRadius: "4px 4px 0 0",
       padding: 0,
+      backgroundColor: colors.primary[600],
       [theme.breakpoints.up("sm")]: {
         minWidth: 0,
       },
-      fontWeight: theme.typography.fontWeightRegular,
-      color: "secondary",
-      fontFamily: ["-apple-system", "BlinkMacSystemFont", '"Segoe UI"'].join(
-        ","
-      ),
+      fontWeight: "bold",
+      fontVariant: "h1",
       "&:hover": {
-        color: "secondary",
-        opacity: 1,
+        backgroundColor: colors.primary[700],
       },
       "&.Mui-selected": {
         color: colors.grey[100],
         backgroundColor: colors.primary[400],
-        fontWeight: theme.typography.fontWeightMedium,
+        fontWeight: "bold",
       },
     })
   );
@@ -83,7 +80,7 @@ const PageComponent = ({
         mx="20px"
         sx={{ bgcolor: dev ? colors.primary[400] : "" }}
       >
-        <Box mb="20px">
+        <Box mb={tabs ? "0px" : "15px"}>
           <Box
             display="flex"
             flexDirection="column"
@@ -117,29 +114,34 @@ const PageComponent = ({
               </Box>
             </Box>
 
+            {select && (
+              <Box
+                sx={{ display: { xs: "flex", sm: "none" }, width: "100%" }}
+                mb={tabs ? "15px" : "0px"}
+              >
+                {select}
+              </Box>
+            )}
+
             {tabs && (
-              <Box width="100%">
+              <Box width="100%" height="30px">
                 <AntTabs
                   value={tab}
                   onChange={handleTabChange}
                   aria-label="ant example"
                   variant="fullWidth"
                 >
-                  <AntTab label="Data" value={1} />
-                  <AntTab label="Stats" value={2} />
+                  <AntTab label="DATA" value={1} />
+                  <AntTab label="STATS" value={2} />
                 </AntTabs>
-              </Box>
-            )}
-
-            {select && (
-              <Box sx={{ display: { xs: "flex", sm: "none" }, width: "100%" }}>
-                {select}
               </Box>
             )}
           </Box>
         </Box>
         {/* Content passed as children */}
-        {children}
+        {!tabs && children}
+        {tab === 1 && childrenTab1}
+        {tab === 2 && childrenTab2}
       </Box>
     </Box>
   );

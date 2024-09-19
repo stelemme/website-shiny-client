@@ -1,5 +1,6 @@
 // Components imports
 import CollectionCard from "./CollectionCard";
+import CollectionStatsCard from "./CollectionStatsCard";
 
 const alolans = [
   {
@@ -76,9 +77,24 @@ const alolans = [
   },
 ];
 
-export default function Alolans() {
+export function Alolans() {
   return (
     <CollectionCard
+      placeholdList={alolans}
+      dir={"pokemon-shiny/gen-all-home"}
+      title={"Alolan Forms"}
+      collectionStr={"alola"}
+      lg={2}
+      sm={3}
+      xs={4}
+      numbers={false}
+    />
+  );
+}
+
+export function AlolansStats() {
+  return (
+    <CollectionStatsCard
       placeholdList={alolans}
       dir={"pokemon-shiny/gen-all-home"}
       title={"Alolan Forms"}
