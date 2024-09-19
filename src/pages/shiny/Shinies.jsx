@@ -3,12 +3,12 @@ import { useCookies } from "react-cookie";
 import LazyLoad from "react-lazyload";
 
 // Mui
-import { Typography } from "@mui/material";
 import SortIcon from "@mui/icons-material/Sort";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 
 // Components
 import PageComponent from "../../components/General/PageComponent";
+import LoadingComponent from "../../components/General/LoadingComponent";
 import ShinyCard from "../../components/Cards/ShinyCard";
 import ShinyCardEvolutions from "../../components/Cards/ShinyCardEvolutions";
 import SortMenu from "../../components/Menus/SortMenu";
@@ -34,68 +34,14 @@ export default function Shinies() {
   const { isLoading: shinyLoading, data: shinyData } =
     useShiny("preview=shiny");
 
+  const data = sortData(shinyData?.data, cookie.shinySort);
+
   const handleFilterClick = () => {
     setOpenFilter(true);
   };
 
   const handleSortClick = (e) => {
     setAnchorElSort(e.currentTarget);
-  };
-
-  const ShinyDisplay = ({ data, loading }) => {
-    if (loading) {
-      return (
-        <Typography variant="h5" style={{ marginBottom: "20px" }}>
-          Loading ...
-        </Typography>
-      );
-    } else {
-      return data?.reduce(function (filtered, item) {
-        if (
-          (cookie.shinyTrainerFilter === "All" ||
-            item.trainer === cookie.shinyTrainerFilter) &&
-          (cookie.shinyGenFilter === "All" ||
-            item.gen === cookie.shinyGenFilter)
-        ) {
-          filtered.push(
-            <div
-              style={{
-                marginBottom: window.innerWidth < 600 ? "10px" : "20px",
-              }}
-              key={item._id}
-            >
-              {!cookie.evolutionSpriteDisplay ? (
-                <LazyLoad height={window.innerWidth < 600 ? 50 : 100}>
-                  <ShinyCard
-                    id={item._id}
-                    name={item.name}
-                    gameSprite={item.sprite.game}
-                    dir={item.sprite.dir}
-                    monSprite={item.sprite.pokemon}
-                    trainer={item.trainer}
-                  />
-                </LazyLoad>
-              ) : (
-                <LazyLoad height={window.innerWidth < 600 ? 50 : 100}>
-                  <ShinyCardEvolutions
-                    id={item._id}
-                    name={item.name}
-                    gameSprite={item.sprite.game}
-                    dir={item.sprite.dir}
-                    monSprite={item.sprite.pokemon}
-                    trainer={item.trainer}
-                    evolutions={item.evolutions}
-                    forms={item.forms}
-                    group={item.group}
-                  />
-                </LazyLoad>
-              )}
-            </div>
-          );
-        }
-        return filtered;
-      }, []);
-    }
   };
 
   return (
@@ -124,10 +70,53 @@ export default function Shinies() {
       />
 
       {/* CARDS */}
-      <ShinyDisplay
-        data={sortData(shinyData?.data, cookie.shinySort)}
-        loading={shinyLoading}
-      />
+      <LoadingComponent loadingCondition={shinyLoading}>
+        {data?.reduce((filtered, item) => {
+          if (
+            (cookie.shinyTrainerFilter === "All" ||
+              item.trainer === cookie.shinyTrainerFilter) &&
+            (cookie.shinyGenFilter === "All" ||
+              item.gen === cookie.shinyGenFilter)
+          ) {
+            filtered.push(
+              <div
+                style={{
+                  marginBottom: window.innerWidth < 600 ? "10px" : "20px",
+                }}
+                key={item._id}
+              >
+                {!cookie.evolutionSpriteDisplay ? (
+                  <LazyLoad height={window.innerWidth < 600 ? 50 : 100}>
+                    <ShinyCard
+                      id={item._id}
+                      name={item.name}
+                      gameSprite={item.sprite.game}
+                      dir={item.sprite.dir}
+                      monSprite={item.sprite.pokemon}
+                      trainer={item.trainer}
+                    />
+                  </LazyLoad>
+                ) : (
+                  <LazyLoad height={window.innerWidth < 600 ? 50 : 100}>
+                    <ShinyCardEvolutions
+                      id={item._id}
+                      name={item.name}
+                      gameSprite={item.sprite.game}
+                      dir={item.sprite.dir}
+                      monSprite={item.sprite.pokemon}
+                      trainer={item.trainer}
+                      evolutions={item.evolutions}
+                      forms={item.forms}
+                      group={item.group}
+                    />
+                  </LazyLoad>
+                )}
+              </div>
+            );
+          }
+          return filtered;
+        }, [])}
+      </LoadingComponent>
     </PageComponent>
   );
 }

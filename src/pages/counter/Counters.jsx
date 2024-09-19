@@ -8,6 +8,7 @@ import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 
 // Components
 import PageComponent from "../../components/General/PageComponent";
+import LoadingComponent from "../../components/General/LoadingComponent";
 import CounterCard from "../../components/Cards/CounterCard";
 import SortMenu from "../../components/Menus/SortMenu";
 import FilterMenu from "../../components/Dialogs/FilterDialog";
@@ -38,20 +39,12 @@ export default function Counters() {
     useShiny("preview=counter&filter=counters");
 
   const CountersDisplay = ({ data, loading, isCompleted, filter }) => {
-    if (loading) {
-      return (
-        <Grid item xs={12}>
-          <Typography variant="h5">Loading ...</Typography>
-        </Grid>
-      );
-    } else {
-      const filteredItems =
-        filter !== "All"
-          ? data?.filter((item) => item.trainer === filter)
-          : data;
+    const filteredItems =
+      filter !== "All" ? data?.filter((item) => item.trainer === filter) : data;
 
-      return filteredItems?.map((item) => {
-        return (
+    return filteredItems?.map((item) => {
+      return (
+        <LoadingComponent loadingCondition={loading}>
           <Grid item lg={6} xs={12} key={item._id}>
             <CounterCard
               id={item._id}
@@ -62,9 +55,9 @@ export default function Counters() {
               query={isCompleted ? "?completed=true" : ""}
             />
           </Grid>
-        );
-      });
-    }
+        </LoadingComponent>
+      );
+    });
   };
 
   return (

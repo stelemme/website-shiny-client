@@ -1,16 +1,22 @@
 // mui imports
-import { Typography, CircularProgress } from "@mui/material";
+import { Typography, Box, CircularProgress } from "@mui/material";
 
 export default function LoadingComponent({
   loadingCondition,
-  errorCondition,
   children,
+  errorCondition = false,
+  errorText = "",
 }) {
   return (
     <>
-      {loadingCondition && <CircularProgress />}
-      {errorCondition && <Typography>Error!</Typography>}
-      {children}
+      {loadingCondition && (
+        <Box display="flex" gap="10px">
+          <CircularProgress color="inherit" size="1rem" />
+          <Typography>Loading ...</Typography>
+        </Box>
+      )}
+      {errorCondition && <Typography>{errorText}</Typography>}
+      {!loadingCondition && !errorCondition && children}
     </>
   );
 }

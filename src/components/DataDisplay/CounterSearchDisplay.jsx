@@ -4,6 +4,7 @@ import { Fragment } from "react";
 import { Typography, Box } from "@mui/material";
 
 // Components
+import LoadingComponent from "../General/LoadingComponent";
 import CounterCard from "../Cards/CounterCard";
 
 // Hooks
@@ -17,50 +18,7 @@ export default function CounterSearchDisplay({ pokemon }) {
     `search=${pokemon}`
   );
 
-  const ShinyDisplay = ({ data, loading, error, text }) => {
-    if (loading) {
-      return (
-        <Typography variant="h5" mt={"20px"}>
-          Loading ...
-        </Typography>
-      );
-    } else if (error) {
-      return (
-        <Typography variant="h5" mt={"20px"}>
-          No {text} Found
-        </Typography>
-      );
-    } else {
-      const uniqueData = data?.reduce((acc, item) => {
-        if (!item?.group) {
-          acc.push(item);
-        } else if (!acc.some((el) => el.group === item?.group)) {
-          acc.push(item);
-        }
-        return acc;
-      }, []);
-
-      return uniqueData?.map((item) => {
-        if (!item?._id || item?.totalEncounters === 0) {
-          return null;
-        }
-        return (
-          <Fragment key={item?._id}>
-            <Box mt={"20px"}>
-              <CounterCard
-                id={item._id}
-                name={item.name}
-                gameSprite={item.sprite.game}
-                count={item?.totalEncounters}
-                trainer={item.trainer}
-                query={item.origin ? "" : "?completed=true"}
-              />
-            </Box>
-          </Fragment>
-        );
-      });
-    }
-  };
+  const data = shinyData?.data.concat(counterData?.data);
 
   return (
     <>
@@ -74,12 +32,40 @@ export default function CounterSearchDisplay({ pokemon }) {
           COUNTERS
         </Typography>
       </Box>
-      <ShinyDisplay
-        data={shinyData?.data.concat(counterData?.data)}
-        loading={shinyLoading && counterLoading}
-        error={!shinyData?.data.length && !counterData?.data.length}
-        text={"Counters"}
-      />
+      <LoadingComponent
+        loadingCondition={shinyLoading && counterLoading}
+        errorCondition={!shinyData?.data.length && !counterData?.data.length}
+        errorText="No Counters Found"
+      >
+        {data
+          .reduce((acc, item) => {
+            if (!item?.group) {
+              acc.push(item);
+            } else if (!acc.some((el) => el.group === item?.group)) {
+              acc.push(item);
+            }
+            return acc;
+          }, [])
+          .map((item) => {
+            if (!item?._id || item?.totalEncounters === 0) {
+              return null;
+            }
+            return (
+              <Fragment key={item?._id}>
+                <Box mt={"20px"}>
+                  <CounterCard
+                    id={item._id}
+                    name={item.name}
+                    gameSprite={item.sprite.game}
+                    count={item?.totalEncounters}
+                    trainer={item.trainer}
+                    query={item.origin ? "" : "?completed=true"}
+                  />
+                </Box>
+              </Fragment>
+            );
+          })}
+      </LoadingComponent>
     </>
   );
 }

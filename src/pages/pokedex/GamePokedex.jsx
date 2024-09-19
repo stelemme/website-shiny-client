@@ -4,11 +4,12 @@ import { useParams } from "react-router-dom";
 import { Grid, Typography } from "@mui/material";
 
 // Components imports
+import PageComponent from "../../components/General/PageComponent";
+import LoadingComponent from "../../components/General/LoadingComponent";
 import PokedexCard from "../../components/Cards/PokedexCard";
 
 //Hooks
 import { usePokedex, useGameId } from "../../hooks/useData";
-import PageComponent from "../../components/General/PageComponent";
 
 export default function GamePokedex() {
   const { gameId } = useParams();
@@ -24,49 +25,40 @@ export default function GamePokedex() {
     gameId
   );
 
-  if (pokedexLoading || gameLoading) {
-    return (
-      <PageComponent
-        title={`... POKEDEX`}
-        subtitle={`Welcome to the Regional Pokédex!`}
-        widthSnaps={3}
-      >
-        <Typography variant="h5" style={{ marginBottom: "20px" }}>
-          Loading ...
-        </Typography>
-      </PageComponent>
-    );
-  }
+  const pokedexData = pokedex?.data;
+  const gameData = game?.data;
 
   return (
     <PageComponent
-      title={`${game?.data.name.toUpperCase()} POKEDEX`}
-      subtitle={`Welcome to the ${game.data.name} Regional Pokédex!`}
+      title={`${gameData ? gameData.name.toUpperCase() : "..."} POKEDEX`}
+      subtitle={`Welcome to the ${gameData?.name} Regional Pokédex!`}
       widthSnaps={3}
     >
-      {/* CARDS */}
-      <Grid container spacing={"20px"}>
-        {pokedex?.data.length > 0 ? (
-          pokedex?.data.map((pokemon) => {
-            return (
-              <Grid key={pokemon._id} item lg={3} md={4} sm={6} xs={6}>
-                <PokedexCard
-                  id={pokemon._id}
-                  name={pokemon.name}
-                  pokedexNo={pokemon.pokedexNo}
-                  sprite={pokemon.sprite}
-                  dir={game.data.dir}
-                  sort={game.data.sort}
-                />
-              </Grid>
-            );
-          })
-        ) : (
-          <Grid item xs={12}>
-            <Typography>No Pokémons Found</Typography>
-          </Grid>
-        )}
-      </Grid>
+      <LoadingComponent loadingCondition={pokedexLoading && gameLoading}>
+        {/* CARDS */}
+        <Grid container spacing={"20px"}>
+          {pokedexData?.length > 0 ? (
+            pokedexData?.map((pokemon) => {
+              return (
+                <Grid key={pokemon._id} item lg={3} md={4} sm={6} xs={6}>
+                  <PokedexCard
+                    id={pokemon._id}
+                    name={pokemon.name}
+                    pokedexNo={pokemon.pokedexNo}
+                    sprite={pokemon.sprite}
+                    dir={gameData.dir}
+                    sort={gameData.sort}
+                  />
+                </Grid>
+              );
+            })
+          ) : (
+            <Grid item xs={12}>
+              <Typography>No Pokémons Found</Typography>
+            </Grid>
+          )}
+        </Grid>
+      </LoadingComponent>
     </PageComponent>
   );
 }

@@ -1,12 +1,13 @@
 import { useNavigate } from "react-router-dom";
 
 // Mui
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 
 // Components
 import PageComponent from "../../components/General/PageComponent";
+import LoadingComponent from "../../components/General/LoadingComponent";
 
 // Functions
 import { formatTime, formatSeconds } from "../../functions/statFunctions";
@@ -233,15 +234,14 @@ export default function Table() {
 
   const { isLoading: shinyLoading, data: shinyData } = useShiny("sort=newest");
 
-  const ShinyDisplay = ({ data, loading }) => {
-    if (loading) {
-      return (
-        <Typography variant="h5" style={{ marginBottom: "20px" }}>
-          Loading ...
-        </Typography>
-      );
-    } else {
-      return (
+  const data = shinyData?.data;
+
+  return (
+    <PageComponent
+      title="SHINY DATA TABLE"
+      subtitle="Here you can find all shinies."
+    >
+      <LoadingComponent loadingCondition={shinyLoading}>
         <Box
           sx={{
             height: "100%",
@@ -331,16 +331,7 @@ export default function Table() {
             }}
           />
         </Box>
-      );
-    }
-  };
-
-  return (
-    <PageComponent
-      title="SHINY DATA TABLE"
-      subtitle="Here you can find all shinies."
-    >
-      <ShinyDisplay data={shinyData?.data} loading={shinyLoading} />
+      </LoadingComponent>
     </PageComponent>
   );
 }
