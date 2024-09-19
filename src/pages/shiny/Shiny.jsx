@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 
 // Components
+import LoadingComponent from "../../components/General/LoadingComponent";
 import CompleteShinyCard from "../../components/DataDisplay/ShinyDisplay";
 
 // Hooks
@@ -12,26 +13,32 @@ export default function Shiny() {
   const { data: shiny, refetch } = useShinyId(shinyId);
   const data = shiny?.data;
 
-  const { data: groupShiniesData, refetch: refetch2 } = useShiny(
-    `groups=pokemon&group=${data?.group}`
-  );
+  const {
+    isLoading: shinyLoading,
+    data: groupShiniesData,
+    refetch: refetch2,
+  } = useShiny(`groups=pokemon&group=${data?.group}`);
   const groupShinies = groupShiniesData?.data;
 
   console.log(data);
 
-  return data?.group ? (
-    <>
-      {groupShinies?.map((item, index) => (
-        <CompleteShinyCard
-          key={item._id}
-          data={item}
-          refetch={refetch}
-          count={groupShinies?.length}
-          index={index}
-        />
-      ))}
-    </>
-  ) : (
-    <CompleteShinyCard data={data} refetch={refetch2} />
+  return (
+    <LoadingComponent loadingCondition={shinyLoading}>
+      {data?.group ? (
+        <>
+          {groupShinies?.map((item, index) => (
+            <CompleteShinyCard
+              key={item._id}
+              data={item}
+              refetch={refetch}
+              count={groupShinies?.length}
+              index={index}
+            />
+          ))}
+        </>
+      ) : (
+        <CompleteShinyCard data={data} refetch={refetch2} />
+      )}
+    </LoadingComponent>
   );
 }
