@@ -263,5 +263,5 @@ export default function MainMap() {
     [loadingMarkers, cookies]
   );
 
-  return <BoxComponent>{displayMap}</BoxComponent>;
+  return <BoxComponent tabs>{displayMap}</BoxComponent>;
 }
