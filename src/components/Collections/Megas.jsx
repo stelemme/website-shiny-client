@@ -1,5 +1,6 @@
 // Components imports
 import CollectionCard from "./CollectionCard";
+import CollectionStatsCard from "./CollectionStatsCard";
 
 const megas = [
   {
@@ -204,7 +205,7 @@ const megas = [
   },
 ];
 
-export default function Megas() {
+export function Megas() {
   return (
     <CollectionCard
       placeholdList={megas}
@@ -215,6 +216,16 @@ export default function Megas() {
       sm={3}
       xs={4}
       numbers={false}
+    />
+  );
+}
+
+export function MegasStats() {
+  return (
+    <CollectionStatsCard
+      placeholdList={megas}
+      title={"Mega Evolutions"}
+      collectionStr={"mega"}
     />
   );
 }

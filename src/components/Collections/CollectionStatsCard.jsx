@@ -53,7 +53,7 @@ export default function CollectionStatsCard({
     } else if (cookies.collectionUserSelect === "All") {
       setGraphColor(colors.purpleAccent[500]);
     }
-  }, [cookies.collectionUserSelect]);
+  }, [cookies.collectionUserSelect, colors]);
 
   const handleChange = (e) => {
     setCookies("collectionUserSelect", e.target.value, {

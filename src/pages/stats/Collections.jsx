@@ -4,31 +4,79 @@ import { useCookies } from "react-cookie";
 // Components imports
 import PageComponent from "../../components/General/PageComponent";
 import GeneralSelect from "../../components/Selects/GeneralSelect";
-import Pokeballs from "../../components/Collections/Pokeballs";
-import Natures from "../../components/Collections/Natures";
-import Legends from "../../components/Collections/Legends";
-import Mythicals from "../../components/Collections/Mythicals";
-import UltraBeasts from "../../components/Collections/UltraBeasts";
-import PastParadoxes from "../../components/Collections/PastParadoxes";
-import FutureParadoxes from "../../components/Collections/FutureParadoxes";
-import Megas from "../../components/Collections/Megas";
-import Gigantamax from "../../components/Collections/Gigantamax";
+import {
+  Pokeballs,
+  PokeballsStats,
+} from "../../components/Collections/Pokeballs";
+import { Natures, NaturesStats } from "../../components/Collections/Natures";
+import { Legends, LegendsStats } from "../../components/Collections/Legends";
+import {
+  Mythicals,
+  MythicalsStats,
+} from "../../components/Collections/Mythicals";
+import {
+  UltraBeasts,
+  UltraBeastsStats,
+} from "../../components/Collections/UltraBeasts";
+import {
+  PastParadoxes,
+  PastParadoxesStats,
+} from "../../components/Collections/PastParadoxes";
+import {
+  FutureParadoxes,
+  FutureParadoxesStats,
+} from "../../components/Collections/FutureParadoxes";
+import { Megas, MegasStats } from "../../components/Collections/Megas";
+import {
+  Gigantamax,
+  GigantamaxStats,
+} from "../../components/Collections/Gigantamax";
 import { Alolans, AlolansStats } from "../../components/Collections/Alolans";
-import Galarians from "../../components/Collections/Galarian";
-import Hisuians from "../../components/Collections/Hisuians";
-import Paldeans from "../../components/Collections/Paldeans";
-import Eeveelutions from "../../components/Collections/Eeveelutions";
-import Unowns from "../../components/Collections/Unowns";
-import Flabebes from "../../components/Collections/Flabebes";
-import Vivillons from "../../components/Collections/Vivillons";
-import Marks from "../../components/Collections/Marks";
-import RibbonsGen3 from "../../components/Collections/RibbonsGen3";
-import RibbonsGen4 from "../../components/Collections/RibbonsGen4";
-import RibbonsGen5 from "../../components/Collections/RibbonsGen5";
-import RibbonsGen6 from "../../components/Collections/RibbonsGen6";
-import RibbonsGen7 from "../../components/Collections/RibbonsGen7";
-import RibbonsGen8 from "../../components/Collections/RibbonsGen8";
-import RibbonsGen9 from "../../components/Collections/RibbonsGen9";
+import {
+  Galarians,
+  GalariansStats,
+} from "../../components/Collections/Galarian";
+import { Hisuians, HisuiansStats } from "../../components/Collections/Hisuians";
+import { Paldeans, PaldeansStats } from "../../components/Collections/Paldeans";
+import {
+  Eeveelutions,
+  EeveelutionsStats,
+} from "../../components/Collections/Eeveelutions";
+import { Unowns, UnownsStats } from "../../components/Collections/Unowns";
+import { Flabebes, FlabebesStats } from "../../components/Collections/Flabebes";
+import {
+  Vivillons,
+  VivillonsStats,
+} from "../../components/Collections/Vivillons";
+import { Marks, MarksStats } from "../../components/Collections/Marks";
+import {
+  RibbonsGen3,
+  RibbonsGen3Stats,
+} from "../../components/Collections/RibbonsGen3";
+import {
+  RibbonsGen4,
+  RibbonsGen4Stats,
+} from "../../components/Collections/RibbonsGen4";
+import {
+  RibbonsGen5,
+  RibbonsGen5Stats,
+} from "../../components/Collections/RibbonsGen5";
+import {
+  RibbonsGen6,
+  RibbonsGen6Stats,
+} from "../../components/Collections/RibbonsGen6";
+import {
+  RibbonsGen7,
+  RibbonsGen7Stats,
+} from "../../components/Collections/RibbonsGen7";
+import {
+  RibbonsGen8,
+  RibbonsGen8Stats,
+} from "../../components/Collections/RibbonsGen8";
+import {
+  RibbonsGen9,
+  RibbonsGen9Stats,
+} from "../../components/Collections/RibbonsGen9";
 
 export default function Collections() {
   const [cookies, setCookie] = useCookies(["collectionSelect"]);
@@ -39,31 +87,31 @@ export default function Collections() {
   };
 
   const collectionComponents = {
-    Pokéballs: Pokeballs,
-    _Natures: Natures,
-    Legends: Legends,
-    Mythicals: Mythicals,
-    "Ultra Beasts": UltraBeasts,
-    "Past Paradox Pokémon": PastParadoxes,
-    "_Future Paradox Pokémon": FutureParadoxes,
-    "Mega Evolutions": Megas,
-    "_Gigantamax Pokémon": Gigantamax,
+    Pokéballs: [Pokeballs, PokeballsStats],
+    _Natures: [Natures, NaturesStats],
+    Legends: [Legends, LegendsStats],
+    Mythicals: [Mythicals, MythicalsStats],
+    "Ultra Beasts": [UltraBeasts, UltraBeastsStats],
+    "Past Paradox Pokémon": [PastParadoxes, PastParadoxesStats],
+    "_Future Paradox Pokémon": [FutureParadoxes, FutureParadoxesStats],
+    "Mega Evolutions": [Megas, MegasStats],
+    "_Gigantamax Pokémon": [Gigantamax, GigantamaxStats],
     "Alolan Forms": [Alolans, AlolansStats],
-    "Galarian Forms": Galarians,
-    "Hisuian Forms": Hisuians,
-    "_Paldean Forms": Paldeans,
-    "Ribbons (Gen3)": RibbonsGen3,
-    "Ribbons (Gen4)": RibbonsGen4,
-    "Ribbons (Gen5)": RibbonsGen5,
-    "Ribbons (Gen6)": RibbonsGen6,
-    "Ribbons (Gen7)": RibbonsGen7,
-    "Ribbons (Gen8)": RibbonsGen8,
-    "Ribbons (Gen9)": RibbonsGen9,
-    _Marks: Marks,
-    Eeveelutions: Eeveelutions,
-    Unowns: Unowns,
-    Flabébés: Flabebes,
-    Vivillons: Vivillons,
+    "Galarian Forms": [Galarians, GalariansStats],
+    "Hisuian Forms": [Hisuians, HisuiansStats],
+    "_Paldean Forms": [Paldeans, PaldeansStats],
+    "Ribbons (Gen3)": [RibbonsGen3, RibbonsGen3Stats],
+    "Ribbons (Gen4)": [RibbonsGen4, RibbonsGen4Stats],
+    "Ribbons (Gen5)": [RibbonsGen5, RibbonsGen5Stats],
+    "Ribbons (Gen6)": [RibbonsGen6, RibbonsGen6Stats],
+    "Ribbons (Gen7)": [RibbonsGen7, RibbonsGen7Stats],
+    "Ribbons (Gen8)": [RibbonsGen8, RibbonsGen8Stats],
+    "Ribbons (Gen9)": [RibbonsGen9, RibbonsGen9Stats],
+    _Marks: [Marks, MarksStats],
+    Eeveelutions: [Eeveelutions, EeveelutionsStats],
+    Unowns: [Unowns, UnownsStats],
+    Flabébés: [Flabebes, FlabebesStats],
+    Vivillons: [Vivillons, VivillonsStats],
   };
 
   if (!collectionComponents[cookies.collectionSelect]) {

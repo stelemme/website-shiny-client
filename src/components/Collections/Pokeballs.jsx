@@ -1,5 +1,6 @@
 // Components imports
 import CollectionCard from "./CollectionCard";
+import CollectionStatsCard from "./CollectionStatsCard";
 
 const ballsData = [
   {
@@ -140,7 +141,7 @@ const ballsData = [
   },
 ];
 
-export default function Pokeballs() {
+export function Pokeballs() {
   return (
     <CollectionCard
       placeholdList={ballsData}
@@ -151,6 +152,16 @@ export default function Pokeballs() {
       sm={3}
       xs={4}
       imgHeight={40}
+    />
+  );
+}
+
+export function PokeballsStats() {
+  return (
+    <CollectionStatsCard
+      placeholdList={ballsData}
+      title={"POKEBALLS"}
+      collectionStr={"ball"}
     />
   );
 }

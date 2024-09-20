@@ -1,5 +1,6 @@
 // Components imports
 import CollectionCard from "./CollectionCard";
+import CollectionStatsCard from "./CollectionStatsCard";
 
 const vivillons = [
   {
@@ -84,7 +85,7 @@ const vivillons = [
   },
 ];
 
-export default function Vivillons() {
+export function Vivillons() {
   return (
     <CollectionCard
       placeholdList={vivillons}
@@ -95,6 +96,16 @@ export default function Vivillons() {
       sm={3}
       xs={4}
       numbers={false}
+    />
+  );
+}
+
+export function VivillonsStats() {
+  return (
+    <CollectionStatsCard
+      placeholdList={vivillons}
+      title={"Vivillons"}
+      collectionStr={"vivillon"}
     />
   );
 }

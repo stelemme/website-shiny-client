@@ -1,5 +1,6 @@
 // Components imports
 import CollectionCard from "./CollectionCard";
+import CollectionStatsCard from "./CollectionStatsCard";
 
 const marks = [
   {
@@ -204,7 +205,7 @@ const marks = [
   },
 ];
 
-export default function Marks() {
+export function Marks() {
   return (
     <CollectionCard
       placeholdList={marks}
@@ -215,6 +216,16 @@ export default function Marks() {
       sm={3}
       xs={4}
       numbers={false}
+    />
+  );
+}
+
+export function MarksStats() {
+  return (
+    <CollectionStatsCard
+      placeholdList={marks}
+      title={"Marks"}
+      collectionStr={"mark"}
     />
   );
 }

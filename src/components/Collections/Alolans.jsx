@@ -96,13 +96,8 @@ export function AlolansStats() {
   return (
     <CollectionStatsCard
       placeholdList={alolans}
-      dir={"pokemon-shiny/gen-all-home"}
       title={"Alolan Forms"}
       collectionStr={"alola"}
-      lg={2}
-      sm={3}
-      xs={4}
-      numbers={false}
     />
   );
 }

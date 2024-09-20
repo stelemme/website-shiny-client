@@ -1,5 +1,6 @@
 // Components imports
 import CollectionCard from "./CollectionCard";
+import CollectionStatsCard from "./CollectionStatsCard";
 
 const natures = [
   {
@@ -104,7 +105,7 @@ const natures = [
   },
 ];
 
-export default function Natures() {
+export function Natures() {
   return (
     <CollectionCard
       placeholdList={natures}
@@ -115,6 +116,16 @@ export default function Natures() {
       sm={2.4}
       xs={4}
       imgHeight={40}
+    />
+  );
+}
+
+export function NaturesStats() {
+  return (
+    <CollectionStatsCard
+      placeholdList={natures}
+      title={"Natures"}
+      collectionStr={"nature"}
     />
   );
 }

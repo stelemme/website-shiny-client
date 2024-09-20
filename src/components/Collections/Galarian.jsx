@@ -1,5 +1,6 @@
 // Components imports
 import CollectionCard from "./CollectionCard";
+import CollectionStatsCard from "./CollectionStatsCard";
 
 const galarians = [
   {
@@ -80,7 +81,7 @@ const galarians = [
   },
 ];
 
-export default function Galarians() {
+export function Galarians() {
   return (
     <CollectionCard
       placeholdList={galarians}
@@ -91,6 +92,16 @@ export default function Galarians() {
       sm={3}
       xs={4}
       numbers={false}
+    />
+  );
+}
+
+export function GalariansStats() {
+  return (
+    <CollectionStatsCard
+      placeholdList={galarians}
+      title={"Galarian Forms"}
+      collectionStr={"galar"}
     />
   );
 }

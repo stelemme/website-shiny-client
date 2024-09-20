@@ -1,5 +1,6 @@
 // Components imports
 import CollectionCard from "./CollectionCard";
+import CollectionStatsCard from "./CollectionStatsCard";
 
 const gmax = [
   {
@@ -136,7 +137,7 @@ const gmax = [
   },
 ];
 
-export default function Gigantamax() {
+export function Gigantamax() {
   return (
     <CollectionCard
       placeholdList={gmax}
@@ -147,6 +148,16 @@ export default function Gigantamax() {
       sm={3}
       xs={4}
       numbers={false}
+    />
+  );
+}
+
+export function GigantamaxStats() {
+  return (
+    <CollectionStatsCard
+      placeholdList={gmax}
+      title={"Gigantamax Pokémon"}
+      collectionStr={"gmax"}
     />
   );
 }
