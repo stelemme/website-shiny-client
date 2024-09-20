@@ -12,6 +12,7 @@ import {
   YAxis,
   Cell,
 } from "recharts";
+import BoxComponent from "../General/BoxComponent";
 
 export default function PercentageBarChart({ graphData }) {
   const theme = useTheme();
@@ -26,13 +27,7 @@ export default function PercentageBarChart({ graphData }) {
   ];
 
   return (
-    <Box
-      p="20px"
-      width="100%"
-      backgroundColor={colors.primary[500]}
-      borderRadius="5px"
-      height="100%"
-    >
+    <BoxComponent noContrastColor>
       <Box
         display="flex"
         justifyContent="space-between"
@@ -85,6 +80,6 @@ export default function PercentageBarChart({ graphData }) {
           </Bar>
         </BarChart>
       </ResponsiveContainer>
-    </Box>
+    </BoxComponent>
   );
 }

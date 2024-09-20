@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 
+// Components
+import BoxComponent from "../General/BoxComponent";
+
 export default function CounterCard({
   id,
   gameSprite,
@@ -22,39 +25,33 @@ export default function CounterCard({
     trainerHeight = "50";
   }
 
+  const onCardClick = () => {
+    if (query) {
+      navigate(`/counters/${id}${query}`);
+    } else {
+      navigate(`/counters/${id}`);
+    }
+  };
+
   return (
-    <Box
+    <BoxComponent
       p="15px"
-      width="100%"
-      backgroundColor={colors.primary[bgColor]}
-      borderRadius="5px"
-      onClick={() => {
-        if (query) {
-          navigate(`/counters/${id}${query}`);
-        } else {
-          navigate(`/counters/${id}`);
-        }
-      }}
-      sx={{
-        "&:hover": {
-          cursor: "pointer",
-          backgroundColor: colors.primary[900],
-        },
-      }}
+      noContrastColor={bgColor === 400 ? false : true}
+      onClick={onCardClick}
     >
       <Box display="flex" justifyContent="space-between">
         {/* GAME IMAGE */}
         <Box
           display="inline-flex"
-          width={(window.innerWidth < 400) ? "60px" : "90px"}
-          minWidth={(window.innerWidth < 400) ? "60px" : "90px"}
+          width={window.innerWidth < 400 ? "60px" : "90px"}
+          minWidth={window.innerWidth < 400 ? "60px" : "90px"}
           justifyContent="center"
           alignItems="center"
         >
           <img
             alt=""
             src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/games/${gameSprite}.png`}
-            height={(window.innerWidth < 400) ? "22px" : "33px"}
+            height={window.innerWidth < 400 ? "22px" : "33px"}
           />
         </Box>
         {/* COUNTER NAME */}
@@ -62,7 +59,7 @@ export default function CounterCard({
           <Typography fontWeight={"bold"} color={colors.grey[400]}>
             {trainer}
           </Typography>
-          <Box display="flex" alignItems="center" height={trainerHeight} >
+          <Box display="flex" alignItems="center" height={trainerHeight}>
             <Typography
               fontWeight={"bold"}
               variant="h5"
@@ -92,6 +89,6 @@ export default function CounterCard({
           </Typography>
         </Box>
       </Box>
-    </Box>
+    </BoxComponent>
   );
 }

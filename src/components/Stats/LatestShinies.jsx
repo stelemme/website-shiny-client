@@ -1,8 +1,9 @@
 // mui imports
-import { Box, Grid, useTheme, Typography, Skeleton } from "@mui/material";
+import { Grid, useTheme, Typography, Skeleton } from "@mui/material";
 import { tokens } from "../../theme";
 
 // Components
+import BoxComponent from "../General/BoxComponent";
 import ShinyCard from "../Cards/ShinyCard";
 
 // Hooks
@@ -52,13 +53,7 @@ export default function LatestShinies() {
   };
 
   return (
-    <Box
-      p="20px"
-      width="100%"
-      backgroundColor={colors.primary[400]}
-      borderRadius="5px"
-      height="100%"
-    >
+    <BoxComponent>
       <Typography variant="h4" fontWeight={"bold"} mb={"10px"}>
         LATEST SHINY POKEMON
       </Typography>
@@ -81,6 +76,6 @@ export default function LatestShinies() {
           loadingArray={[1, 2, 3]}
         />
       </Grid>
-    </Box>
+    </BoxComponent>
   );
 }

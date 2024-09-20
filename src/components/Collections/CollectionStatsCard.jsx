@@ -1,8 +1,8 @@
 // mui imports
-import { Box, useTheme, Typography, Grid } from "@mui/material";
-import { tokens } from "../../theme";
+import { Box, Typography, Grid } from "@mui/material";
 
 // Components imports
+import BoxComponent from "../General/BoxComponent";
 import PercentageBarChart from "../Graphs/PercentageBarChart";
 
 // Hooks
@@ -17,8 +17,6 @@ export default function CollectionStatsCard({
   collectionStr,
   additionalCollectionStr = null,
 }) {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
 
   const totalNumber = placeholdList.length;
 
@@ -97,13 +95,7 @@ export default function CollectionStatsCard({
   ];
 
   return (
-    <Box
-      p="20px"
-      width="100%"
-      backgroundColor={colors.primary[400]}
-      height="100%"
-      sx={{ borderRadius: { xs: "0px 0px 5px 5px", sm: "0px 5px 5px 5px" } }}
-    >
+    <BoxComponent tabs>
       <Box
         display="flex"
         justifyContent="space-between"
@@ -123,6 +115,6 @@ export default function CollectionStatsCard({
           <PercentageBarChart graphData={graphData} />
         </Grid>
       </Grid>
-    </Box>
+    </BoxComponent>
   );
 }

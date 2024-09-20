@@ -18,6 +18,7 @@ import {
 } from "recharts";
 
 // Components imports
+import BoxComponent from "../General/BoxComponent";
 import UserSelect from "../Selects/UserSelect";
 
 // Hooks
@@ -53,13 +54,7 @@ export default function EncountersGraph() {
   };
 
   return (
-    <Box
-      p="20px"
-      width="100%"
-      backgroundColor={colors.primary[400]}
-      borderRadius="5px"
-      height="100%"
-    >
+    <BoxComponent>
       <Box
         display="flex"
         justifyContent="space-between"
@@ -135,6 +130,6 @@ export default function EncountersGraph() {
           />
         </ComposedChart>
       </ResponsiveContainer>
-    </Box>
+    </BoxComponent>
   );
 }

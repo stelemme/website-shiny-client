@@ -31,6 +31,7 @@ import {
 
 // Components
 import PageComponent from "../../components/General/PageComponent";
+import BoxComponent from "../../components/General/BoxComponent";
 import FilterMenu from "../../components/Dialogs/FilterDialog";
 
 // Functions
@@ -202,12 +203,7 @@ export default function Checklist() {
       {/* CHECKLIST CARDS */}
       <Grid container spacing={"10px"}>
         <Grid item xs={12}>
-          <Box
-            p="10px"
-            width="100%"
-            backgroundColor={colors.primary[400]}
-            borderRadius="5px"
-          >
+          <BoxComponent p="10px">
             <Box display="flex">
               {/* POKEMON IMAGE */}
               <Box
@@ -272,7 +268,7 @@ export default function Checklist() {
                 {window.innerWidth >= 600 && <Box width={"30px"} />}
               </Box>
             </Box>
-          </Box>
+          </BoxComponent>
         </Grid>
         {pokedex?.data.map((pokemon) => {
           const joaquinCheck = shinyListJoaquin?.includes(pokemon.name);
@@ -290,18 +286,7 @@ export default function Checklist() {
           return (
             <Grid item xs={12} key={pokemon._id}>
               <LazyLoad>
-                <Box
-                  p="10px"
-                  width="100%"
-                  backgroundColor={colors.primary[400]}
-                  borderRadius="5px"
-                  sx={{
-                    "&:hover": {
-                      cursor: "pointer",
-                      backgroundColor: colors.primary[900],
-                    },
-                  }}
-                >
+                <BoxComponent p="10px">
                   <Box display="flex">
                     {/* POKEMON IMAGE */}
                     <Box
@@ -411,7 +396,7 @@ export default function Checklist() {
                       )}
                     </Box>
                   </Box>
-                </Box>
+                </BoxComponent>
               </LazyLoad>
             </Grid>
           );

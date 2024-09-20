@@ -1,8 +1,9 @@
 // mui imports
-import { Box, Grid, useTheme, Typography, Skeleton } from "@mui/material";
+import { Grid, useTheme, Typography, Skeleton } from "@mui/material";
 import { tokens } from "../../theme";
 
 // Components
+import BoxComponent from "../General/BoxComponent";
 import CounterCard from "../Cards/CounterCard";
 
 // Hooks
@@ -50,13 +51,7 @@ export default function LatestCounters() {
     }
   };
   return (
-    <Box
-      p="20px"
-      width="100%"
-      backgroundColor={colors.primary[400]}
-      borderRadius="5px"
-      height="100%"
-    >
+    <BoxComponent>
       <Typography variant="h4" fontWeight={"bold"} mb={"10px"}>
         LATEST COUNTERS
       </Typography>
@@ -83,6 +78,6 @@ export default function LatestCounters() {
           loadingArray={[1, 2, 3]}
         />
       </Grid>
-    </Box>
+    </BoxComponent>
   );
 }

@@ -5,6 +5,9 @@ import { tokens } from "../../theme";
 // recharts
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 
+// Components
+import BoxComponent from "../General/BoxComponent";
+
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
   cx,
@@ -40,13 +43,7 @@ export default function PercentagePieChart({ data, graphColor }) {
   const colors = tokens(theme.palette.mode);
 
   return (
-    <Box
-      p="20px"
-      width="100%"
-      backgroundColor={colors.primary[500]}
-      borderRadius="5px"
-      height="100%"
-    >
+    <BoxComponent noContrastColor>
       <Box
         display="flex"
         justifyContent="space-between"
@@ -81,6 +78,6 @@ export default function PercentagePieChart({ data, graphColor }) {
           <Tooltip />
         </PieChart>
       </ResponsiveContainer>
-    </Box>
+    </BoxComponent>
   );
 }

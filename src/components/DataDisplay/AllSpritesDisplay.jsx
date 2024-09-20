@@ -1,8 +1,8 @@
 // Mui
-import { Box, Typography, useTheme, Grid } from "@mui/material";
-import { tokens } from "../../theme";
+import { Box, Typography, Grid } from "@mui/material";
 
 // Components
+import BoxComponent from "../General/BoxComponent";
 import PokemonImageDisplay from "./PokemonImageDisplay";
 
 // Hooks
@@ -29,10 +29,7 @@ const dirMapping = {
   "gen-9-sv": "Pokémon Scarlet & Violet",
 };
 
-export default function AllSpritesDisplay({ pokemon, sprite, id,  }) {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-
+export default function AllSpritesDisplay({ pokemon, sprite, id }) {
   const { data: games } = useGame(`pokemonFilter=${pokemon}`, pokemon);
   const gamesList = games?.data;
 
@@ -53,31 +50,21 @@ export default function AllSpritesDisplay({ pokemon, sprite, id,  }) {
       {gamesList?.map((game) => {
         return (
           <Grid item xs={6} key={game.dir}>
-            <Box
-              p="10px"
-              width="100%"
-              height="100%"
-              backgroundColor={colors.primary[400]}
-              borderRadius="5px"
-            >
+            <BoxComponent p="10px">
               <Box height="45px" display="flex" alignItems="center">
                 <Typography variant="h6" fontWeight={"bold"}>
                   {dirMapping[game.dir]}{" "}
                 </Typography>
               </Box>
-              <Box
-                backgroundColor={colors.primary[500]}
-                borderRadius="5px"
-                p="5px"
-              >
+              <BoxComponent p="5px" noContrastColor>
                 <PokemonImageDisplay
                   directory={game.dir}
                   sprite={sprite}
                   gameSort={game.sorts[0]}
                   genderDifference={false}
                 />
-              </Box>
-            </Box>
+              </BoxComponent>
+            </BoxComponent>
           </Grid>
         );
       })}

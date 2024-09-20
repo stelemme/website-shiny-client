@@ -10,6 +10,7 @@ import {
 import { tokens } from "../../theme";
 
 // Components imports
+import BoxComponent from "../General/BoxComponent";
 import GeneralSelect from "../Selects/GeneralSelect";
 
 export default function Leaderboard({
@@ -61,13 +62,7 @@ export default function Leaderboard({
     } else {
       return (
         <Grid item xs={12}>
-          <Box
-            py="10px"
-            px="20px"
-            width="100%"
-            backgroundColor={colors.primary[500]}
-            borderRadius="5px"
-          >
+          <BoxComponent py="10px" px="20px" noContrastColor>
             {data?.map((item, index) => {
               return (
                 <Box key={index}>
@@ -148,20 +143,14 @@ export default function Leaderboard({
                 </Typography>
               </Box>
             </Box>
-          </Box>
+          </BoxComponent>
         </Grid>
       );
     }
   };
 
   return (
-    <Box
-      p="20px"
-      width="100%"
-      backgroundColor={colors.primary[400]}
-      borderRadius="5px"
-      height="100%"
-    >
+    <BoxComponent>
       <Box
         display="flex"
         justifyContent="space-between"
@@ -184,6 +173,6 @@ export default function Leaderboard({
       <Grid container spacing={"12px"}>
         <StatsDisplay data={data} loading={loading} />
       </Grid>
-    </Box>
+    </BoxComponent>
   );
 }

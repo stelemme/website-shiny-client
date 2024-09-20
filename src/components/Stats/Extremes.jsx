@@ -5,6 +5,7 @@ import { Box, useTheme, Typography, Grid, Skeleton } from "@mui/material";
 import { tokens } from "../../theme";
 
 // Components imports
+import BoxComponent from "../General/BoxComponent";
 import StatsCard from "../Cards/StatsCard";
 import UserSelect from "../Selects/UserSelect";
 
@@ -65,13 +66,7 @@ export default function Extremes() {
   };
 
   return (
-    <Box
-      p="20px"
-      width="100%"
-      backgroundColor={colors.primary[400]}
-      borderRadius="5px"
-      height="100%"
-    >
+    <BoxComponent>
       <Box
         display="flex"
         justifyContent="space-between"
@@ -189,6 +184,6 @@ export default function Extremes() {
           />
         </Grid>
       </Grid>
-    </Box>
+    </BoxComponent>
   );
 }

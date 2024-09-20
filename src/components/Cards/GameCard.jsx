@@ -4,27 +4,26 @@ import { useNavigate } from "react-router-dom";
 import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 
+// Components
+import BoxComponent from "../General/BoxComponent";
+
 // Images
 import { gameImages } from "../../assets/imgExporter";
 
-export default function GameCard({ id, gen, name, sprite, bgColor=400 }) {
+export default function GameCard({ id, gen, name, sprite, bgColor = 400 }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
 
+  const onCardClick = () => {
+    navigate(`/pokedex/regional/${id}`);
+  };
+
   return (
-    <Box
+    <BoxComponent
       p="15px"
-      width="100%"
-      backgroundColor={colors.primary[bgColor]}
-      borderRadius="5px"
-      onClick={() => navigate(`/pokedex/regional/${id}`)}
-      sx={{
-        "&:hover": {
-          cursor: "pointer",
-          backgroundColor: colors.primary[900],
-        },
-      }}
+      onClick={onCardClick}
+      noContrastColor={bgColor === 400 ? false : true}
     >
       <Box>
         {/* GAME IMAGE */}
@@ -35,7 +34,6 @@ export default function GameCard({ id, gen, name, sprite, bgColor=400 }) {
           alignItems="center"
           height={window.innerWidth < 600 ? "100px" : "150px"}
         >
-          
           <img
             height={window.innerWidth < 600 ? "100px" : "150px"}
             alt=""
@@ -62,6 +60,6 @@ export default function GameCard({ id, gen, name, sprite, bgColor=400 }) {
           {name}
         </Typography>
       </Box>
-    </Box>
+    </BoxComponent>
   );
 }

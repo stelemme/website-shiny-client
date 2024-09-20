@@ -5,6 +5,9 @@ import { useCookies } from "react-cookie";
 import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 
+// Components
+import BoxComponent from "../General/BoxComponent";
+
 export default function ShinyCard({
   id,
   name,
@@ -27,25 +30,19 @@ export default function ShinyCard({
     trainerHeight = "50";
   }
 
+  const onCardClick = () => {
+    if (status === "alive") {
+      navigate(`/shiny/${id}`);
+    } else {
+      navigate(`/shiny/dead/${id}`);
+    }
+  };
+
   return (
-    <Box
+    <BoxComponent
       p="10px"
-      width="100%"
-      backgroundColor={colors.primary[bgColor]}
-      borderRadius="5px"
-      onClick={() => {
-        if (status === "alive") {
-          navigate(`/shiny/${id}`);
-        } else {
-          navigate(`/shiny/dead/${id}`);
-        }
-      }}
-      sx={{
-        "&:hover": {
-          cursor: "pointer",
-          backgroundColor: colors.primary[900],
-        },
-      }}
+      noContrastColor={bgColor === 400 ? false : true}
+      onClick={onCardClick}
     >
       <Box display="flex" justifyContent="space-between" alignItems="center">
         {/* GAME IMAGE */}
@@ -105,6 +102,6 @@ export default function ShinyCard({
           )}
         </Box>
       </Box>
-    </Box>
+    </BoxComponent>
   );
 }

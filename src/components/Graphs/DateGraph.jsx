@@ -17,6 +17,7 @@ import {
 } from "recharts";
 
 // Components imports
+import BoxComponent from "../General/BoxComponent";
 import GeneralSelect from "../Selects/GeneralSelect";
 
 // Hooks
@@ -41,13 +42,7 @@ export default function DateGraph() {
   };
 
   return (
-    <Box
-      p="20px"
-      width="100%"
-      backgroundColor={colors.primary[400]}
-      borderRadius="5px"
-      height="100%"
-    >
+    <BoxComponent>
       <Box
         display="flex"
         justifyContent="space-between"
@@ -104,7 +99,6 @@ export default function DateGraph() {
             }
             tick={{ fill: colors.grey[100] }}
             width={window.innerWidth > 500 ? 60 : 25}
-            
           />
           <Tooltip
             labelStyle={{ color: "black" }}
@@ -125,6 +119,6 @@ export default function DateGraph() {
           />
         </ComposedChart>
       </ResponsiveContainer>
-    </Box>
+    </BoxComponent>
   );
 }

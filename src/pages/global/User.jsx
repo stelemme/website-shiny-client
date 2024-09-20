@@ -7,15 +7,14 @@ import {
   Box,
   Grid,
   Typography,
-  useTheme,
   FormGroup,
   FormControlLabel,
   Checkbox,
 } from "@mui/material";
-import { tokens } from "../../theme";
 
 // Components imports
 import PageComponent from "../../components/General/PageComponent";
+import BoxComponent from "../../components/General/BoxComponent";
 import UserSelect from "../../components/Selects/UserSelect";
 
 // Hooks
@@ -25,8 +24,6 @@ import { useAuth } from "../../hooks/useAuth";
 import { trainerImages } from "../../assets/imgExporter";
 
 export default function User() {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
   const { trainer } = useParams();
   const { username } = useAuth();
   const [trainerChoice, setTrainerChoice] = useState(trainer);
@@ -127,13 +124,7 @@ export default function User() {
     >
       <Grid container spacing={"20px"}>
         <Grid item xs={12}>
-          <Box
-            p="20px"
-            width="100%"
-            backgroundColor={colors.primary[400]}
-            borderRadius="5px"
-            height="100%"
-          >
+          <BoxComponent>
             <Box
               display="flex"
               justifyContent="space-between"
@@ -145,12 +136,7 @@ export default function User() {
                 TRAINER SPRITES
               </Typography>
             </Box>
-            <Box
-              p="10px"
-              width="100%"
-              backgroundColor={colors.primary[500]}
-              borderRadius="5px"
-            >
+            <BoxComponent p="10px" noContrastColor>
               <Grid container>
                 {Object.keys(trainerImages).map((item) => {
                   if (item.includes(imageCheck[trainerChoice])) {
@@ -175,18 +161,12 @@ export default function User() {
                   }
                 })}
               </Grid>
-            </Box>
-          </Box>
+            </BoxComponent>
+          </BoxComponent>
         </Grid>
         {!trainerCheck && (
           <Grid item xs={12}>
-            <Box
-              p="20px"
-              width="100%"
-              backgroundColor={colors.primary[400]}
-              borderRadius="5px"
-              height="100%"
-            >
+            <BoxComponent>
               <Box
                 display="flex"
                 justifyContent="space-between"
@@ -198,12 +178,7 @@ export default function User() {
                   TRAINER SETTINGS
                 </Typography>
               </Box>
-              <Box
-                p="10px"
-                width="100%"
-                backgroundColor={colors.primary[500]}
-                borderRadius="5px"
-              >
+              <BoxComponent p="10px" noContrastColor>
                 <Typography variant="h6" fontWeight={"bold"}>
                   DATA FILTERING
                 </Typography>
@@ -322,8 +297,8 @@ export default function User() {
                     }
                   />
                 </FormGroup>
-              </Box>
-            </Box>
+              </BoxComponent>
+            </BoxComponent>
           </Grid>
         )}
       </Grid>
