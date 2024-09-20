@@ -16,7 +16,7 @@ export default function LoadingComponent({
           <Typography>Loading ...</Typography>
         </Box>
       )}
-      {loadingCondition && skeleton && { skeleton }}
+      {loadingCondition && skeleton}
       {errorCondition && <Typography>{errorText}</Typography>}
       {!loadingCondition && !errorCondition && children}
     </>

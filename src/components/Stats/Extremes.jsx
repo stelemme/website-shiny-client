@@ -6,12 +6,12 @@ import { tokens } from "../../theme";
 
 // Components imports
 import BoxComponent from "../General/BoxComponent";
+import LoadingComponent from "../General/LoadingComponent";
 import StatsCard from "../Cards/StatsCard";
 import UserSelect from "../Selects/UserSelect";
 
 // Hooks
 import { useShiny } from "../../hooks/useData";
-import LoadingComponent from "../General/LoadingComponent";
 
 export default function Extremes() {
   const theme = useTheme();
@@ -138,7 +138,7 @@ export default function Extremes() {
         <Grid item xs={12} xl={6} container spacing={"8px"}>
           {stats.map((stat) => {
             return (
-              <Grid item xs={12}>
+              <Grid item xs={12} key={stat.statName}>
                 <LoadingComponent
                   loadingCondition={userStatsLoading}
                   skeleton={
@@ -157,7 +157,7 @@ export default function Extremes() {
                 >
                   <StatsCard
                     id={""}
-                    name={stat.data._id}
+                    name={stat.data?._id}
                     stat={stat.dataStat}
                     statName={stat.statName}
                     bgColor={500}

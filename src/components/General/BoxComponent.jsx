@@ -41,7 +41,7 @@ export default function BoxComponent({
       py={py ? py : p}
       width="100%"
       height="100%"
-      borderRadius={!tabs ? "" : "5px"}
+      borderRadius={tabs ? "" : "5px"}
       backgroundColor={
         noContrastColor ? colors.primary[500] : colors.primary[400]
       }
