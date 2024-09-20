@@ -59,6 +59,11 @@ export default function ExtremesMons() {
       statName: "Shortest Hunt",
     },
     {
+      data: userStats?.longestHunt,
+      dataStat: formatTime(userStats?.longestHunt.stats.totalHuntTime, false),
+      statName: "Longest Hunt",
+    },
+    {
       data: userStats?.mostDays,
       dataStat: `${userStats?.mostDays.stats.daysHunting} days`,
       statName: "Most Days Hunted",

@@ -15,7 +15,7 @@ export default function ShinyCard({
   dir,
   monSprite,
   trainer,
-  bgColor = "400",
+  bgColor = 400,
   imgSize = window.innerWidth < 600 ? "40px" : "80px",
   gameImgSize = window.innerWidth < 400 ? "22px" : "33px",
   status = "alive",

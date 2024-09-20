@@ -14,6 +14,9 @@ import BoxComponent from "../General/BoxComponent";
 import LoadingComponent from "../General/LoadingComponent";
 import GeneralSelect from "../Selects/GeneralSelect";
 
+// Functions
+import { formatTime } from "../../functions/statFunctions";
+
 export default function Leaderboard({
   data,
   dataSubstitute = 0,
@@ -27,6 +30,7 @@ export default function Leaderboard({
   optionList,
   medalList,
   total,
+  timeValue = false,
 }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -53,7 +57,10 @@ export default function Leaderboard({
         mb={"14px"}
         height={"28px"}
       >
-        <Typography variant="h4" fontWeight={"bold"}>
+        <Typography
+          variant={window.innerWidth < 600 ? "h5" : "h4"}
+          fontWeight={"bold"}
+        >
           {title}
         </Typography>
         {selectBool && (
@@ -97,7 +104,7 @@ export default function Leaderboard({
                         </Box>
                         <Typography
                           fontWeight={"bold"}
-                          fontSize={14}
+                          fontSize={window.innerWidth < 600 ? 12 : 14}
                           align="left"
                           sx={{
                             overflow: "hidden",
@@ -108,20 +115,39 @@ export default function Leaderboard({
                           {item.trainer}
                         </Typography>
                       </Box>
-                      <Typography
-                        fontWeight={"bold"}
-                        fontSize={14}
-                        align="left"
-                        sx={{
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        {item.data === 0
-                          ? dataSubstitute
-                          : item.data + dataAddition}
-                      </Typography>
+                      <Box display="flex" justifyContent={"space-between"} alignItems="center">
+                        {timeValue && (
+                          <Typography
+                            fontWeight={"bold"}
+                            fontSize={window.innerWidth < 600 ? 12 : 14}
+                            align="left"
+                            sx={{
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            {formatTime(item?.dataTime, false)}
+                          </Typography>
+                        )}
+                        <Box width="70px">
+                          <Typography
+                            textAlign={"right"}
+                            fontWeight={"bold"}
+                            fontSize={window.innerWidth < 600 ? 12 : 14}
+                            align="left"
+                            sx={{
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            {item.data === 0
+                              ? dataSubstitute
+                              : item.data + dataAddition}
+                          </Typography>
+                        </Box>
+                      </Box>
                     </Box>
                     {<Divider sx={{ my: 1 }} />}
                   </Box>
@@ -138,7 +164,7 @@ export default function Leaderboard({
                     ></Box>
                     <Typography
                       fontWeight={"bold"}
-                      fontSize={14}
+                      fontSize={window.innerWidth < 600 ? 12 : 14}
                       align="left"
                       sx={{
                         overflow: "hidden",
@@ -151,7 +177,7 @@ export default function Leaderboard({
                   </Box>
                   <Typography
                     fontWeight={"bold"}
-                    fontSize={14}
+                    fontSize={window.innerWidth < 600 ? 12 : 14}
                     align="left"
                     sx={{
                       overflow: "hidden",

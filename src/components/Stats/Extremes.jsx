@@ -107,6 +107,13 @@ export default function Extremes() {
     },
   ];
 
+  const splitArray = (array) => {
+    const half = Math.ceil(array.length / 2);
+    return [array.slice(0, half), array.slice(half)];
+  };
+
+  const [firstHalf, secondHalf] = splitArray(stats);
+
   const handleChange = (e) => {
     if (e.target.value === "All") {
       setQuery("");
@@ -135,8 +142,43 @@ export default function Extremes() {
         />
       </Box>
       <Grid container spacing={"8px"}>
+        {/* Left side grid - first half */}
         <Grid item xs={12} xl={6} container spacing={"8px"}>
-          {stats.map((stat) => {
+          {firstHalf.map((stat) => {
+            return (
+              <Grid item xs={12} key={stat.statName}>
+                <LoadingComponent
+                  loadingCondition={userStatsLoading}
+                  skeleton={
+                    <Skeleton
+                      sx={{
+                        bgcolor: colors.primary[500],
+                        height: {
+                          xs: "56px",
+                          md: "44px",
+                        },
+                      }}
+                      variant="rounded"
+                      width={"100%"}
+                    />
+                  }
+                >
+                  <StatsCard
+                    id={""}
+                    name={stat.data?._id}
+                    stat={stat.dataStat}
+                    statName={stat.statName}
+                    bgColor={500}
+                  />
+                </LoadingComponent>
+              </Grid>
+            );
+          })}
+        </Grid>
+
+        {/* Right side grid - second half */}
+        <Grid item xs={12} xl={6} container spacing={"8px"}>
+          {secondHalf.map((stat) => {
             return (
               <Grid item xs={12} key={stat.statName}>
                 <LoadingComponent

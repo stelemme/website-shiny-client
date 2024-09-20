@@ -29,7 +29,7 @@ export default function ShinyCardEvolutions({
   evolutions,
   forms,
   group,
-  bgColor = "400",
+  bgColor = 400,
   imgSize = window.innerWidth < 600 ? "40px" : "80px",
   gameImgSize = window.innerWidth < 600 ? "22px" : "33px",
 }) {
