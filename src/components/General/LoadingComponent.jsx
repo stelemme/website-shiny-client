@@ -6,15 +6,17 @@ export default function LoadingComponent({
   children,
   errorCondition = false,
   errorText = "",
+  skeleton = null,
 }) {
   return (
     <>
-      {loadingCondition && (
+      {loadingCondition && !skeleton && (
         <Box display="flex" gap="10px">
           <CircularProgress color="inherit" size="1rem" />
           <Typography>Loading ...</Typography>
         </Box>
       )}
+      {loadingCondition && skeleton && { skeleton }}
       {errorCondition && <Typography>{errorText}</Typography>}
       {!loadingCondition && !errorCondition && children}
     </>
