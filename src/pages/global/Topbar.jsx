@@ -38,9 +38,9 @@ export default function Topbar() {
     e.preventDefault();
 
     if (e.target.search.value) {
-      navigate(`/search?search=${e.target.search.value}`);
+      navigate(`/search?type=shinies&search=${e.target.search.value}`);
     } else {
-      navigate("/search");
+      navigate("/search?type=shinies");
     }
   };
 

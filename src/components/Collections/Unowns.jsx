@@ -1,5 +1,6 @@
 // Components imports
 import CollectionCard from "./CollectionCard";
+import CollectionStatsCard from "./CollectionStatsCard";
 
 const unowns = [
   {
@@ -116,7 +117,7 @@ const unowns = [
   },
 ];
 
-export default function Unowns() {
+export function Unowns() {
   return (
     <CollectionCard
       placeholdList={unowns}
@@ -127,6 +128,16 @@ export default function Unowns() {
       sm={3}
       xs={4}
       numbers={false}
+    />
+  );
+}
+
+export function UnownsStats() {
+  return (
+    <CollectionStatsCard
+      placeholdList={unowns}
+      title={"Unowns"}
+      collectionStr={"unown"}
     />
   );
 }

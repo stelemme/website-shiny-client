@@ -1,5 +1,6 @@
 // Components imports
 import CollectionCard from "./CollectionCard";
+import CollectionStatsCard from "./CollectionStatsCard";
 
 const hisuians = [
   {
@@ -68,7 +69,7 @@ const hisuians = [
   },
 ];
 
-export default function Hisuians() {
+export function Hisuians() {
   return (
     <CollectionCard
       placeholdList={hisuians}
@@ -79,6 +80,16 @@ export default function Hisuians() {
       sm={3}
       xs={4}
       numbers={false}
+    />
+  );
+}
+
+export function HisuiansStats() {
+  return (
+    <CollectionStatsCard
+      placeholdList={hisuians}
+      title={"Hisuian Forms"}
+      collectionStr={"hisui"}
     />
   );
 }

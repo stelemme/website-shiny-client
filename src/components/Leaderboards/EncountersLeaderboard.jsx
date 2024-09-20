@@ -80,6 +80,7 @@ export default function EncountersLeaderboard() {
       total={counterStats?.reduce((accumulator, currentValue) => {
         return accumulator + currentValue.data;
       }, 0)}
+      timeValue
     />
   );
 }

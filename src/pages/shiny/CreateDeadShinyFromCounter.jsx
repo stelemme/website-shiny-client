@@ -4,10 +4,10 @@ import { useSetRecoilState } from "recoil";
 import { alertOpen, alertSeverity, alertMessage } from "../../utils/atoms";
 
 // Mui
-import { Box, Button, Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 
 // Components
-import Header from "../../components/Header";
+import PageComponent from "../../components/General/PageComponent";
 import GameForm from "../../components/Forms/GameForm";
 import PokemonForm from "../../components/Forms/PokemonForm";
 import GenderForm from "../../components/Forms/GenderForm";
@@ -272,81 +272,75 @@ export default function CreateDeadShinyFromCounter() {
   };
 
   return (
-    <Box maxWidth="420px" mx="auto" my="20px">
-      <Box display="flex" flexDirection="column" mx="20px">
-        {/* HEADER */}
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Header
-            title="ADD A FALLEN SHINY"
-            subtitle="Here you can add a fallen shiny pokémon."
-          />
-        </Box>
+    <PageComponent
+      title="ADD A FALLEN SHINY"
+      subtitle="Here you can add a fallen shiny pokémon."
+      widthSnaps={1}
+    >
+      {/* FORM */}
+      <form autoComplete="off" onSubmit={handleSubmit}>
+        {/* GAMES */}
+        <GameForm data={data} isForCounter />
 
-        {/* FORM */}
-        <form autoComplete="off" onSubmit={handleSubmit}>
-          {/* GAMES */}
-          <GameForm data={data} isForCounter />
+        {/* POKEMONS */}
+        <PokemonForm
+          data={data}
+          setData={setData}
+          pokemonsList={pokemonsList}
+          setGenderCheck={setGenderCheck}
+          isForCounter
+        />
 
-          {/* POKEMONS */}
-          <PokemonForm
-            data={data}
-            setData={setData}
-            pokemonsList={pokemonsList}
-            setGenderCheck={setGenderCheck}
-            isForCounter
-          />
+        {/* GENDER */}
+        <GenderForm data={data} setData={setData} genderCheck={genderCheck} />
 
-          {/* GENDER */}
-          <GenderForm data={data} setData={setData} genderCheck={genderCheck} />
+        {/* LOCATIONS */}
+        <LocationsForm setData={setData} locationsList={locationsList} />
 
-          {/* LOCATIONS */}
-          <LocationsForm setData={setData} locationsList={locationsList} />
+        {/* METHODS */}
+        <MethodForm data={data} isForCounter />
 
-          {/* METHODS */}
-          <MethodForm data={data} isForCounter />
+        {/* METHODS SUBCATEGORY*/}
+        <SubMethodForm data={data} isForCounter />
 
-          {/* METHODS SUBCATEGORY*/}
-          <SubMethodForm data={data} isForCounter />
-
-          <Grid container spacing={"10px"}>
-            {/* FAIL METHOD */}
-            <Grid item xs={12}>
-              <FailForm setData={setData} />
-            </Grid>
-            {/* LEVEL */}
-            <Grid item xs={12}>
-              <LevelForm data={data} setData={setData} />
-            </Grid>
-
-            {/* GEO LOCATION */}
-            <Grid item xs={12}>
-              <GeoLocationForm data={data} setData={setData} />
-            </Grid>
-
-            {/* START DATE */}
-            <Grid item xs={6}>
-              <StartDateForm data={data} setData={setData} isForCounter />
-            </Grid>
-
-            {/* END DATE */}
-            <Grid item xs={6}>
-              <EndDateForm data={data} setData={setData} />
-            </Grid>
+        <Grid container spacing={"10px"}>
+          {/* FAIL METHOD */}
+          <Grid item xs={12}>
+            <FailForm setData={setData} />
+          </Grid>
+          {/* LEVEL */}
+          <Grid item xs={12}>
+            <LevelForm data={data} setData={setData} />
           </Grid>
 
-          {/* SUBMIT */}
-          <Button
-            type="submit"
-            variant="contained"
-            color="neutral"
-            fullWidth
-            sx={{ mb: "10px" }}
-            style={{ color: "white" }}
-          >
-            Submit
-          </Button>
-        </form>
-      </Box>
-    </Box>
+          {/* GEO LOCATION */}
+          <Grid item xs={12}>
+            <GeoLocationForm data={data} setData={setData} />
+          </Grid>
+
+          {/* START DATE */}
+          <Grid item xs={6}>
+            <StartDateForm data={data} setData={setData} isForCounter />
+          </Grid>
+
+          {/* END DATE */}
+          <Grid item xs={6}>
+            <EndDateForm data={data} setData={setData} />
+          </Grid>
+        </Grid>
+
+        {/* SUBMIT */}
+        <Button
+          type="submit"
+          variant="contained"
+          color="neutral"
+          fullWidth
+          sx={{ mb: "10px" }}
+          style={{ color: "white" }}
+        >
+          Submit
+        </Button>
+      </form>
+    </PageComponent>
   );
 }

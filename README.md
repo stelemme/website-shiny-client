@@ -2,6 +2,24 @@
 
 ## Changelogs
 
+### Version 1.19.0 (20.09.2024)
+
+**Counter Stats:**
+
+- Counter stats tonen nu ook tijd, naast het aantal encounters nu dus ook tijd voor een bepaalde periode.
+
+**Collections:**
+
+- Er kan nu geswitched worden tussen een tabblad met data en met statistieken
+
+**Map:**
+
+- Er kan nu geswitched worden tussen een tabblad met data en met statistieken
+
+**Search:**
+
+- Site onthoud nu op welk type ge aant zoeken zijt waar er gerefreshed wordt of terug wordt gekeerd naar de search pagina.
+
 ### Version 1.18.0 (05.09.2024)
 
 **Ribbons:**

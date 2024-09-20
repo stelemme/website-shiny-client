@@ -2,6 +2,7 @@
 import { Typography, Box, Grid } from "@mui/material";
 
 // Components
+import LoadingComponent from "../General/LoadingComponent";
 import PokedexCard from "../Cards/PokedexCard";
 
 // Hooks
@@ -12,40 +13,7 @@ export default function PokedexSearchDisplay({ pokemon }) {
     `search=${pokemon}`
   );
 
-  const ShinyDisplay = ({ data, loading, error, text }) => {
-    if (loading) {
-      return (
-        <Typography variant="h5" mt={"20px"}>
-          Loading ...
-        </Typography>
-      );
-    } else if (error) {
-      return (
-        <Typography variant="h5" mt={"20px"}>
-          No {text} Found
-        </Typography>
-      );
-    } else {
-      const uniqueData = data?.reduce((acc, item) => {
-        acc.push(item);
-        return acc;
-      }, []);
-
-      return uniqueData?.map((item) => {
-        return (
-          <Grid item md={4} xs={6} key={item._id} mt={"20px"}>
-            <PokedexCard
-              id={item._id}
-              pokedexNo={item.pokedexNo}
-              name={item.name}
-              sprite={item.sprite}
-              dir={"gen-all-home"}
-            />
-          </Grid>
-        );
-      });
-    }
-  };
+  const data = pokemonData?.data;
 
   return (
     <>
@@ -60,12 +28,30 @@ export default function PokedexSearchDisplay({ pokemon }) {
         </Typography>
       </Box>
       <Grid container spacing={2}>
-        <ShinyDisplay
-          data={pokemonData?.data}
-          loading={pokemonLoading}
-          error={!pokemonData?.data.length}
-          text={"Pokémons"}
-        />
+        <LoadingComponent
+          loadingCondition={pokemonLoading}
+          errorCondition={!pokemonData?.data.length}
+          errorText="No Pokémons Found"
+        >
+          {data
+            ?.reduce((acc, item) => {
+              acc.push(item);
+              return acc;
+            }, [])
+            ?.map((item) => {
+              return (
+                <Grid item md={4} xs={6} key={item._id} mt={"20px"}>
+                  <PokedexCard
+                    id={item._id}
+                    pokedexNo={item.pokedexNo}
+                    name={item.name}
+                    sprite={item.sprite}
+                    dir={"gen-all-home"}
+                  />
+                </Grid>
+              );
+            })}
+        </LoadingComponent>
       </Grid>
     </>
   );

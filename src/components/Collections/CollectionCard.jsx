@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 
 // mui imports
-import { Box, useTheme, Typography, Grid } from "@mui/material";
-import { tokens } from "../../theme";
+import { Box, Typography, Grid } from "@mui/material";
 
 // Components imports
+import BoxComponent from "../General/BoxComponent";
 import UserSelect from "../Selects/UserSelect";
 
 // Hooks
@@ -23,8 +23,6 @@ export default function CollectionCard({
   imgHeight = window.innerWidth < 600 ? 50 : 70,
   additionalCollectionStr = null,
 }) {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
   const foreverDate = new Date("9999-12-31T23:59:59");
   const [cookies, setCookies] = useCookies(["collectionUserSelect"]);
 
@@ -32,7 +30,9 @@ export default function CollectionCard({
 
   const { data: shinyData } = useShiny(
     `collection=${collectionStr}${query}${
-      additionalCollectionStr ? `&collectionFilter=${additionalCollectionStr}` : ""
+      additionalCollectionStr
+        ? `&collectionFilter=${additionalCollectionStr}`
+        : ""
     }`
   );
   const collectionData = shinyData?.data[0]?.collectionData;
@@ -56,19 +56,8 @@ export default function CollectionCard({
     }
   };
 
-  const totalNumber = placeholdList.length
-  console.log(collectionData)
-  const completedNumber = Object.keys(collectionData ? collectionData : {}).length
-  const percentage =  completedNumber / totalNumber * 100
-
   return (
-    <Box
-      p="20px"
-      width="100%"
-      backgroundColor={colors.primary[400]}
-      borderRadius="5px"
-      height="100%"
-    >
+    <BoxComponent tabs>
       <Box
         display="flex"
         justifyContent="space-between"
@@ -76,8 +65,11 @@ export default function CollectionCard({
         mb={"14px"}
         height={"28px"}
       >
-        <Typography variant={window.innerWidth < 600 ? "h6" : "h4"} fontWeight={"bold"}>
-          {title} -  ({completedNumber}/{totalNumber}, {Math.round(percentage)}%)
+        <Typography
+          variant={window.innerWidth < 600 ? "h6" : "h4"}
+          fontWeight={"bold"}
+        >
+          {title}
         </Typography>
         <UserSelect
           label={"User"}
@@ -89,57 +81,54 @@ export default function CollectionCard({
         {placeholdList.map((item) => {
           return (
             <Grid item key={item.name} lg={lg} sm={sm} xs={xs}>
-              <Box
-                py="10px"
-                px="20px"
-                height="100%"
-                backgroundColor={colors.primary[500]}
-                borderRadius="5px"
-                display="flex"
-                flexDirection="column"
-                alignItems="center"
-                justifyContent="space-between"
-              >
-                {collectionData && collectionData[item.name] ? (
-                  <img
-                    alt=""
-                    src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/${dir}/${item.sprite}.png`}
-                    style={{
-                      imageRendering: "pixelated",
-                      height: String(imgHeight) + "px",
-                    }}
-                  />
-                ) : (
-                  <img
-                    alt=""
-                    src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/${dir}/${item.sprite}.png`}
-                    style={{
-                      imageRendering: "pixelated",
-                      height: String(imgHeight) + "px",
-                      filter: "contrast(0%) brightness(50%)",
-                    }}
-                  />
-                )}
-                <Typography
-                  fontWeight={"bold"}
-                  align="center"
-                  fontSize={12}
-                  mt={"10px"}
+              <BoxComponent py="10px" px="20px" noContrastColor>
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  alignItems="center"
+                  justifyContent="space-between"
                 >
-                  {item.name}
-                </Typography>
-                {numbers && (
-                  <Typography variant="h6">
-                    {collectionData && collectionData[item.name]
-                      ? collectionData[item.name]
-                      : 0}
+                  {collectionData && collectionData[item.name] ? (
+                    <img
+                      alt=""
+                      src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/${dir}/${item.sprite}.png`}
+                      style={{
+                        imageRendering: "pixelated",
+                        height: String(imgHeight) + "px",
+                      }}
+                    />
+                  ) : (
+                    <img
+                      alt=""
+                      src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/${dir}/${item.sprite}.png`}
+                      style={{
+                        imageRendering: "pixelated",
+                        height: String(imgHeight) + "px",
+                        filter: "contrast(0%) brightness(50%)",
+                      }}
+                    />
+                  )}
+                  <Typography
+                    fontWeight={"bold"}
+                    align="center"
+                    fontSize={12}
+                    mt={"10px"}
+                  >
+                    {item.name}
                   </Typography>
-                )}
-              </Box>
+                  {numbers && (
+                    <Typography variant="h6">
+                      {collectionData && collectionData[item.name]
+                        ? collectionData[item.name]
+                        : 0}
+                    </Typography>
+                  )}
+                </Box>
+              </BoxComponent>
             </Grid>
           );
         })}
       </Grid>
-    </Box>
+    </BoxComponent>
   );
 }

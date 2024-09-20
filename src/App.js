@@ -29,6 +29,7 @@ import Counters from "./pages/counter/Counters";
 import CreateCounter from "./pages/counter/CreateCounter";
 // Development Pages
 import DataManipulation from "./pages/dev/DataManipulation";
+import LayoutPage from "./pages/dev/LayoutPage";
 // Global Pages
 import ErrorPage from "./pages/global/ErrorPage";
 import Home from "./pages/global/Home";
@@ -176,7 +177,10 @@ if (process.env.REACT_APP_ENV === "dev") {
   routes[0].children.push({
     path: "/dev",
     loader: loader,
-    children: [{ path: "data", Component: DataManipulation }],
+    children: [
+      { path: "data", Component: DataManipulation },
+      { path: "layout", Component: LayoutPage },
+    ],
   });
 }
 
@@ -207,6 +211,7 @@ function Layout() {
     "groupShinies",
     "ongoingCounterSort",
     "ongoingTrainerFilter",
+    "mapOnGent",
     "shinyGenFilter",
     "shinySort",
     "shinyTrainerFilter",

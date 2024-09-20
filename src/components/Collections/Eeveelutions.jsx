@@ -1,5 +1,6 @@
 // Components imports
 import CollectionCard from "./CollectionCard";
+import CollectionStatsCard from "./CollectionStatsCard";
 
 const eeveelutions = [
   {
@@ -36,7 +37,7 @@ const eeveelutions = [
   },
 ];
 
-export default function Eeveelutions() {
+export function Eeveelutions() {
   return (
     <CollectionCard
       placeholdList={eeveelutions}
@@ -47,6 +48,16 @@ export default function Eeveelutions() {
       sm={3}
       xs={4}
       numbers={false}
+    />
+  );
+}
+
+export function EeveelutionsStats() {
+  return (
+    <CollectionStatsCard
+      placeholdList={eeveelutions}
+      title={"Eeveelutions"}
+      collectionStr={"eevee"}
     />
   );
 }

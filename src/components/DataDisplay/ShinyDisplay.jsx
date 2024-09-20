@@ -19,6 +19,7 @@ import FileUploadIcon from "@mui/icons-material/FileUpload";
 import CalculateOutlinedIcon from "@mui/icons-material/CalculateOutlined";
 
 // Components
+import LoadingComponent from "../General/LoadingComponent";
 import CustomDialog from "../../components/Dialogs/CustomDialog";
 import PokemonImageDisplay from "./PokemonImageDisplay";
 import GameImageDisplay from "./GameImageDisplay";
@@ -106,26 +107,12 @@ export default function CompleteShinyCard({
   };
 
   const CheckboxDisplay = ({ data, name, state, setState }) => {
-    if (!data) {
-      return (
-        <Grid item xs={12}>
-          <Typography variant="h5" fontWeight="bold">
-            {name}
-          </Typography>
-          <Typography mt="9px" mb="19px">{`Loading ...`}</Typography>
-        </Grid>
-      );
-    } else if (Array.isArray(data) && data.length === 0) {
-      return (
-        <Grid item xs={12}>
-          <Typography variant="h5" fontWeight="bold">
-            {name}
-          </Typography>
-          <Typography mt="9px" mb="19px">{`No ${name} Found`}</Typography>
-        </Grid>
-      );
-    } else {
-      return (
+    return (
+      <LoadingComponent
+        loadingCondition={!data}
+        errorCondition={Array.isArray(data) && data.length === 0}
+        errorText={`No ${name} Found`}
+      >
         <Box mb="10px">
           <Typography variant="h5" fontWeight="bold">
             {name}
@@ -158,8 +145,8 @@ export default function CompleteShinyCard({
             })}
           </FormGroup>
         </Box>
-      );
-    }
+      </LoadingComponent>
+    );
   };
 
   return (

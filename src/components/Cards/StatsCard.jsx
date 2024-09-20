@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { Box, Typography, useTheme, Grid } from "@mui/material";
 import { tokens } from "../../theme";
 
+// Components
+import BoxComponent from "../General/BoxComponent";
+
 export default function StatsCard({
   id,
   name,
@@ -16,20 +19,16 @@ export default function StatsCard({
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  const onCardClick = () => {
+    navigate(`/shiny/${id}`);
+  };
+
   return (
-    <Box
+    <BoxComponent
       py="10px"
       px="20px"
-      width="100%"
-      backgroundColor={colors.primary[bgColor]}
-      borderRadius="5px"
-      onClick={() => navigate(`/shiny/${id}`)}
-      sx={{
-        "&:hover": {
-          cursor: "pointer",
-          backgroundColor: colors.primary[900],
-        },
-      }}
+      noContrastColor={bgColor === 400 ? false : true}
+      onClick={onCardClick}
     >
       <Grid container spacing={"15px"} alignItems="center">
         <Grid item xs={8} container alignItems="center">
@@ -59,13 +58,15 @@ export default function StatsCard({
               }}
               flexDirection={{ xs: "row", md: "column" }}
             >
-              {trainer && <Typography
-                fontWeight={"bold"}
-                fontSize={12}
-                color={colors.grey[400]}
-              >
-                {trainer}
-              </Typography>}
+              {trainer && (
+                <Typography
+                  fontWeight={"bold"}
+                  fontSize={12}
+                  color={colors.grey[400]}
+                >
+                  {trainer}
+                </Typography>
+              )}
               <Typography
                 fontWeight={"bold"}
                 fontSize={12}
@@ -99,6 +100,6 @@ export default function StatsCard({
           </Box>
         </Grid>
       </Grid>
-    </Box>
+    </BoxComponent>
   );
 }

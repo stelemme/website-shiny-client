@@ -7,7 +7,6 @@ import {
   Typography,
   Grid,
   useTheme,
-  IconButton,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -31,7 +30,8 @@ import {
 } from "recharts";
 
 // Components
-import Header from "../../components/Header";
+import PageComponent from "../../components/General/PageComponent";
+import BoxComponent from "../../components/General/BoxComponent";
 import FilterMenu from "../../components/Dialogs/FilterDialog";
 
 // Functions
@@ -127,306 +127,281 @@ export default function Checklist() {
     colors.purpleAccent[400],
   ];
 
-  return (
-    <Box maxWidth={{ md: "630px", sm: "420px" }} mx="auto" my="20px">
-      <Box display="flex" flexDirection="column" mx="20px">
-        {/* HEADER */}
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Header
-            title="SHINY CHECKLIST"
-            subtitle="Here you can find the checklist for all Shiny Pokémon."
-          />
-          <Box style={{ display: "flex", alignItems: "center" }}>
-            <IconButton onClick={(e) => setOpenFilter(true)}>
-              <FilterAltOutlinedIcon />
-            </IconButton>
-            <FilterMenu
-              open={openFilter}
-              setOpen={setOpenFilter}
-              cookieGen={"checklistGenFilter"}
-              options={["gen"]}
-            />
-            <IconButton onClick={(e) => setOpenGraph(true)}>
-              <AssessmentOutlinedIcon />
-            </IconButton>
-            <Dialog
-              open={openGraph}
-              onClose={() => setOpenGraph(false)}
-              fullWidth
-            >
-              <DialogTitle fontWeight={"bold"} variant="h4">
-                {`Checklist - ${cookie.checklistGenFilter} Pokémon`}
-              </DialogTitle>
-              <DialogContent>
-                <ResponsiveContainer
-                  width="100%"
-                  height={window.innerWidth < 500 ? 300 : 400}
-                >
-                  <BarChart
-                    margin={{
-                      top: 0,
-                      right: 0,
-                      bottom: 0,
-                      left: -15,
-                    }}
-                    data={graphData}
-                  >
-                    <XAxis
-                      dataKey="name"
-                      tick={{ fill: colors.grey[100] }}
-                      axisLine={{ stroke: colors.primary[200] }}
-                      tickLine={{ stroke: colors.primary[200] }}
-                    />
-                    <YAxis
-                      domain={[0, 100]}
-                      tickFormatter={(tick) => {
-                        return `${tick}%`;
-                      }}
-                      tick={{ fill: colors.grey[100] }}
-                      axisLine={{ stroke: colors.primary[200] }}
-                      tickLine={{ stroke: colors.primary[200] }}
-                    />
-                    <Tooltip
-                      labelStyle={{ color: "black" }}
-                      formatter={(value) => {
-                        return `${value.toFixed(2)}%`;
-                      }}
-                      animationDuration={0}
-                    />
-                    <Bar
-                      dataKey="percentage"
-                      background={{ fill: colors.grey[800] }}
-                    >
-                      {graphData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={graphColors[index]} />
-                      ))}
-                    </Bar>
-                  </BarChart>
-                </ResponsiveContainer>
-              </DialogContent>
-            </Dialog>
-          </Box>
-        </Box>
+  const handleFilterClick = () => {
+    setOpenFilter(true);
+  };
 
-        {/* CHECKLIST CARDS */}
-        <Grid container spacing={"10px"}>
-          <Grid item xs={12}>
-            <Box
-              p="10px"
-              width="100%"
-              backgroundColor={colors.primary[400]}
-              borderRadius="5px"
+  const handleStatsClick = () => {
+    setOpenGraph(true);
+  };
+
+  return (
+    <PageComponent
+      title="SHINY CHECKLIST"
+      subtitle="Here you can find the checklist for all Shiny Pokémon."
+      widthSnaps={2}
+      icon1={<FilterAltOutlinedIcon />}
+      onClickIcon1={handleFilterClick}
+      icon2={<AssessmentOutlinedIcon />}
+      onClickIcon2={handleStatsClick}
+    >
+      <FilterMenu
+        open={openFilter}
+        setOpen={setOpenFilter}
+        cookieGen={"checklistGenFilter"}
+        options={["gen"]}
+      />
+      <Dialog open={openGraph} onClose={() => setOpenGraph(false)} fullWidth>
+        <DialogTitle fontWeight={"bold"} variant="h4">
+          {`Checklist - ${cookie.checklistGenFilter} Pokémon`}
+        </DialogTitle>
+        <DialogContent>
+          <ResponsiveContainer
+            width="100%"
+            height={window.innerWidth < 500 ? 300 : 400}
+          >
+            <BarChart
+              margin={{
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: -15,
+              }}
+              data={graphData}
             >
-              <Box display="flex">
-                {/* POKEMON IMAGE */}
-                <Box
-                  display="inline-flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  minWidth="35px"
-                ></Box>
-                {/* POKEMON NAME */}
-                <Box
-                  ml="15px"
-                  mr="5px"
-                  overflow="hidden"
-                  display="flex"
-                  alignItems="center"
-                  width="250px"
+              <XAxis
+                dataKey="name"
+                tick={{ fill: colors.grey[100] }}
+                axisLine={{ stroke: colors.primary[200] }}
+                tickLine={{ stroke: colors.primary[200] }}
+              />
+              <YAxis
+                domain={[0, 100]}
+                tickFormatter={(tick) => {
+                  return `${tick}%`;
+                }}
+                tick={{ fill: colors.grey[100] }}
+                axisLine={{ stroke: colors.primary[200] }}
+                tickLine={{ stroke: colors.primary[200] }}
+              />
+              <Tooltip
+                labelStyle={{ color: "black" }}
+                formatter={(value) => {
+                  return `${value.toFixed(2)}%`;
+                }}
+                animationDuration={0}
+              />
+              <Bar dataKey="percentage" background={{ fill: colors.grey[800] }}>
+                {graphData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={graphColors[index]} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </DialogContent>
+      </Dialog>
+      {/* CHECKLIST CARDS */}
+      <Grid container spacing={"10px"}>
+        <Grid item xs={12}>
+          <BoxComponent p="10px">
+            <Box display="flex">
+              {/* POKEMON IMAGE */}
+              <Box
+                display="inline-flex"
+                justifyContent="center"
+                alignItems="center"
+                minWidth="35px"
+              ></Box>
+              {/* POKEMON NAME */}
+              <Box
+                ml="15px"
+                mr="5px"
+                overflow="hidden"
+                display="flex"
+                alignItems="center"
+                width="250px"
+              >
+                <Typography
+                  fontSize={window.innerWidth < 600 ? 12 : 14}
+                  fontWeight={"bold"}
+                  variant="h5"
+                  sx={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
                 >
-                  <Typography
-                    fontSize={window.innerWidth < 600 ? 12 : 14}
-                    fontWeight={"bold"}
-                    variant="h5"
-                    sx={{
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {"Pokémon Name"}
-                  </Typography>
-                </Box>
-                <Box
-                  width="100%"
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
-                  <img
-                    height={"30px"}
-                    alt=""
-                    src={trainerImages["Gen 6 - kwakquin.png"]}
-                    style={{ imageRendering: "pixelated" }}
-                  />
-                  <img
-                    height={"30px"}
-                    alt=""
-                    src={trainerImages["Gen 6 - chorneef.png"]}
-                    style={{ imageRendering: "pixelated" }}
-                  />
-                  <img
-                    height={"30px"}
-                    alt=""
-                    src={trainerImages["Gen 6 - siwob.png"]}
-                    style={{ imageRendering: "pixelated" }}
-                  />
-                  <img
-                    height={"30px"}
-                    alt=""
-                    src={trainerImages["Gen 6 - t-loc.png"]}
-                    style={{ imageRendering: "pixelated" }}
-                  />
-                  <Box width={"30px"} />
-                  {window.innerWidth >= 600 && <Box width={"30px"} />}
-                </Box>
+                  {"Pokémon Name"}
+                </Typography>
+              </Box>
+              <Box
+                width="100%"
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <img
+                  height={"30px"}
+                  alt=""
+                  src={trainerImages["Gen 6 - kwakquin.png"]}
+                  style={{ imageRendering: "pixelated" }}
+                />
+                <img
+                  height={"30px"}
+                  alt=""
+                  src={trainerImages["Gen 6 - chorneef.png"]}
+                  style={{ imageRendering: "pixelated" }}
+                />
+                <img
+                  height={"30px"}
+                  alt=""
+                  src={trainerImages["Gen 6 - siwob.png"]}
+                  style={{ imageRendering: "pixelated" }}
+                />
+                <img
+                  height={"30px"}
+                  alt=""
+                  src={trainerImages["Gen 6 - t-loc.png"]}
+                  style={{ imageRendering: "pixelated" }}
+                />
+                <Box width={"30px"} />
+                {window.innerWidth >= 600 && <Box width={"30px"} />}
               </Box>
             </Box>
-          </Grid>
-          {pokedex?.data.map((pokemon) => {
-            const joaquinCheck = shinyListJoaquin?.includes(pokemon.name);
-            const korneelCheck = shinyListKorneel?.includes(pokemon.name);
-            const simonCheck = shinyListSimon?.includes(pokemon.name);
-            const stefCheck = shinyListStef?.includes(pokemon.name);
+          </BoxComponent>
+        </Grid>
+        {pokedex?.data.map((pokemon) => {
+          const joaquinCheck = shinyListJoaquin?.includes(pokemon.name);
+          const korneelCheck = shinyListKorneel?.includes(pokemon.name);
+          const simonCheck = shinyListSimon?.includes(pokemon.name);
+          const stefCheck = shinyListStef?.includes(pokemon.name);
 
-            const trueCount = [
-              joaquinCheck,
-              korneelCheck,
-              simonCheck,
-              stefCheck,
-            ].filter(Boolean).length;
+          const trueCount = [
+            joaquinCheck,
+            korneelCheck,
+            simonCheck,
+            stefCheck,
+          ].filter(Boolean).length;
 
-            return (
-              <Grid item xs={12} key={pokemon._id}>
-                <LazyLoad>
-                  <Box
-                    p="10px"
-                    width="100%"
-                    backgroundColor={colors.primary[400]}
-                    borderRadius="5px"
-                    sx={{
-                      "&:hover": {
-                        cursor: "pointer",
-                        backgroundColor: colors.primary[900],
-                      },
-                    }}
-                  >
-                    <Box display="flex">
-                      {/* POKEMON IMAGE */}
-                      <Box
-                        display="inline-flex"
-                        justifyContent="center"
-                        alignItems="center"
-                        minWidth="35px"
+          return (
+            <Grid item xs={12} key={pokemon._id}>
+              <LazyLoad>
+                <BoxComponent p="10px">
+                  <Box display="flex">
+                    {/* POKEMON IMAGE */}
+                    <Box
+                      display="inline-flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      minWidth="35px"
+                    >
+                      <img
+                        height={"35px"}
+                        alt=""
+                        src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-all-home/${pokemon.sprite}.png`}
+                      />
+                    </Box>
+                    {/* POKEMON NAME */}
+                    <Box
+                      mx="15px"
+                      overflow="hidden"
+                      display="flex"
+                      alignItems="center"
+                      width="250px"
+                    >
+                      <Typography
+                        fontSize={window.innerWidth < 600 ? 12 : 14}
+                        fontWeight={"bold"}
+                        variant="h5"
+                        sx={{
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
                       >
-                        <img
-                          height={"35px"}
-                          alt=""
-                          src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-all-home/${pokemon.sprite}.png`}
+                        {pokemon.name}
+                      </Typography>
+                    </Box>
+                    <Box
+                      width="100%"
+                      display="flex"
+                      justifyContent="space-between"
+                      alignItems="center"
+                    >
+                      {joaquinCheck ? (
+                        <CheckBoxIcon
+                          size="small"
+                          style={{ color: colors.redAccent[500] }}
                         />
-                      </Box>
-                      {/* POKEMON NAME */}
-                      <Box
-                        mx="15px"
-                        overflow="hidden"
-                        display="flex"
-                        alignItems="center"
-                        width="250px"
-                      >
-                        <Typography
-                          fontSize={window.innerWidth < 600 ? 12 : 14}
-                          fontWeight={"bold"}
-                          variant="h5"
-                          sx={{
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
-                          }}
-                        >
-                          {pokemon.name}
-                        </Typography>
-                      </Box>
-                      <Box
-                        width="100%"
-                        display="flex"
-                        justifyContent="space-between"
-                        alignItems="center"
-                      >
-                        {joaquinCheck ? (
-                          <CheckBoxIcon
-                            size="small"
-                            style={{ color: colors.redAccent[500] }}
-                          />
-                        ) : (
-                          <CheckBoxOutlineBlankIcon
-                            size="small"
-                            style={{ color: colors.redAccent[500] }}
-                          />
-                        )}
-                        {korneelCheck ? (
-                          <CheckBoxIcon
-                            size="small"
-                            style={{ color: colors.yellowAccent[500] }}
-                          />
-                        ) : (
-                          <CheckBoxOutlineBlankIcon
-                            size="small"
-                            style={{ color: colors.yellowAccent[500] }}
-                          />
-                        )}
-                        {simonCheck ? (
-                          <CheckBoxIcon
-                            size="small"
-                            style={{ color: colors.greenAccent[500] }}
-                          />
-                        ) : (
-                          <CheckBoxOutlineBlankIcon
-                            size="small"
-                            style={{ color: colors.greenAccent[500] }}
-                          />
-                        )}
-                        {stefCheck ? (
-                          <CheckBoxIcon
-                            size="small"
-                            style={{ color: colors.blueAccent[500] }}
-                          />
-                        ) : (
-                          <CheckBoxOutlineBlankIcon
-                            size="small"
-                            style={{ color: colors.blueAccent[500] }}
-                          />
-                        )}
-                        {shinyList.includes(pokemon.name) ? (
-                          <CheckBoxIcon
-                            size="small"
-                            style={{ color: colors.purpleAccent[500] }}
-                          />
-                        ) : (
-                          <CheckBoxOutlineBlankIcon
-                            size="small"
-                            style={{ color: colors.purpleAccent[500] }}
-                          />
-                        )}
-                        {trueCount > 0 ? (
-                          <img
-                            width={window.innerWidth < 500 ? "20px" : "30px"}
-                            alt=""
-                            src={medalList[4 - trueCount]}
-                          />
-                        ) : (
-                          <Box
-                            width={window.innerWidth < 500 ? "20px" : "30px"}
-                          />
-                        )}
-                      </Box>
+                      ) : (
+                        <CheckBoxOutlineBlankIcon
+                          size="small"
+                          style={{ color: colors.redAccent[500] }}
+                        />
+                      )}
+                      {korneelCheck ? (
+                        <CheckBoxIcon
+                          size="small"
+                          style={{ color: colors.yellowAccent[500] }}
+                        />
+                      ) : (
+                        <CheckBoxOutlineBlankIcon
+                          size="small"
+                          style={{ color: colors.yellowAccent[500] }}
+                        />
+                      )}
+                      {simonCheck ? (
+                        <CheckBoxIcon
+                          size="small"
+                          style={{ color: colors.greenAccent[500] }}
+                        />
+                      ) : (
+                        <CheckBoxOutlineBlankIcon
+                          size="small"
+                          style={{ color: colors.greenAccent[500] }}
+                        />
+                      )}
+                      {stefCheck ? (
+                        <CheckBoxIcon
+                          size="small"
+                          style={{ color: colors.blueAccent[500] }}
+                        />
+                      ) : (
+                        <CheckBoxOutlineBlankIcon
+                          size="small"
+                          style={{ color: colors.blueAccent[500] }}
+                        />
+                      )}
+                      {shinyList.includes(pokemon.name) ? (
+                        <CheckBoxIcon
+                          size="small"
+                          style={{ color: colors.purpleAccent[500] }}
+                        />
+                      ) : (
+                        <CheckBoxOutlineBlankIcon
+                          size="small"
+                          style={{ color: colors.purpleAccent[500] }}
+                        />
+                      )}
+                      {trueCount > 0 ? (
+                        <img
+                          width={window.innerWidth < 500 ? "20px" : "30px"}
+                          alt=""
+                          src={medalList[4 - trueCount]}
+                        />
+                      ) : (
+                        <Box
+                          width={window.innerWidth < 500 ? "20px" : "30px"}
+                        />
+                      )}
                     </Box>
                   </Box>
-                </LazyLoad>
-              </Grid>
-            );
-          })}
-        </Grid>
-      </Box>
-    </Box>
+                </BoxComponent>
+              </LazyLoad>
+            </Grid>
+          );
+        })}
+      </Grid>
+    </PageComponent>
   );
 }

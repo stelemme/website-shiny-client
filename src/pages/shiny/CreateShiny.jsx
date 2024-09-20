@@ -4,10 +4,10 @@ import { useSetRecoilState } from "recoil";
 import { alertOpen, alertSeverity, alertMessage } from "../../utils/atoms";
 
 // Mui
-import { Box, Button, Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 
 // Components
-import Header from "../../components/Header";
+import PageComponent from "../../components/General/PageComponent";
 import RadarGroupForm from "../../components/Forms/RadarGroupForm";
 import RadarForm from "../../components/Forms/RadarForm";
 import DexNavForm from "../../components/Forms/DexNavForm";
@@ -316,174 +316,168 @@ export default function CreateShiny() {
   };
 
   return (
-    <Box maxWidth="420px" mx="auto" my="20px">
-      <Box display="flex" flexDirection="column" mx="20px">
-        {/* HEADER */}
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Header
-            title="ADD A NEW SHINY"
-            subtitle="Here you can add a new shiny pokémon."
-          />
-        </Box>
+    <PageComponent
+      title="ADD A NEW SHINY"
+      subtitle="Here you can add a new shiny pokémon."
+      widthSnaps={1}
+    >
+      {/* FORM */}
+      <form autoComplete="off" onSubmit={handleSubmit}>
+        {/* GAMES */}
+        <GameForm
+          setData={setData}
+          initialState={initialState}
+          setShinyCharmCheck={setShinyCharmCheck}
+          setPokemonsList={setPokemonsList}
+          setGenderCheck={setGenderCheck}
+          setMethodsList={setMethodsList}
+          setMethodCatList={setMethodCatList}
+          setLocationsList={setLocationsList}
+          setClearMethod={setClearMethod}
+          setBallList={setBallList}
+        />
 
-        {/* FORM */}
-        <form autoComplete="off" onSubmit={handleSubmit}>
-          {/* GAMES */}
-          <GameForm
+        {/* POKEMONS */}
+        <PokemonForm
+          setData={setData}
+          pokemonsList={pokemonsList}
+          setGenderCheck={setGenderCheck}
+        />
+
+        {/* GENDER */}
+        <GenderForm data={data} setData={setData} genderCheck={genderCheck} />
+
+        {/* LOCATIONS */}
+        <LocationsForm setData={setData} locationsList={locationsList} />
+
+        {/* SHINYCHARM */}
+        {shinyCharmCheck && (
+          <ShinyCharmForm
+            data={data}
             setData={setData}
-            initialState={initialState}
-            setShinyCharmCheck={setShinyCharmCheck}
-            setPokemonsList={setPokemonsList}
-            setGenderCheck={setGenderCheck}
-            setMethodsList={setMethodsList}
-            setMethodCatList={setMethodCatList}
-            setLocationsList={setLocationsList}
             setClearMethod={setClearMethod}
-            setBallList={setBallList}
-          />
-
-          {/* POKEMONS */}
-          <PokemonForm
-            setData={setData}
-            pokemonsList={pokemonsList}
-            setGenderCheck={setGenderCheck}
-          />
-
-          {/* GENDER */}
-          <GenderForm data={data} setData={setData} genderCheck={genderCheck} />
-
-          {/* LOCATIONS */}
-          <LocationsForm setData={setData} locationsList={locationsList} />
-
-          {/* SHINYCHARM */}
-          {shinyCharmCheck && (
-            <ShinyCharmForm
-              data={data}
-              setData={setData}
-              setClearMethod={setClearMethod}
-              setMethodCatList={setMethodCatList}
-            />
-          )}
-
-          {/* METHODS */}
-          <MethodForm
-            setData={setData}
-            methodsList={methodsList}
             setMethodCatList={setMethodCatList}
-            setGroupList={setGroupList}
-            clearMethod={clearMethod}
           />
+        )}
 
-          {/* METHODS SUBCATEGORY*/}
-          {methodCatList && (
-            <SubMethodForm setData={setData} methodCatList={methodCatList} />
-          )}
+        {/* METHODS */}
+        <MethodForm
+          setData={setData}
+          methodsList={methodsList}
+          setMethodCatList={setMethodCatList}
+          setGroupList={setGroupList}
+          clearMethod={clearMethod}
+        />
 
-          {/* RADAR FORM*/}
-          {data.method.function === "pokeradar-gen4" ||
-          data.method.function === "pokeradar-gen6" ||
-          data.method.function === "pokeradar-gen8" ? (
-            <RadarForm setData={setData} />
-          ) : null}
+        {/* METHODS SUBCATEGORY*/}
+        {methodCatList && (
+          <SubMethodForm setData={setData} methodCatList={methodCatList} />
+        )}
 
-          {/* DEXNAV FORM*/}
-          {data.method.function === "dexnav" ? (
-            <DexNavForm data={data} setData={setData} />
-          ) : null}
+        {/* RADAR FORM*/}
+        {data.method.function === "pokeradar-gen4" ||
+        data.method.function === "pokeradar-gen6" ||
+        data.method.function === "pokeradar-gen8" ? (
+          <RadarForm setData={setData} />
+        ) : null}
 
-          {/* LET'S GO FORM*/}
-          {data.method.function === "letsgospawn" ? (
-            <LetsGoForm data={data} setData={setData} />
-          ) : null}
+        {/* DEXNAV FORM*/}
+        {data.method.function === "dexnav" ? (
+          <DexNavForm data={data} setData={setData} />
+        ) : null}
 
-          {/* SOS FORM*/}
-          {data.method.function === "sos-chain" ||
-          data.method.function === "sos-chain-sm" ? (
-            <SosForm setData={setData} />
-          ) : null}
+        {/* LET'S GO FORM*/}
+        {data.method.function === "letsgospawn" ? (
+          <LetsGoForm data={data} setData={setData} />
+        ) : null}
 
-          {/* WORMHOLE FORM*/}
-          {data.method.function === "ultra-wormhole" ? (
-            <WormholeForm data={data} setData={setData} />
-          ) : null}
+        {/* SOS FORM*/}
+        {data.method.function === "sos-chain" ||
+        data.method.function === "sos-chain-sm" ? (
+          <SosForm setData={setData} />
+        ) : null}
 
-          {/* LEGEND ARCEUS FORM*/}
-          {data.method.function === "arceus-spawn" ||
-          data.method.function === "arceus-mass-outbreak" ||
-          data.method.function === "arceus-massive-mass-outbreak" ? (
-            <LaForm data={data} setData={setData} />
-          ) : null}
+        {/* WORMHOLE FORM*/}
+        {data.method.function === "ultra-wormhole" ? (
+          <WormholeForm data={data} setData={setData} />
+        ) : null}
 
-          {/* SV SPAWN FORM*/}
-          {data.method.function === "sv-spawn" ? (
-            <SvForm data={data} setData={setData} />
-          ) : null}
+        {/* LEGEND ARCEUS FORM*/}
+        {data.method.function === "arceus-spawn" ||
+        data.method.function === "arceus-mass-outbreak" ||
+        data.method.function === "arceus-massive-mass-outbreak" ? (
+          <LaForm data={data} setData={setData} />
+        ) : null}
 
-          {/* SV OUTBREAK FORM*/}
-          {data.method.function === "sv-outbreak" ? (
-            <SvOutbreakForm data={data} setData={setData} />
-          ) : null}
+        {/* SV SPAWN FORM*/}
+        {data.method.function === "sv-spawn" ? (
+          <SvForm data={data} setData={setData} />
+        ) : null}
 
-          <Grid container spacing={"10px"}>
-            {/* BALL */}
-            <Grid item xs={6}>
-              <BallForm
-                setData={setData}
-                ballList={ballList}
-                ballCheck={ballCheck}
-              />
-            </Grid>
+        {/* SV OUTBREAK FORM*/}
+        {data.method.function === "sv-outbreak" ? (
+          <SvOutbreakForm data={data} setData={setData} />
+        ) : null}
 
-            {/* NATURE */}
-            <Grid item xs={6}>
-              <NatureForm setData={setData} natureCheck={natureCheck} />
-            </Grid>
-
-            {/* LEVEL */}
-            <Grid item xs={12}>
-              <LevelForm data={data} setData={setData} />
-            </Grid>
-
-            {/* GEO LOCATION */}
-            <Grid item xs={12}>
-              <GeoLocationForm data={data} setData={setData} />
-            </Grid>
-
-            {/* START DATE */}
-            <Grid item xs={12}>
-              <StartDateForm data={data} setData={setData} />
-            </Grid>
+        <Grid container spacing={"10px"}>
+          {/* BALL */}
+          <Grid item xs={6}>
+            <BallForm
+              setData={setData}
+              ballList={ballList}
+              ballCheck={ballCheck}
+            />
           </Grid>
 
-          {/* END DATE */}
-          <EndDateForm data={data} setData={setData} />
+          {/* NATURE */}
+          <Grid item xs={6}>
+            <NatureForm setData={setData} natureCheck={natureCheck} />
+          </Grid>
 
-          {/* NICKNAME */}
-          <NicknameForm data={data} setData={setData} />
+          {/* LEVEL */}
+          <Grid item xs={12}>
+            <LevelForm data={data} setData={setData} />
+          </Grid>
 
-          {data.method.function === "pokeradar-gen4" ? (
-            <RadarGroupForm
-              data={data}
-              setData={setData}
-              groupList={groupList}
-              setGroupList={setGroupList}
-              username={username}
-            />
-          ) : null}
+          {/* GEO LOCATION */}
+          <Grid item xs={12}>
+            <GeoLocationForm data={data} setData={setData} />
+          </Grid>
 
-          {/* SUBMIT */}
-          <Button
-            type="submit"
-            variant="contained"
-            color="neutral"
-            fullWidth
-            sx={{ mb: "10px" }}
-            style={{ color: "white" }}
-          >
-            Submit
-          </Button>
-        </form>
-      </Box>
-    </Box>
+          {/* START DATE */}
+          <Grid item xs={12}>
+            <StartDateForm data={data} setData={setData} />
+          </Grid>
+        </Grid>
+
+        {/* END DATE */}
+        <EndDateForm data={data} setData={setData} />
+
+        {/* NICKNAME */}
+        <NicknameForm data={data} setData={setData} />
+
+        {data.method.function === "pokeradar-gen4" ? (
+          <RadarGroupForm
+            data={data}
+            setData={setData}
+            groupList={groupList}
+            setGroupList={setGroupList}
+            username={username}
+          />
+        ) : null}
+
+        {/* SUBMIT */}
+        <Button
+          type="submit"
+          variant="contained"
+          color="neutral"
+          fullWidth
+          sx={{ mb: "10px" }}
+          style={{ color: "white" }}
+        >
+          Submit
+        </Button>
+      </form>
+    </PageComponent>
   );
 }

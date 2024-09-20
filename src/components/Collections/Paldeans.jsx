@@ -1,5 +1,6 @@
 // Components imports
 import CollectionCard from "./CollectionCard";
+import CollectionStatsCard from "./CollectionStatsCard";
 
 const paldeans = [
   {
@@ -20,7 +21,7 @@ const paldeans = [
   },
 ];
 
-export default function Paldeans() {
+export function Paldeans() {
   return (
     <CollectionCard
       placeholdList={paldeans}
@@ -31,6 +32,16 @@ export default function Paldeans() {
       sm={3}
       xs={4}
       numbers={false}
+    />
+  );
+}
+
+export function PaldeansStats() {
+  return (
+    <CollectionStatsCard
+      placeholdList={paldeans}
+      title={"Paldean Forms"}
+      collectionStr={"paldea"}
     />
   );
 }

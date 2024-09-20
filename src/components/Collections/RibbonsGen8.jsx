@@ -1,5 +1,6 @@
 // Components imports
 import CollectionCard from "./CollectionCard";
+import CollectionStatsCard from "./CollectionStatsCard";
 
 const ribbons = [
   {
@@ -136,7 +137,7 @@ const ribbons = [
   },
 ];
 
-export default function RibbonsGen8() {
+export function RibbonsGen8() {
   return (
     <CollectionCard
       placeholdList={ribbons}
@@ -148,6 +149,17 @@ export default function RibbonsGen8() {
       sm={3}
       xs={4}
       numbers={false}
+    />
+  );
+}
+
+export function RibbonsGen8Stats() {
+  return (
+    <CollectionStatsCard
+      placeholdList={ribbons}
+      title={"Ribbons In Gen 8"}
+      collectionStr={"ribbon"}
+      additionalCollectionStr={"Gen 8"}
     />
   );
 }

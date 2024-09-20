@@ -1,5 +1,6 @@
 // Components imports
 import CollectionCard from "./CollectionCard";
+import CollectionStatsCard from "./CollectionStatsCard";
 
 const pastParadoxes = [
   {
@@ -44,7 +45,7 @@ const pastParadoxes = [
   }
 ]
 
-export default function PastParadoxes() {
+export function PastParadoxes() {
   return (
     <CollectionCard
       placeholdList={pastParadoxes}
@@ -55,6 +56,16 @@ export default function PastParadoxes() {
       sm={3}
       xs={4}
       numbers={false}
+    />
+  );
+}
+
+export function PastParadoxesStats() {
+  return (
+    <CollectionStatsCard
+      placeholdList={pastParadoxes}
+      title={"Past Paradox Pokémon"}
+      collectionStr={"pastParadox"}
     />
   );
 }

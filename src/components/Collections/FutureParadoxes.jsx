@@ -1,5 +1,6 @@
 // Components imports
 import CollectionCard from "./CollectionCard";
+import CollectionStatsCard from "./CollectionStatsCard";
 
 const futureParadoxes = [
   {
@@ -44,7 +45,7 @@ const futureParadoxes = [
   }
 ]
 
-export default function FutureParadoxes() {
+export function FutureParadoxes() {
   return (
     <CollectionCard
       placeholdList={futureParadoxes}
@@ -58,3 +59,13 @@ export default function FutureParadoxes() {
     />
   );
 }
+
+export function FutureParadoxesStats() {
+    return (
+      <CollectionStatsCard
+        placeholdList={futureParadoxes}
+        title={"Future Paradox Pokémon"}
+        collectionStr={"futureParadox"}
+      />
+    );
+  }

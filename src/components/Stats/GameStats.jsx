@@ -12,6 +12,9 @@ import {
 } from "@mui/material";
 import { tokens } from "../../theme";
 
+// Components
+import BoxComponent from "../General/BoxComponent";
+
 // Functions
 import { formatTime } from "../../functions/statFunctions";
 
@@ -40,15 +43,9 @@ export default function GameStats() {
   const StatsDisplay = ({ data }) => {
     return (
       <Grid item xs={12}>
-        <Box
-          py="10px"
-          px="20px"
-          width="100%"
-          backgroundColor={colors.primary[500]}
-          borderRadius="5px"
-        >
+        <BoxComponent py="10px" px="20px" noContrastColor>
           <Grid container>
-            <Grid item md={1.98} xs={5.90} container spacing={"12px"}>
+            <Grid item md={1.98} xs={5.9} container spacing={"12px"}>
               <Grid item xs={12}>
                 <Box
                   display={"flex"}
@@ -225,7 +222,7 @@ export default function GameStats() {
               }
               return (
                 <Fragment key={trainer}>
-                  <Grid item md={1.98} xs={5.90} container spacing={"12px"}>
+                  <Grid item md={1.98} xs={5.9} container spacing={"12px"}>
                     <Grid item xs={12}>
                       <Box
                         display={"flex"}
@@ -408,7 +405,7 @@ export default function GameStats() {
                 </Fragment>
               );
             })}
-            <Grid item md={1.98} xs={5.90} container spacing={"12px"}>
+            <Grid item md={1.98} xs={5.9} container spacing={"12px"}>
               <Grid item xs={12}>
                 <Box
                   display={"flex"}
@@ -598,19 +595,13 @@ export default function GameStats() {
               </Grid>
             )}
           </Grid>
-        </Box>
+        </BoxComponent>
       </Grid>
     );
   };
 
   return (
-    <Box
-      p="20px"
-      width="100%"
-      backgroundColor={colors.primary[400]}
-      borderRadius="5px"
-      height="100%"
-    >
+    <BoxComponent>
       <Box
         display="flex"
         flexDirection={window.innerWidth < 500 ? "column" : "row"}
@@ -649,6 +640,6 @@ export default function GameStats() {
       <Grid container spacing={"12px"}>
         <StatsDisplay data={["Joaquin", "Korneel", "Simon", "Stef"]} />
       </Grid>
-    </Box>
+    </BoxComponent>
   );
 }

@@ -172,7 +172,7 @@ export function formatTime(totalSeconds, showDays = true) {
 
   const hours = Math.floor(remainingSeconds / 3600);
   const minutes = Math.floor((remainingSeconds % 3600) / 60);
-  const seconds = remainingSeconds % 60;
+  const seconds = Math.round(remainingSeconds % 60);
 
   if (showDays) {
     const formattedTime =
@@ -255,6 +255,14 @@ export function calculateOverlapPercentage(arr1, arr2) {
 
   const commonElements = arr2.filter((element) => arr1.includes(element));
   const percentage = (commonElements.length / arr2.length) * 100;
+
+  return percentage;
+}
+
+export function calculateCollectionPercentage(total, collection) {
+  const completedNumber = Object.keys(collection ? collection : {}).length;
+
+  const percentage = (completedNumber / total) * 100;
 
   return percentage;
 }

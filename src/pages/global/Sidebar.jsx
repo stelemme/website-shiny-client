@@ -24,6 +24,7 @@ import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import PermMediaOutlinedIcon from "@mui/icons-material/PermMediaOutlined";
 import LocalHospitalSharpIcon from "@mui/icons-material/LocalHospitalSharp";
 import ConstructionIcon from "@mui/icons-material/Construction";
+import PreviewIcon from "@mui/icons-material/Preview";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -306,6 +307,13 @@ export default function CustomSidebar() {
               title="Data Manipulation"
               to="/dev/data"
               icon={<ConstructionIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Page Layout"
+              to="/dev/layout"
+              icon={<PreviewIcon />}
               selected={selected}
               setSelected={setSelected}
             />

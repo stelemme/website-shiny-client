@@ -5,6 +5,9 @@ import { useCookies } from "react-cookie";
 import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 
+// Components
+import BoxComponent from "../General/BoxComponent";
+
 // Hooks
 import { useShiny } from "../../hooks/useData";
 
@@ -26,7 +29,7 @@ export default function ShinyCardEvolutions({
   evolutions,
   forms,
   group,
-  bgColor = "400",
+  bgColor = 400,
   imgSize = window.innerWidth < 600 ? "40px" : "80px",
   gameImgSize = window.innerWidth < 600 ? "22px" : "33px",
 }) {
@@ -48,19 +51,15 @@ export default function ShinyCardEvolutions({
     evolutions.sort((a, b) => a.pokedexNo - b.pokedexNo);
   }
 
+  const onCardClick = () => {
+    navigate(`/shiny/${id}`);
+  };
+
   return (
-    <Box
+    <BoxComponent
       p="10px"
-      width="100%"
-      backgroundColor={colors.primary[bgColor]}
-      borderRadius="5px"
-      onClick={() => navigate(`/shiny/${id}`)}
-      sx={{
-        "&:hover": {
-          cursor: "pointer",
-          backgroundColor: colors.primary[900],
-        },
-      }}
+      noContrastColor={bgColor === 400 ? false : true}
+      onClick={onCardClick}
     >
       <Box display="flex" alignItems="center">
         {/* GAME IMAGE */}
@@ -190,6 +189,6 @@ export default function ShinyCardEvolutions({
           })}
         </Box>
       </Box>
-    </Box>
+    </BoxComponent>
   );
 }

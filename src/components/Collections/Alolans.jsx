@@ -1,5 +1,6 @@
 // Components imports
 import CollectionCard from "./CollectionCard";
+import CollectionStatsCard from "./CollectionStatsCard";
 
 const alolans = [
   {
@@ -76,7 +77,7 @@ const alolans = [
   },
 ];
 
-export default function Alolans() {
+export function Alolans() {
   return (
     <CollectionCard
       placeholdList={alolans}
@@ -87,6 +88,16 @@ export default function Alolans() {
       sm={3}
       xs={4}
       numbers={false}
+    />
+  );
+}
+
+export function AlolansStats() {
+  return (
+    <CollectionStatsCard
+      placeholdList={alolans}
+      title={"Alolan Forms"}
+      collectionStr={"alola"}
     />
   );
 }

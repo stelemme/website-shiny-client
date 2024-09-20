@@ -1,5 +1,6 @@
 // Components imports
 import CollectionCard from "./CollectionCard";
+import CollectionStatsCard from "./CollectionStatsCard";
 
 const flabebes = [
   {
@@ -65,7 +66,7 @@ const flabebes = [
 
 ];
 
-export default function Flabebes() {
+export function Flabebes() {
   return (
     <CollectionCard
       placeholdList={flabebes}
@@ -76,6 +77,16 @@ export default function Flabebes() {
       sm={2}
       xs={4}
       numbers={false}
+    />
+  );
+}
+
+export function FlabebesStats() {
+  return (
+    <CollectionStatsCard
+      placeholdList={flabebes}
+      title={"Flabébé, Floette & Florges"}
+      collectionStr={"flabebe"}
     />
   );
 }

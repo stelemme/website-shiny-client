@@ -6,7 +6,17 @@ import LazyLoad from "react-lazyload";
 import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 
-export default function PokedexCard({ id, pokedexNo, name, sprite, dir, sort = 100 }) {
+// Components
+import BoxComponent from "../General/BoxComponent";
+
+export default function PokedexCard({
+  id,
+  pokedexNo,
+  name,
+  sprite,
+  dir,
+  sort = 100,
+}) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
@@ -19,21 +29,24 @@ export default function PokedexCard({ id, pokedexNo, name, sprite, dir, sort = 1
 
   const imageUrl = `${baseUrl}${dir}/${sprite}.png`;
 
+  const onCardClick = () => {
+    navigate(`/pokedex/${id}?dir=${dir}&sort=${sort}`);
+  };
+
+  const onCardMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const onCardMouseLeave = () => {
+    setIsHovered(false);
+  };
+
   return (
-    <Box
+    <BoxComponent
       p="15px"
-      width="100%"
-      backgroundColor={colors.primary[400]}
-      borderRadius="5px"
-      onClick={() => navigate(`/pokedex/${id}?dir=${dir}&sort=${sort}`)}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      sx={{
-        "&:hover": {
-          cursor: "pointer",
-          backgroundColor: colors.primary[900],
-        },
-      }}
+      onClick={onCardClick}
+      onMouseEnter={onCardMouseEnter}
+      onMouseLeave={onCardMouseLeave}
     >
       <Box>
         {/* GAME IMAGE */}
@@ -74,6 +87,6 @@ export default function PokedexCard({ id, pokedexNo, name, sprite, dir, sort = 1
           {name}
         </Typography>
       </Box>
-    </Box>
+    </BoxComponent>
   );
 }
