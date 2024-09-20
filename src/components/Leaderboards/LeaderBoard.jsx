@@ -53,6 +53,7 @@ export default function Leaderboard({
       <Box
         display="flex"
         justifyContent="space-between"
+        gap="10px"
         alignItems="center"
         mb={"14px"}
         height={"28px"}
