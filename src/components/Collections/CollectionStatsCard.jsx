@@ -4,6 +4,7 @@ import { Box, Typography, Grid } from "@mui/material";
 // Components imports
 import BoxComponent from "../General/BoxComponent";
 import PercentageBarChart from "../Graphs/PercentageBarChart";
+import ComingSoon from "../General/ComingSoon";
 
 // Hooks
 import { useShiny } from "../../hooks/useData";
@@ -17,7 +18,6 @@ export default function CollectionStatsCard({
   collectionStr,
   additionalCollectionStr = null,
 }) {
-
   const totalNumber = placeholdList.length;
 
   const { data: allShinyData } = useShiny(
@@ -110,9 +110,12 @@ export default function CollectionStatsCard({
           {title}
         </Typography>
       </Box>
-      <Grid container>
-        <Grid item xs={4}>
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
           <PercentageBarChart graphData={graphData} />
+        </Grid>
+        <Grid item xs={6}>
+          <ComingSoon />
         </Grid>
       </Grid>
     </BoxComponent>

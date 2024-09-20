@@ -2,7 +2,19 @@
 
 ## Changelogs
 
-### Version 1.18.1 (09.09.2024)
+### Version 1.19.0 (20.09.2024)
+
+**Counter Stats:**
+
+- Counter stats tonen nu ook tijd, naast het aantal encounters nu dus ook tijd voor een bepaalde periode.
+
+**Collections:**
+
+- Er kan nu geswitched worden tussen een tabblad met data en met statistieken
+
+**Map:**
+
+- Er kan nu geswitched worden tussen een tabblad met data en met statistieken
 
 **Search:**
 

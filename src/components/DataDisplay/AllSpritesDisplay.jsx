@@ -56,7 +56,7 @@ export default function AllSpritesDisplay({ pokemon, sprite, id }) {
                   {dirMapping[game.dir]}{" "}
                 </Typography>
               </Box>
-              <BoxComponent p="5px" noContrastColor>
+              <BoxComponent p="5px" noContrastColor height={null}>
                 <PokemonImageDisplay
                   directory={game.dir}
                   sprite={sprite}

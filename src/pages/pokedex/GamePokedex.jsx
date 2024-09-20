@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 
 // mui imports
-import { Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 
 // Components imports
 import PageComponent from "../../components/General/PageComponent";
@@ -37,26 +37,20 @@ export default function GamePokedex() {
       <LoadingComponent loadingCondition={pokedexLoading && gameLoading}>
         {/* CARDS */}
         <Grid container spacing={"20px"}>
-          {pokedexData?.length > 0 ? (
-            pokedexData?.map((pokemon) => {
-              return (
-                <Grid key={pokemon._id} item lg={3} md={4} sm={6} xs={6}>
-                  <PokedexCard
-                    id={pokemon._id}
-                    name={pokemon.name}
-                    pokedexNo={pokemon.pokedexNo}
-                    sprite={pokemon.sprite}
-                    dir={gameData.dir}
-                    sort={gameData.sort}
-                  />
-                </Grid>
-              );
-            })
-          ) : (
-            <Grid item xs={12}>
-              <Typography>No Pokémons Found</Typography>
-            </Grid>
-          )}
+          {pokedexData?.map((pokemon) => {
+            return (
+              <Grid key={pokemon._id} item lg={3} md={4} sm={6} xs={6}>
+                <PokedexCard
+                  id={pokemon._id}
+                  name={pokemon.name}
+                  pokedexNo={pokemon.pokedexNo}
+                  sprite={pokemon.sprite}
+                  dir={gameData.dir}
+                  sort={gameData.sort}
+                />
+              </Grid>
+            );
+          })}
         </Grid>
       </LoadingComponent>
     </PageComponent>

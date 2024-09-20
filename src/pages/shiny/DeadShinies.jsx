@@ -21,6 +21,7 @@ export default function DeadShinies() {
     <PageComponent
       title="Dead Shinies"
       subtitle="Here you can find the last resting place of all fallen Shiny Pokémon."
+      widthSnaps={2}
     >
       <LoadingComponent loadingCondition={shinyLoading}>
         {/* CARDS */}

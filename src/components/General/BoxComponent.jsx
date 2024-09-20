@@ -9,6 +9,7 @@ export default function BoxComponent({
   p = "20px",
   px = null,
   py = null,
+  height = "100%",
   onClick = null,
   onMouseEnter = null,
   onMouseLeave = null,
@@ -40,7 +41,7 @@ export default function BoxComponent({
       px={px ? px : p}
       py={py ? py : p}
       width="100%"
-      height="100%"
+      height={height}
       borderRadius={tabs ? "" : "5px"}
       backgroundColor={
         noContrastColor ? colors.primary[500] : colors.primary[400]

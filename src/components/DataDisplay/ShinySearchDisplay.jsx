@@ -33,7 +33,7 @@ export default function ShinySearchDisplay({ pokemon }) {
         errorText="No Pokémons Found"
       >
         {data
-          .reduce((acc, item) => {
+          ?.reduce((acc, item) => {
             if (!item.group) {
               acc.push(item);
             } else if (!acc.some((el) => el.group === item.group)) {
@@ -41,7 +41,7 @@ export default function ShinySearchDisplay({ pokemon }) {
             }
             return acc;
           }, [])
-          .map((item) => {
+          ?.map((item) => {
             return (
               <Box key={item._id} mt={"20px"}>
                 <ShinyCardEvolutions

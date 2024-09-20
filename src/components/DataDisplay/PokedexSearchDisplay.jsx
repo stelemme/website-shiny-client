@@ -34,11 +34,11 @@ export default function PokedexSearchDisplay({ pokemon }) {
           errorText="No Pokémons Found"
         >
           {data
-            .reduce((acc, item) => {
+            ?.reduce((acc, item) => {
               acc.push(item);
               return acc;
             }, [])
-            .map((item) => {
+            ?.map((item) => {
               return (
                 <Grid item md={4} xs={6} key={item._id} mt={"20px"}>
                   <PokedexCard

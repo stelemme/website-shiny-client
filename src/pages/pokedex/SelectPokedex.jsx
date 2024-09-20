@@ -1,5 +1,5 @@
 // mui imports
-import { Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 
 // Components imports
 import PageComponent from "../../components/General/PageComponent";
@@ -23,24 +23,18 @@ export default function SelectPokedex() {
       <LoadingComponent loadingCondition={gamesLoading}>
         {/* CARDS */}
         <Grid container spacing={"20px"}>
-          {data?.length > 0 ? (
-            data?.map((game) => {
-              return (
-                <Grid key={game._id} item lg={3} md={4} sm={6} xs={6}>
-                  <GameCard
-                    id={game._id}
-                    name={game.name}
-                    gen={game.gen}
-                    sprite={game.sprite}
-                  />
-                </Grid>
-              );
-            })
-          ) : (
-            <Grid item xs={12}>
-              <Typography>No Games Found</Typography>
-            </Grid>
-          )}
+          {data?.map((game) => {
+            return (
+              <Grid key={game._id} item lg={3} md={4} sm={6} xs={6}>
+                <GameCard
+                  id={game._id}
+                  name={game.name}
+                  gen={game.gen}
+                  sprite={game.sprite}
+                />
+              </Grid>
+            );
+          })}
         </Grid>
       </LoadingComponent>
     </PageComponent>

@@ -38,7 +38,7 @@ export default function CounterSearchDisplay({ pokemon }) {
         errorText="No Counters Found"
       >
         {data
-          .reduce((acc, item) => {
+          ?.reduce((acc, item) => {
             if (!item?.group) {
               acc.push(item);
             } else if (!acc.some((el) => el.group === item?.group)) {
@@ -46,7 +46,7 @@ export default function CounterSearchDisplay({ pokemon }) {
             }
             return acc;
           }, [])
-          .map((item) => {
+          ?.map((item) => {
             if (!item?._id || item?.totalEncounters === 0) {
               return null;
             }
