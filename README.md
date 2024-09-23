@@ -2,6 +2,14 @@
 
 ## Changelogs
 
+### Version 1.20.0 (20.09.2024)
+
+**Map:**
+- Vult terug volledige pagina.
+- Grafiek met buitenlandse shinies toegevoegd aan mapstats
+
+---
+
 ### Version 1.19.0 (20.09.2024)
 
 **Counter Stats:**
@@ -19,6 +27,8 @@
 **Search:**
 
 - Site onthoud nu op welk type ge aant zoeken zijt waar er gerefreshed wordt of terug wordt gekeerd naar de search pagina.
+
+---
 
 ### Version 1.18.0 (05.09.2024)
 

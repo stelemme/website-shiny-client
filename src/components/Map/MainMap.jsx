@@ -120,7 +120,7 @@ export default function MainMap() {
       <MapContainer
         center={center}
         zoom={cookies.mapOnGent ? 12 : 3}
-        style={{ height: "calc(100vh - 270px)", width: "100%" }}
+        style={{ height: "calc(100vh - 275px)", width: "100%" }}
         ref={setMap}
       >
         <TileLayer
@@ -263,5 +263,5 @@ export default function MainMap() {
     [loadingMarkers, cookies]
   );
 
-  return <BoxComponent tabs>{displayMap}</BoxComponent>;
+  return <BoxComponent p="0px" tabs>{displayMap}</BoxComponent>;
 }

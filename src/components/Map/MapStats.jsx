@@ -1,11 +1,11 @@
 // Components
 import BoxComponent from "../General/BoxComponent";
-import ComingSoon from "../General/ComingSoon";
+import CountryGraph from "../Graphs/CountryGraph";
 
 export default function MapStats() {
   return (
-    <BoxComponent tabs height="300px">
-      <ComingSoon />
+    <BoxComponent tabs>
+      <CountryGraph />
     </BoxComponent>
   );
 }
