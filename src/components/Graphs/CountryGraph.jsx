@@ -32,7 +32,7 @@ export default function CountryGraph() {
   );
 
   return (
-    <BoxComponent noContrastColor height="300px">
+    <BoxComponent noContrastColor>
       <Box
         display="flex"
         justifyContent="space-between"
@@ -43,7 +43,10 @@ export default function CountryGraph() {
           COUNTRY GRAPH
         </Typography>
       </Box>
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer
+        width="100%"
+        height={window.innerWidth < 600 ? 300 : 400}
+      >
         <ComposedChart
           data={shinyData?.data}
           margin={{
