@@ -9,9 +9,6 @@ import {
   IconButton,
   Grid,
   Divider,
-  FormGroup,
-  FormControlLabel,
-  Checkbox,
 } from "@mui/material";
 import { tokens } from "../../theme";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
@@ -19,7 +16,6 @@ import FileUploadIcon from "@mui/icons-material/FileUpload";
 import CalculateOutlinedIcon from "@mui/icons-material/CalculateOutlined";
 
 // Components
-import LoadingComponent from "../General/LoadingComponent";
 import CustomDialog from "../../components/Dialogs/CustomDialog";
 import PokemonImageDisplay from "./PokemonImageDisplay";
 import GameImageDisplay from "./GameImageDisplay";
@@ -28,6 +24,7 @@ import FormDisplay from "./FormDisplay";
 import InfoDisplay from "./InfoDisplay";
 import GeoLocationDisplay from "./GeoLocationDisplay";
 import IconsDisplay from "./IconsDisplay";
+import CheckboxDisplay from "../General/CheckboxDisplay";
 
 // Hooks
 import { useAuth } from "../../hooks/useAuth";
@@ -104,49 +101,6 @@ export default function CompleteShinyCard({
     } catch {
       return;
     }
-  };
-
-  const CheckboxDisplay = ({ data, name, state, setState }) => {
-    return (
-      <LoadingComponent
-        loadingCondition={!data}
-        errorCondition={Array.isArray(data) && data.length === 0}
-        errorText={`No ${name} Found`}
-      >
-        <Box mb="10px">
-          <Typography variant="h5" fontWeight="bold">
-            {name}
-          </Typography>
-          <FormGroup>
-            {data?.map((item) => {
-              return (
-                <FormControlLabel
-                  key={item._id}
-                  control={
-                    <Checkbox
-                      color="secondary"
-                      checked={state.some(
-                        (checkedItem) => checkedItem._id === item._id
-                      )}
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          setState((prevState) => [...prevState, item]);
-                        } else {
-                          setState((prevState) =>
-                            prevState.filter((value) => value._id !== item._id)
-                          );
-                        }
-                      }}
-                    />
-                  }
-                  label={item.name}
-                />
-              );
-            })}
-          </FormGroup>
-        </Box>
-      </LoadingComponent>
-    );
   };
 
   return (

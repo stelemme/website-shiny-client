@@ -1,5 +1,5 @@
 // Mui
-import { useTheme, Box, Typography } from "@mui/material";
+import { useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 
 // Recharts
@@ -27,17 +27,7 @@ export default function PercentageBarChart({ graphData }) {
   ];
 
   return (
-    <BoxComponent noContrastColor>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mb={"14px"}
-      >
-        <Typography variant="h4" fontWeight={"bold"}>
-          PERCENTAGE CHART
-        </Typography>
-      </Box>
+    <BoxComponent noContrastColor title={"PERCENTAGE CHART"}>
       <ResponsiveContainer
         width="100%"
         height={window.innerWidth < 500 ? 200 : 300}

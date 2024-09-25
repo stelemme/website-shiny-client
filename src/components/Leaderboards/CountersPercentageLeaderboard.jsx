@@ -7,7 +7,10 @@ import Leaderboard from "./LeaderBoard";
 import { useShiny } from "../../hooks/useData";
 
 // Functions
-import { calculateMultiplePercentage, formatDateToString } from "../../functions/statFunctions";
+import {
+  calculateMultiplePercentage,
+  formatDateToString,
+} from "../../functions/statFunctions";
 
 // Images
 import { medalImages } from "../../assets/imgExporter";
@@ -83,7 +86,7 @@ export default function CountersPercentageLeaderboard() {
       })}
       dataAddition={" %"}
       loading={latestShinyLoading}
-      title={"COUNTER PERCENTAGE SINCE LATEST SHINY"}
+      title={"COUNTER PERCENTAGE"}
       selectBool={false}
       medalList={[
         medalImages["battle-3-d.png"],

@@ -1,5 +1,5 @@
 // mui imports
-import { useTheme, Box, Typography } from "@mui/material";
+import { useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 
 // recharts
@@ -43,17 +43,7 @@ export default function PercentagePieChart({ data, graphColor }) {
   const colors = tokens(theme.palette.mode);
 
   return (
-    <BoxComponent noContrastColor>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mb={"14px"}
-      >
-        <Typography variant="h4" fontWeight={"bold"}>
-          PIE CHART
-        </Typography>
-      </Box>
+    <BoxComponent noContrastColor title={"PIE CHART"}>
       <ResponsiveContainer
         width="100%"
         height={window.innerWidth < 500 ? 300 : 400}

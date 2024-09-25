@@ -57,26 +57,17 @@ export default function CollectionCard({
   };
 
   return (
-    <BoxComponent tabs>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mb={"14px"}
-        height={"28px"}
-      >
-        <Typography
-          variant={window.innerWidth < 600 ? "h6" : "h4"}
-          fontWeight={"bold"}
-        >
-          {title}
-        </Typography>
+    <BoxComponent
+      tabs
+      title={title}
+      select={
         <UserSelect
           label={"User"}
           handleChange={handleChange}
           defaultValue={cookies.collectionUserSelect}
         />
-      </Box>
+      }
+    >
       <Grid container spacing={"12px"}>
         {placeholdList.map((item) => {
           return (

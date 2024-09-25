@@ -6,8 +6,11 @@ import {
   Grid,
   Skeleton,
   Divider,
+  Tooltip,
 } from "@mui/material";
 import { tokens } from "../../theme";
+import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
 // Components imports
 import BoxComponent from "../General/BoxComponent";
@@ -29,8 +32,10 @@ export default function Leaderboard({
   handleChange,
   optionList,
   medalList,
-  total,
+  total = null,
   timeValue = false,
+  timeToolTip = "",
+  onlineIcons = false,
 }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -49,30 +54,19 @@ export default function Leaderboard({
         ];
 
   return (
-    <BoxComponent>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        gap="10px"
-        alignItems="center"
-        mb={"14px"}
-        height={"28px"}
-      >
-        <Typography
-          variant={window.innerWidth < 600 ? "h5" : "h4"}
-          fontWeight={"bold"}
-        >
-          {title}
-        </Typography>
-        {selectBool && (
+    <BoxComponent
+      title={title}
+      select={
+        selectBool && (
           <GeneralSelect
             label={selectLabel}
             handleChange={handleChange}
             list={optionList}
             value={selectValue}
           />
-        )}
-      </Box>
+        )
+      }
+    >
       <Grid container spacing={"12px"}>
         <Grid item xs={12}>
           <LoadingComponent
@@ -116,20 +110,26 @@ export default function Leaderboard({
                           {item.trainer}
                         </Typography>
                       </Box>
-                      <Box display="flex" justifyContent={"space-between"} alignItems="center">
+                      <Box
+                        display="flex"
+                        justifyContent={"space-between"}
+                        alignItems="center"
+                      >
                         {timeValue && (
-                          <Typography
-                            fontWeight={"bold"}
-                            fontSize={window.innerWidth < 600 ? 12 : 14}
-                            align="left"
-                            sx={{
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
-                            }}
-                          >
-                            {formatTime(item?.dataTime, false)}
-                          </Typography>
+                          <Tooltip title={timeToolTip}>
+                            <Typography
+                              fontWeight={"bold"}
+                              fontSize={window.innerWidth < 600 ? 12 : 14}
+                              align="left"
+                              sx={{
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                              }}
+                            >
+                              {formatTime(item?.dataTime, false)}
+                            </Typography>
+                          </Tooltip>
                         )}
                         <Box width="70px">
                           <Typography
@@ -143,9 +143,22 @@ export default function Leaderboard({
                               whiteSpace: "nowrap",
                             }}
                           >
-                            {item.data === 0
+                            {item.data === 0 || !item.data
                               ? dataSubstitute
                               : item.data + dataAddition}
+                            {onlineIcons && (
+                              <>
+                                {item.dataTime < 300 ? (
+                                  <CheckCircleOutlineIcon
+                                    sx={{ color: colors.greenAccent[400] }}
+                                  />
+                                ) : (
+                                  <CancelOutlinedIcon
+                                    sx={{ color: colors.grey[300] }}
+                                  />
+                                )}
+                              </>
+                            )}
                           </Typography>
                         </Box>
                       </Box>
@@ -154,28 +167,14 @@ export default function Leaderboard({
                   </Box>
                 );
               })}
-              <Box>
-                <Box display={"flex"} justifyContent={"space-between"}>
-                  <Box display={"flex"} alignItems="center" gap={"20px"}>
-                    <Box
-                      display="inline-flex"
-                      justifyContent="center"
-                      alignItems="center"
-                      width={"30px"}
-                    ></Box>
-                    <Typography
-                      fontWeight={"bold"}
-                      fontSize={window.innerWidth < 600 ? 12 : 14}
-                      align="left"
-                      sx={{
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      TOTAL
-                    </Typography>
-                  </Box>
+              <Box display={"flex"} justifyContent={"space-between"}>
+                <Box display={"flex"} alignItems="center" gap={"20px"}>
+                  <Box
+                    display="inline-flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    width={"30px"}
+                  ></Box>
                   <Typography
                     fontWeight={"bold"}
                     fontSize={window.innerWidth < 600 ? 12 : 14}
@@ -185,10 +184,23 @@ export default function Leaderboard({
                       textOverflow: "ellipsis",
                       whiteSpace: "nowrap",
                     }}
+                    color={total ? "inherit" : "primary"}
                   >
-                    {total}
+                    TOTAL
                   </Typography>
                 </Box>
+                <Typography
+                  fontWeight={"bold"}
+                  fontSize={window.innerWidth < 600 ? 12 : 14}
+                  align="left"
+                  sx={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {total}
+                </Typography>
               </Box>
             </BoxComponent>
           </LoadingComponent>

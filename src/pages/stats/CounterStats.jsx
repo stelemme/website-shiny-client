@@ -7,6 +7,7 @@ import EncountersLeaderboard from "../../components/Leaderboards/EncountersLeade
 import CountersAmountLeaderboard from "../../components/Leaderboards/CountersAmountLeaderboard";
 import CountersPercentageLeaderboard from "../../components/Leaderboards/CountersPercentageLeaderboard";
 import ConvertedEncLeaderBoard from "../../components/Leaderboards/ConvertedEncLeaderboard";
+import LatestEncounter from "../../components/Leaderboards/LatestEncounters";
 
 export default function CounterStats() {
   return (
@@ -17,6 +18,9 @@ export default function CounterStats() {
       <Grid container spacing={"20px"}>
         <Grid item xl={4} xs={12}>
           <EncountersLeaderboard />
+        </Grid>
+        <Grid item xl={4} xs={12}>
+          <LatestEncounter />
         </Grid>
         <Grid item xl={4} xs={12}>
           <ConvertedEncLeaderBoard />

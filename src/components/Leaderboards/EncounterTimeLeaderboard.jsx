@@ -12,14 +12,14 @@ import { medalImages } from "../../assets/imgExporter";
 // Functions
 import { formatDateToString } from "../../functions/statFunctions";
 
-export default function EncountersLeaderboard() {
+export default function EncounterTimeLeaderboard() {
   const today = formatDateToString(new Date());
   const [period, setPeriod] = useState("Today");
   const [dateQuery, setDateQuery] = useState(today);
   const [periodQuery, setPeriodQuery] = useState(1);
 
   const { isLoading: counterStatsLoading, data: counterStatsData } = useCounter(
-    `stats=encDuringPeriodTotal&date=${dateQuery}&period=${periodQuery}`
+    `stats=encTimeDuringPeriodTotal&date=${dateQuery}&period=${periodQuery}`
   );
 
   const counterStats = counterStatsData?.data;
@@ -80,8 +80,6 @@ export default function EncountersLeaderboard() {
       total={counterStats?.reduce((accumulator, currentValue) => {
         return accumulator + currentValue.data;
       }, 0)}
-      timeValue
-      timeToolTip="Total time hunted."
     />
   );
 }

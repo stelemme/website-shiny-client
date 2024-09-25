@@ -51,10 +51,7 @@ export default function LatestCounters() {
     }
   };
   return (
-    <BoxComponent>
-      <Typography variant="h4" fontWeight={"bold"} mb={"10px"}>
-        LATEST COUNTERS
-      </Typography>
+    <BoxComponent title={"LATEST COUNTERS"}>
       <Typography variant="h6" fontWeight={"bold"} mb={"10px"}>
         Your Latest Counter
       </Typography>

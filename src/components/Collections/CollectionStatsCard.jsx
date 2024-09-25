@@ -1,5 +1,5 @@
 // mui imports
-import { Box, Typography, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 
 // Components imports
 import BoxComponent from "../General/BoxComponent";
@@ -95,21 +95,7 @@ export default function CollectionStatsCard({
   ];
 
   return (
-    <BoxComponent tabs>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mb={"14px"}
-        height={"28px"}
-      >
-        <Typography
-          variant={window.innerWidth < 600 ? "h6" : "h4"}
-          fontWeight={"bold"}
-        >
-          {title}
-        </Typography>
-      </Box>
+    <BoxComponent tabs title={title}>
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
           <PercentageBarChart graphData={graphData} />
