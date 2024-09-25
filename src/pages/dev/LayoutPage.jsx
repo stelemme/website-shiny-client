@@ -5,6 +5,7 @@ import QuizIcon from "@mui/icons-material/Quiz";
 import PageComponent from "../../components/General/PageComponent";
 import LoadingComponent from "../../components/General/LoadingComponent";
 import UserSelect from "../../components/Selects/UserSelect";
+import BoxComponent from "../../components/General/BoxComponent";
 
 export default function LayoutPage() {
   return (
@@ -12,7 +13,9 @@ export default function LayoutPage() {
       <PageComponent
         title="LAYOUTPAGE"
         subtitle="Welcome to the dev layoutpage"
-      />
+      >
+        <BoxComponent title="Test Box" select={<UserSelect/>}/>
+      </PageComponent>
 
       <PageComponent
         title="LAYOUTPAGE"

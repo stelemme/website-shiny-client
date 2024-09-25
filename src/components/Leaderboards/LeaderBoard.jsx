@@ -49,30 +49,19 @@ export default function Leaderboard({
         ];
 
   return (
-    <BoxComponent>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        gap="10px"
-        alignItems="center"
-        mb={"14px"}
-        height={"28px"}
-      >
-        <Typography
-          variant={window.innerWidth < 600 ? "h5" : "h4"}
-          fontWeight={"bold"}
-        >
-          {title}
-        </Typography>
-        {selectBool && (
+    <BoxComponent
+      title={title}
+      select={
+        selectBool && (
           <GeneralSelect
             label={selectLabel}
             handleChange={handleChange}
             list={optionList}
             value={selectValue}
           />
-        )}
-      </Box>
+        )
+      }
+    >
       <Grid container spacing={"12px"}>
         <Grid item xs={12}>
           <LoadingComponent
@@ -116,7 +105,11 @@ export default function Leaderboard({
                           {item.trainer}
                         </Typography>
                       </Box>
-                      <Box display="flex" justifyContent={"space-between"} alignItems="center">
+                      <Box
+                        display="flex"
+                        justifyContent={"space-between"}
+                        alignItems="center"
+                      >
                         {timeValue && (
                           <Typography
                             fontWeight={"bold"}

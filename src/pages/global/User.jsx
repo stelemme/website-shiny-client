@@ -124,18 +124,7 @@ export default function User() {
     >
       <Grid container spacing={"20px"}>
         <Grid item xs={12}>
-          <BoxComponent>
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              mb={"14px"}
-              height={"28px"}
-            >
-              <Typography variant="h4" fontWeight={"bold"}>
-                TRAINER SPRITES
-              </Typography>
-            </Box>
+          <BoxComponent title={"TRAINER SPRITES"}>
             <BoxComponent p="10px" noContrastColor>
               <Grid container>
                 {Object.keys(trainerImages).map((item) => {
@@ -166,18 +155,7 @@ export default function User() {
         </Grid>
         {!trainerCheck && (
           <Grid item xs={12}>
-            <BoxComponent>
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                mb={"14px"}
-                height={"28px"}
-              >
-                <Typography variant="h4" fontWeight={"bold"}>
-                  TRAINER SETTINGS
-                </Typography>
-              </Box>
+            <BoxComponent title={"TRAINER SETTINGS"}>
               <BoxComponent p="10px" noContrastColor>
                 <Typography variant="h6" fontWeight={"bold"}>
                   DATA FILTERING

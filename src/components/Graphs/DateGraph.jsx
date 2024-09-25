@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 // mui imports
-import { Box, useTheme, Typography } from "@mui/material";
+import { useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 
 // Recharts
@@ -41,26 +41,20 @@ export default function DateGraph() {
     setYear(e.target.value);
   };
 
-  console.log(shinyData)
+  console.log(shinyData);
 
   return (
-    <BoxComponent>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mb={"14px"}
-      >
-        <Typography variant="h4" fontWeight={"bold"}>
-          SHINY DATE GRAPH
-        </Typography>
+    <BoxComponent
+      title={"SHINY DATE GRAPH"}
+      select={
         <GeneralSelect
           label={"Year"}
           handleChange={handleChange}
           list={yearsList}
           value={year}
         />
-      </Box>
+      }
+    >
       <ResponsiveContainer
         width="100%"
         height={window.innerWidth < 500 ? 300 : 400}

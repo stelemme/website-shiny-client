@@ -601,19 +601,9 @@ export default function GameStats() {
   };
 
   return (
-    <BoxComponent>
-      <Box
-        display="flex"
-        flexDirection={window.innerWidth < 500 ? "column" : "row"}
-        justifyContent="space-between"
-        alignItems={window.innerWidth < 500 ? "left" : "center"}
-        mb={"14px"}
-        height={window.innerWidth < 500 ? "60px" : "28px"}
-        gap={window.innerWidth < 500 ? "5px" : "0px"}
-      >
-        <Typography variant="h4" fontWeight={"bold"}>
-          GAME STATS
-        </Typography>
+    <BoxComponent
+      title={"GAME STATS"}
+      select={
         <Autocomplete
           size="small"
           autoHighlight
@@ -635,8 +625,8 @@ export default function GameStats() {
             />
           )}
         />
-      </Box>
-
+      }
+    >
       <Grid container spacing={"12px"}>
         <StatsDisplay data={["Joaquin", "Korneel", "Simon", "Stef"]} />
       </Grid>

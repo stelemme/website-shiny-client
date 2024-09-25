@@ -53,10 +53,7 @@ export default function LatestShinies() {
   };
 
   return (
-    <BoxComponent>
-      <Typography variant="h4" fontWeight={"bold"} mb={"10px"}>
-        LATEST SHINY POKEMON
-      </Typography>
+    <BoxComponent title={"LATEST SHINY POKEMON"}>
       <Typography variant="h6" fontWeight={"bold"} mb={"10px"}>
         Your Latest Shiny
       </Typography>

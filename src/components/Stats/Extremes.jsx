@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 // mui imports
-import { Box, useTheme, Typography, Grid, Skeleton } from "@mui/material";
+import { useTheme, Grid, Skeleton } from "@mui/material";
 import { tokens } from "../../theme";
 
 // Components imports
@@ -125,22 +125,16 @@ export default function Extremes() {
   };
 
   return (
-    <BoxComponent>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mb={"14px"}
-      >
-        <Typography variant="h4" fontWeight={"bold"}>
-          USER STATISTICS
-        </Typography>
+    <BoxComponent
+      title={"USER STATISTICS"}
+      select={
         <UserSelect
           label={"User"}
           handleChange={handleChange}
           defaultValue={trainer}
         />
-      </Box>
+      }
+    >
       <Grid container spacing={"8px"}>
         {/* Left side grid - first half */}
         <Grid item xs={12} xl={6} container spacing={"8px"}>

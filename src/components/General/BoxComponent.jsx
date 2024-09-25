@@ -1,9 +1,11 @@
 // mui imports
-import { Box, useTheme } from "@mui/material";
+import { Box, useTheme, Typography } from "@mui/material";
 import { tokens } from "../../theme";
 
 export default function BoxComponent({
   children,
+  title = null,
+  select = null,
   noContrastColor = false,
   tabs = false,
   p = "20px",
@@ -51,6 +53,23 @@ export default function BoxComponent({
       onMouseLeave={onMouseLeave}
       sx={sx}
     >
+      {title && (
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          gap="10px"
+          mb={"14px"}
+        >
+          <Typography
+            variant={window.innerWidth < 600 ? "h5" : "h4"}
+            fontWeight={"bold"}
+          >
+            {title}
+          </Typography>
+          {select}
+        </Box>
+      )}
       {children}
     </Box>
   );

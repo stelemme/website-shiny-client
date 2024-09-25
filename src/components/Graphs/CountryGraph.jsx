@@ -1,7 +1,7 @@
 import { useCookies } from "react-cookie";
 
 // mui imports
-import { Box, useTheme, Typography } from "@mui/material";
+import { useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 
 // Recharts
@@ -32,17 +32,7 @@ export default function CountryGraph() {
   );
 
   return (
-    <BoxComponent noContrastColor>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mb={"14px"}
-      >
-        <Typography variant="h4" fontWeight={"bold"}>
-          COUNTRY GRAPH
-        </Typography>
-      </Box>
+    <BoxComponent noContrastColor title={"COUNTRY GRAPH"}>
       <ResponsiveContainer
         width="100%"
         height={window.innerWidth < 600 ? 300 : 400}
