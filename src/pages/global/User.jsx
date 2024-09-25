@@ -4,7 +4,6 @@ import { useCookies } from "react-cookie";
 
 // mui imports
 import {
-  Box,
   Grid,
   Typography,
   FormGroup,
