@@ -19,7 +19,16 @@ export default function MapRecords() {
   );
   const userStats = userStatsData?.data[0];
 
+  const { isLoading: columbusLoading, data: columbusData } =
+    useShiny(`geoLocation=columbus`);
+  const columbus = columbusData?.data[0];
+
   const stats = [
+    {
+      data: columbus?.trainer,
+      dataStat: (columbus?.distance / 1000).toFixed(0) + " km",
+      statName: "Columbus",
+    },
     {
       data: userStats?.toerist.name,
       dataStat: userStats?.toerist.data,
@@ -52,12 +61,22 @@ export default function MapRecords() {
     },
     {
       data: userStats?.polarBear.name,
-      dataStat: userStats?.polarBear.data,
+      dataStat:
+        "N " +
+        userStats?.polarBear.data.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }),
       statName: "Polar Bear",
     },
     {
       data: userStats?.penguin.name,
-      dataStat: userStats?.penguin.data,
+      dataStat:
+        "N " +
+        userStats?.penguin.data.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }),
       statName: "Penguin",
     },
   ];
@@ -71,7 +90,7 @@ export default function MapRecords() {
             return (
               <Grid item xs={12} key={stat.statName}>
                 <LoadingComponent
-                  loadingCondition={userStatsLoading}
+                  loadingCondition={userStatsLoading && columbusLoading}
                   skeleton={
                     <Skeleton
                       sx={{

@@ -35,7 +35,7 @@ export default function CountryGraph() {
     <BoxComponent noContrastColor title={"COUNTRY GRAPH"}>
       <ResponsiveContainer
         width="100%"
-        height={window.innerWidth < 600 ? 300 : 400}
+        height={window.innerWidth < 600 ? 300 : 450}
       >
         <ComposedChart
           data={shinyData?.data}

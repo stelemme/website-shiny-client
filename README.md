@@ -5,8 +5,15 @@
 ### Version 1.20.0 (20.09.2024)
 
 **Map:**
+
 - Vult terug volledige pagina.
 - Grafiek met buitenlandse shinies toegevoegd aan mapstats
+- Map records zijn toegevoegd aan de mapstats
+
+**Counter Stats:**
+
+- Online stat toegevoegd met tijd sinds laatste keer gehunt
+- Basic tooltips toegevoegd voor tijd stats
 
 ---
 

@@ -11,10 +11,10 @@ export default function MapStats() {
     <BoxComponent tabs>
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
-          <CountryGraph />
+          <MapRecords />
         </Grid>
         <Grid item xs={12} md={6}>
-          <MapRecords />
+          <CountryGraph />
         </Grid>
       </Grid>
     </BoxComponent>
