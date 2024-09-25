@@ -1,9 +1,8 @@
-import { Fragment } from "react";
-
 // Mui
-import { Typography, Box } from "@mui/material";
+import { Box } from "@mui/material";
 
 // Components
+import BoxComponent from "../General/BoxComponent";
 import LoadingComponent from "../General/LoadingComponent";
 import CounterCard from "../Cards/CounterCard";
 
@@ -21,17 +20,7 @@ export default function CounterSearchDisplay({ pokemon }) {
   const data = shinyData?.data.concat(counterData?.data);
 
   return (
-    <>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        height="21px"
-      >
-        <Typography variant="h5" fontWeight={"bold"}>
-          COUNTERS
-        </Typography>
-      </Box>
+    <BoxComponent noContrastColor p="" title={"COUNTERS"}>
       <LoadingComponent
         loadingCondition={shinyLoading && counterLoading}
         errorCondition={!shinyData?.data.length && !counterData?.data.length}
@@ -51,21 +40,19 @@ export default function CounterSearchDisplay({ pokemon }) {
               return null;
             }
             return (
-              <Fragment key={item?._id}>
-                <Box mt={"20px"}>
-                  <CounterCard
-                    id={item._id}
-                    name={item.name}
-                    gameSprite={item.sprite.game}
-                    count={item?.totalEncounters}
-                    trainer={item.trainer}
-                    query={item.origin ? "" : "?completed=true"}
-                  />
-                </Box>
-              </Fragment>
+              <Box mt={"20px"} key={item?._id}>
+                <CounterCard
+                  id={item._id}
+                  name={item.name}
+                  gameSprite={item.sprite.game}
+                  count={item?.totalEncounters}
+                  trainer={item.trainer}
+                  query={item.origin ? "" : "?completed=true"}
+                />
+              </Box>
             );
           })}
       </LoadingComponent>
-    </>
+    </BoxComponent>
   );
 }

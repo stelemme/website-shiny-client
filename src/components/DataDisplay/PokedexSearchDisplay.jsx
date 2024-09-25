@@ -1,7 +1,8 @@
 // Mui
-import { Typography, Box, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 
 // Components
+import BoxComponent from "../General/BoxComponent";
 import LoadingComponent from "../General/LoadingComponent";
 import PokedexCard from "../Cards/PokedexCard";
 
@@ -16,23 +17,13 @@ export default function PokedexSearchDisplay({ pokemon }) {
   const data = pokemonData?.data;
 
   return (
-    <>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        height="21px"
+    <BoxComponent noContrastColor p="" title={"POKEMON"}>
+      <LoadingComponent
+        loadingCondition={pokemonLoading}
+        errorCondition={!pokemonData?.data.length}
+        errorText="No Pokémons Found"
       >
-        <Typography variant="h5" fontWeight={"bold"}>
-          POKEMON
-        </Typography>
-      </Box>
-      <Grid container spacing={2}>
-        <LoadingComponent
-          loadingCondition={pokemonLoading}
-          errorCondition={!pokemonData?.data.length}
-          errorText="No Pokémons Found"
-        >
+        <Grid container spacing={2}>
           {data
             ?.reduce((acc, item) => {
               acc.push(item);
@@ -51,8 +42,8 @@ export default function PokedexSearchDisplay({ pokemon }) {
                 </Grid>
               );
             })}
-        </LoadingComponent>
-      </Grid>
-    </>
+        </Grid>
+      </LoadingComponent>
+    </BoxComponent>
   );
 }

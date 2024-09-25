@@ -1,7 +1,8 @@
 // Mui
-import { Typography, Box } from "@mui/material";
+import { Box } from "@mui/material";
 
 // Components
+import BoxComponent from "../General/BoxComponent";
 import LoadingComponent from "../General/LoadingComponent";
 import ShinyCardEvolutions from "../Cards/ShinyCardEvolutions";
 
@@ -16,17 +17,7 @@ export default function ShinySearchDisplay({ pokemon }) {
   const data = shinyData?.data;
 
   return (
-    <>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        height="21px"
-      >
-        <Typography variant="h5" fontWeight={"bold"}>
-          SHINIES
-        </Typography>
-      </Box>
+    <BoxComponent noContrastColor p="" title={"SHINIES"}>
       <LoadingComponent
         loadingCondition={shinyLoading}
         errorCondition={!shinyData?.data.length}
@@ -61,6 +52,6 @@ export default function ShinySearchDisplay({ pokemon }) {
             );
           })}
       </LoadingComponent>
-    </>
+    </BoxComponent>
   );
 }
