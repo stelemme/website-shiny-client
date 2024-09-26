@@ -235,7 +235,7 @@ export default function Counter() {
       const response = await makeRequest(
         "patch",
         `/counters/${counterId}?action=add`,
-        { meanEncounterTime: timeDifference },
+        { meanEncounterTime: timeDifference, percentage: percentage },
         null,
         true
       );
