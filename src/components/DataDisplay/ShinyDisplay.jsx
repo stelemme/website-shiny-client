@@ -186,6 +186,7 @@ export default function CompleteShinyCard({
                 gameSort={data.gameSort}
                 ball={data.sprite.ball}
                 genderDifference={data.genderDifference}
+                back
               />
             </Grid>
 

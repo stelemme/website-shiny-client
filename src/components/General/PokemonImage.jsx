@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 
 export default function PokemonImage({
@@ -7,6 +7,7 @@ export default function PokemonImage({
   gameSort,
   genderDifference,
   shiny = false,
+  back = false,
   width = "100%",
 }) {
   const [cookies] = useCookies([
@@ -16,6 +17,10 @@ export default function PokemonImage({
 
   if (genderDifference) {
     sprite += "-f";
+  }
+
+  if (back) {
+    sprite = "back/" + sprite;
   }
 
   const parentDirectory = shiny ? "pokemon-shiny" : "pokemon";
@@ -36,6 +41,7 @@ export default function PokemonImage({
     : [
         `https://raw.githubusercontent.com/stelemme/database-pokemon/main/${parentDirectory}/gen-all-home/${sprite}.png`,
       ];
+
   const [currentSrc, setCurrentSrc] = useState(
     `https://raw.githubusercontent.com/stelemme/database-pokemon/main/${parentDirectory}/${directory}${
       animated ? "/animated" : ""
@@ -49,6 +55,14 @@ export default function PokemonImage({
       setFallbackIndex(fallbackIndex + 1);
     }
   };
+
+  useEffect(() => {
+    setCurrentSrc(
+      `https://raw.githubusercontent.com/stelemme/database-pokemon/main/${parentDirectory}/${directory}${
+        animated ? "/animated" : ""
+      }/${sprite}.png`
+    );
+  }, [parentDirectory, directory, animated, sprite]);
 
   return (
     <img

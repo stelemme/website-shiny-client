@@ -1,5 +1,8 @@
+import { useState } from "react";
+
 // Mui
-import { Grid } from "@mui/material";
+import { Grid, IconButton } from "@mui/material";
+import LoopIcon from "@mui/icons-material/Loop";
 
 // Components
 import PokemonImage from "../General/PokemonImage";
@@ -9,8 +12,11 @@ export default function ImageDisplay({
   sprite,
   gameSort,
   genderDifference,
-  ball = false,
+  back = false,
+  ball = null,
 }) {
+  const [backToggle, setBackToggle] = useState(false);
+
   return (
     <Grid container>
       <Grid item xs={6}>
@@ -21,6 +27,7 @@ export default function ImageDisplay({
             gameSort={gameSort}
             genderDifference={genderDifference}
             shiny
+            back={backToggle}
           />
           {ball && (
             <img
@@ -38,12 +45,29 @@ export default function ImageDisplay({
         </div>
       </Grid>
       <Grid item xs={6}>
-        <PokemonImage
-          directory={directory}
-          sprite={sprite}
-          gameSort={gameSort}
-          genderDifference={genderDifference}
-        />
+        <div style={{ position: "relative" }}>
+          <PokemonImage
+            directory={directory}
+            sprite={sprite}
+            gameSort={gameSort}
+            genderDifference={genderDifference}
+            back={backToggle}
+          />
+          {back && (
+            <IconButton
+              style={{
+                imageRendering: "pixelated",
+                position: "absolute",
+                top: 0,
+                right: 0,
+              }}
+              size="small"
+              onClick={() => setBackToggle((prevStat) => !prevStat)}
+            >
+              <LoopIcon />
+            </IconButton>
+          )}
+        </div>
       </Grid>
     </Grid>
   );
