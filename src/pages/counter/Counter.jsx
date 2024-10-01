@@ -794,10 +794,11 @@ export default function Counter() {
                   <DialogContent>
                     <PokemonImage
                       directory={data.sprite.dir}
-                      sprite={data.sprite.pokemon}
+                      initSprite={data.sprite.pokemon}
                       gameSort={data.gameSort}
                       genderDifference={false}
                       shiny
+                      backBool={false}
                     />
                     <Grid container>
                       <Grid item xs={12} mb={"5px"}>

@@ -29,18 +29,20 @@ export default function EvolutionsDisplay({ evolutions, directory, gameSort }) {
             <Grid item xs={6} key={item?._id}>
               <PokemonImage
                 directory={directory}
-                sprite={item.sprite}
+                initSprite={item.sprite}
                 gameSort={gameSort}
                 genderDifference={item.genderDifference}
                 shiny
                 width="50%"
+                backBool={false}
               />
               <PokemonImage
                 directory={directory}
-                sprite={item.sprite}
+                initSprite={item.sprite}
                 gameSort={gameSort}
                 genderDifference={item.genderDifference}
                 width="50%"
+                backBool={false}
               />
             </Grid>
           );

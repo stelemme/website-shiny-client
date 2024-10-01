@@ -6,7 +6,7 @@ import PokemonImage from "../General/PokemonImage";
 
 export default function FormDisplay({ forms, directory, gameSort }) {
   if (forms.length === 0) {
-    return null
+    return null;
   }
 
   return (
@@ -29,16 +29,18 @@ export default function FormDisplay({ forms, directory, gameSort }) {
             <Grid item xs={6} key={item._id}>
               <PokemonImage
                 directory={directory}
-                sprite={item.sprite}
+                initSprite={item.sprite}
                 gameSort={gameSort}
                 shiny
                 width="50%"
+                backBool={false}
               />
               <PokemonImage
                 directory={directory}
-                sprite={item.sprite}
+                initSprite={item.sprite}
                 gameSort={gameSort}
                 width="50%"
+                backBool={false}
               />
             </Grid>
           );

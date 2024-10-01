@@ -23,7 +23,7 @@ export default function ImageDisplay({
         <div style={{ position: "relative" }}>
           <PokemonImage
             directory={directory}
-            sprite={sprite}
+            initSprite={sprite}
             gameSort={gameSort}
             genderDifference={genderDifference}
             shiny
@@ -48,10 +48,10 @@ export default function ImageDisplay({
         <div style={{ position: "relative" }}>
           <PokemonImage
             directory={directory}
-            sprite={sprite}
+            initSprite={sprite}
             gameSort={gameSort}
             genderDifference={genderDifference}
-            back={backToggle}
+            backBool={backToggle}
           />
           {back && (
             <IconButton
