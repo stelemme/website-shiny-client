@@ -1,24 +1,27 @@
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 
+// Recoil
+import { useRecoilValue } from "recoil";
+import { backToggle } from "../../utils/atoms";
+
 export default function PokemonImage({
   directory,
   initSprite,
   gameSort,
   genderDifference,
-  backBool,
   shiny = false,
-  width = "100%",
 }) {
   const [cookies] = useCookies([
     "animatedSpriteDisplayPreGen8",
     "animatedSpriteDisplayPostGen8",
   ]);
+  const backBool = useRecoilValue(backToggle);
 
   const [parentDir, setParentDir] = useState("pokemon");
   const [dir, setDir] = useState("/" + directory);
   const [animated, setAnimated] = useState("");
-  const [back, setBack] = useState(backBool ? "/back" : "");
+  const [back, setBack] = useState(backBool && gameSort <= 20 ? "/back" : "");
   const [sprite, setSprite] = useState("/" + initSprite);
 
   useEffect(() => {
@@ -34,11 +37,11 @@ export default function PokemonImage({
       (gameSort < 31 && cookies.animatedSpriteDisplayPreGen8) ||
       cookies.animatedSpriteDisplayPostGen8;
     setAnimated(shouldAnimate ? "/animated" : "");
-  }, [gameSort, cookies]);
+  }, [gameSort, cookies, backBool]);
 
   useEffect(() => {
-    setBack(backBool ? "/back" : "");
-  }, [backBool]);
+    setBack(backBool && gameSort <= 20 ? "/back" : "");
+  }, [backBool, gameSort]);
 
   useEffect(() => {
     setSprite(genderDifference ? `/${initSprite}-f` : `/${initSprite}`);
@@ -46,7 +49,12 @@ export default function PokemonImage({
 
   const imageRendering = gameSort < 29 ? "pixelated" : "auto";
 
-  const handleError = () => {
+  const handleError = (e) => {
+    console.error(
+      `Image failed to load https://raw.githubusercontent.com/stelemme/database-pokemon/main/${parentDir}${dir}${animated}${back}${sprite}.png):`,
+      e
+    );
+
     if (animated) {
       setAnimated("");
     } else {
@@ -54,14 +62,29 @@ export default function PokemonImage({
     }
   };
 
-  console.log(`https://raw.githubusercontent.com/stelemme/database-pokemon/main/${parentDir}${dir}${animated}${back}${sprite}.png`)
-
   return (
-    <img
-      src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/${parentDir}${dir}${animated}${back}${sprite}.png`}
-      onError={handleError}
-      alt={`Pokémon sprite of ${initSprite}`}
-      style={{ width: width, imageRendering: imageRendering }}
-    />
+    <div
+      style={{
+        width: "100%",
+        paddingTop: "100%",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      <img
+        src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/${parentDir}${dir}${animated}${back}${sprite}.png`}
+        onError={handleError}
+        alt={`Pokémon sprite of ${initSprite}`}
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: "100%",
+          maxHeight: "100%",
+          imageRendering: imageRendering,
+        }}
+      />
+    </div>
   );
 }

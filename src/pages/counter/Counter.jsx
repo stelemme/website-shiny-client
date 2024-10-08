@@ -798,7 +798,6 @@ export default function Counter() {
                       gameSort={data.gameSort}
                       genderDifference={false}
                       shiny
-                      backBool={false}
                     />
                     <Grid container>
                       <Grid item xs={12} mb={"5px"}>

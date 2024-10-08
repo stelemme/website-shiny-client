@@ -1,5 +1,10 @@
+// Recoil
+import { useSetRecoilState } from "recoil";
+import { backToggle } from "../../utils/atoms";
+
 // Mui
-import { Box, Typography, Grid } from "@mui/material";
+import { Box, Typography, Grid, IconButton } from "@mui/material";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
 
 // Components
 import BoxComponent from "../General/BoxComponent";
@@ -32,6 +37,7 @@ const dirMapping = {
 export default function AllSpritesDisplay({ pokemon, sprite, id }) {
   const { data: games } = useGame(`pokemonFilter=${pokemon}`, pokemon);
   const gamesList = games?.data;
+  const setBackToggle = useSetRecoilState(backToggle);
 
   return (
     <Grid container spacing={2}>
@@ -45,6 +51,14 @@ export default function AllSpritesDisplay({ pokemon, sprite, id }) {
           <Typography variant="h5" fontWeight={"bold"}>
             ALL GAME SPRITES
           </Typography>
+          <Box ml="10px" display="flex">
+            <IconButton
+              size="small"
+              onClick={() => setBackToggle((prevState) => !prevState)}
+            >
+              <AutorenewIcon />
+            </IconButton>
+          </Box>
         </Box>
       </Grid>
       {gamesList?.map((game) => {

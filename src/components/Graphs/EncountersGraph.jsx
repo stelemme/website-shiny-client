@@ -71,7 +71,7 @@ export default function EncountersGraph() {
         <ComposedChart
           data={shinyData?.data}
           margin={{
-            top: 0,
+            top: 10,
             right: 0,
             bottom: 30,
             left: 0,
@@ -102,9 +102,8 @@ export default function EncountersGraph() {
                   }
                 : null
             }
-            domain={[0, () => 40]}
             tick={{ fill: colors.grey[100] }}
-            tickCount={9}
+            tickCount={10}
             width={window.innerWidth > 500 ? 60 : 25}
           />
           <Tooltip

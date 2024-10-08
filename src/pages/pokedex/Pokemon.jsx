@@ -1,9 +1,21 @@
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 
+// Recoil
+import { useSetRecoilState } from "recoil";
+import { backToggle } from "../../utils/atoms";
+
 // Mui
-import { Box, Typography, useTheme, Grid, Divider } from "@mui/material";
+import {
+  Box,
+  Typography,
+  useTheme,
+  Grid,
+  Divider,
+  IconButton,
+} from "@mui/material";
 import { tokens } from "../../theme";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
 
 // Components
 import PokemonImageDisplay from "../../components/DataDisplay/PokemonImageDisplay";
@@ -21,6 +33,7 @@ export default function Pokemon() {
   const { pokemonId } = useParams();
   const [searchParams] = useSearchParams();
   const getRequest = useGetRequest();
+  const setBackToggle = useSetRecoilState(backToggle);
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -70,6 +83,14 @@ export default function Pokemon() {
             <Typography variant="h3" color={colors.grey[100]} fontWeight="bold">
               {pokemonData.name}
             </Typography>
+            <Box ml="10px" display="flex">
+              <IconButton
+                size="small"
+                onClick={() => setBackToggle((prevState) => !prevState)}
+              >
+                <AutorenewIcon />
+              </IconButton>
+            </Box>
           </Box>
           <Grid container spacing={2}>
             <Grid item xs={12}>

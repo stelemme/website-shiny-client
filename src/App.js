@@ -4,15 +4,18 @@ import {
   RouterProvider,
   ScrollRestoration,
   redirect,
+  useLocation,
 } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
-import { useRecoilValue } from "recoil";
-import { sidebarCollapse } from "./utils/atoms";
 import { useState, useEffect } from "react";
 import { QueryClientProvider, QueryClient } from "react-query";
 import axios from "axios";
 import "leaflet/dist/leaflet.css";
 import { CookiesProvider, useCookies } from "react-cookie";
+
+// Recoil
+import { useRecoilValue, useResetRecoilState } from "recoil";
+import { sidebarCollapse, backToggle } from "./utils/atoms";
 
 // Firebase imports
 import { onAuthStateChanged } from "firebase/auth";
@@ -192,6 +195,8 @@ export default function App() {
 
 function Layout() {
   const [theme, colorMode] = useMode();
+  const resetBackToggel = useResetRecoilState(backToggle);
+  const location = useLocation();
 
   const queryClient = new QueryClient();
 
@@ -273,6 +278,11 @@ function Layout() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  useEffect(() => {
+    // Reset the Recoil state whenever the route changes
+    resetBackToggel();
+  }, [location, resetBackToggel]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>

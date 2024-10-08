@@ -33,14 +33,12 @@ export default function FormDisplay({ forms, directory, gameSort }) {
                 gameSort={gameSort}
                 shiny
                 width="50%"
-                backBool={false}
               />
               <PokemonImage
                 directory={directory}
                 initSprite={item.sprite}
                 gameSort={gameSort}
                 width="50%"
-                backBool={false}
               />
             </Grid>
           );
