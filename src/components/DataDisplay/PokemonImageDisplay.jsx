@@ -9,7 +9,7 @@ export default function ImageDisplay({
   sprite,
   gameSort,
   genderDifference,
-  ball = false,
+  ball = null,
 }) {
   return (
     <Grid container>
@@ -17,7 +17,7 @@ export default function ImageDisplay({
         <div style={{ position: "relative" }}>
           <PokemonImage
             directory={directory}
-            sprite={sprite}
+            initSprite={sprite}
             gameSort={gameSort}
             genderDifference={genderDifference}
             shiny
@@ -40,7 +40,7 @@ export default function ImageDisplay({
       <Grid item xs={6}>
         <PokemonImage
           directory={directory}
-          sprite={sprite}
+          initSprite={sprite}
           gameSort={gameSort}
           genderDifference={genderDifference}
         />

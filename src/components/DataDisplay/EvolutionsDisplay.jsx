@@ -26,22 +26,24 @@ export default function EvolutionsDisplay({ evolutions, directory, gameSort }) {
       <Grid item xs={12} container>
         {evolutions.map((item) => {
           return (
-            <Grid item xs={6} key={item?._id}>
-              <PokemonImage
-                directory={directory}
-                sprite={item.sprite}
-                gameSort={gameSort}
-                genderDifference={item.genderDifference}
-                shiny
-                width="50%"
-              />
-              <PokemonImage
-                directory={directory}
-                sprite={item.sprite}
-                gameSort={gameSort}
-                genderDifference={item.genderDifference}
-                width="50%"
-              />
+            <Grid item xs={6} key={item?._id} container>
+              <Grid item xs={6}>
+                <PokemonImage
+                  directory={directory}
+                  initSprite={item.sprite}
+                  gameSort={gameSort}
+                  genderDifference={item.genderDifference}
+                  shiny
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <PokemonImage
+                  directory={directory}
+                  initSprite={item.sprite}
+                  gameSort={gameSort}
+                  genderDifference={item.genderDifference}
+                />
+              </Grid>
             </Grid>
           );
         })}

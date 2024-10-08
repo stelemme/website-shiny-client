@@ -235,7 +235,7 @@ export default function Counter() {
       const response = await makeRequest(
         "patch",
         `/counters/${counterId}?action=add`,
-        { meanEncounterTime: timeDifference },
+        { meanEncounterTime: timeDifference, percentage: percentage },
         null,
         true
       );
@@ -794,7 +794,7 @@ export default function Counter() {
                   <DialogContent>
                     <PokemonImage
                       directory={data.sprite.dir}
-                      sprite={data.sprite.pokemon}
+                      initSprite={data.sprite.pokemon}
                       gameSort={data.gameSort}
                       genderDifference={false}
                       shiny

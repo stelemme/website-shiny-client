@@ -1,61 +1,90 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+
+// Recoil
+import { useRecoilValue } from "recoil";
+import { backToggle } from "../../utils/atoms";
 
 export default function PokemonImage({
   directory,
-  sprite,
+  initSprite,
   gameSort,
   genderDifference,
   shiny = false,
-  width = "100%",
 }) {
   const [cookies] = useCookies([
     "animatedSpriteDisplayPreGen8",
     "animatedSpriteDisplayPostGen8",
   ]);
+  const backBool = useRecoilValue(backToggle);
 
-  if (genderDifference) {
-    sprite += "-f";
-  }
+  const [parentDir, setParentDir] = useState("pokemon");
+  const [dir, setDir] = useState("/" + directory);
+  const [animated, setAnimated] = useState("");
+  const [back, setBack] = useState(backBool && gameSort <= 20 ? "/back" : "");
+  const [sprite, setSprite] = useState("/" + initSprite);
 
-  const parentDirectory = shiny ? "pokemon-shiny" : "pokemon";
-  const animated =
-    gameSort < 31 && cookies.animatedSpriteDisplayPreGen8
-      ? true
-      : cookies.animatedSpriteDisplayPostGen8
-      ? true
-      : false;
+  useEffect(() => {
+    setParentDir(shiny ? "pokemon-shiny" : "pokemon");
+  }, [shiny]);
+
+  useEffect(() => {
+    setDir("/" + directory);
+  }, [directory]);
+
+  useEffect(() => {
+    const shouldAnimate =
+      (gameSort < 31 && cookies.animatedSpriteDisplayPreGen8) ||
+      cookies.animatedSpriteDisplayPostGen8;
+    setAnimated(shouldAnimate ? "/animated" : "");
+  }, [gameSort, cookies, backBool]);
+
+  useEffect(() => {
+    setBack(backBool && gameSort <= 20 ? "/back" : "");
+  }, [backBool, gameSort]);
+
+  useEffect(() => {
+    setSprite(genderDifference ? `/${initSprite}-f` : `/${initSprite}`);
+  }, [initSprite, genderDifference]);
 
   const imageRendering = gameSort < 29 ? "pixelated" : "auto";
 
-  const fallbacks = animated
-    ? [
-        `https://raw.githubusercontent.com/stelemme/database-pokemon/main/${parentDirectory}/${directory}/${sprite}.png`,
-        `https://raw.githubusercontent.com/stelemme/database-pokemon/main/${parentDirectory}/gen-all-home/${sprite}.png`,
-      ]
-    : [
-        `https://raw.githubusercontent.com/stelemme/database-pokemon/main/${parentDirectory}/gen-all-home/${sprite}.png`,
-      ];
-  const [currentSrc, setCurrentSrc] = useState(
-    `https://raw.githubusercontent.com/stelemme/database-pokemon/main/${parentDirectory}/${directory}${
-      animated ? "/animated" : ""
-    }/${sprite}.png`
-  );
-  const [fallbackIndex, setFallbackIndex] = useState(0);
+  const handleError = (e) => {
+    console.error(
+      `Image failed to load https://raw.githubusercontent.com/stelemme/database-pokemon/main/${parentDir}${dir}${animated}${back}${sprite}.png):`,
+      e
+    );
 
-  const handleError = () => {
-    if (fallbackIndex < fallbacks.length) {
-      setCurrentSrc(fallbacks[fallbackIndex]);
-      setFallbackIndex(fallbackIndex + 1);
+    if (animated) {
+      setAnimated("");
+    } else {
+      setDir("/gen-all-home");
     }
   };
 
   return (
-    <img
-      src={currentSrc}
-      onError={handleError}
-      alt={sprite}
-      style={{ width: width, imageRendering: imageRendering }}
-    />
+    <div
+      style={{
+        width: "100%",
+        paddingTop: "100%",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      <img
+        src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/${parentDir}${dir}${animated}${back}${sprite}.png`}
+        onError={handleError}
+        alt={`Pokémon sprite of ${initSprite}`}
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: "100%",
+          maxHeight: "100%",
+          imageRendering: imageRendering,
+        }}
+      />
+    </div>
   );
 }

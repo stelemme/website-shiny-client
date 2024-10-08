@@ -1,28 +1,40 @@
-import { atom } from "recoil"
+import { atom } from "recoil";
 
 const sidebarToggle = atom({
-  key: 'sidebarToggle',
+  key: "sidebarToggle",
   default: false,
-})
+});
 
 const sidebarCollapse = atom({
-  key: 'sidebarCollapse',
+  key: "sidebarCollapse",
   default: false,
-})
+});
 
 const alertOpen = atom({
-  key: 'alertOpen',
+  key: "alertOpen",
   default: false,
-})
+});
 
 const alertSeverity = atom({
-  key: 'alertSeverity',
+  key: "alertSeverity",
   default: "success",
-})
+});
 
 const alertMessage = atom({
-  key: 'alertMessage',
+  key: "alertMessage",
   default: "Everything works fine!",
-})
+});
 
-export { sidebarToggle, sidebarCollapse, alertOpen, alertSeverity, alertMessage }
+const backToggle = atom({
+  key: "backToggle",
+  default: false,
+});
+
+export {
+  sidebarToggle,
+  sidebarCollapse,
+  alertOpen,
+  alertSeverity,
+  alertMessage,
+  backToggle,
+};

@@ -9,7 +9,10 @@ import { useShiny, useCounter } from "../../hooks/useData";
 import { useMakeRequest, useGetRequest } from "../../hooks/useAxios";
 
 // Functions
-import { calculateMeanEncounterTime } from "../../functions/statFunctions";
+import {
+  calculateMeanEncounterTime,
+  calculatePercentage,
+} from "../../functions/statFunctions";
 
 export default function DataManipulation() {
   const makeRequest = useMakeRequest();
@@ -93,7 +96,7 @@ export default function DataManipulation() {
         element.increment
       );
 
-      console.log(element.name, meanEncounterTime)
+      console.log(element.name, meanEncounterTime);
 
       const url = `/counters/${element._id}?action=meanEncounterTime`;
 
@@ -107,35 +110,31 @@ export default function DataManipulation() {
       } catch (error) {
         return;
       }
+    });
+  };
 
-      /* await element.evolutions.forEach(async (element2) => {
-        let genderDifference = false;
+  const handlePercentageClick = async (e) => {
+    await counterData.data.forEach(async (element) => {
+      console.log(element);
+      const percentage = calculatePercentage(
+        element.totalEncounters,
+        element.method.odds,
+        element.method.rolls,
+        element.method.shinyCharm,
+        element.method?.charmRolls,
+        element.method?.function,
+        element.method?.searchLevel
+      );
 
-        try {
-          const response = await getRequest(`/pokedex?name=${element2.name}`);
-          const pokemonData = response[0];
+      console.log(element.name, percentage);
 
-          if (pokemonData.genderDifference && element.gender === "female") {
-            genderDifference = true;
-          }
-        } catch {
-          return;
-        }
+      const url = `/counters/${element._id}?action=percentage`;
 
-        const url = `/shiny/${element._id}?action=genderDifferenceEvolution&evoId=${element2._id}`;
-
-        try {
-          await makeRequest(
-            "patch",
-            url,
-            { genderDifference: genderDifference },
-            "edit"
-          );
-          completedManipulations += 1;
-        } catch (error) {
-          return;
-        }
-      }); */
+      try {
+        await makeRequest("patch", url, { percentage: percentage }, "edit");
+      } catch (error) {
+        return;
+      }
     });
   };
 
@@ -163,6 +162,16 @@ export default function DataManipulation() {
         onClick={handleMeanEncTimeClick}
       >
         Add meanEncounterTime
+      </Button>
+      <Button
+        type="submit"
+        variant="contained"
+        color="neutral"
+        sx={{ mb: "10px" }}
+        style={{ color: "white" }}
+        onClick={handlePercentageClick}
+      >
+        Add percentage
       </Button>
     </PageComponent>
   );

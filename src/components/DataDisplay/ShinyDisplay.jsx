@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+// Recoil
+import { useSetRecoilState } from "recoil";
+import { backToggle } from "../../utils/atoms";
+
 // Mui
 import {
   Box,
@@ -14,6 +18,7 @@ import { tokens } from "../../theme";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import CalculateOutlinedIcon from "@mui/icons-material/CalculateOutlined";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
 
 // Components
 import CustomDialog from "../../components/Dialogs/CustomDialog";
@@ -42,6 +47,7 @@ export default function CompleteShinyCard({
   const navigate = useNavigate();
   const makeRequest = useMakeRequest();
   const getRequest = useGetRequest();
+  const setBackToggle = useSetRecoilState(backToggle);
 
   const [data, setData] = useState(initialData);
   const [openDelete, setOpenDelete] = useState(false);
@@ -118,6 +124,14 @@ export default function CompleteShinyCard({
               {data.name.toUpperCase()} {count ? `(${index + 1}/${count})` : ""}
             </Typography>
             <Box ml="10px" display="flex">
+              {data.gameSort <= 20 && (
+                <IconButton
+                  size="small"
+                  onClick={() => setBackToggle((prevState) => !prevState)}
+                >
+                  <AutorenewIcon />
+                </IconButton>
+              )}
               {username === data.trainer && (
                 <IconButton size="small" onClick={handleEvolutionOpen}>
                   <FileUploadIcon />
