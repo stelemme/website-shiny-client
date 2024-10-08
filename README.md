@@ -2,6 +2,13 @@
 
 ## Changelogs
 
+### Version 1.21.0 (08.10.2024)
+
+**Sprites:**
+- Backsprites kunnen nu worden aan en uitgezet bij shiny pokemon en in pokedex
+
+---
+
 ### Version 1.20.0 (25.09.2024)
 
 **Map:**
