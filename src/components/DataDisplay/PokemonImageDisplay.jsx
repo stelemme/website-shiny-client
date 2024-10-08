@@ -27,7 +27,7 @@ export default function ImageDisplay({
             gameSort={gameSort}
             genderDifference={genderDifference}
             shiny
-            back={backToggle}
+            backBool={backToggle}
           />
           {ball && (
             <img
