@@ -10,7 +10,6 @@ import {
   Bar,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
@@ -47,17 +46,21 @@ export default function CountryGraph() {
           }}
           barGap={1}
         >
-          <CartesianGrid stroke={colors.primary[500]} />
           <XAxis
             dataKey="country"
             angle={-70}
-            interval={window.innerWidth < 800 ? null : 0}
-            tick={{ dy: 30, dx: -10, fill: colors.grey[100] }}
+            interval={0}
+            tick={{
+              dy: 10,
+              fill: colors.grey[100],
+              fontSize: window.innerWidth > 600 ? 12 : 10,
+              textAnchor: "end",
+            }}
           />
           <YAxis
             allowDecimals={false}
             label={
-              window.innerWidth > 500
+              window.innerWidth > 600
                 ? {
                     value: "Shinies",
                     angle: -90,
@@ -67,7 +70,7 @@ export default function CountryGraph() {
                 : null
             }
             tick={{ fill: colors.grey[100] }}
-            width={window.innerWidth > 500 ? 60 : 25}
+            width={window.innerWidth > 600 ? 60 : 25}
           />
           <Tooltip
             labelStyle={{ color: "black" }}
@@ -75,10 +78,26 @@ export default function CountryGraph() {
               return `${value}`;
             }}
           />
-          <Bar dataKey="Joaquin" fill={colors.redAccent[500]} />
-          <Bar dataKey="Korneel" fill={colors.yellowAccent[500]} />
-          <Bar dataKey="Simon" fill={colors.greenAccent[500]} />
-          <Bar dataKey="Stef" fill={colors.blueAccent[500]} />
+          <Bar
+            dataKey="Joaquin"
+            fill={colors.redAccent[500]}
+            background={{ fill: colors.primary[400] }}
+          />
+          <Bar
+            dataKey="Korneel"
+            fill={colors.yellowAccent[500]}
+            background={{ fill: colors.primary[400] }}
+          />
+          <Bar
+            dataKey="Simon"
+            fill={colors.greenAccent[500]}
+            background={{ fill: colors.primary[400] }}
+          />
+          <Bar
+            dataKey="Stef"
+            fill={colors.blueAccent[500]}
+            background={{ fill: colors.primary[400] }}
+          />
         </ComposedChart>
       </ResponsiveContainer>
     </BoxComponent>

@@ -1,3 +1,5 @@
+import { useCookies } from "react-cookie";
+
 // mui imports
 import { useTheme, Grid, Skeleton } from "@mui/material";
 import { tokens } from "../../theme";
@@ -13,14 +15,15 @@ import { useShiny } from "../../hooks/useData";
 export default function MapRecords() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [cookies] = useCookies(["travelFilter"]);
 
   const { isLoading: userStatsLoading, data: userStatsData } = useShiny(
-    `geoLocation=leaderboard`
+    `geoLocation=leaderboard&filter=${cookies.travelFilter}`
   );
   const userStats = userStatsData?.data[0];
 
   const { isLoading: columbusLoading, data: columbusData } =
-    useShiny(`geoLocation=columbus`);
+    useShiny(`geoLocation=columbus&filter=${cookies.travelFilter}`);
   const columbus = columbusData?.data[0];
 
   const stats = [
@@ -55,8 +58,12 @@ export default function MapRecords() {
       statName: "Danaïd’s barrel",
     },
     {
-      data: userStats?.passengerPrincess.name,
-      dataStat: userStats?.passengerPrincess.data,
+      data: userStats?.passengerPrincess?.name
+        ? userStats?.passengerPrincess.name
+        : "-",
+      dataStat: userStats?.passengerPrincess?.data
+        ? userStats?.passengerPrincess.data
+        : "-",
       statName: "Passenger Princess",
     },
     {
