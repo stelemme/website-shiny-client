@@ -34,6 +34,7 @@ export default function Pokemon() {
   const [searchParams] = useSearchParams();
   const getRequest = useGetRequest();
   const setBackToggle = useSetRecoilState(backToggle);
+  setBackToggle(false)
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);

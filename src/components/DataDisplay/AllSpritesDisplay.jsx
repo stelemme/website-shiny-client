@@ -38,6 +38,7 @@ export default function AllSpritesDisplay({ pokemon, sprite, id }) {
   const { data: games } = useGame(`pokemonFilter=${pokemon}`, pokemon);
   const gamesList = games?.data;
   const setBackToggle = useSetRecoilState(backToggle);
+  setBackToggle(false)
 
   return (
     <Grid container spacing={2}>
