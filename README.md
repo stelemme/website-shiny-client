@@ -2,6 +2,13 @@
 
 ## Changelogs
 
+### Version 1.21.1 (09.10.2024)
+
+**Bugfixes:**
+- Data caching werk terug
+
+---
+
 ### Version 1.21.0 (08.10.2024)
 
 **Sprites:**

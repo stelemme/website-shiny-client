@@ -48,6 +48,7 @@ export default function CompleteShinyCard({
   const makeRequest = useMakeRequest();
   const getRequest = useGetRequest();
   const setBackToggle = useSetRecoilState(backToggle);
+  setBackToggle(false)
 
   const [data, setData] = useState(initialData);
   const [openDelete, setOpenDelete] = useState(false);
