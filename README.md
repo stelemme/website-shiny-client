@@ -5,13 +5,19 @@
 ### Version 1.21.1 (09.10.2024)
 
 **Bugfixes:**
+
 - Data caching werk terug
+- Map records passen nu aan bij uitschakelen voertuigen
+- Landen zijn altijd in het engels bij Country graph en de landen blijven nu ook op kleine schermen staan
+- Bij het refreshen op een "stats" tab blijft hij hier nu op staan ipv terug te keren naar "data" tab
+- Laatste counters filteren nu enkel op gecounte shinies
 
 ---
 
 ### Version 1.21.0 (08.10.2024)
 
 **Sprites:**
+
 - Backsprites kunnen nu worden aan en uitgezet bij shiny pokemon en in pokedex
 
 ---

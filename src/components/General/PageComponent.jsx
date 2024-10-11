@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 
 // mui imports
 import { Box, IconButton, Tab, Tabs, useTheme, styled } from "@mui/material";
@@ -24,11 +25,20 @@ const PageComponent = ({
 }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const [tab, setTab] = useState(1);
+  const [tab, setTab] = useState("data");
+
+  useEffect(() => {
+    const tabValue = searchParams.get("tab");
+    if (tabValue) {
+      setTab(tabValue);
+    }
+  }, [searchParams]);
 
   const handleTabChange = (e, newTabValue) => {
     setTab(newTabValue);
+    setSearchParams({ tab: newTabValue });
   };
 
   const widthMap = {
@@ -131,8 +141,8 @@ const PageComponent = ({
                   aria-label="ant example"
                   variant="fullWidth"
                 >
-                  <AntTab label="DATA" value={1} />
-                  <AntTab label="STATS" value={2} />
+                  <AntTab label="DATA" value={"data"} />
+                  <AntTab label="STATS" value={"stats"} />
                 </AntTabs>
               </Box>
             )}
@@ -140,8 +150,8 @@ const PageComponent = ({
         </Box>
         {/* Content passed as children */}
         {!tabs && children}
-        {tab === 1 && childrenTab1}
-        {tab === 2 && childrenTab2}
+        {tab === "data" && childrenTab1}
+        {tab === "stats" && childrenTab2}
       </Box>
     </Box>
   );
