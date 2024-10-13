@@ -38,6 +38,7 @@ import {
   calculateDateDifference,
 } from "../../functions/statFunctions";
 import methodHunts from "../../functions/methodHunts";
+import { isValidGeospatialCoordinates } from "../../functions/checks";
 
 // Hooks
 import { useAuth } from "../../hooks/useAuth";
@@ -146,7 +147,7 @@ export default function CreateShiny() {
 
     if (
       data.geoLocation.name !== "" &&
-      data.geoLocation.displayName !== "" &&
+      isValidGeospatialCoordinates(data.geoLocation.position) &&
       data.gender
     ) {
       const newStats = {
@@ -305,7 +306,7 @@ export default function CreateShiny() {
       setAlertOpen(true);
     } else if (
       data.geoLocation.name === "" ||
-      data.geoLocation.displayName === ""
+      !isValidGeospatialCoordinates(data.geoLocation.position)
     ) {
       setAlertSeverity("warning");
       setAlertMessage(

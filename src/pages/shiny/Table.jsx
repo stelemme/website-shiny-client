@@ -222,7 +222,10 @@ const columns = [
     sortComparator: (v1, v2) => {
       var timeA = formatSeconds(v1, false);
       var timeB = formatSeconds(v2, false);
-      return timeA - timeB;
+
+      var timeADef = timeA ? timeA : 0;
+      var timeBDef = timeB ? timeB : 0;
+      return timeADef - timeBDef;
     },
   },
 ];

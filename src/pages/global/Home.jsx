@@ -3,10 +3,10 @@ import { Grid } from "@mui/material";
 
 // Components imports
 import PageComponent from "../../components/General/PageComponent";
-import Extremes from "../../components/Stats/ExtremesMons";
 import EncountersGraph from "../../components/Graphs/EncountersGraph";
 import LatestShinies from "../../components/Stats/LatestShinies";
 import LatestCounters from "../../components/Stats/LatestCounters";
+import YearsAgo from "../../components/Stats/YearsAgo";
 
 export default function Home() {
   return (
@@ -19,7 +19,7 @@ export default function Home() {
           <LatestShinies />
         </Grid>
         <Grid item xl={4} xs={12}>
-          <Extremes />
+          <YearsAgo />
         </Grid>
         <Grid item xs={12}>
           <EncountersGraph />

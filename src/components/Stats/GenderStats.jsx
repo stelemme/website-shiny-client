@@ -15,16 +15,13 @@ import { tokens } from "../../theme";
 // Components
 import BoxComponent from "../General/BoxComponent";
 
-// Functions
-import { formatTime } from "../../functions/statFunctions";
-
 // Hooks
 import { useGame, useShiny } from "../../hooks/useData";
 
 // Images
 import { trainerImages } from "../../assets/imgExporter";
 
-export default function GameStats() {
+export default function GenderStats() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [game, setGame] = useState("");
@@ -32,19 +29,20 @@ export default function GameStats() {
   const { data: games } = useGame("action=select");
 
   const { isLoading: gameStatsLoading, data: gameStatsData } = useShiny(
-    `stats=gameUser&gameFilter=${game?.name}`
+    `stats=gender&gameFilter=${game?.name}`
   );
   const gameStats = gameStatsData?.data[0];
 
   const { isLoading: gameStatsTotalLoading, data: gameStatsTotalData } =
-    useShiny(`stats=gameTotal&gameFilter=${game?.name}`);
-  const gameStatsTotal = gameStatsTotalData?.data[0];
+    useShiny(`stats=genderTotal&gameFilter=${game?.name}`);
+
+  const gameStatsTotal = gameStatsTotalData?.data[0]?.genders;
 
   const data = ["Joaquin", "Korneel", "Simon", "Stef"];
 
   return (
     <BoxComponent
-      title={"GAME STATS"}
+      title={"GENDER STATS"}
       select={
         <Autocomplete
           size="small"
@@ -118,7 +116,7 @@ export default function GameStats() {
                       whiteSpace: "nowrap",
                     }}
                   >
-                    #SHINY POKEMON
+                    MALE
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
@@ -135,7 +133,7 @@ export default function GameStats() {
                       whiteSpace: "nowrap",
                     }}
                   >
-                    #COUNTED SHINIES
+                    FEMALE
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
@@ -152,77 +150,10 @@ export default function GameStats() {
                       whiteSpace: "nowrap",
                     }}
                   >
-                    #OVER ODDS
+                    GENDERLESS
                   </Typography>
                 </Grid>
-                <Grid item xs={12}>
-                  <Divider />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography
-                    fontWeight={"bold"}
-                    fontSize={14}
-                    align="left"
-                    sx={{
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    #UNDER ODDS
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <Divider />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography
-                    fontWeight={"bold"}
-                    fontSize={14}
-                    align="left"
-                    sx={{
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    AVERAGE #ENC.
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <Divider />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography
-                    fontWeight={"bold"}
-                    fontSize={14}
-                    align="left"
-                    sx={{
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    TOTAL #ENC.
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <Divider />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography
-                    fontWeight={"bold"}
-                    fontSize={14}
-                    align="left"
-                    sx={{
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    TOTAL TIME
-                  </Typography>
-                </Grid>
+
                 {window.innerWidth < 500 && (
                   <Grid item xs={12}>
                     <Divider />
@@ -232,7 +163,7 @@ export default function GameStats() {
               <Grid item>
                 <Divider orientation="vertical" />
               </Grid>
-              {data.map((trainer) => {
+              {data?.map((trainer) => {
                 let trainerSprite = "";
                 let bgColor = "";
                 if (trainer === "Korneel") {
@@ -285,7 +216,7 @@ export default function GameStats() {
                           {gameStatsLoading
                             ? 0
                             : gameStats && gameStats[trainer]
-                            ? gameStats[trainer].shinyAmount
+                            ? gameStats[trainer].male
                             : 0}
                         </Typography>
                       </Grid>
@@ -307,7 +238,7 @@ export default function GameStats() {
                           {gameStatsLoading
                             ? 0
                             : gameStats && gameStats[trainer]
-                            ? gameStats[trainer].countedShinyAmount
+                            ? gameStats[trainer].female
                             : 0}
                         </Typography>
                       </Grid>
@@ -329,98 +260,11 @@ export default function GameStats() {
                           {gameStatsLoading
                             ? 0
                             : gameStats && gameStats[trainer]
-                            ? gameStats[trainer].overOdds
+                            ? gameStats[trainer].genderless
                             : 0}
                         </Typography>
                       </Grid>
-                      <Grid item xs={12}>
-                        <Divider />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Typography
-                          fontWeight={"bold"}
-                          fontSize={14}
-                          align="right"
-                          sx={{
-                            mr: "10px",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
-                          }}
-                        >
-                          {gameStatsLoading
-                            ? 0
-                            : gameStats && gameStats[trainer]
-                            ? gameStats[trainer].underOdds
-                            : 0}
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Divider />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Typography
-                          fontWeight={"bold"}
-                          fontSize={14}
-                          align="right"
-                          sx={{
-                            mr: "10px",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
-                          }}
-                        >
-                          {gameStatsLoading
-                            ? 0
-                            : gameStats && gameStats[trainer]
-                            ? gameStats[trainer].totalEncountersAvg
-                            : 0}
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Divider />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Typography
-                          fontWeight={"bold"}
-                          fontSize={14}
-                          align="right"
-                          sx={{
-                            mr: "10px",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
-                          }}
-                        >
-                          {gameStatsLoading
-                            ? 0
-                            : gameStats && gameStats[trainer]
-                            ? gameStats[trainer].totalEncountersSum
-                            : 0}
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Divider />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Typography
-                          fontWeight={"bold"}
-                          fontSize={14}
-                          align="right"
-                          sx={{
-                            mr: "10px",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
-                          }}
-                        >
-                          {gameStatsLoading
-                            ? formatTime(0, false)
-                            : gameStats && gameStats[trainer]
-                            ? formatTime(gameStats[trainer].totalTimeSum, false)
-                            : formatTime(0, false)}
-                        </Typography>
-                      </Grid>
+
                       {window.innerWidth < 500 && (
                         <Grid item xs={12}>
                           <Divider />
@@ -474,8 +318,8 @@ export default function GameStats() {
                   >
                     {gameStatsTotalLoading
                       ? 0
-                      : gameStatsTotal
-                      ? gameStatsTotal.shinyAmount
+                      : gameStatsTotal?.male
+                      ? gameStatsTotal?.male
                       : 0}
                   </Typography>
                 </Grid>
@@ -496,8 +340,8 @@ export default function GameStats() {
                   >
                     {gameStatsTotalLoading
                       ? 0
-                      : gameStatsTotal
-                      ? gameStatsTotal.countedShinyAmount
+                      : gameStatsTotal?.female
+                      ? gameStatsTotal?.female
                       : 0}
                   </Typography>
                 </Grid>
@@ -518,99 +362,12 @@ export default function GameStats() {
                   >
                     {gameStatsTotalLoading
                       ? 0
-                      : gameStatsTotal
-                      ? gameStatsTotal.overOdds
+                      : gameStatsTotal?.genderless
+                      ? gameStatsTotal?.genderless
                       : 0}
                   </Typography>
                 </Grid>
-                <Grid item xs={12}>
-                  <Divider />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography
-                    fontWeight={"bold"}
-                    fontSize={14}
-                    align="right"
-                    sx={{
-                      mr: "10px",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {gameStatsTotalLoading
-                      ? 0
-                      : gameStatsTotal
-                      ? gameStatsTotal.underOdds
-                      : 0}
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <Divider />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography
-                    fontWeight={"bold"}
-                    fontSize={14}
-                    align="right"
-                    sx={{
-                      mr: "10px",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {gameStatsTotalLoading
-                      ? 0
-                      : gameStatsTotal
-                      ? gameStatsTotal.totalEncountersAvg
-                      : 0}
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <Divider />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography
-                    fontWeight={"bold"}
-                    fontSize={14}
-                    align="right"
-                    sx={{
-                      mr: "10px",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {gameStatsTotalLoading
-                      ? 0
-                      : gameStatsTotal
-                      ? gameStatsTotal.totalEncountersSum
-                      : 0}
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <Divider />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography
-                    fontWeight={"bold"}
-                    fontSize={14}
-                    align="right"
-                    sx={{
-                      mr: "10px",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {gameStatsTotalLoading
-                      ? formatTime(0, false)
-                      : gameStatsTotal
-                      ? formatTime(gameStatsTotal.totalTimeSum, false)
-                      : formatTime(0, false)}
-                  </Typography>
-                </Grid>
+
                 {window.innerWidth < 500 && (
                   <Grid item xs={12}>
                     <Divider />
