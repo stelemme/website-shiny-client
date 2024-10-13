@@ -4,6 +4,11 @@
 
 ### Version 1.22.0 (13.10.2024)
 
+**Stats:**
+
+- Gender stats zijn toegevoegd
+- Op home screen "on this day" toegevoegd waarop ge kunt zien welke shinies op deze dat zijn gevangen x aantal jaar geleden.
+
 **Topbar:**
 
 - "Home" icoontje is vervangen door symbool waarmee radar grouping gemakkelijker kan worden aan en uit gezet. Handig voor bvb snel te switchen alsde naar de map aant kijken zijt

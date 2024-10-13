@@ -41,6 +41,7 @@ export default function GeoLocationForm({ data, setData }) {
     name: "",
     displayName: "",
     position: [],
+    geojson: [],
   };
 
   const getGeoLocation = async (newValues) => {
@@ -52,11 +53,12 @@ export default function GeoLocationForm({ data, setData }) {
             ...prevState.geoLocation,
             displayName: "",
             position: [],
+            geojson: [],
           },
         };
       });
 
-      return
+      return;
     }
 
     try {
@@ -69,7 +71,10 @@ export default function GeoLocationForm({ data, setData }) {
           ...{
             geoLocation: {
               ...prevState.geoLocation,
-              displayName: response.display_name,
+              displayName:
+                response.error === "Unable to geocode"
+                  ? ""
+                  : response.display_name,
             },
           },
         };
@@ -177,6 +182,7 @@ export default function GeoLocationForm({ data, setData }) {
                 const newValues = e.target.value
                   .split(",")
                   .map((value) => Number(value.trim()));
+                const reverseCoordinates = newValues.slice().reverse();
                 setData((prevState) => {
                   return {
                     ...prevState,
@@ -184,6 +190,7 @@ export default function GeoLocationForm({ data, setData }) {
                       geoLocation: {
                         ...prevState.geoLocation,
                         position: newValues,
+                        geojson: reverseCoordinates,
                       },
                     },
                   };

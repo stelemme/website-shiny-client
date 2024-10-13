@@ -35,6 +35,7 @@ import {
   calculateDateDifference,
 } from "../../functions/statFunctions";
 import methodHunts from "../../functions/methodHunts";
+import { isValidGeospatialCoordinates } from "../../functions/checks";
 
 // Hooks
 import { useAuth } from "../../hooks/useAuth";
@@ -137,7 +138,10 @@ export default function CreateDeadShiny() {
     setAlertMessage("Loading...");
     setAlertOpen(true);
 
-    if (data.geoLocation.name !== "" || data.geoLocation.displayName !== "") {
+    if (
+      data.geoLocation.name !== "" &&
+      isValidGeospatialCoordinates(data.geoLocation.position)
+    ) {
       const newStats = {
         probability: calculateProb(
           data.method.odds,
@@ -285,7 +289,7 @@ export default function CreateDeadShiny() {
       }
     } else if (
       data.geoLocation.name === "" ||
-      data.geoLocation.displayName === ""
+      !isValidGeospatialCoordinates(data.geoLocation.position)
     ) {
       setAlertSeverity("warning");
       setAlertMessage(

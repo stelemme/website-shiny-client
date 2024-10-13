@@ -29,6 +29,7 @@ import {
   calculatePercentage,
   calculateDateDifference,
 } from "../../functions/statFunctions";
+import { isValidGeospatialCoordinates } from "../../functions/checks";
 
 // Hooks
 import { useMakeRequest, useGetRequest } from "../../hooks/useAxios";
@@ -145,7 +146,10 @@ export default function CreateShinyFromCounter() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (data.geoLocation.name === "" || data.geoLocation.displayName === "") {
+    if (
+      data.geoLocation.name === "" ||
+      !isValidGeospatialCoordinates(data.geoLocation.position)
+    ) {
       setAlertSeverity("warning");
       setAlertMessage(
         "You forgot to fill in the geo location or it is filled in incorrectly"
