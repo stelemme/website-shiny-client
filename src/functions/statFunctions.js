@@ -193,13 +193,14 @@ export function formatTime(totalSeconds, showDays = true) {
 }
 
 export function formatSeconds(timeStr, showDays = true) {
+  let days = 0;
   if (!timeStr) {
     return null;
   }
   let time;
   if (showDays) {
     var parts = timeStr.split(" ");
-    var days = parseInt(parts[0]);
+    days = parseInt(parts[0]);
     time = parts[2].split(":");
   } else {
     time = timeStr.split(":");

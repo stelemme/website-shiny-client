@@ -127,7 +127,7 @@ export default function CreateShinyFromCounter() {
 
   useEffect(() => {
     const handleDefSubmit = async () => {
-      if (!data.stats) {
+      if (!data.stats?.daysHunting) {
         return;
       }
 

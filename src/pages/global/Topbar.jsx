@@ -1,5 +1,8 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
+
+// Recoil
 import { useRecoilState } from "recoil";
 import { sidebarToggle } from "../../utils/atoms";
 
@@ -16,10 +19,11 @@ import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
+import AdjustOutlinedIcon from "@mui/icons-material/AdjustOutlined";
+import GroupWorkOutlinedIcon from "@mui/icons-material/GroupWorkOutlined";
 
 // Hooks
 import { useAuth } from "../../hooks/useAuth";
@@ -33,6 +37,8 @@ export default function Topbar() {
   const colorMode = useContext(ColorModeContext);
   const navigate = useNavigate();
   const [toggled, setToggled] = useRecoilState(sidebarToggle);
+  const [cookies, setCookies] = useCookies(["groupShinies"]);
+  const [groupCheck, setGroupCheck] = useState(cookies.groupShinies);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -42,6 +48,13 @@ export default function Topbar() {
     } else {
       navigate("/search?type=shinies");
     }
+  };
+
+  const foreverDate = new Date("9999-12-31T23:59:59");
+
+  const handleGroupChange = () => {
+    setCookies("groupShinies", !groupCheck, { expires: foreverDate });
+    setGroupCheck((prevStat) => !prevStat);
   };
 
   return (
@@ -83,15 +96,15 @@ export default function Topbar() {
             <SearchIcon />
           </IconButton>
         )}
+        <IconButton onClick={handleGroupChange}>
+          {groupCheck ? <AdjustOutlinedIcon /> : <GroupWorkOutlinedIcon />}
+        </IconButton>
         <IconButton onClick={colorMode.toggleColorMode}>
           {theme.palette.mode === "dark" ? (
             <DarkModeOutlinedIcon />
           ) : (
             <LightModeOutlinedIcon />
           )}
-        </IconButton>
-        <IconButton onClick={() => navigate("/")}>
-          <HomeOutlinedIcon />
         </IconButton>
 
         <IconButton onClick={() => navigate(`/user/${username}`)}>

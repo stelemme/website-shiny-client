@@ -260,7 +260,7 @@ export default function MainMap() {
         </div>
       </MapContainer>
     ),
-    [loadingMarkers, cookies]
+    [loadingMarkers, cookies, joaquinLocations]
   );
 
   return (

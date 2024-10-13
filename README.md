@@ -2,6 +2,20 @@
 
 ## Changelogs
 
+### Version 1.22.0 (13.10.2024)
+
+**Topbar:**
+
+- "Home" icoontje is vervangen door symbool waarmee radar grouping gemakkelijker kan worden aan en uit gezet. Handig voor bvb snel te switchen alsde naar de map aant kijken zijt
+
+**Bugfixes:**
+
+- Bugs in create forms zijn opgelost
+- Sorteren op total time werkt terug in de table
+- Game Stats Average geeft nu 0 weer als er geen waarde is
+
+---
+
 ### Version 1.21.1 (09.10.2024)
 
 **Bugfixes:**

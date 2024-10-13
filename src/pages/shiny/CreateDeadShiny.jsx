@@ -137,7 +137,7 @@ export default function CreateDeadShiny() {
     setAlertMessage("Loading...");
     setAlertOpen(true);
 
-    if (data.geoLocation.name !== "" && data.geoLocation.displayName !== "") {
+    if (data.geoLocation.name !== "" || data.geoLocation.displayName !== "") {
       const newStats = {
         probability: calculateProb(
           data.method.odds,

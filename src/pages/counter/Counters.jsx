@@ -44,8 +44,8 @@ export default function Counters() {
 
     return filteredItems?.map((item) => {
       return (
-        <LoadingComponent loadingCondition={loading}>
-          <Grid item lg={6} xs={12} key={item._id}>
+        <LoadingComponent loadingCondition={loading} key={item._id}>
+          <Grid item lg={6} xs={12}>
             <CounterCard
               id={item._id}
               name={item.name}

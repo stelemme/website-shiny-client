@@ -60,7 +60,7 @@ export default function GameStats() {
           getOptionLabel={(option) => option.name}
           renderInput={(params) => (
             <TextField
-              sx={{ width: "240px" }}
+              sx={{ width: "200px" }}
               color="secondary"
               {...params}
               label="Game"

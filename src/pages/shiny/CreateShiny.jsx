@@ -145,8 +145,7 @@ export default function CreateShiny() {
     setAlertOpen(true);
 
     if (
-      data.geoLocation.name !== "" &&
-      data.geoLocation.displayName !== "" &&
+      (data.geoLocation.name !== "" || data.geoLocation.displayName !== "") &&
       data.gender
     ) {
       const newStats = {

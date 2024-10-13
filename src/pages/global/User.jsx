@@ -124,7 +124,7 @@ export default function User() {
       <Grid container spacing={"20px"}>
         <Grid item xs={12}>
           <BoxComponent title={"TRAINER SPRITES"}>
-            <BoxComponent p="10px" noContrastColor>
+            <BoxComponent p="10px" noContrastColor height={null}>
               <Grid container>
                 {Object.keys(trainerImages).map((item) => {
                   if (item.includes(imageCheck[trainerChoice])) {
@@ -155,7 +155,7 @@ export default function User() {
         {!trainerCheck && (
           <Grid item xs={12}>
             <BoxComponent title={"TRAINER SETTINGS"}>
-              <BoxComponent p="10px" noContrastColor>
+              <BoxComponent p="10px" noContrastColor height={null}>
                 <Typography variant="h6" fontWeight={"bold"}>
                   DATA FILTERING
                 </Typography>
