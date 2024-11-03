@@ -32,6 +32,7 @@ export default function ShinyCardEvolutions({
   bgColor = 400,
   imgSize = window.innerWidth < 600 ? "40px" : "80px",
   gameImgSize = window.innerWidth < 600 ? "22px" : "33px",
+  search = false,
 }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -45,7 +46,7 @@ export default function ShinyCardEvolutions({
 
   const { data: groupData } = useShiny(`groups=evolutions&group=${group}`);
 
-  if (cookies.groupShinies && groupData?.data[0]?.evolutions) {
+  if ((cookies.groupShinies || search) && groupData?.data[0]?.evolutions) {
     evolutions = makeUnique(groupData?.data[0]?.evolutions, "name");
 
     evolutions.sort((a, b) => a.pokedexNo - b.pokedexNo);

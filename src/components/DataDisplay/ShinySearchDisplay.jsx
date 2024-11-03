@@ -47,6 +47,7 @@ export default function ShinySearchDisplay({ pokemon }) {
                   group={item.group}
                   imgSize={"40px"}
                   gameImgSize={"22px"}
+                  search
                 />
               </Box>
             );
