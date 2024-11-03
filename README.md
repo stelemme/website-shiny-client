@@ -2,6 +2,19 @@
 
 ## Changelogs
 
+### Version 1.22.1 (03.11.2024)
+
+**Bug Fixes:**
+- Croconaw sprite is Silver is aangepast
+- Blanco land wordt er nu uitgefilterd
+- Form sprites worden onder elkaar weergegeven
+- Op "Search page" worden evolutions sprites nu correct weergegeven
+- Radar grouping werkt nu ook op verjaardagen
+- Time zones zijn terug gefixt denk ik, tijdens winteruur zijn we UTC+1 en tijdens zomer uur UTC+2 dus kheb da dynamisch moeten aanpassen (alles stond op +2)
+- Verjaardagen worden pas weergegeven vanaf shinies 1 jaar oud zijn
+
+---
+
 ### Version 1.22.0 (13.10.2024)
 
 **Stats:**
