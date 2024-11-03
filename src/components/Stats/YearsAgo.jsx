@@ -42,22 +42,31 @@ export default function YearsAgo() {
                   {item.year}
                 </Typography>
                 <Grid container spacing={2}>
-                  {item?.mons.map((item2) => {
-                    return (
-                      <Grid item xs={12} key={item2?._id}>
-                        <ShinyCard
-                          id={item2?._id}
-                          name={item2?.name}
-                          gameSprite={item2?.sprite.game}
-                          dir={item2?.sprite.dir}
-                          monSprite={item2?.sprite.pokemon}
-                          trainer={item2?.trainer}
-                          bgColor={500}
-                          imgSize={52}
-                        />
-                      </Grid>
-                    );
-                  })}
+                  {item?.mons
+                    .reduce((acc, item) => {
+                      if (!item.group) {
+                        acc.push(item);
+                      } else if (!acc.some((el) => el.group === item.group)) {
+                        acc.push(item);
+                      }
+                      return acc;
+                    }, [])
+                    .map((item2) => {
+                      return (
+                        <Grid item xs={12} key={item2?._id}>
+                          <ShinyCard
+                            id={item2?._id}
+                            name={item2?.name}
+                            gameSprite={item2?.sprite.game}
+                            dir={item2?.sprite.dir}
+                            monSprite={item2?.sprite.pokemon}
+                            trainer={item2?.trainer}
+                            bgColor={500}
+                            imgSize={52}
+                          />
+                        </Grid>
+                      );
+                    })}
                 </Grid>
               </Grid>
             );
