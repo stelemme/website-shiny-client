@@ -10,7 +10,7 @@ import ShinyCard from "../Cards/ShinyCard";
 // Hooks
 import { useShiny } from "../../hooks/useData";
 
-export default function YearsAgo() {
+export default function OnThisDay() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -74,7 +74,7 @@ export default function YearsAgo() {
           {data?.length === 0 && (
             <Grid item xs={12}>
               <BoxComponent noContrastColor>
-                <Typography variant="h6" fontWeight={"bold"} mb={"10px"}>
+                <Typography variant="h6" fontWeight={"bold"}>
                   There are no shinies yet on this day...
                 </Typography>
               </BoxComponent>

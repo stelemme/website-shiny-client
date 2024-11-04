@@ -9,7 +9,7 @@ export default function Header({ title, subtitle }) {
   return (
     <Box mb="15px">
       <Typography
-        variant="h2"
+        variant="h1"
         color={colors.grey[100]}
         fontWeight="bold"
       >

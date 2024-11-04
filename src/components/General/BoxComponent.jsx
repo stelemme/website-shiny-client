@@ -6,6 +6,7 @@ export default function BoxComponent({
   children,
   title = null,
   select = null,
+  colored = true,
   noContrastColor = false,
   tabs = false,
   p = "20px",
@@ -46,7 +47,7 @@ export default function BoxComponent({
       height={height}
       borderRadius={tabs ? "" : "5px"}
       backgroundColor={
-        noContrastColor ? colors.primary[500] : colors.primary[400]
+        colored ? noContrastColor ? colors.primary[500] : colors.primary[400] : "inherit"
       }
       onClick={onClick}
       onMouseEnter={onMouseEnter}
@@ -62,7 +63,7 @@ export default function BoxComponent({
           mb={"14px"}
         >
           <Typography
-            variant={window.innerWidth < 600 ? "h5" : "h4"}
+            variant="h3"
             fontWeight={"bold"}
           >
             {title}

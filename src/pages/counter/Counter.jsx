@@ -21,6 +21,7 @@ import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import ReplyTwoToneIcon from "@mui/icons-material/ReplyTwoTone";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
+import ListAltRoundedIcon from "@mui/icons-material/ListAltRounded";
 
 // Components
 import CustomDialog from "../../components/Dialogs/CustomDialog";
@@ -30,6 +31,7 @@ import EndDateForm from "../../components/Forms/EndDateForm";
 import IncrementForm from "../../components/Forms/IncrementForm";
 import ThresholdForm from "../../components/Forms/ThresholdForm";
 import PokemonImage from "../../components/General/PokemonImage";
+import CounterRanking from "../../components/Stats/CounterRanking";
 
 // Functions
 import {
@@ -64,6 +66,7 @@ export default function Counter() {
   const [openShiny, setOpenShiny] = useState(false);
   const [openInfo, setOpenInfo] = useState(false);
   const [openGraph, setOpenGraph] = useState(false);
+  const [openRanking, setOpenRanking] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openDateEdit, setOpenDateEdit] = useState(false);
   const [openSearchLevelEdit, setOpenSearchLevelEdit] = useState(false);
@@ -136,6 +139,9 @@ export default function Counter() {
           );
         }
       }
+      setCount(data.totalEncounters);
+      setCountEdit(data.totalEncounters);
+      setEncountersToday(calculateEncountersPerDay(data.encounters));
       setOdds(
         calculateProb(
           data.method.odds,
@@ -467,16 +473,11 @@ export default function Counter() {
     if (!completed) {
       return (
         <Box>
-          <Typography
-            fontWeight={"bold"}
-            fontSize={window.innerWidth < 600 ? 12 : 14}
-          >
-            Last Encounter Time
-          </Typography>
-          <Typography fontSize={window.innerWidth < 600 ? 12 : 14}>
+          <Typography fontWeight={"bold"}>Last Encounter Time</Typography>
+          <Typography>
             {lastCount ? lastCount.toLocaleTimeString() : undefined}
           </Typography>
-          <Typography fontSize={window.innerWidth < 600 ? 12 : 14}>
+          <Typography>
             {elapsedTime ? formatTime(elapsedTime) : "Undefined"}
           </Typography>
         </Box>
@@ -805,37 +806,17 @@ export default function Counter() {
                       </Grid>
                       <Grid item xs={12} container>
                         <Grid item xs={4}>
-                          <Typography
-                            fontWeight={"bold"}
-                            fontSize={window.innerWidth < 600 ? 12 : 14}
-                          >
-                            Trainer
-                          </Typography>
-                          <Typography
-                            fontSize={window.innerWidth < 600 ? 12 : 14}
-                          >
-                            {data.trainer}{" "}
-                          </Typography>
+                          <Typography fontWeight={"bold"}>Trainer</Typography>
+                          <Typography>{data.trainer} </Typography>
                         </Grid>
                         <Grid item xs={8}>
-                          <Typography
-                            fontWeight={"bold"}
-                            textAlign={"right"}
-                            fontSize={window.innerWidth < 600 ? 12 : 14}
-                          >
+                          <Typography fontWeight={"bold"} textAlign={"right"}>
                             Shiny Hunting Method
                           </Typography>
-                          <Typography
-                            textAlign={"right"}
-                            fontSize={window.innerWidth < 600 ? 12 : 14}
-                          >
+                          <Typography textAlign={"right"}>
                             {data.method.name}
                           </Typography>
-                          <Typography
-                            fontStyle={"italic"}
-                            textAlign={"right"}
-                            fontSize={window.innerWidth < 600 ? 12 : 14}
-                          >
+                          <Typography fontStyle={"italic"} textAlign={"right"}>
                             {data.method.category}
                           </Typography>
                         </Grid>
@@ -850,10 +831,7 @@ export default function Counter() {
                         alignItems="center"
                         height="21px"
                       >
-                        <Typography
-                          fontWeight={"bold"}
-                          fontSize={window.innerWidth < 600 ? 12 : 14}
-                        >
+                        <Typography fontWeight={"bold"}>
                           Start & End Date
                         </Typography>
                         {username === data.trainer && (
@@ -902,43 +880,27 @@ export default function Counter() {
                         )}
                       </Grid>
                       <Grid item xs={5.5}>
-                        <Typography
-                          fontWeight={"bold"}
-                          textAlign={"right"}
-                          fontSize={window.innerWidth < 600 ? 12 : 14}
-                        >
+                        <Typography fontWeight={"bold"} textAlign={"right"}>
                           Total Hunt Time
                         </Typography>
                       </Grid>
                       <Grid item xs={5}>
-                        <Typography
-                          fontSize={window.innerWidth < 600 ? 12 : 14}
-                        >
+                        <Typography>
                           {startDate ? startDate : "Undefined"}
                         </Typography>
-                        <Typography
-                          fontSize={window.innerWidth < 600 ? 12 : 14}
-                        >
+                        <Typography>
                           {endDate ? endDate : "Undefined"}
                         </Typography>
-                        <Typography
-                          fontWeight={"bold"}
-                          fontSize={window.innerWidth < 600 ? 12 : 14}
-                        >
+                        <Typography fontWeight={"bold"}>
                           {completed ? "Days Hunted" : "Days Hunting"}
                         </Typography>
-                        <Typography
-                          fontSize={window.innerWidth < 600 ? 12 : 14}
-                        >
+                        <Typography>
                           {dateDifference}{" "}
                           {dateDifference === 1 ? "day" : "days"}{" "}
                         </Typography>
                       </Grid>
                       <Grid item xs={7}>
-                        <Typography
-                          textAlign={"right"}
-                          fontSize={window.innerWidth < 600 ? 12 : 14}
-                        >
+                        <Typography textAlign={"right"}>
                           {timeDifference
                             ? formatTime(
                                 Math.round(timeDifference * count),
@@ -946,28 +908,17 @@ export default function Counter() {
                               )
                             : "Undefined"}
                         </Typography>
-                        <Typography
-                          fontWeight={"bold"}
-                          textAlign={"right"}
-                          fontSize={window.innerWidth < 600 ? 12 : 14}
-                        >
+                        <Typography fontWeight={"bold"} textAlign={"right"}>
                           Mean Encounter Time
                         </Typography>
-                        <Typography
-                          textAlign={"right"}
-                          fontSize={window.innerWidth < 600 ? 12 : 14}
-                        >
+                        <Typography textAlign={"right"}>
                           {timeDifference
                             ? new Date(timeDifference * 1000)
                                 .toISOString()
                                 .slice(11, 19)
                             : "Undefined"}
                         </Typography>
-                        <Typography
-                          fontWeight={"bold"}
-                          textAlign={"right"}
-                          fontSize={window.innerWidth < 600 ? 12 : 14}
-                        >
+                        <Typography fontWeight={"bold"} textAlign={"right"}>
                           Enc./Hour
                         </Typography>
                       </Grid>
@@ -975,25 +926,15 @@ export default function Counter() {
                         {timeDisplay()}
                       </Grid>
                       <Grid item xs={5}>
-                        <Typography
-                          textAlign={"right"}
-                          fontSize={window.innerWidth < 600 ? 12 : 14}
-                        >
+                        <Typography textAlign={"right"}>
                           {timeDifference
                             ? Math.round(3600 / timeDifference)
                             : "Undefined"}
                         </Typography>
-                        <Typography
-                          fontWeight={"bold"}
-                          textAlign={"right"}
-                          fontSize={window.innerWidth < 600 ? 12 : 14}
-                        >
+                        <Typography fontWeight={"bold"} textAlign={"right"}>
                           Times Odds
                         </Typography>
-                        <Typography
-                          textAlign={"right"}
-                          fontSize={window.innerWidth < 600 ? 12 : 14}
-                        >
+                        <Typography textAlign={"right"}>
                           {(count / odds).toLocaleString("en-US", {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
@@ -1029,6 +970,31 @@ export default function Counter() {
                       data={data}
                       trainer={data.trainer}
                       timeDifference={timeDifference}
+                    />
+                  </DialogContent>
+                </Dialog>
+              </Box>
+              <Box display="flex" alignItems="center" height="21px">
+                <Typography fontWeight={"bold"}>Counter Ranking</Typography>
+                <IconButton size="small" onClick={() => setOpenRanking(true)}>
+                  <ListAltRoundedIcon fontSize="inherit" />
+                </IconButton>
+
+                {/* DIALOG */}
+                <Dialog
+                  open={openRanking}
+                  onClose={() => setOpenRanking(false)}
+                  fullWidth
+                >
+                  <DialogContent width="100%">
+                    <CounterRanking
+                      id={counterId}
+                      encounters={count}
+                      percentage={percentage}
+                      setClose={setOpenRanking}
+                      name={data.name}
+                      trainer={data.trainer}
+                      completed={completed}
                     />
                   </DialogContent>
                 </Dialog>

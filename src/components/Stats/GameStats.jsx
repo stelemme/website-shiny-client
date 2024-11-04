@@ -91,7 +91,6 @@ export default function GameStats() {
                     ) : (
                       <Typography
                         fontWeight={"bold"}
-                        fontSize={14}
                         align="left"
                         sx={{
                           overflow: "hidden",
@@ -110,7 +109,6 @@ export default function GameStats() {
                 <Grid item xs={12}>
                   <Typography
                     fontWeight={"bold"}
-                    fontSize={14}
                     align="left"
                     sx={{
                       overflow: "hidden",
@@ -127,7 +125,6 @@ export default function GameStats() {
                 <Grid item xs={12}>
                   <Typography
                     fontWeight={"bold"}
-                    fontSize={14}
                     align="left"
                     sx={{
                       overflow: "hidden",
@@ -144,7 +141,6 @@ export default function GameStats() {
                 <Grid item xs={12}>
                   <Typography
                     fontWeight={"bold"}
-                    fontSize={14}
                     align="left"
                     sx={{
                       overflow: "hidden",
@@ -161,7 +157,6 @@ export default function GameStats() {
                 <Grid item xs={12}>
                   <Typography
                     fontWeight={"bold"}
-                    fontSize={14}
                     align="left"
                     sx={{
                       overflow: "hidden",
@@ -178,7 +173,6 @@ export default function GameStats() {
                 <Grid item xs={12}>
                   <Typography
                     fontWeight={"bold"}
-                    fontSize={14}
                     align="left"
                     sx={{
                       overflow: "hidden",
@@ -195,7 +189,6 @@ export default function GameStats() {
                 <Grid item xs={12}>
                   <Typography
                     fontWeight={"bold"}
-                    fontSize={14}
                     align="left"
                     sx={{
                       overflow: "hidden",
@@ -212,7 +205,6 @@ export default function GameStats() {
                 <Grid item xs={12}>
                   <Typography
                     fontWeight={"bold"}
-                    fontSize={14}
                     align="left"
                     sx={{
                       overflow: "hidden",
@@ -273,7 +265,6 @@ export default function GameStats() {
                       <Grid item xs={12}>
                         <Typography
                           fontWeight={"bold"}
-                          fontSize={14}
                           align="right"
                           sx={{
                             mr: "10px",
@@ -295,7 +286,6 @@ export default function GameStats() {
                       <Grid item xs={12}>
                         <Typography
                           fontWeight={"bold"}
-                          fontSize={14}
                           align="right"
                           sx={{
                             mr: "10px",
@@ -317,7 +307,6 @@ export default function GameStats() {
                       <Grid item xs={12}>
                         <Typography
                           fontWeight={"bold"}
-                          fontSize={14}
                           align="right"
                           sx={{
                             mr: "10px",
@@ -339,7 +328,6 @@ export default function GameStats() {
                       <Grid item xs={12}>
                         <Typography
                           fontWeight={"bold"}
-                          fontSize={14}
                           align="right"
                           sx={{
                             mr: "10px",
@@ -361,7 +349,6 @@ export default function GameStats() {
                       <Grid item xs={12}>
                         <Typography
                           fontWeight={"bold"}
-                          fontSize={14}
                           align="right"
                           sx={{
                             mr: "10px",
@@ -383,7 +370,6 @@ export default function GameStats() {
                       <Grid item xs={12}>
                         <Typography
                           fontWeight={"bold"}
-                          fontSize={14}
                           align="right"
                           sx={{
                             mr: "10px",
@@ -405,7 +391,6 @@ export default function GameStats() {
                       <Grid item xs={12}>
                         <Typography
                           fontWeight={"bold"}
-                          fontSize={14}
                           align="right"
                           sx={{
                             mr: "10px",
@@ -446,7 +431,6 @@ export default function GameStats() {
                   >
                     <Typography
                       fontWeight={"bold"}
-                      fontSize={14}
                       sx={{
                         overflow: "hidden",
                         textOverflow: "ellipsis",
@@ -463,7 +447,6 @@ export default function GameStats() {
                 <Grid item xs={12}>
                   <Typography
                     fontWeight={"bold"}
-                    fontSize={14}
                     align="right"
                     sx={{
                       mr: "10px",
@@ -485,7 +468,6 @@ export default function GameStats() {
                 <Grid item xs={12}>
                   <Typography
                     fontWeight={"bold"}
-                    fontSize={14}
                     align="right"
                     sx={{
                       mr: "10px",
@@ -507,7 +489,6 @@ export default function GameStats() {
                 <Grid item xs={12}>
                   <Typography
                     fontWeight={"bold"}
-                    fontSize={14}
                     align="right"
                     sx={{
                       mr: "10px",
@@ -529,7 +510,6 @@ export default function GameStats() {
                 <Grid item xs={12}>
                   <Typography
                     fontWeight={"bold"}
-                    fontSize={14}
                     align="right"
                     sx={{
                       mr: "10px",
@@ -551,7 +531,6 @@ export default function GameStats() {
                 <Grid item xs={12}>
                   <Typography
                     fontWeight={"bold"}
-                    fontSize={14}
                     align="right"
                     sx={{
                       mr: "10px",
@@ -573,7 +552,6 @@ export default function GameStats() {
                 <Grid item xs={12}>
                   <Typography
                     fontWeight={"bold"}
-                    fontSize={14}
                     align="right"
                     sx={{
                       mr: "10px",
@@ -595,7 +573,6 @@ export default function GameStats() {
                 <Grid item xs={12}>
                   <Typography
                     fontWeight={"bold"}
-                    fontSize={14}
                     align="right"
                     sx={{
                       mr: "10px",
