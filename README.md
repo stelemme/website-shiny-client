@@ -2,9 +2,18 @@
 
 ## Changelogs
 
+### Version 1.23.0 (04.11.2024)
+
+**Counters:**
+
+- Counter ranking is toegevoegd, kan bekeken worden op basis van encounters of percentage
+
+---
+
 ### Version 1.22.1 (03.11.2024)
 
 **Bug Fixes:**
+
 - Croconaw sprite is Silver is aangepast
 - Blanco land wordt er nu uitgefilterd
 - Form sprites worden onder elkaar weergegeven
