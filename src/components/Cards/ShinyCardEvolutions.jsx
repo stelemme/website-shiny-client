@@ -87,21 +87,20 @@ export default function ShinyCardEvolutions({
           <Typography
             fontWeight={"bold"}
             color={colors.grey[400]}
-            fontSize={window.innerWidth < 600 ? 10 : 12}
+            variant="s3"
           >
             {trainer}
           </Typography>
           <Box display="flex" alignItems="center" height={trainerHeight}>
             <Typography
               fontWeight={"bold"}
-              variant="h5"
+              variant="h6"
               align="left"
               sx={{
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",
               }}
-              fontSize={window.innerWidth < 600 ? 12 : 14}
             >
               {name}
             </Typography>

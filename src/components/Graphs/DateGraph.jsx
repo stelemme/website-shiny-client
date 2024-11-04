@@ -75,11 +75,11 @@ export default function DateGraph() {
             label={{
               value: "Month",
               position: "bottom",
-              offset: 20,
+              offset: 35,
               fill: colors.grey[100],
             }}
             angle={-70}
-            interval={window.innerWidth < 800 ? null : 0}
+            interval={0}
             tick={{ dy: 30, dx: -10, fill: colors.grey[100] }}
           />
           <YAxis

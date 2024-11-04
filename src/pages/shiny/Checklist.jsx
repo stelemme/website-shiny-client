@@ -222,7 +222,6 @@ export default function Checklist() {
                 width="250px"
               >
                 <Typography
-                  fontSize={window.innerWidth < 600 ? 12 : 14}
                   fontWeight={"bold"}
                   variant="h5"
                   sx={{
@@ -310,7 +309,6 @@ export default function Checklist() {
                       width="250px"
                     >
                       <Typography
-                        fontSize={window.innerWidth < 600 ? 12 : 14}
                         fontWeight={"bold"}
                         variant="h5"
                         sx={{

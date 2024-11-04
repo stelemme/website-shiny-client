@@ -175,17 +175,12 @@ export default function InfoDisplay({
     return (
       <Grid container spacing={1}>
         <Grid item xs={xs1}>
-          <Typography
-            fontSize={window.innerWidth < 600 ? 12 : 14}
-            fontWeight={"bold"}
-          >
+          <Typography fontWeight={"bold"} variant="s1">
             {infoCat}
           </Typography>
         </Grid>
         <Grid item xs={xs2}>
-          <Typography fontSize={window.innerWidth < 600 ? 12 : 14}>
-            {infoName}
-          </Typography>
+          <Typography variant="s1">{infoName}</Typography>
         </Grid>
       </Grid>
     );

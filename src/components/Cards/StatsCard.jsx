@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 // mui imports
-import { Box, Typography, useTheme, Grid } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 
 // Components
@@ -13,30 +13,67 @@ export default function StatsCard({
   statName,
   stat,
   trainer,
+  navigateString = "shiny",
+  query = null,
   bgColor = 400,
+  additionalAction = () => {},
+  imgSize = window.innerWidth < 600 ? "40px" : "52px",
+  nameWidth = window.innerWidth < 400 ? "80px" : "200px",
 }) {
   const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
   const onCardClick = () => {
-    navigate(`/shiny/${id}`);
+    additionalAction();
+
+    if (query) {
+      navigate(`/${navigateString}/${id}${query}`);
+    } else {
+      navigate(`/${navigateString}/${id}`);
+    }
   };
+
+  let trainerHeight = "100%";
+  if (trainer) {
+    trainerHeight = "50";
+  }
 
   return (
     <BoxComponent
-      py="10px"
-      px="20px"
+      p="10px"
       noContrastColor={bgColor === 400 ? false : true}
       onClick={onCardClick}
     >
-      <Grid container spacing={"15px"} alignItems="center">
-        <Grid item xs={8} container alignItems="center">
-          {/* GAME IMAGE */}
-          <Grid item xl={8} sm={7} xs={12}>
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Box
+          display="inline-flex"
+          width={nameWidth}
+          minWidth={nameWidth}
+          alignItems="center"
+          pl="5px"
+        >
+          <Typography
+            fontWeight={"bold"}
+            align="left"
+            sx={{
+              whiteSpace: "normal",
+              overflow: "visible",
+              wordWrap: "break-word",
+            }}
+            variant="s3"
+          >
+            {statName}
+          </Typography>
+        </Box>
+        <Box flexGrow={1} mx="15px" overflow="hidden">
+          <Typography fontWeight={"bold"} color={colors.grey[400]} variant="s3">
+            {trainer}
+          </Typography>
+          <Box display="flex" alignItems="center" height={trainerHeight}>
             <Typography
               fontWeight={"bold"}
-              fontSize={window.innerWidth < 600 ? 12 : 14}
+              variant="s2"
               align="left"
               sx={{
                 overflow: "hidden",
@@ -44,12 +81,51 @@ export default function StatsCard({
                 whiteSpace: "nowrap",
               }}
             >
+              {name}
+            </Typography>
+          </Box>
+        </Box>
+
+        <Box
+          height={imgSize}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          p="5px"
+        >
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            border="1px solid"
+            borderRadius="4px"
+            width="65px"
+            minWidth={window.innerWidth < 600 ? "65px" : "90px"}
+            height="100%"
+          >
+            <Typography fontWeight={"bold"} variant="s1">
+              {stat}
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
+      {/* <Grid container spacing={"15px"} alignItems="center">
+        <Grid item xs={8} container alignItems="center">
+          <Grid item xl={8} sm={7} xs={12}>
+            <Typography
+              fontWeight={"bold"}
+              align="left"
+              sx={{
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+              variant="s1"
+            >
               {statName}
             </Typography>
           </Grid>
-          {/* COUNTER NAME */}
           <Grid item xl={4} sm={5} xs={12}>
-            {/* On screens with 'sm' or 'xs' size, display trainer and name next to each other */}
             <Box
               display="flex"
               gap={{ md: "0px", xs: "10px" }}
@@ -61,28 +137,27 @@ export default function StatsCard({
               {trainer && (
                 <Typography
                   fontWeight={"bold"}
-                  fontSize={12}
                   color={colors.grey[400]}
+                  variant="s2"
                 >
                   {trainer}
                 </Typography>
               )}
               <Typography
                 fontWeight={"bold"}
-                fontSize={12}
                 align="left"
                 sx={{
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                   whiteSpace: "nowrap",
                 }}
+                variant="s2"
               >
                 {name}
               </Typography>
             </Box>
           </Grid>
         </Grid>
-        {/* COUNT */}
         <Grid item xs={4}>
           <Box display="flex" justifyContent="flex-end">
             <Box
@@ -99,7 +174,7 @@ export default function StatsCard({
             </Box>
           </Box>
         </Grid>
-      </Grid>
+      </Grid> */}
     </BoxComponent>
   );
 }

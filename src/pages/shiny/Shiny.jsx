@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 
 // Components
+import BoxComponent from "../../components/General/BoxComponent";
 import LoadingComponent from "../../components/General/LoadingComponent";
 import CompleteShinyCard from "../../components/DataDisplay/ShinyDisplay";
 
@@ -23,7 +24,14 @@ export default function Shiny() {
   console.log(data);
 
   return (
-    <LoadingComponent loadingCondition={shinyLoading}>
+    <LoadingComponent
+      loadingCondition={shinyLoading}
+      skeleton={
+        <BoxComponent colored={false}>
+          <LoadingComponent loadingCondition={shinyLoading} />
+        </BoxComponent>
+      }
+    >
       {data?.group ? (
         <>
           {groupShinies?.map((item, index) => (

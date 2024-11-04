@@ -119,7 +119,7 @@ export default function CustomSidebar() {
               <Box display="flex" gap="15px">
                 <img src="/logo192.png" alt="logo" width="30px" />
                 <Typography
-                  variant="h3"
+                  variant="h2"
                   color={colors.grey[100]}
                   fontWeight="bold"
                 >

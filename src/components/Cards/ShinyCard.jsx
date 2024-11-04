@@ -61,7 +61,7 @@ export default function ShinyCard({
         </Box>
         {/* COUNTER NAME */}
         <Box flexGrow={1} mx="15px" overflow="hidden">
-          <Typography fontWeight={"bold"} color={colors.grey[400]}>
+          <Typography fontWeight={"bold"} color={colors.grey[400]} variant="s3">
             {trainer}
           </Typography>
           <Box display="flex" alignItems="center" height={trainerHeight}>

@@ -99,7 +99,7 @@ export default function Leaderboard({
                         </Box>
                         <Typography
                           fontWeight={"bold"}
-                          fontSize={window.innerWidth < 600 ? 12 : 14}
+                          variant="h6"
                           align="left"
                           sx={{
                             overflow: "hidden",
@@ -119,7 +119,7 @@ export default function Leaderboard({
                           <Tooltip title={timeToolTip}>
                             <Typography
                               fontWeight={"bold"}
-                              fontSize={window.innerWidth < 600 ? 12 : 14}
+                              variant="h6"
                               align="left"
                               sx={{
                                 overflow: "hidden",
@@ -135,7 +135,7 @@ export default function Leaderboard({
                           <Typography
                             textAlign={"right"}
                             fontWeight={"bold"}
-                            fontSize={window.innerWidth < 600 ? 12 : 14}
+                            variant="h6"
                             align="left"
                             sx={{
                               overflow: "hidden",
@@ -177,7 +177,7 @@ export default function Leaderboard({
                   ></Box>
                   <Typography
                     fontWeight={"bold"}
-                    fontSize={window.innerWidth < 600 ? 12 : 14}
+                    variant="h6"
                     align="left"
                     sx={{
                       overflow: "hidden",
@@ -191,7 +191,7 @@ export default function Leaderboard({
                 </Box>
                 <Typography
                   fontWeight={"bold"}
-                  fontSize={window.innerWidth < 600 ? 12 : 14}
+                  variant="h6"
                   align="left"
                   sx={{
                     overflow: "hidden",

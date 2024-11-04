@@ -289,7 +289,7 @@ function Layout() {
             >
               <div
                 style={{
-                  zIndex: 2000,
+                  zIndex: 1001,
                 }}
               >
                 <CustomSidebar />

@@ -15,6 +15,10 @@ export default function CounterCard({
   trainer,
   query = null,
   bgColor = 400,
+  additionalAction = () => {},
+  imgSize = window.innerWidth < 600 ? "40px" : "52px",
+  pokemonTextSize = "h5",
+  countTextSize = "h5",
 }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -26,6 +30,8 @@ export default function CounterCard({
   }
 
   const onCardClick = () => {
+    additionalAction();
+
     if (query) {
       navigate(`/counters/${id}${query}`);
     } else {
@@ -35,34 +41,34 @@ export default function CounterCard({
 
   return (
     <BoxComponent
-      p="15px"
+      p="10px"
       noContrastColor={bgColor === 400 ? false : true}
       onClick={onCardClick}
     >
-      <Box display="flex" justifyContent="space-between">
+      <Box display="flex" justifyContent="space-between" alignItems="center">
         {/* GAME IMAGE */}
         <Box
           display="inline-flex"
-          width={window.innerWidth < 400 ? "60px" : "90px"}
-          minWidth={window.innerWidth < 400 ? "60px" : "90px"}
+          width={window.innerWidth < 600 ? "60px" : "90px"}
+          minWidth={window.innerWidth < 600 ? "60px" : "90px"}
           justifyContent="center"
           alignItems="center"
         >
           <img
             alt=""
             src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/games/${gameSprite}.png`}
-            height={window.innerWidth < 400 ? "22px" : "33px"}
+            height={window.innerWidth < 600 ? "22px" : "33px"}
           />
         </Box>
         {/* COUNTER NAME */}
         <Box flexGrow={1} mx="15px" overflow="hidden">
-          <Typography fontWeight={"bold"} color={colors.grey[400]}>
+          <Typography fontWeight={"bold"} color={colors.grey[400]} variant="s3">
             {trainer}
           </Typography>
           <Box display="flex" alignItems="center" height={trainerHeight}>
             <Typography
               fontWeight={"bold"}
-              variant="h5"
+              variant={pokemonTextSize}
               align="left"
               sx={{
                 overflow: "hidden",
@@ -76,17 +82,26 @@ export default function CounterCard({
         </Box>
         {/* COUNT */}
         <Box
+          height={imgSize}
           display="flex"
           alignItems="center"
           justifyContent="center"
-          border="1px solid"
-          borderRadius="4px"
-          width="65px"
-          minWidth="65px"
+          p="5px"
         >
-          <Typography fontWeight={"bold"} variant="h5">
-            {count}
-          </Typography>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            border="1px solid"
+            borderRadius="4px"
+            width="65px"
+            minWidth="65px"
+            height="100%"
+          >
+            <Typography fontWeight={"bold"} variant={countTextSize}>
+              {count}
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </BoxComponent>
