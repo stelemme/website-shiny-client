@@ -92,9 +92,9 @@ export default function CounterRanking({
               id={id}
               name={name}
               statName={
-                stats?.valuesAbove[0]?.rank
-                  ? stats?.valuesAbove[0].rank + 3 + "."
-                  : stats?.valuesBelow[0].rank - 1 + "."
+                stats?.valuesAbove[2]?.rank
+                  ? stats?.valuesAbove[2].rank + 1 + "."
+                  : stats?.valuesBelow[0].rank + "."
               }
               stat={
                 statString === "rankingEnc"
@@ -119,7 +119,7 @@ export default function CounterRanking({
                   <StatsCard
                     id={item._id}
                     name={item.name}
-                    statName={item.rank + "."}
+                    statName={item.rank + 1 + "."}
                     stat={
                       statString === "rankingEnc"
                         ? item.totalEncounters

@@ -2,6 +2,19 @@
 
 ## Changelogs
 
+### Version 1.23.1 (21.11.2024)
+
+**Bug Fixes:**
+
+- Shellos en gastrodon sprites gefixt
+- Castform sprites gefixt
+- Simi's sprites gefixt
+- Joaquin zijn latias is nu een legendary
+- Counter ranking bugs gefixt
+- 00:00:00 bij counterstats ipv NaN waardes
+
+---
+
 ### Version 1.23.0 (04.11.2024)
 
 **Counters:**
