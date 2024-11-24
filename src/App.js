@@ -216,7 +216,7 @@ function Layout() {
     const foreverDate = new Date("9999-12-31T23:59:59");
 
     for (const [key, value] of Object.entries(defaultCookies)) {
-      if (!cookies[key] && cookies[key] !== false) {
+      if (!(key in cookies)) {
         setCookie(key, value, { expires: foreverDate, path: "/" });
       }
     }

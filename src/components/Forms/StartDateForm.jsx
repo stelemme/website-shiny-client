@@ -10,23 +10,37 @@ import {
   Checkbox,
 } from "@mui/material";
 
-export default function StartDateForm({ data, setData, isForCounter = false }) {
+export default function StartDateForm({
+  data,
+  setData,
+  isForCounter = false,
+  required = true,
+  emptyPossible = false,
+  mb = "20px"
+}) {
   return (
     <Grid container>
       <Grid item xs={isForCounter ? 12 : 8}>
         <TextField
-          disabled={!data.startDate}
-          required
+          disabled={emptyPossible ? false : !data.startDate}
+          required={required}
           color="secondary"
           label="Start Date"
-          type={data.startDate ? "date" : "text"}
+          type={emptyPossible ? "date" : data.startDate ? "date" : "text"}
           fullWidth
           value={
             data.startDate instanceof Date
               ? format(data.startDate, "yyyy-MM-dd")
               : ""
           }
-          sx={{ mb: "20px" }}
+          InputLabelProps={
+            emptyPossible
+              ? {
+                  shrink: true,
+                }
+              : {}
+          }
+          sx={{ mb: mb }}
           onChange={(e) => {
             if (!isNaN(new Date(e.target.value))) {
               setData((prevState) => {
