@@ -75,7 +75,7 @@ export default function OnThisDay() {
             <Grid item xs={12}>
               <BoxComponent noContrastColor>
                 <Typography variant="h6" fontWeight={"bold"}>
-                  There are no shinies yet on this day...
+                  There are no shinies caught yet on this day...
                 </Typography>
               </BoxComponent>
             </Grid>

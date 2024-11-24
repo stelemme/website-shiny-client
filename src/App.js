@@ -11,6 +11,7 @@ import { QueryClientProvider, QueryClient } from "react-query";
 import axios from "axios";
 import "leaflet/dist/leaflet.css";
 import { CookiesProvider, useCookies } from "react-cookie";
+import { defaultCookies, defaultCookiesList } from "./utils/cookies";
 
 // Recoil
 import { useRecoilValue } from "recoil";
@@ -64,6 +65,7 @@ import Collections from "./pages/stats/Collections";
 import CounterStats from "./pages/stats/CounterStats";
 import Map from "./pages/stats/Map";
 import ShinyStats from "./pages/stats/ShinyStats";
+import ShinyStatsBeta from "./pages/stats/ShinyStatsBeta";
 
 // Components
 import CustomAlert from "./components/General/Alert";
@@ -158,6 +160,7 @@ const routes = [
           { index: true, Component: ShinyStats },
           { path: "counter", Component: CounterStats },
           { path: "collections", Component: Collections },
+          { path: "beta", Component: ShinyStatsBeta },
         ],
       },
       {
@@ -200,26 +203,7 @@ function Layout() {
   const toggle = useRecoilValue(sidebarCollapse);
   const [collapse, setCollapse] = useState(false);
 
-  const [cookies, setCookie] = useCookies([
-    "animatedSpriteDisplayPreGen8",
-    "animatedSpriteDisplayPostGen8",
-    "checklistGenFilter",
-    "collectionSelect",
-    "collectionUserSelect",
-    "completedCounterSort",
-    "completedTrainerFilter",
-    "evolutionSpriteDisplay",
-    "gameSpriteDisplay",
-    "groupShinies",
-    "ongoingCounterSort",
-    "ongoingTrainerFilter",
-    "mapOnGent",
-    "shinyGenFilter",
-    "shinySort",
-    "shinyTrainerFilter",
-    "theme",
-    "travelFilter",
-  ]);
+  const [cookies, setCookie] = useCookies(defaultCookiesList);
 
   const width = collapse
     ? "calc(100vw - 5px)"
@@ -230,27 +214,6 @@ function Layout() {
 
   useEffect(() => {
     const foreverDate = new Date("9999-12-31T23:59:59");
-
-    const defaultCookies = {
-      animatedSpriteDisplayPreGen8: "true",
-      animatedSpriteDisplayPostGen8: "false",
-      checklistGenFilter: "All",
-      collectionSelect: "Pokéballs",
-      collectionUserSelect: "All",
-      completedCounterSort: "newest",
-      completedTrainerFilter: "All",
-      evolutionSpriteDisplay: "true",
-      gameSpriteDisplay: "true",
-      groupShinies: "false",
-      ongoingCounterSort: "newest",
-      ongoingTrainerFilter: "All",
-      mapOnGent: "false",
-      shinyGenFilter: "All",
-      shinySort: "newest",
-      shinyTrainerFilter: "All",
-      theme: "dark",
-      travelFilter: "transport",
-    };
 
     for (const [key, value] of Object.entries(defaultCookies)) {
       if (!cookies[key] && cookies[key] !== false) {

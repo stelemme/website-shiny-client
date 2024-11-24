@@ -13,6 +13,7 @@ import ShinyCard from "../../components/Cards/ShinyCard";
 import ShinyCardEvolutions from "../../components/Cards/ShinyCardEvolutions";
 import SortMenu from "../../components/Menus/SortMenu";
 import FilterMenu from "../../components/Dialogs/FilterDialog";
+import FilterMenuBeta from "../../components/Menus/FilterMenu";
 
 // Functions
 import sortData from "../../functions/sortData";
@@ -54,13 +55,14 @@ export default function Shinies() {
       icon2={<SortIcon style={{ transform: "scaleX(-1)" }} />}
       onClickIcon2={handleSortClick}
     >
-      <FilterMenu
+      <FilterMenuBeta open={openFilter} setOpen={setOpenFilter} />
+      {/* <FilterMenu
         open={openFilter}
         setOpen={setOpenFilter}
         cookieTrainer={"shinyTrainerFilter"}
         cookieGen={"shinyGenFilter"}
         options={["trainer", "gen"]}
-      />
+      /> */}
       <SortMenu
         open={openSort}
         anchorEl={anchorElSort}
