@@ -39,8 +39,8 @@ export default function FilterMenu({ open, setOpen }) {
     setCookies("filterGame", [], { expires: foreverDate });
     setCookies("filterDate", [], { expires: foreverDate });
     setDates([]);
-    setCookies("filterPokedexNrLower", null, { expires: foreverDate });
-    setCookies("filterPokedexNrUpper", null, { expires: foreverDate });
+    setCookies("filterPokedexNrLower", "", { expires: foreverDate });
+    setCookies("filterPokedexNrUpper", "", { expires: foreverDate });
   };
   const handleTrainerChange = (e, newValue) => {
     setCookies("filterTrainer", newValue, { expires: foreverDate });
@@ -62,7 +62,10 @@ export default function FilterMenu({ open, setOpen }) {
     });
   };
 
-  const [dates, setDates] = useState([]);
+  const [dates, setDates] = useState({
+    startDate: cookies.filterDate[0] ? new Date(cookies.filterDate[0]) : null,
+    endDate: cookies.filterDate[1] ? new Date(cookies.filterDate[1]) : null,
+  });
 
   useEffect(() => {
     setCookies("filterDate", [dates.startDate, dates.endDate], {

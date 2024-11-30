@@ -18,7 +18,28 @@ export const useApiQuery = (
   complexFilter = false,
   dependency = true
 ) => {
-  const [cookies] = useCookies(["groupShinies"]);
+  const [cookies] = useCookies([
+    "groupShinies",
+    "filterDate",
+    "filterGame",
+    "filterGen",
+    "filterPokedexNrLower",
+    "filterPokedexNrUpper",
+    "filterTrainer",
+  ]);
+
+  if (complexFilter) {
+    query =
+      query +
+      "&filter=complex" +
+      `&filterTrainer=${cookies.filterTrainer}` +
+      `&filterGen=${cookies.filterGen}` +
+      `&filterGame=${cookies.filterGame}` +
+      `&filterDate=${cookies.filterDate}` +
+      `&filterPokedexNrLower=${cookies.filterPokedexNrLower}` +
+      `&filterPokedexNrUpper=${cookies.filterPokedexNrUpper}`;
+  }
+
   return useQuery({
     queryKey: [key, query, endpoint, cookies.groupShinies],
     queryFn: () => fetchData(endpoint, query, cookies.groupShinies),
