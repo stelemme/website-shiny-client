@@ -15,14 +15,12 @@ export default function GamePokedex() {
   const { gameId } = useParams();
 
   const { isLoading: pokedexLoading, data: pokedex } = usePokedex(
-    `game=${gameId}`,
-    gameId
+    `game=${gameId}`
   );
 
   const { isLoading: gameLoading, data: game } = useGameId(
     gameId,
-    "action=dir",
-    gameId
+    "action=dir"
   );
 
   const pokedexData = pokedex?.data;

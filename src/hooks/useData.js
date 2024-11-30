@@ -15,20 +15,21 @@ export const useApiQuery = (
   key,
   endpoint,
   query,
-  options = {},
+  complexFilter = false,
   dependency = true
 ) => {
   const [cookies] = useCookies(["groupShinies"]);
   return useQuery({
     queryKey: [key, query, endpoint, cookies.groupShinies],
-    queryFn: () => fetchData(endpoint, query, cookies.groupShinies, options),
+    queryFn: () => fetchData(endpoint, query, cookies.groupShinies),
     enabled: !!dependency,
   });
 };
 
 // Specific hooks using the generalized useApiQuery
 
-export const useShiny = (query) => useApiQuery("shinies", "shiny", query);
+export const useShiny = (query, complexFilter = false) =>
+  useApiQuery("shinies", "shiny", query, complexFilter);
 
 export const useDeadShiny = (query) =>
   useApiQuery("deadshinies", "deadshiny", query);
@@ -39,19 +40,16 @@ export const useShinyId = (shinyId) =>
 export const useDeadShinyId = (shinyId) =>
   useApiQuery("deadshiny", `deadshiny/${shinyId}`, "action=noEncounters");
 
-export const useCounter = (query, dependency = true) =>
-  useApiQuery("counters", "counters", query, {}, dependency);
+export const useCounter = (query) => useApiQuery("counters", "counters", query);
 
 export const useUser = (query) => useApiQuery("users", "user", query);
 
-export const useGame = (query, dependency = true) =>
-  useApiQuery("game", "game", query, {}, dependency);
+export const useGame = (query) => useApiQuery("game", "game", query);
 
-export const useGameId = (gameId, query, dependency = true) =>
-  useApiQuery("game", `game/${gameId}`, query, {}, dependency);
+export const useGameId = (gameId, query) =>
+  useApiQuery("game", `game/${gameId}`, query);
 
-export const usePokedex = (query, dependency = true) =>
-  useApiQuery("pokedex", "pokedex", query, {}, dependency);
+export const usePokedex = (query) => useApiQuery("pokedex", "pokedex", query);
 
 export const usePokemonId = (pokemonId) =>
   useApiQuery("pokemon", `pokedex/${pokemonId}`);
