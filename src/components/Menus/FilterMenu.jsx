@@ -70,9 +70,6 @@ export default function FilterMenu({ open, setOpen }) {
     });
   }, [dates, setCookies]);
 
-  console.log(cookies["filterPokedexNrLower"]);
-  console.log(cookies["filterPokedexNrUpper"]);
-
   return (
     <Dialog open={open} onClose={() => setOpen(false)}>
       <DialogTitle variant="h3" fontWeight="bold">
