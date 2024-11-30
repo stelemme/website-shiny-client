@@ -2,6 +2,15 @@
 
 ## Changelogs
 
+
+### Version 1.24.0 (01.12.2024)
+
+**Filter:**
+
+- Nieuwe filter is toegevoegd, voorlopig werkt hij nog enkel op shiny pagina om te test
+
+---
+
 ### Version 1.23.1 (21.11.2024)
 
 **Bug Fixes:**
