@@ -6,7 +6,15 @@ import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 // Hooks
 import { useGame } from "../../hooks/useData";
 
-export default function GenSelect({ label, handleChange, width=120, size="small", defaultValue="All" }) {
+export default function GenSelect({
+  label,
+  handleChange,
+  fullwidth = false,
+  width = 120,
+  size = "small",
+  defaultValue = "All",
+  disabled = false,
+}) {
   const [genList, setGenList] = useState(["All"]);
 
   const { isLoading: genLoading, data: genData } = useGame("genList=true");
@@ -18,7 +26,13 @@ export default function GenSelect({ label, handleChange, width=120, size="small"
   }, [genLoading, genData]);
 
   return (
-    <FormControl size={size} style={{ minWidth: width }} color="secondary">
+    <FormControl
+      size={size}
+      style={{ minWidth: width }}
+      color="secondary"
+      fullWidth={fullwidth}
+      disabled={disabled}
+    >
       <InputLabel>{label}</InputLabel>
       <Select
         color="secondary"

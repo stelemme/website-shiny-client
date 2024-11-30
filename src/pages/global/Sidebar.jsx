@@ -317,6 +317,13 @@ export default function CustomSidebar() {
               selected={selected}
               setSelected={setSelected}
             />
+            <Item
+              title="Shiny Stats (BETA)"
+              to="/stats/beta"
+              icon={<AssessmentOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
           </>
         ) : null}
       </Menu>

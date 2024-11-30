@@ -3,18 +3,28 @@ import { format } from "date-fns";
 // Mui
 import { TextField } from "@mui/material";
 
-export default function EndDateForm({ data, setData }) {
+export default function EndDateForm({
+  data,
+  setData,
+  required = true,
+  mb = "20px",
+}) {
   return (
     <TextField
-      required
+      required={required}
       color="secondary"
       label="End Date"
       type="date"
       fullWidth
       value={
-        data.endDate instanceof Date ? format(data.endDate, "yyyy-MM-dd") : ""
+        data.endDate instanceof Date && !isNaN(data.endDate)
+          ? format(data.endDate, "yyyy-MM-dd")
+          : ""
       }
-      sx={{ mb: "20px" }}
+      InputLabelProps={{
+        shrink: true,
+      }}
+      sx={{ mb: mb }}
       onChange={(e) => {
         if (!isNaN(new Date(e.target.value))) {
           setData((prevState) => {

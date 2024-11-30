@@ -31,7 +31,7 @@ export default function EncountersGraph() {
   const [query, setQuery] = useState("");
   const [trainer, setTrainer] = useState("All");
 
-  const { data: shinyData } = useShiny(`encountersList=true${query}`);
+  const { data: shinyData } = useShiny(`list=encounterGraph${query}`);
 
   const handleChange = (e) => {
     if (e.target.value === "All") {
@@ -69,7 +69,7 @@ export default function EncountersGraph() {
         height={window.innerWidth < 500 ? 300 : 400}
       >
         <ComposedChart
-          data={shinyData?.data}
+          data={shinyData?.data[0]?.ranges}
           margin={{
             top: 10,
             right: 0,
