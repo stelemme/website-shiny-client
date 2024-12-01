@@ -203,7 +203,7 @@ function Layout() {
   const toggle = useRecoilValue(sidebarCollapse);
   const [collapse, setCollapse] = useState(false);
 
-  const [cookies, setCookie] = useCookies(defaultCookiesList);
+  const [cookies, setCookie, removeCookie] = useCookies(defaultCookiesList);
 
   const width = collapse
     ? "calc(100vw - 5px)"
@@ -220,7 +220,13 @@ function Layout() {
         setCookie(key, value, { expires: foreverDate, path: "/" });
       }
     }
-  }, [cookies, setCookie]);
+
+    for (const currentCookieKey of Object.keys(cookies)) {
+      if (!(currentCookieKey in defaultCookies)) {
+        removeCookie(currentCookieKey, { path: "/" });
+      }
+    }
+  }, [cookies, setCookie, removeCookie]);
 
   useEffect(() => {
     const handleResize = () => {
