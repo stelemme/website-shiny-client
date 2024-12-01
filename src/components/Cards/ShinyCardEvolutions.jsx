@@ -37,7 +37,7 @@ export default function ShinyCardEvolutions({
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
-  const [cookies] = useCookies(["groupShinies", "gameSpriteDisplay"]);
+  const [cookies] = useCookies(["filterGroups", "displayGameSprites"]);
 
   let trainerHeight = "100%";
   if (trainer) {
@@ -46,7 +46,7 @@ export default function ShinyCardEvolutions({
 
   const { data: groupData } = useShiny(`groups=evolutions&group=${group}`);
 
-  if ((cookies.groupShinies || search) && groupData?.data[0]?.evolutions) {
+  if ((cookies.filterGroups || search) && groupData?.data[0]?.evolutions) {
     evolutions = makeUnique(groupData?.data[0]?.evolutions, "name");
 
     evolutions.sort((a, b) => a.pokedexNo - b.pokedexNo);
@@ -110,14 +110,14 @@ export default function ShinyCardEvolutions({
         {/* SHINY SPRITE */}
         <Box display="flex" overflow="auto">
           <Box display="flex" alignItems="center" justifyContent="center">
-            {cookies.gameSpriteDisplay && (
+            {cookies.displayGameSprites && (
               <img
                 alt=""
                 src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-all-home/${monSprite}.png`}
                 height={imgSize}
               />
             )}
-            {!cookies.gameSpriteDisplay && (
+            {!cookies.displayGameSprites && (
               <img
                 alt=""
                 src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/${dir}/${monSprite}.png`}
@@ -137,14 +137,14 @@ export default function ShinyCardEvolutions({
                 alignItems="center"
                 justifyContent="center"
               >
-                {cookies.gameSpriteDisplay && (
+                {cookies.displayGameSprites && (
                   <img
                     alt=""
                     src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-all-home/${evolution.sprite}.png`}
                     height={imgSize}
                   />
                 )}
-                {!cookies.gameSpriteDisplay && (
+                {!cookies.displayGameSprites && (
                   <img
                     alt=""
                     src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/${dir}/${evolution.sprite}.png`}
@@ -166,14 +166,14 @@ export default function ShinyCardEvolutions({
                 alignItems="center"
                 justifyContent="center"
               >
-                {cookies.gameSpriteDisplay && (
+                {cookies.displayGameSprites && (
                   <img
                     alt=""
                     src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-all-home/${form.sprite}.png`}
                     height={imgSize}
                   />
                 )}
-                {!cookies.gameSpriteDisplay && (
+                {!cookies.displayGameSprites && (
                   <img
                     alt=""
                     src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/${dir}/${form.sprite}.png`}

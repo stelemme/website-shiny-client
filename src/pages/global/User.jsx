@@ -27,11 +27,11 @@ export default function User() {
   const { username } = useAuth();
   const [trainerChoice, setTrainerChoice] = useState(trainer);
   const [cookies, setCookies] = useCookies([
-    "groupShinies",
-    "gameSpriteDisplay",
-    "evolutionSpriteDisplay",
-    "animatedSpriteDisplayPreGen8",
-    "animatedSpriteDisplayPostGen8",
+    "filterGroups",
+    "displayGameSprites",
+    "displayEvolutionSprites",
+    "displayAnimatedSpritesPreGen8",
+    "displayAnimatedSpritesPostGen8",
     "mapOnGent",
   ]);
 
@@ -42,16 +42,16 @@ export default function User() {
     Stef: "t-loc",
   };
 
-  const [groupCheck, setGroupCheck] = useState(cookies.groupShinies);
-  const [spriteCheck, setSpriteCheck] = useState(cookies.gameSpriteDisplay);
+  const [groupCheck, setGroupCheck] = useState(cookies.filterGroups);
+  const [spriteCheck, setSpriteCheck] = useState(cookies.displayGameSprites);
   const [evolutionSpriteCheck, setEvolutionSpriteCheck] = useState(
-    cookies.evolutionSpriteDisplay
+    cookies.displayEvolutionSprites
   );
   const [animatedPreGen8Check, setAnimatedPreGen8Check] = useState(
-    cookies.animatedSpriteDisplayPreGen8
+    cookies.displayAnimatedSpritesPreGen8
   );
   const [animatedPostGen8Check, setAnimatedPostGen8Check] = useState(
-    cookies.animatedSpriteDisplayPostGen8
+    cookies.displayAnimatedSpritesPostGen8
   );
   const [trainerCheck, setTrainerCheck] = useState(trainerChoice !== username);
   const [mapOnGentCheck, setMapOnGentCheck] = useState(cookies.mapOnGent);
@@ -64,33 +64,33 @@ export default function User() {
 
   const handleGroupChange = (e) => {
     setGroupCheck(e.target.checked);
-    setCookies("groupShinies", e.target.checked, { expires: foreverDate });
+    setCookies("filterGroups", e.target.checked, { expires: foreverDate });
   };
 
   const handleSpriteChange = (e) => {
     setSpriteCheck(e.target.checked);
-    setCookies("gameSpriteDisplay", e.target.checked, {
+    setCookies("displayGameSprites", e.target.checked, {
       expires: foreverDate,
     });
   };
 
   const handleEvolutionSpriteChange = (e) => {
     setEvolutionSpriteCheck(e.target.checked);
-    setCookies("evolutionSpriteDisplay", e.target.checked, {
+    setCookies("displayEvolutionSprites", e.target.checked, {
       expires: foreverDate,
     });
   };
 
   const handleAnimatedPreGen8Change = (e) => {
     setAnimatedPreGen8Check(e.target.checked);
-    setCookies("animatedSpriteDisplayPreGen8", e.target.checked, {
+    setCookies("displayAnimatedSpritesPreGen8", e.target.checked, {
       expires: foreverDate,
     });
   };
 
   const handleAnimatedPostGen8Change = (e) => {
     setAnimatedPostGen8Check(e.target.checked);
-    setCookies("animatedSpriteDisplayPostGen8", e.target.checked, {
+    setCookies("displayAnimatedSpritesPostGen8", e.target.checked, {
       expires: foreverDate,
     });
   };

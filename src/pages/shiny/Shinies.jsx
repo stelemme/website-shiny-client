@@ -21,7 +21,7 @@ export default function Shinies() {
   const [anchorElSort, setAnchorElSort] = useState(null);
   const openSort = Boolean(anchorElSort);
   const [openFilter, setOpenFilter] = useState(false);
-  const [cookie] = useCookies(["evolutionSpriteDisplay", "sortShiny"]);
+  const [cookie] = useCookies(["displayEvolutionSprites", "sortShiny"]);
 
   const { isLoading: shinyLoading, data: shinyData } = useShiny(
     `preview=shiny&sort=${cookie.sortShiny}`,
@@ -42,7 +42,7 @@ export default function Shinies() {
     <PageComponent
       title="SHINY POKEMON"
       subtitle="Here you can find all shinies."
-      widthSnaps={cookie.evolutionSpriteDisplay === "false" ? 2 : 4}
+      widthSnaps={cookie.displayEvolutionSprites === "false" ? 2 : 4}
       icon1={<FilterAltOutlinedIcon />}
       onClickIcon1={handleFilterClick}
       icon2={<SortIcon style={{ transform: "scaleX(-1)" }} />}
@@ -66,7 +66,7 @@ export default function Shinies() {
             }}
             key={item._id}
           >
-            {!cookie.evolutionSpriteDisplay ? (
+            {!cookie.displayEvolutionSprites ? (
               <LazyLoad height={window.innerWidth < 600 ? 50 : 100}>
                 <ShinyCard
                   id={item._id}

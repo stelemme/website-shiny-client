@@ -37,8 +37,8 @@ export default function Topbar() {
   const colorMode = useContext(ColorModeContext);
   const navigate = useNavigate();
   const [toggled, setToggled] = useRecoilState(sidebarToggle);
-  const [cookies, setCookies] = useCookies(["groupShinies"]);
-  const [groupCheck, setGroupCheck] = useState(cookies.groupShinies);
+  const [cookies, setCookies] = useCookies(["filterGroups"]);
+  const [groupCheck, setGroupCheck] = useState(cookies.filterGroups);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -53,7 +53,7 @@ export default function Topbar() {
   const foreverDate = new Date("9999-12-31T23:59:59");
 
   const handleGroupChange = () => {
-    setCookies("groupShinies", !groupCheck, { expires: foreverDate });
+    setCookies("filterGroups", !groupCheck, { expires: foreverDate });
     setGroupCheck((prevStat) => !prevStat);
   };
 
