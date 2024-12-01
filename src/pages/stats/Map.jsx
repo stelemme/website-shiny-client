@@ -10,7 +10,7 @@ import MainMap from "../../components/Map/MainMap";
 import MapStats from "../../components/Map/MapStats";
 
 export default function Map() {
-  const [cookies, setCookies] = useCookies(["travelFilter", "mapOnGent"]);
+  const [cookies, setCookies] = useCookies(["travelFilter", "displayMapOnGent"]);
   const foreverDate = new Date("9999-12-31T23:59:59");
 
   const handleTransportClick = () => {

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useCookies } from "react-cookie";
 
 // mui
 import { Grid } from "@mui/material";
@@ -25,7 +26,12 @@ export default function CounterRanking({
   trainer,
   completed,
 }) {
-  const [statString, setStatString] = useState("rankingEnc");
+  const [cookies, setCookies] = useCookies(["displayCounterRankingEnc"]);
+  const [statString, setStatString] = useState(
+    cookies.displayCounterRankingEnc ? "rankingEnc" : "rankingPercentage"
+  );
+
+  const foreverDate = new Date("9999-12-31T23:59:59");
 
   const { isLoading: countersLoading, data: countersData } = useCounter(
     `id=${id}&stats=${statString}&checkValue=${
@@ -37,6 +43,9 @@ export default function CounterRanking({
 
   const handleChange = (e) => {
     setStatString(getKeyByValue(selectList, e.target.value));
+    setCookies("displayCounterRankingEnc", e.target.value === "Encounters", {
+      expires: foreverDate,
+    });
   };
 
   const selectList = {

@@ -32,7 +32,7 @@ export default function User() {
     "displayEvolutionSprites",
     "displayAnimatedSpritesPreGen8",
     "displayAnimatedSpritesPostGen8",
-    "mapOnGent",
+    "displayMapOnGent",
   ]);
 
   const imageCheck = {
@@ -54,7 +54,9 @@ export default function User() {
     cookies.displayAnimatedSpritesPostGen8
   );
   const [trainerCheck, setTrainerCheck] = useState(trainerChoice !== username);
-  const [mapOnGentCheck, setMapOnGentCheck] = useState(cookies.mapOnGent);
+  const [mapOnGentCheck, setMapOnGentCheck] = useState(
+    cookies.displayMapOnGent
+  );
 
   useEffect(() => {
     setTrainerCheck(trainerChoice !== username);
@@ -97,7 +99,7 @@ export default function User() {
 
   const handleMapOnGentChange = (e) => {
     setMapOnGentCheck(e.target.checked);
-    setCookies("mapOnGent", e.target.checked, {
+    setCookies("displayMapOnGent", e.target.checked, {
       expires: foreverDate,
     });
   };
