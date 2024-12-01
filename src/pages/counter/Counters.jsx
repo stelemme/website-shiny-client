@@ -13,9 +13,6 @@ import CounterCard from "../../components/Cards/CounterCard";
 import SortMenu from "../../components/Menus/SortMenu";
 import FilterMenu from "../../components/Dialogs/FilterDialog";
 
-// Functions
-import sortData from "../../functions/sortData";
-
 // Hooks
 import { useCounter, useShiny } from "../../hooks/useData";
 
@@ -27,16 +24,18 @@ export default function Counters() {
   const [openFilterOngoing, setOpenFilterOngoing] = useState(false);
   const [openFilterCompleted, setOpenFilterCompleted] = useState(false);
   const [cookie] = useCookies([
-    "ongoingCounterSort",
-    "completedCounterSort",
     "ongoingTrainerFilter",
     "completedTrainerFilter",
+    "sortCountersCompleted",
+    "sortCountersOngoing",
   ]);
 
   const { isLoading: ongoingCountersLoading, data: ongoingCountersData } =
-    useCounter("preview=counter");
+    useCounter(`preview=counter&sort=${cookie.sortCountersOngoing}`);
   const { isLoading: completedCountersLoading, data: completedCountersData } =
-    useShiny("preview=counter&filter=counters");
+    useShiny(
+      `preview=counter&filter=counters&sort=${cookie.sortCountersCompleted}`
+    );
 
   const CountersDisplay = ({ data, loading, isCompleted, filter }) => {
     const filteredItems =
@@ -94,14 +93,14 @@ export default function Counters() {
             open={openSortOngoing}
             anchorEl={anchorElOngoing}
             setAnchorEl={setAnchorElOngoing}
-            cookie={"ongoingCounterSort"}
+            cookie={"sortCountersOngoing"}
             options={["game", "pokedexNo", "date", "encounters", "abc"]}
           />
         </Box>
       </Box>
       <Grid container spacing={"20px"} mb={"20px"}>
         <CountersDisplay
-          data={sortData(ongoingCountersData?.data, cookie.ongoingCounterSort)}
+          data={ongoingCountersData?.data}
           loading={ongoingCountersLoading}
           isCompleted={false}
           filter={
@@ -136,17 +135,14 @@ export default function Counters() {
             open={openSortCompleted}
             anchorEl={anchorElCompleted}
             setAnchorEl={setAnchorElCompleted}
-            cookie={"completedCounterSort"}
+            cookie={"sortCountersCompleted"}
             options={["game", "pokedexNo", "date", "encounters", "abc"]}
           />
         </Box>
       </Box>
       <Grid container spacing={"20px"}>
         <CountersDisplay
-          data={sortData(
-            completedCountersData?.data,
-            cookie.completedCounterSort
-          )}
+          data={completedCountersData?.data}
           loading={completedCountersLoading}
           isCompleted={true}
           filter={cookie.completedTrainerFilter}
