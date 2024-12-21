@@ -1,7 +1,7 @@
 // Mui
 import { TextField, InputAdornment } from "@mui/material";
 
-export default function ThresholdForm({ data, setData, type }) {
+export default function MeanEncForm({ data, setData }) {
   return (
     <TextField
       InputProps={{
@@ -15,21 +15,18 @@ export default function ThresholdForm({ data, setData, type }) {
         },
       }}
       sx={{ mb: "20px" }}
-      value={
-        type === "lower" ? data.lowerTimeThreshold : data.upperTimeThreshold
-      }
+      value={data.meanEncounterTime}
       type="number"
       fullWidth
       required
       color="secondary"
-      label={type === "lower" ? "Lower Threshold" : "Upper Threshold"}
+      label={"Mean Encounter Time"}
       onChange={(e) => {
         if (e.target.value >= 0 || e.target.value === "") {
           setData((prevState) => {
             return {
               ...prevState,
-              ...(type === "lower" && { lowerTimeThreshold: e.target.value }),
-              ...(type === "upper" && { upperTimeThreshold: e.target.value }),
+              meanEncounterTime: e.target.value,
             };
           });
         }

@@ -13,6 +13,8 @@ import {
   DialogContent,
   TextField,
   Divider,
+  Tooltip,
+  Button,
 } from "@mui/material";
 import { tokens } from "../../theme";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
@@ -22,6 +24,8 @@ import ReplyTwoToneIcon from "@mui/icons-material/ReplyTwoTone";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
 import ListAltRoundedIcon from "@mui/icons-material/ListAltRounded";
+import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
 
 // Components
 import CustomDialog from "../../components/Dialogs/CustomDialog";
@@ -30,6 +34,7 @@ import StartDateForm from "../../components/Forms/StartDateForm";
 import EndDateForm from "../../components/Forms/EndDateForm";
 import IncrementForm from "../../components/Forms/IncrementForm";
 import ThresholdForm from "../../components/Forms/ThresholdForm";
+import MeanEncForm from "../../components/Forms/MeanEncForm";
 import PokemonImage from "../../components/General/PokemonImage";
 import CounterRanking from "../../components/Stats/CounterRanking";
 
@@ -88,6 +93,7 @@ export default function Counter() {
   const [increment, setIncrement] = useState(undefined);
   const [incrementEdit, setIncrementEdit] = useState(undefined);
   const [thresholdEdit, setThresholdEdit] = useState(undefined);
+  const [meanEncTimeEdit, setMeanEncTimeEdit] = useState(undefined);
   const [dateDifference, setDateDifference] = useState(undefined);
 
   const [searchLevel, setSearchLevel] = useState(0);
@@ -165,18 +171,23 @@ export default function Counter() {
         )
       );
       setTimeDifference(
-        calculateMeanEncounterTime(
-          data.encounters,
-          data.upperTimeThreshold,
-          data.lowerTimeThreshold,
-          data.increment
-        )
+        data.stats.manualMeanEncounterTime
+          ? data.stats.meanEncounterTime
+          : calculateMeanEncounterTime(
+              data.encounters,
+              data.upperTimeThreshold,
+              data.lowerTimeThreshold,
+              data.increment
+            )
       );
       setIncrement(data.increment);
       setIncrementEdit({ increment: data.increment });
       setThresholdEdit({
         lowerTimeThreshold: data.lowerTimeThreshold,
         upperTimeThreshold: data.upperTimeThreshold,
+      });
+      setMeanEncTimeEdit({
+        meanEncounterTime: timeDifference,
       });
       if (data.startDate) {
         setStartDate(new Date(data.startDate).toLocaleDateString("nl-BE"));
@@ -382,20 +393,68 @@ export default function Counter() {
     let data = {
       lowerTimeThreshold: thresholdEdit.lowerTimeThreshold,
       upperTimeThreshold: thresholdEdit.upperTimeThreshold,
+      meanEncounterTime: timeDifference,
+      manualMeanEncounterTime: false,
+      totalHuntTime: Math.round(timeDifference * count),
     };
-    let database = "counters";
 
+    if (meanEncTimeEdit.meanEncounterTime !== timeDifference) {
+      data.meanEncounterTime = meanEncTimeEdit.meanEncounterTime;
+      data.manualMeanEncounterTime = true;
+      data.totalHuntTime = Math.round(
+        meanEncTimeEdit.meanEncounterTime * count
+      );
+    }
+
+    let database = "counters";
     if (searchParams.get("completed") === "true") {
       database = "shiny";
     }
 
     try {
-      await makeRequest(
+      const response = await makeRequest(
         "patch",
         `/${database}/${counterId}?action=thresholdEdit`,
         data,
         "edit"
       );
+
+      setData(response);
+      setOpenThresholdEdit(false);
+    } catch {
+      return;
+    }
+  };
+
+  const handleResetManualEncTime = async () => {
+    const resetValue = calculateMeanEncounterTime(
+      data.encounters,
+      data.upperTimeThreshold,
+      data.lowerTimeThreshold,
+      data.increment
+    );
+    setTimeDifference(resetValue);
+    setMeanEncTimeEdit(resetValue);
+
+    let database = "counters";
+    if (searchParams.get("completed") === "true") {
+      database = "shiny";
+    }
+
+    let editData = {
+      meanEncounterTime: resetValue,
+      manualMeanEncounterTime: false,
+      totalHuntTime: Math.round(resetValue * count),
+    };
+
+    try {
+      const response = await makeRequest(
+        "patch",
+        `/${database}/${counterId}?action=resetMeanEncTime`,
+        editData,
+        "edit"
+      );
+      setData(response);
       setOpenThresholdEdit(false);
     } catch {
       return;
@@ -1037,6 +1096,25 @@ export default function Counter() {
                   title={"Edit the Thresholds"}
                   content={
                     <Grid container mt={1} spacing={2}>
+                      {data.stats.manualMeanEncounterTime && (
+                        <Grid item xs={12} mb={"10px"}>
+                          <Button
+                            fullWidth
+                            onClick={handleResetManualEncTime}
+                            variant="outlined"
+                            color="secondary"
+                            startIcon={<AutorenewIcon />}
+                          >
+                            Reset Mean Encounter Time
+                          </Button>
+                        </Grid>
+                      )}
+                      <Grid item xs={12}>
+                        <MeanEncForm
+                          data={meanEncTimeEdit}
+                          setData={setMeanEncTimeEdit}
+                        />
+                      </Grid>
                       <Grid item md={6} xs={12}>
                         <ThresholdForm
                           data={thresholdEdit}
@@ -1056,11 +1134,25 @@ export default function Counter() {
                   action={"Edit"}
                 />
               </Box>
-              <Typography textAlign={"right"}>
-                {timeDifference
-                  ? new Date(timeDifference * 1000).toISOString().slice(11, 19)
-                  : "Undefined"}
-              </Typography>
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="flex-end"
+                gap="10px"
+              >
+                {data.stats.manualMeanEncounterTime && (
+                  <Tooltip title="Mean Encounter Time is manually changed">
+                    <WarningAmberRoundedIcon />
+                  </Tooltip>
+                )}
+                <Typography textAlign={"right"}>
+                  {timeDifference
+                    ? new Date(timeDifference * 1000)
+                        .toISOString()
+                        .slice(11, 19)
+                    : "Undefined"}
+                </Typography>
+              </Box>
             </Grid>
           </Grid>
         </Box>

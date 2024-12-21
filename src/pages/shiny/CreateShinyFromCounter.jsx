@@ -24,7 +24,6 @@ import NicknameForm from "../../components/Forms/NicknameForm";
 
 // Functions
 import {
-  calculateMeanEncounterTime,
   calculateProb,
   calculatePercentage,
   calculateDateDifference,
@@ -184,21 +183,12 @@ export default function CreateShinyFromCounter() {
         data.method?.function,
         data.method?.searchLevel
       ),
-      meanEncounterTime: calculateMeanEncounterTime(
-        data.encounters,
-        data.upperTimeThreshold,
-        data.lowerTimeThreshold,
-        data.increment
-      ),
+      meanEncounterTime: data.stats.meanEncounterTime,
       daysHunting: calculateDateDifference(data.endDate, data.startDate),
       totalHuntTime: Math.round(
-        calculateMeanEncounterTime(
-          data.encounters,
-          data.upperTimeThreshold,
-          data.lowerTimeThreshold,
-          data.increment
-        ) * data.totalEncounters
+        data.stats.meanEncounterTime * data.totalEncounters
       ),
+      manualMeanEncounterTime: data.stats.manualMeanEncounterTime,
     };
 
     if (data.method.function) {
