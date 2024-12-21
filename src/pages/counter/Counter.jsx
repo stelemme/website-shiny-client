@@ -255,7 +255,7 @@ export default function Counter() {
         {
           meanEncounterTime: timeDifference,
           percentage: percentage,
-          totalHuntTime: timeDifference * (count + data.increment),
+          totalHuntTime: Math.round(timeDifference * (count + data.increment)),
         },
         null,
         true
