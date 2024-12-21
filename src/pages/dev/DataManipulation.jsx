@@ -138,6 +138,34 @@ export default function DataManipulation() {
     });
   };
 
+  const handleTotalHuntTimeClick = async (e) => {
+    await counterData.data.forEach(async (element) => {
+      const totalHuntTime =
+        element.totalEncounters *
+        calculateMeanEncounterTime(
+          element.encounters,
+          element.upperTimeThreshold,
+          element.lowerTimeThreshold,
+          element.increment
+        );
+
+      console.log(element.name, totalHuntTime);
+
+      const url = `/counters/${element._id}?action=totalHuntTime`;
+
+      try {
+        await makeRequest(
+          "patch",
+          url,
+          { totalHuntTime: Math.round(totalHuntTime) },
+          "edit"
+        );
+      } catch (error) {
+        return;
+      }
+    });
+  };
+
   return (
     <PageComponent
       title="DEV PAGE: DATA MANIPULATION"
@@ -162,6 +190,16 @@ export default function DataManipulation() {
         onClick={handleMeanEncTimeClick}
       >
         Add meanEncounterTime
+      </Button>
+      <Button
+        type="submit"
+        variant="contained"
+        color="neutral"
+        sx={{ mb: "10px" }}
+        style={{ color: "white" }}
+        onClick={handleTotalHuntTimeClick}
+      >
+        Add totalHuntTime
       </Button>
       <Button
         type="submit"
