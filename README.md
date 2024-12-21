@@ -4,6 +4,9 @@
 
 ### Version 1.25.0 (21.12.2024)
 
+**Shiny Page:**
+- Pokéradar shinies worden gesorteerd op datum
+
 **Filter:**
 
 - Filter is ook toegevoegd aan counter pagina
