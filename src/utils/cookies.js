@@ -8,7 +8,7 @@ const defaultCookies = {
   displayEvolutionSprites: true,
   displayGameSprites: true,
   displayMapOnGent: false,
-  displayCounterRankingEnc: true,
+  displayCounterRanking: "rankingEnc",
   filterCounterDate: [],
   filterCounterGame: [],
   filterCounterGen: [],

@@ -4,6 +4,9 @@
 
 ### Version 1.25.0 (21.12.2024)
 
+**Counter:**
+- Gemiddelde encounter tijd kan manueel worden ingevuld op counter pagina (op zelfde plek als waar thresholds worden aangepast)
+
 **Shiny Page:**
 - Pokéradar shinies worden gesorteerd op datum
 

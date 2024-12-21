@@ -1048,8 +1048,11 @@ export default function Counter() {
                   <DialogContent width="100%">
                     <CounterRanking
                       id={counterId}
-                      encounters={count}
-                      percentage={percentage}
+                      data={{
+                        rankingEnc: count,
+                        rankingPercentage: percentage,
+                        rankingTime: data.stats.totalHuntTime,
+                      }}
                       setClose={setOpenRanking}
                       name={data.name}
                       trainer={data.trainer}
