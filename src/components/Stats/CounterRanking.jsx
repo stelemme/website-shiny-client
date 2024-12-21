@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useCookies } from "react-cookie";
 
 // mui
 import { Grid } from "@mui/material";
@@ -12,36 +13,47 @@ import StatsCard from "../Cards/StatsCard";
 // Hooks
 import { useCounter } from "../../hooks/useData";
 
+// Functions
+import { formatTime } from "../../functions/statFunctions";
+
 function getKeyByValue(object, value) {
   return Object.keys(object).find((key) => object[key] === value);
 }
 
 export default function CounterRanking({
   id,
-  encounters,
-  percentage,
+  data,
   setClose,
   name,
   trainer,
   completed,
 }) {
-  const [statString, setStatString] = useState("rankingEnc");
+  const [cookies, setCookies] = useCookies(["displayCounterRanking"]);
+  const [statString, setStatString] = useState(cookies.displayCounterRanking);
+
+  const foreverDate = new Date("9999-12-31T23:59:59");
 
   const { isLoading: countersLoading, data: countersData } = useCounter(
-    `id=${id}&stats=${statString}&checkValue=${
-      statString === "rankingEnc" ? encounters : percentage
-    }`
+    `id=${id}&stats=${statString}&checkValue=${data[statString]}`
   );
 
   const stats = countersData?.data[0];
 
   const handleChange = (e) => {
     setStatString(getKeyByValue(selectList, e.target.value));
+    setCookies(
+      "displayCounterRanking",
+      getKeyByValue(selectList, e.target.value),
+      {
+        expires: foreverDate,
+      }
+    );
   };
 
   const selectList = {
     rankingEnc: "Encounters",
     rankingPercentage: "Percentage",
+    rankingTime: "Time",
   };
 
   return (
@@ -70,12 +82,14 @@ export default function CounterRanking({
                     name={item.name}
                     statName={item.rank + "."}
                     stat={
-                      statString === "rankingEnc"
-                        ? item.totalEncounters
-                        : item.stats.percentage.toLocaleString("en-US", {
+                      statString === "rankingPercentage"
+                        ? item[statString].toLocaleString("en-US", {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
                           }) + "%"
+                        : statString === "rankingTime"
+                        ? formatTime(item[statString], false)
+                        : item[statString]
                     }
                     trainer={item.trainer}
                     bgColor={500}
@@ -97,12 +111,14 @@ export default function CounterRanking({
                   : stats?.valuesBelow[0].rank + "."
               }
               stat={
-                statString === "rankingEnc"
-                  ? encounters
-                  : percentage.toLocaleString("en-US", {
+                statString === "rankingPercentage"
+                  ? data[statString].toLocaleString("en-US", {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                     }) + "%"
+                  : statString === "rankingTime"
+                  ? formatTime(data[statString], false)
+                  : data[statString]
               }
               trainer={trainer}
               bgColor={400}
@@ -121,12 +137,14 @@ export default function CounterRanking({
                     name={item.name}
                     statName={item.rank + 1 + "."}
                     stat={
-                      statString === "rankingEnc"
-                        ? item.totalEncounters
-                        : item.stats.percentage.toLocaleString("en-US", {
+                      statString === "rankingPercentage"
+                        ? item[statString].toLocaleString("en-US", {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
                           }) + "%"
+                        : statString === "rankingTime"
+                        ? formatTime(item[statString], false)
+                        : item[statString]
                     }
                     trainer={item.trainer}
                     bgColor={500}

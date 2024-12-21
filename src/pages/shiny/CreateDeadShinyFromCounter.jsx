@@ -22,7 +22,6 @@ import FailForm from "../../components/Forms/FailForm";
 
 // Functions
 import {
-  calculateMeanEncounterTime,
   calculateProb,
   calculatePercentage,
   calculateDateDifference,
@@ -184,20 +183,10 @@ export default function CreateDeadShinyFromCounter() {
         data.method?.function,
         data.method?.searchLevel
       ),
-      meanEncounterTime: calculateMeanEncounterTime(
-        data.encounters,
-        data.upperTimeThreshold,
-        data.lowerTimeThreshold,
-        data.increment
-      ),
+      meanEncounterTime: data.stats.meanEncounterTime,
       daysHunting: calculateDateDifference(data.endDate, data.startDate),
       totalHuntTime: Math.round(
-        calculateMeanEncounterTime(
-          data.encounters,
-          data.upperTimeThreshold,
-          data.lowerTimeThreshold,
-          data.increment
-        ) * data.totalEncounters
+        data.stats.meanEncounterTime * data.totalEncounters
       ),
     };
 

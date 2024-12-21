@@ -2,6 +2,24 @@
 
 ## Changelogs
 
+### Version 1.25.0 (21.12.2024)
+
+**Counter:**
+- Gemiddelde encounter tijd kan manueel worden ingevuld op counter pagina (op zelfde plek als waar thresholds worden aangepast)
+- Als ge nu op de pagina van een gecomplete counter zit is er een knop om naar de shiny pagina te gaan (sparkles knop, zelfde knop die ge moet klikken alsde een shiny hebt)
+
+**Shiny Page:**
+- Pokéradar shinies worden gesorteerd op datum
+
+**Filter:**
+
+- Filter is ook toegevoegd aan counter pagina
+
+**Aanpassingen:**
+
+- Counter ranking onthoudt of ge op encounters of percentage staat
+
+---
 
 ### Version 1.24.0 (01.12.2024)
 

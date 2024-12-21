@@ -16,41 +16,42 @@ export const useApiQuery = (
   endpoint,
   query,
   complexFilter = false,
+  type = "Shiny",
   dependency = true
 ) => {
   const [cookies] = useCookies([
-    "groupShinies",
-    "filterDate",
-    "filterGame",
-    "filterGen",
-    "filterPokedexNrLower",
-    "filterPokedexNrUpper",
-    "filterTrainer",
+    "filterGroups",
+    `filter${type}Trainer`,
+    `filter${type}Gen`,
+    `filter${type}Game`,
+    `filter${type}Date`,
+    `filter${type}PokedexNrLower`,
+    `filter${type}PokedexNrUpper`,
   ]);
 
   if (complexFilter) {
     query =
       query +
       "&filter=complex" +
-      `&filterTrainer=${cookies.filterTrainer}` +
-      `&filterGen=${cookies.filterGen}` +
-      `&filterGame=${cookies.filterGame}` +
-      `&filterDate=${cookies.filterDate}` +
-      `&filterPokedexNrLower=${cookies.filterPokedexNrLower}` +
-      `&filterPokedexNrUpper=${cookies.filterPokedexNrUpper}`;
+      `&filterTrainer=${cookies[`filter${type}Trainer`]}` +
+      `&filterGen=${cookies[`filter${type}Gen`]}` +
+      `&filterGame=${cookies[`filter${type}Game`]}` +
+      `&filterDate=${cookies[`filter${type}Date`]}` +
+      `&filterPokedexNrLower=${cookies[`filter${type}PokedexNrLower`]}` +
+      `&filterPokedexNrUpper=${cookies[`filter${type}PokedexNrUpper`]}`;
   }
 
   return useQuery({
-    queryKey: [key, query, endpoint, cookies.groupShinies],
-    queryFn: () => fetchData(endpoint, query, cookies.groupShinies),
+    queryKey: [key, query, endpoint, cookies.filterGroups],
+    queryFn: () => fetchData(endpoint, query, cookies.filterGroups),
     enabled: !!dependency,
   });
 };
 
 // Specific hooks using the generalized useApiQuery
 
-export const useShiny = (query, complexFilter = false) =>
-  useApiQuery("shinies", "shiny", query, complexFilter);
+export const useShiny = (query, complexFilter = false, type = "Shiny") =>
+  useApiQuery("shinies", "shiny", query, complexFilter, type);
 
 export const useDeadShiny = (query) =>
   useApiQuery("deadshinies", "deadshiny", query);
@@ -61,7 +62,8 @@ export const useShinyId = (shinyId) =>
 export const useDeadShinyId = (shinyId) =>
   useApiQuery("deadshiny", `deadshiny/${shinyId}`, "action=noEncounters");
 
-export const useCounter = (query) => useApiQuery("counters", "counters", query);
+export const useCounter = (query, complexFilter = false) =>
+  useApiQuery("counters", "counters", query, complexFilter, "Counter");
 
 export const useUser = (query) => useApiQuery("users", "user", query);
 

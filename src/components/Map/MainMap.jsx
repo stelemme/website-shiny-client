@@ -80,7 +80,7 @@ const createClusterCustomIcon = function (cluster) {
 };
 
 export default function MainMap() {
-  const [cookies] = useCookies(["travelFilter", "mapOnGent"]);
+  const [cookies] = useCookies(["travelFilter", "displayMapOnGent"]);
 
   const { data: joaquinLocationsData, isLoading: loadingJoaquin } = useShiny(
     `geoLocation=map&trainer=Joaquin&filter=${cookies.travelFilter}`
@@ -119,7 +119,7 @@ export default function MainMap() {
     () => (
       <MapContainer
         center={center}
-        zoom={cookies.mapOnGent ? 12 : 3}
+        zoom={cookies.displayMapOnGent ? 12 : 3}
         style={{ height: "calc(100vh - 275px)", width: "100%" }}
         ref={setMap}
       >

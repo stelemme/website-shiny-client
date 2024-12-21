@@ -24,7 +24,7 @@ export default function CountryGraph() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const [cookies] = useCookies(["travelFilter", "mapOnGent"]);
+  const [cookies] = useCookies(["travelFilter", "displayMapOnGent"]);
 
   const { data: shinyData } = useShiny(
     `geoLocation=differentCountries&filter=${cookies.travelFilter}`

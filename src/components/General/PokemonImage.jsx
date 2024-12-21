@@ -13,8 +13,8 @@ export default function PokemonImage({
   shiny = false,
 }) {
   const [cookies] = useCookies([
-    "animatedSpriteDisplayPreGen8",
-    "animatedSpriteDisplayPostGen8",
+    "displayAnimatedSpritesPreGen8",
+    "displayAnimatedSpritesPostGen8",
   ]);
   const backBool = useRecoilValue(backToggle);
 
@@ -34,8 +34,8 @@ export default function PokemonImage({
 
   useEffect(() => {
     const shouldAnimate =
-      (gameSort < 31 && cookies.animatedSpriteDisplayPreGen8) ||
-      cookies.animatedSpriteDisplayPostGen8;
+      (gameSort < 31 && cookies.displayAnimatedSpritesPreGen8) ||
+      cookies.displayAnimatedSpritesPostGen8;
     setAnimated(shouldAnimate ? "/animated" : "");
   }, [gameSort, cookies, backBool]);
 

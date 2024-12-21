@@ -23,7 +23,7 @@ export default function ShinyCard({
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
-  const [cookies] = useCookies(["gameSpriteDisplay"]);
+  const [cookies] = useCookies(["displayGameSprites"]);
 
   let trainerHeight = "100%";
   if (trainer) {
@@ -82,14 +82,14 @@ export default function ShinyCard({
 
         {/* SHINY SPRITE */}
         <Box display="flex" alignItems="center" justifyContent="center">
-          {cookies.gameSpriteDisplay && (
+          {cookies.displayGameSprites && (
             <img
               alt=""
               src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-all-home/${monSprite}.png`}
               height={String(imgSize) + "px"}
             />
           )}
-          {!cookies.gameSpriteDisplay && (
+          {!cookies.displayGameSprites && (
             <img
               alt=""
               src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/${dir}/${monSprite}.png`}

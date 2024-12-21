@@ -22,56 +22,62 @@ import EndDateForm from "../Forms/EndDateForm";
 import StartDateForm from "../Forms/StartDateForm";
 import PokedexNrForm from "../Forms/PokedexNrForm";
 
-export default function FilterMenu({ open, setOpen }) {
+export default function FilterMenu({ open, setOpen, type = "Shiny" }) {
   const [cookies, setCookies] = useCookies([
-    "filterTrainer",
-    "filterGen",
-    "filterGame",
-    "filterDate",
+    `filter${type}Trainer`,
+    `filter${type}Gen`,
+    `filter${type}Game`,
+    `filter${type}Date`,
+    `filter${type}PokedexNrLower`,
+    `filter${type}PokedexNrUpper`,
   ]);
   const isSmallScreen = useMediaQuery("(max-width:500px)");
 
   const foreverDate = new Date("9999-12-31T23:59:59");
 
   const handleClearAll = () => {
-    setCookies("filterTrainer", [], { expires: foreverDate });
-    setCookies("filterGen", [], { expires: foreverDate });
-    setCookies("filterGame", [], { expires: foreverDate });
-    setCookies("filterDate", [], { expires: foreverDate });
+    setCookies(`filter${type}Trainer`, [], { expires: foreverDate });
+    setCookies(`filter${type}Gen`, [], { expires: foreverDate });
+    setCookies(`filter${type}Game`, [], { expires: foreverDate });
+    setCookies(`filter${type}Date`, [], { expires: foreverDate });
     setDates([]);
-    setCookies("filterPokedexNrLower", "", { expires: foreverDate });
-    setCookies("filterPokedexNrUpper", "", { expires: foreverDate });
+    setCookies(`filter${type}PokedexNrLower`, "", { expires: foreverDate });
+    setCookies(`filter${type}PokedexNrUpper`, "", { expires: foreverDate });
   };
   const handleTrainerChange = (e, newValue) => {
-    setCookies("filterTrainer", newValue, { expires: foreverDate });
+    setCookies(`filter${type}Trainer`, newValue, { expires: foreverDate });
   };
   const handleGenChange = (e, newValue) => {
-    setCookies("filterGen", newValue, { expires: foreverDate });
+    setCookies(`filter${type}Gen`, newValue, { expires: foreverDate });
   };
   const handleGameChange = (e, newValue) => {
-    setCookies("filterGame", newValue, { expires: foreverDate });
+    setCookies(`filter${type}Game`, newValue, { expires: foreverDate });
   };
   const handlePokedexNrLowerChange = (newValue) => {
-    setCookies("filterPokedexNrLower", newValue, {
+    setCookies(`filter${type}PokedexNrLower`, newValue, {
       expires: foreverDate,
     });
   };
   const handlePokedexNrUpperChange = (newValue) => {
-    setCookies("filterPokedexNrUpper", newValue, {
+    setCookies(`filter${type}PokedexNrUpper`, newValue, {
       expires: foreverDate,
     });
   };
 
   const [dates, setDates] = useState({
-    startDate: cookies.filterDate[0] ? new Date(cookies.filterDate[0]) : null,
-    endDate: cookies.filterDate[1] ? new Date(cookies.filterDate[1]) : null,
+    startDate: cookies[`filter${type}Date`][0]
+      ? new Date(cookies[`filter${type}Date`][0])
+      : null,
+    endDate: cookies[`filter${type}Date`][1]
+      ? new Date(cookies[`filter${type}Date`][1])
+      : null,
   });
 
   useEffect(() => {
-    setCookies("filterDate", [dates.startDate, dates.endDate], {
+    setCookies(`filter${type}Date`, [dates.startDate, dates.endDate], {
       expires: new Date("9999-12-31T23:59:59"),
     });
-  }, [dates, setCookies]);
+  }, [dates, setCookies, type]);
 
   return (
     <Dialog open={open} onClose={() => setOpen(false)}>
@@ -105,7 +111,7 @@ export default function FilterMenu({ open, setOpen }) {
                 label="Trainer"
                 handleChange={handleTrainerChange}
                 fullWidth
-                value={cookies["filterTrainer"]}
+                value={cookies[`filter${type}Trainer`]}
               />
             </Grid>
             <Grid item xs={12}>
@@ -119,8 +125,8 @@ export default function FilterMenu({ open, setOpen }) {
                 label="Gen"
                 handleChange={handleGenChange}
                 fullwidth
-                value={cookies["filterGen"]}
-                disabled={cookies["filterGame"].length > 0}
+                value={cookies[`filter${type}Gen`]}
+                disabled={cookies[`filter${type}Game`].length > 0}
               />
             </Grid>
             <Grid item xs={12}>
@@ -129,8 +135,8 @@ export default function FilterMenu({ open, setOpen }) {
                 label="Game"
                 handleChange={handleGameChange}
                 fullwidth
-                value={cookies["filterGame"]}
-                disabled={cookies["filterGen"].length > 0}
+                value={cookies[`filter${type}Game`]}
+                disabled={cookies[`filter${type}Gen`].length > 0}
               />
             </Grid>
             <Grid item xs={12}>
@@ -164,14 +170,14 @@ export default function FilterMenu({ open, setOpen }) {
             <Grid item sm={6} xs={12}>
               <PokedexNrForm
                 label="Lower Pokedex Nr."
-                data={cookies["filterPokedexNrLower"]}
+                data={cookies[`filter${type}PokedexNrLower`]}
                 onChange={handlePokedexNrLowerChange}
               />
             </Grid>
             <Grid item sm={6} xs={12}>
               <PokedexNrForm
                 label="Upper Pokedex Nr."
-                data={cookies["filterPokedexNrUpper"]}
+                data={cookies[`filter${type}PokedexNrUpper`]}
                 onChange={handlePokedexNrUpperChange}
               />
             </Grid>
