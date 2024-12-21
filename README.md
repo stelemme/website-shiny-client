@@ -2,6 +2,17 @@
 
 ## Changelogs
 
+### Version 1.25.0 (21.12.2024)
+
+**Filter:**
+
+- Filter is ook toegevoegd aan counter pagina
+
+**Aanpassingen:**
+
+- Counter ranking onthoudt of ge op encounters of percentage staat
+
+---
 
 ### Version 1.24.0 (01.12.2024)
 
