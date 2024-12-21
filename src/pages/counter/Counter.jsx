@@ -650,93 +650,100 @@ export default function Counter() {
             <Typography variant="h3" color={colors.grey[100]} fontWeight="bold">
               {data.name.toUpperCase()}
             </Typography>
-            {completed && (
-              <IconButton onClick={() => navigate(`/shiny/${counterId}`)}>
-                <AutoAwesomeIcon />
-              </IconButton>
-            )}
-            {username === data.trainer && (
-              <Box ml="10px" display="flex">
-                {!completed && (
-                  <IconButton onClick={() => setOpenShiny(true)}>
-                    <AutoAwesomeIcon />
-                  </IconButton>
-                )}
-                <CustomDialog
-                  open={openShiny}
-                  handleClick={handleShinyClick}
-                  handleClick2={handleDeadClick}
-                  handleClose={() => setOpenShiny(false)}
-                  title={"Shiny Encounter"}
-                  content={"Did you get a Shiny Pokémon?"}
-                  action={"Caught"}
-                  action2={"Killed"}
-                />
-                {!completed && (
-                  <IconButton onClick={() => setOpenEdit(true)}>
-                    <EditRoundedIcon />
-                  </IconButton>
-                )}
-                <CustomDialog
-                  open={openEdit}
-                  handleClick={handleEditClick}
-                  handleClose={() => {
-                    setOpenEdit(false);
-                    setCountEdit(count);
-                  }}
-                  title={"Edit Encounters"}
-                  content={
-                    <Box>
-                      <Typography mb="15px">
-                        Edit the total amount of encounters in the inputfield
-                        below. (These changes are NOT added to the Encounters
-                        List)
-                      </Typography>
-                      <TextField
-                        color="secondary"
-                        fullWidth
-                        label="Total Encounters"
-                        type="number"
-                        value={countEdit}
-                        onChange={(e) => setCountEdit(parseInt(e.target.value))}
-                      />
-                      <Typography my="15px">
-                        Add a certain amount of Encounters. (These changes are
-                        added to the Encounters List)
-                      </Typography>
-                      <TextField
-                        color="secondary"
-                        fullWidth
-                        label="Add Encounters"
-                        type="number"
-                        value={countAdd}
-                        onChange={(e) => setCountAdd(parseInt(e.target.value))}
-                      />
-                    </Box>
-                  }
-                  action={"Edit"}
-                />
-                <IconButton onClick={() => setOpenDelete(true)}>
-                  <DeleteRoundedIcon />
+
+            <Box ml="10px" display="flex">
+              {completed && (
+                <IconButton onClick={() => navigate(`/shiny/${counterId}`)}>
+                  <AutoAwesomeIcon />
                 </IconButton>
-                {!completed && (
-                  <IconButton onClick={handleUndoClick}>
-                    <ReplyTwoToneIcon />
+              )}
+              {username === data.trainer && (
+                <>
+                  {!completed && (
+                    <IconButton onClick={() => setOpenShiny(true)}>
+                      <AutoAwesomeIcon />
+                    </IconButton>
+                  )}
+                  <CustomDialog
+                    open={openShiny}
+                    handleClick={handleShinyClick}
+                    handleClick2={handleDeadClick}
+                    handleClose={() => setOpenShiny(false)}
+                    title={"Shiny Encounter"}
+                    content={"Did you get a Shiny Pokémon?"}
+                    action={"Caught"}
+                    action2={"Killed"}
+                  />
+                  {!completed && (
+                    <IconButton onClick={() => setOpenEdit(true)}>
+                      <EditRoundedIcon />
+                    </IconButton>
+                  )}
+                  <CustomDialog
+                    open={openEdit}
+                    handleClick={handleEditClick}
+                    handleClose={() => {
+                      setOpenEdit(false);
+                      setCountEdit(count);
+                    }}
+                    title={"Edit Encounters"}
+                    content={
+                      <Box>
+                        <Typography mb="15px">
+                          Edit the total amount of encounters in the input field
+                          below. (These changes are NOT added to the Encounters
+                          List)
+                        </Typography>
+                        <TextField
+                          color="secondary"
+                          fullWidth
+                          label="Total Encounters"
+                          type="number"
+                          value={countEdit}
+                          onChange={(e) =>
+                            setCountEdit(parseInt(e.target.value))
+                          }
+                        />
+                        <Typography my="15px">
+                          Add a certain amount of Encounters. (These changes are
+                          added to the Encounters List)
+                        </Typography>
+                        <TextField
+                          color="secondary"
+                          fullWidth
+                          label="Add Encounters"
+                          type="number"
+                          value={countAdd}
+                          onChange={(e) =>
+                            setCountAdd(parseInt(e.target.value))
+                          }
+                        />
+                      </Box>
+                    }
+                    action={"Edit"}
+                  />
+                  <IconButton onClick={() => setOpenDelete(true)}>
+                    <DeleteRoundedIcon />
                   </IconButton>
-                )}
-                <CustomDialog
-                  open={openDelete}
-                  handleClick={handleDeleteClick}
-                  handleClose={() => setOpenDelete(false)}
-                  title={"Delete Counter"}
-                  content={"Do you want to delete this Counter?"}
-                  warning={
-                    "Deleting this counter will delete ALL the counter data forever!"
-                  }
-                  action={"Delete"}
-                />
-              </Box>
-            )}
+                  {!completed && (
+                    <IconButton onClick={handleUndoClick}>
+                      <ReplyTwoToneIcon />
+                    </IconButton>
+                  )}
+                  <CustomDialog
+                    open={openDelete}
+                    handleClick={handleDeleteClick}
+                    handleClose={() => setOpenDelete(false)}
+                    title={"Delete Counter"}
+                    content={"Do you want to delete this Counter?"}
+                    warning={
+                      "Deleting this counter will delete ALL the counter data forever!"
+                    }
+                    action={"Delete"}
+                  />
+                </>
+              )}
+            </Box>
           </Box>
           {/* IMAGES + COUNT */}
           <Box display="flex" justifyContent="space-between" mb="20px">
