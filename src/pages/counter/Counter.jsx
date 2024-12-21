@@ -650,6 +650,11 @@ export default function Counter() {
             <Typography variant="h3" color={colors.grey[100]} fontWeight="bold">
               {data.name.toUpperCase()}
             </Typography>
+            {completed && (
+              <IconButton onClick={() => navigate(`/shiny/${counterId}`)}>
+                <AutoAwesomeIcon />
+              </IconButton>
+            )}
             {username === data.trainer && (
               <Box ml="10px" display="flex">
                 {!completed && (
