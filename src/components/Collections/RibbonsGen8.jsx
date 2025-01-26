@@ -103,6 +103,9 @@ const ribbons = [
     name: "Hisui Ribbon",
     sprite: "gen-8/hisui-ribbon",
   },
+];
+
+const unobtainableRibbonsGen8 = [
   {
     name: "Classic Ribbon",
     sprite: "gen-8/classic-ribbon",
@@ -149,6 +152,7 @@ export function RibbonsGen8() {
       sm={3}
       xs={4}
       numbers={false}
+      unobtainableList={unobtainableRibbonsGen8}
     />
   );
 }

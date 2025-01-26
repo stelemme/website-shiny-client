@@ -2,6 +2,11 @@
 
 ## Changelogs
 
+### Version 1.26.0 (26.01.2024)
+
+**Collection:**
+- Opsplitsing tussen obtainable en unobtainable collection items
+
 ### Version 1.25.0 (21.12.2024)
 
 **Counter:**

@@ -115,6 +115,9 @@ const ribbons = [
     name: "Training Ribbon",
     sprite: "gen-6/training-ribbon",
   },
+];
+
+const unobtainableRibbonsGen6 = [
   {
     name: "Classic Ribbon",
     sprite: "gen-6/classic-ribbon",
@@ -157,6 +160,7 @@ export function RibbonsGen6() {
       sm={3}
       xs={4}
       numbers={false}
+      unobtainableList={unobtainableRibbonsGen6}
     />
   );
 }

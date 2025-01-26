@@ -141,6 +141,17 @@ const ballsData = [
   },
 ];
 
+const unobtainableBalls = [
+  {
+    name: "Cherish Ball",
+    sprite: "cherish-ball",
+  },
+  {
+    name: "Park Ball",
+    sprite: "park-ball",
+  },
+]
+
 export function Pokeballs() {
   return (
     <CollectionCard
@@ -152,6 +163,7 @@ export function Pokeballs() {
       sm={3}
       xs={4}
       imgHeight={40}
+      unobtainableList={unobtainableBalls}
     />
   );
 }

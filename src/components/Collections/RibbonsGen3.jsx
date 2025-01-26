@@ -104,16 +104,19 @@ const ribbons = [
     sprite: "gen-3/artist-ribbon",
   },
   {
-    name: "Country Ribbon",
-    sprite: "gen-3/country-ribbon",
-  },
-  {
     name: "National Ribbon",
     sprite: "gen-3/national-ribbon",
   },
   {
     name: "Earth Ribbon",
     sprite: "gen-3/earth-ribbon",
+  },
+];
+
+const unobtainableRibbonsGen3 = [
+  {
+    name: "Country Ribbon",
+    sprite: "gen-3/country-ribbon",
   },
   {
     name: "World Ribbon",
@@ -133,6 +136,7 @@ export function RibbonsGen3() {
       sm={3}
       xs={4}
       numbers={false}
+      unobtainableList={unobtainableRibbonsGen3}
     />
   );
 }

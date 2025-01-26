@@ -2,7 +2,9 @@
 import CollectionCard from "./CollectionCard";
 import CollectionStatsCard from "./CollectionStatsCard";
 
-const ribbons = [
+const ribbons = [];
+
+const unobtainableRibbonsGen5 = [
   {
     name: "Classic Ribbon",
     sprite: "gen-5/classic-ribbon",
@@ -61,6 +63,7 @@ export function RibbonsGen5() {
       sm={3}
       xs={4}
       numbers={false}
+      unobtainableList={unobtainableRibbonsGen5}
     />
   );
 }

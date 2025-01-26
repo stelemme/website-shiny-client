@@ -31,6 +31,9 @@ const ribbons = [
     name: "Best Friend Ribbon",
     sprite: "gen-7/best-friend-ribbon",
   },
+];
+
+const unobtainableRibbonsGen7 = [
   {
     name: "Classic Ribbon",
     sprite: "gen-7/classic-ribbon",
@@ -77,6 +80,7 @@ export function RibbonsGen7() {
       sm={3}
       xs={4}
       numbers={false}
+      unobtainableList={unobtainableRibbonsGen7}
     />
   );
 }

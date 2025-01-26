@@ -19,6 +19,9 @@ const ribbons = [
     name: "Master Rank Ribbon",
     sprite: "gen-9/master-rank-ribbon",
   },
+];
+
+const unobtainableRibbonsGen9 = [
   {
     name: "Once-in-a-Lifetime Ribbon",
     sprite: "gen-9/once-in-a-lifetime-ribbon",
@@ -73,6 +76,7 @@ export function RibbonsGen9() {
       sm={3}
       xs={4}
       numbers={false}
+      unobtainableList={unobtainableRibbonsGen9}
     />
   );
 }

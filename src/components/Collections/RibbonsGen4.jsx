@@ -164,12 +164,15 @@ const ribbons = [
     sprite: "gen-4/footprint-ribbon",
   },
   {
-    name: "Record Ribbon",
-    sprite: "gen-4/record-ribbon",
-  },
-  {
     name: "Legend Ribbon",
     sprite: "gen-4/legend-ribbon",
+  },
+];
+
+const unobtainableRibbonsGen4 = [
+  {
+    name: "Record Ribbon",
+    sprite: "gen-4/record-ribbon",
   },
   {
     name: "Classic Ribbon",
@@ -193,6 +196,7 @@ export function RibbonsGen4() {
       sm={3}
       xs={4}
       numbers={false}
+      unobtainableList={unobtainableRibbonsGen4}
     />
   );
 }
