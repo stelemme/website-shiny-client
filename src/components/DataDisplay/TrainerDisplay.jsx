@@ -38,6 +38,8 @@ export default function TrainerDisplay({ trainerChoice, trainer }) {
   }, [users, trainerChoice]);
 
   const handleValueChange = async (value) => {
+    console.log(value)
+    if (!value) return
     try {
       await makeRequest(
         "patch",
