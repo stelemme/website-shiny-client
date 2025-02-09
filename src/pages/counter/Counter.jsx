@@ -103,8 +103,6 @@ export default function Counter() {
   const [elapsedTime, setElapsedTime] = useState(0);
   const [encountersToday, setEncountersToday] = useState(0);
 
-  console.log(hasData)
-
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     const completedValue = searchParams.get("completed");
@@ -138,8 +136,6 @@ export default function Counter() {
   useEffect(() => {
     if (data) {
       if (!hasData) {
-        console.log("test run")
-        console.log(data.totalEncounters)
         setCount(data.totalEncounters);
         setCountEdit(data.totalEncounters);
         setEncountersToday(calculateEncountersPerDay(data.encounters));
@@ -162,17 +158,54 @@ export default function Counter() {
           data.method?.searchLevel
         )
       );
-      setPercentage(
-        calculatePercentage(
-          data.totalEncounters,
-          data.method.odds,
-          data.method.rolls,
-          data.method.shinyCharm,
-          data.method?.charmRolls,
-          data.method?.function,
-          data.method?.searchLevel
-        )
-      );
+      let chainLimit = 0;
+      switch (data.method.function) {
+        case "pokeradar-gen4":
+          chainLimit = 40;
+          break;
+        case "pokeradar-gen6":
+          chainLimit = 40;
+          break;
+        case "pokeradar-gen8":
+          chainLimit = 40;
+          break;
+        case "chainfishing":
+          chainLimit = 20;
+          break;
+        case "sos-chain-sm":
+          chainLimit = 30;
+          break;
+        case "sos-chain":
+          chainLimit = 30;
+          break;
+        default:
+          chainLimit = 0;
+      }
+      if (data.totalEncounters >= chainLimit) {
+        setPercentage(
+          calculatePercentage(
+            data.totalEncounters - chainLimit,
+            data.method.odds,
+            data.method.rolls,
+            data.method.shinyCharm,
+            data.method?.charmRolls,
+            data.method?.function,
+            data.method?.searchLevel
+          )
+        );
+      } else {
+        setPercentage(
+          calculatePercentage(
+            data.totalEncounters,
+            data.method.odds,
+            data.method.rolls,
+            data.method.shinyCharm,
+            data.method?.charmRolls,
+            data.method?.function,
+            data.method?.searchLevel
+          )
+        );
+      }      
       setTimeDifference(
         data.stats.manualMeanEncounterTime
           ? data.stats.meanEncounterTime

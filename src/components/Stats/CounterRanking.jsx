@@ -33,10 +33,12 @@ export default function CounterRanking({
 
   const foreverDate = new Date("9999-12-31T23:59:59");
 
-  console.log(statString, data[statString])
+  console.log(statString, data[statString]);
 
   const { isLoading: countersLoading, data: countersData } = useCounter(
-    `id=${id}&stats=${statString}&checkValue=${data[statString] ? data[statString] : 0}`
+    `id=${id}&stats=${statString}&checkValue=${
+      data[statString] ? data[statString] : 0
+    }`
   );
 
   const stats = countersData?.data[0];
@@ -119,7 +121,7 @@ export default function CounterRanking({
                       maximumFractionDigits: 2,
                     }) + "%"
                   : statString === "rankingTime"
-                  ? formatTime(data[statString], false)
+                  ? formatTime(data[statString] ? data[statString] : 0, false)
                   : data[statString]
               }
               trainer={trainer}
