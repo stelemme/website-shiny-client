@@ -2,6 +2,13 @@
 
 ## Changelogs
 
+### Version 1.27.0 (09.02.2024)
+
+**Map:**
+- Scale bar toegevoegd
+
+---
+
 ### Version 1.26.0 (26.01.2024)
 
 **Collection:**
