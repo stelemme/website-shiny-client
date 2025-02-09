@@ -33,8 +33,10 @@ export default function CounterRanking({
 
   const foreverDate = new Date("9999-12-31T23:59:59");
 
+  console.log(statString, data[statString])
+
   const { isLoading: countersLoading, data: countersData } = useCounter(
-    `id=${id}&stats=${statString}&checkValue=${data[statString]}`
+    `id=${id}&stats=${statString}&checkValue=${data[statString] ? data[statString] : 0}`
   );
 
   const stats = countersData?.data[0];
@@ -80,7 +82,7 @@ export default function CounterRanking({
                   <StatsCard
                     id={item._id}
                     name={item.name}
-                    statName={item.rank + "."}
+                    statName={item?.rank + "."}
                     stat={
                       statString === "rankingPercentage"
                         ? item[statString].toLocaleString("en-US", {
@@ -107,8 +109,8 @@ export default function CounterRanking({
               name={name}
               statName={
                 stats?.valuesAbove[2]?.rank
-                  ? stats?.valuesAbove[2].rank + 1 + "."
-                  : stats?.valuesBelow[0].rank + "."
+                  ? stats?.valuesAbove[2]?.rank + 1 + "."
+                  : stats?.valuesBelow[0]?.rank + "."
               }
               stat={
                 statString === "rankingPercentage"
@@ -135,7 +137,7 @@ export default function CounterRanking({
                   <StatsCard
                     id={item._id}
                     name={item.name}
-                    statName={item.rank + 1 + "."}
+                    statName={item?.rank + 1 + "."}
                     stat={
                       statString === "rankingPercentage"
                         ? item[statString].toLocaleString("en-US", {

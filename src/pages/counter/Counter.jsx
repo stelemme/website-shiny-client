@@ -103,6 +103,8 @@ export default function Counter() {
   const [elapsedTime, setElapsedTime] = useState(0);
   const [encountersToday, setEncountersToday] = useState(0);
 
+  console.log(hasData)
+
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     const completedValue = searchParams.get("completed");
@@ -112,6 +114,7 @@ export default function Counter() {
         try {
           const response = await getRequest(`/shiny/${counterId}`);
           setData(response);
+          setHasData(false)
         } catch (error) {
           console.error(error);
         }
@@ -122,6 +125,7 @@ export default function Counter() {
         try {
           const response = await getRequest(`/counters/${counterId}`);
           setData(response);
+          setHasData(false)
         } catch (error) {
           console.error(error);
         }
@@ -134,6 +138,8 @@ export default function Counter() {
   useEffect(() => {
     if (data) {
       if (!hasData) {
+        console.log("test run")
+        console.log(data.totalEncounters)
         setCount(data.totalEncounters);
         setCountEdit(data.totalEncounters);
         setEncountersToday(calculateEncountersPerDay(data.encounters));
