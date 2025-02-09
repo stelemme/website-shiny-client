@@ -7,6 +7,8 @@
 **Collection:**
 - Opsplitsing tussen obtainable en unobtainable collection items
 
+---
+
 ### Version 1.25.0 (21.12.2024)
 
 **Counter:**
