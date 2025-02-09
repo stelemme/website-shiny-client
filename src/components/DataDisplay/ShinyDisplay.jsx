@@ -164,7 +164,7 @@ export default function CompleteShinyCard({
                 }
                 action={"Edit"}
               />
-              {data.stats.meanEncounterTime && (
+              {data.totalEncounters > 0 && (
                 <IconButton
                   onClick={() =>
                     navigate(`/counters/${data?._id}?completed=true`)

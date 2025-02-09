@@ -9,6 +9,9 @@
 
 **Bugfixes:**
 - Snel na elkaar klikken op counter werkt terug deftig
+- Counter knop komt ook bij shinies die geen gemiddelde encounters hebben
+- Average encounters bij gamestats zijn gefixt
+- "-" wordt gefilterd bij nature stats
 
 ---
 
