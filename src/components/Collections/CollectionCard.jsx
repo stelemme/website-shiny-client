@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 
 // mui imports
-import { Box, Typography, Grid } from "@mui/material";
+import { Box, Typography, Grid, Tooltip } from "@mui/material";
 
 // Components imports
 import BoxComponent from "../General/BoxComponent";
@@ -80,26 +80,28 @@ export default function CollectionCard({
                   alignItems="center"
                   justifyContent="space-between"
                 >
-                  {collectionData && collectionData[item.name] ? (
-                    <img
-                      alt=""
-                      src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/${dir}/${item.sprite}.png`}
-                      style={{
-                        imageRendering: "pixelated",
-                        height: String(imgHeight) + "px",
-                      }}
-                    />
-                  ) : (
-                    <img
-                      alt=""
-                      src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/${dir}/${item.sprite}.png`}
-                      style={{
-                        imageRendering: "pixelated",
-                        height: String(imgHeight) + "px",
-                        filter: "contrast(0%) brightness(50%)",
-                      }}
-                    />
-                  )}
+                  <Tooltip title={item?.description} arrow>
+                    {collectionData && collectionData[item.name] ? (
+                      <img
+                        alt=""
+                        src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/${dir}/${item.sprite}.png`}
+                        style={{
+                          imageRendering: "pixelated",
+                          height: String(imgHeight) + "px",
+                        }}
+                      />
+                    ) : (
+                      <img
+                        alt=""
+                        src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/${dir}/${item.sprite}.png`}
+                        style={{
+                          imageRendering: "pixelated",
+                          height: String(imgHeight) + "px",
+                          filter: "contrast(0%) brightness(50%)",
+                        }}
+                      />
+                    )}
+                  </Tooltip>
                   <Typography
                     fontWeight={"bold"}
                     align="center"
@@ -136,15 +138,17 @@ export default function CollectionCard({
                     alignItems="center"
                     justifyContent="space-between"
                   >
-                    <img
-                      alt=""
-                      src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/${dir}/${item2.sprite}.png`}
-                      style={{
-                        imageRendering: "pixelated",
-                        height: String(imgHeight) + "px",
-                        filter: "contrast(0%) brightness(50%)",
-                      }}
-                    />
+                    <Tooltip title={item2?.description} arrow>
+                      <img
+                        alt=""
+                        src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/${dir}/${item2.sprite}.png`}
+                        style={{
+                          imageRendering: "pixelated",
+                          height: String(imgHeight) + "px",
+                          filter: "contrast(0%) brightness(50%)",
+                        }}
+                      />
+                    </Tooltip>
                     <Typography
                       fontWeight={"bold"}
                       align="center"

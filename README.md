@@ -7,6 +7,9 @@
 **Map:**
 - Scale bar toegevoegd
 
+**Logo:**
+- Sterrekes zijn van plaats veranderd
+
 **Bugfixes:**
 - Snel na elkaar klikken op counter werkt terug deftig
 - Counter knop komt ook bij shinies die geen gemiddelde encounters hebben
