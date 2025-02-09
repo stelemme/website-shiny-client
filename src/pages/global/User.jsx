@@ -15,12 +15,11 @@ import {
 import PageComponent from "../../components/General/PageComponent";
 import BoxComponent from "../../components/General/BoxComponent";
 import UserSelect from "../../components/Selects/UserSelect";
+import TrainerSmallDisplay from "../../components/DataDisplay/TrainerSmallDisplay";
+import TrainerDisplay from "../../components/DataDisplay/TrainerDisplay";
 
 // Hooks
 import { useAuth } from "../../hooks/useAuth";
-
-// Images
-import { trainerImages } from "../../assets/imgExporter";
 
 export default function User() {
   const { trainer } = useParams();
@@ -34,13 +33,6 @@ export default function User() {
     "displayAnimatedSpritesPostGen8",
     "displayMapOnGent",
   ]);
-
-  const imageCheck = {
-    Joaquin: "kwakquin",
-    Korneel: "chorneef",
-    Simon: "siwob",
-    Stef: "t-loc",
-  };
 
   const [groupCheck, setGroupCheck] = useState(cookies.filterGroups);
   const [spriteCheck, setSpriteCheck] = useState(cookies.displayGameSprites);
@@ -125,34 +117,10 @@ export default function User() {
     >
       <Grid container spacing={"20px"}>
         <Grid item xs={12}>
-          <BoxComponent title={"TRAINER SPRITES"}>
-            <BoxComponent p="10px" noContrastColor height={null}>
-              <Grid container>
-                {Object.keys(trainerImages).map((item) => {
-                  if (item.includes(imageCheck[trainerChoice])) {
-                    return (
-                      <Grid item sm={2.4} xs={4} key={item}>
-                        <img
-                          height={"100px"}
-                          alt=""
-                          src={trainerImages[item]}
-                          title={item.slice(0, -4)}
-                          style={{
-                            height: "100%",
-                            width: "100%",
-                            objectFit: "cover",
-                            imageRendering: "pixelated",
-                          }}
-                        />
-                      </Grid>
-                    );
-                  } else {
-                    return null;
-                  }
-                })}
-              </Grid>
-            </BoxComponent>
-          </BoxComponent>
+          <TrainerDisplay trainerChoice={trainerChoice} trainer={username} />
+        </Grid>
+        <Grid item xs={12}>
+          <TrainerSmallDisplay trainerChoice={trainerChoice} />
         </Grid>
         {!trainerCheck && (
           <Grid item xs={12}>

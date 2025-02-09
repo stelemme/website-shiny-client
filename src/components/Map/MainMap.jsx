@@ -8,7 +8,7 @@ import ZoomOutMapIcon from "@mui/icons-material/ZoomOutMap";
 
 // leaflet imports
 import L from "leaflet";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, ScaleControl } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 
 // Components imports
@@ -123,6 +123,7 @@ export default function MainMap() {
         style={{ height: "calc(100vh - 275px)", width: "100%" }}
         ref={setMap}
       >
+        <ScaleControl position="bottomright" imperial={false}/>
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           detectRetina={true}

@@ -2,6 +2,33 @@
 
 ## Changelogs
 
+### Version 1.27.0 (09.02.2024)
+
+**Map:**
+- Scale bar toegevoegd
+
+**Trainer Sprite:**
+- Big trainer sprites van Korneel zijn toegevoegd en ge kunt nu ook u favorite pokemon kiezen die erbij staat. Heeft wel nog wat verfijnwerk nodig maar het werkt voorlopig. (terug te vinden bij settings)
+
+**Logo:**
+- Sterrekes zijn van plaats veranderd
+
+**Bugfixes:**
+- Snel na elkaar klikken op counter werkt terug deftig
+- Counter knop komt ook bij shinies die geen gemiddelde encounters hebben
+- Average encounters bij gamestats zijn gefixt
+- "-" wordt gefilterd bij nature stats
+- Probleem met percentages bij SOS is gefixt
+
+---
+
+### Version 1.26.0 (26.01.2024)
+
+**Collection:**
+- Opsplitsing tussen obtainable en unobtainable collection items
+
+---
+
 ### Version 1.25.0 (21.12.2024)
 
 **Counter:**
