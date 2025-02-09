@@ -7,6 +7,9 @@
 **Map:**
 - Scale bar toegevoegd
 
+**Trainer Sprite:**
+- Big trainer sprites van Korneel zijn toegevoegd en ge kunt nu ook u favorite pokemon kiezen die erbij staat. Heeft wel nog wat verfijnwerk nodig maar het werkt voorlopig. (terug te vinden bij settings)
+
 **Logo:**
 - Sterrekes zijn van plaats veranderd
 
@@ -15,6 +18,7 @@
 - Counter knop komt ook bij shinies die geen gemiddelde encounters hebben
 - Average encounters bij gamestats zijn gefixt
 - "-" wordt gefilterd bij nature stats
+- Probleem met percentages bij SOS is gefixt
 
 ---
 
