@@ -7,6 +7,9 @@
 **Map:**
 - Scale bar toegevoegd
 
+**Bugfixes:**
+- Snel na elkaar klikken op counter werkt terug deftig
+
 ---
 
 ### Version 1.26.0 (26.01.2024)

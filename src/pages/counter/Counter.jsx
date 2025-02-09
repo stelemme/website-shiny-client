@@ -145,9 +145,6 @@ export default function Counter() {
           );
         }
       }
-      setCount(data.totalEncounters);
-      setCountEdit(data.totalEncounters);
-      setEncountersToday(calculateEncountersPerDay(data.encounters));
       setOdds(
         calculateProb(
           data.method.odds,
@@ -1067,7 +1064,7 @@ export default function Counter() {
                       data={{
                         rankingEnc: count,
                         rankingPercentage: percentage,
-                        rankingTime: data.stats.totalHuntTime,
+                        rankingTime: data?.stats?.totalHuntTime,
                       }}
                       setClose={setOpenRanking}
                       name={data.name}
