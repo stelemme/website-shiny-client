@@ -24,7 +24,7 @@ export default function GameForm({
   const getRequest = useGetRequest();
   const [gameId, setGameId] = useState(undefined);
 
-  const { data: games } = useGame("action=form");
+  const { data: games } = useGame("preview=form");
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {

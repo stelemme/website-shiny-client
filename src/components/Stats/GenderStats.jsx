@@ -26,7 +26,7 @@ export default function GenderStats() {
   const colors = tokens(theme.palette.mode);
   const [game, setGame] = useState("");
 
-  const { data: games } = useGame("action=select");
+  const { data: games } = useGame("preview=select");
 
   const { isLoading: gameStatsLoading, data: gameStatsData } = useShiny(
     `stats=gender&gameFilter=${game?.name}`

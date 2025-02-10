@@ -29,7 +29,7 @@ export default function GameStats() {
   const colors = tokens(theme.palette.mode);
   const [game, setGame] = useState("");
 
-  const { data: games } = useGame("action=select");
+  const { data: games } = useGame("preview=select");
 
   const { isLoading: gameStatsLoading, data: gameStatsData } = useShiny(
     `stats=gameUser&gameFilter=${game?.name}`
