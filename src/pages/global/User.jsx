@@ -15,8 +15,8 @@ import {
 import PageComponent from "../../components/General/PageComponent";
 import BoxComponent from "../../components/General/BoxComponent";
 import UserSelect from "../../components/Selects/UserSelect";
-import TrainerSmallDisplay from "../../components/DataDisplay/TrainerSmallDisplay";
 import TrainerDisplay from "../../components/DataDisplay/TrainerDisplay";
+import EvolutionList from "../../components/DataDisplay/EvolutionList";
 
 // Hooks
 import { useAuth } from "../../hooks/useAuth";
@@ -120,7 +120,7 @@ export default function User() {
           <TrainerDisplay trainerChoice={trainerChoice} trainer={username} />
         </Grid>
         <Grid item xs={12}>
-          <TrainerSmallDisplay trainerChoice={trainerChoice} />
+          <EvolutionList trainer={trainerChoice} />
         </Grid>
         {!trainerCheck && (
           <Grid item xs={12}>
