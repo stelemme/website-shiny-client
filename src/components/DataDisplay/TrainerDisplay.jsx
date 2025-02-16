@@ -54,11 +54,11 @@ export default function TrainerDisplay({ trainerChoice, trainer }) {
       await makeRequest(
         "patch",
         `/user/${trainer}?action=updatePokemon`,
-        { newPokemon: value },
+        { newPokemon: value.sprite },
         null,
         true
       );
-      setSprite(value);
+      setSprite(value.sprite);
     } catch {
       return;
     }

@@ -10,10 +10,11 @@ export default function PokemonSelect({
 }) {
   const [value, setValue] = useState(null);
 
-  const { data: pokemons } =
-    usePokedex("preview=sprites");
+  const { data: pokemons } = usePokedex(
+    "preview=sprites&filter=complex&filterGame=Pokémon Black 2"
+  );
 
-  const pokemonList = pokemons?.data.pokemonList;
+  const pokemonList = pokemons?.data;
 
   const handleValueChange = (event, newValue) => {
     setValue(newValue);
@@ -30,7 +31,7 @@ export default function PokemonSelect({
       disabled={disabled}
       onChange={handleValueChange}
       options={pokemonList ? pokemonList : []}
-      getOptionLabel={(option) => option}
+      getOptionLabel={(option) => option.name}
       renderInput={(params) => (
         <TextField
           sx={{ width: "150px" }}
