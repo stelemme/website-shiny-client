@@ -103,10 +103,10 @@ export default function CompleteShinyCard({
   const handleEvolutionOpen = async () => {
     try {
       const response = await getRequest(
-        `/pokedex?filter=complex&filterName=${data.name}&evolutions=true&game=${data.game}`
+        `/pokedex?filter=evolutions&filterName=${data.name}&filterGame=${data.game}`
       );
-      setEvolutions(response.evolutions);
-      setForms(response.forms);
+      setEvolutions(response[0].evolutionNames);
+      setForms(response[0].formNames);
       setOpenEvolutionEdit(true);
     } catch {
       return;

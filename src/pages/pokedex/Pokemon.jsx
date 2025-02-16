@@ -34,7 +34,7 @@ export default function Pokemon() {
   const [searchParams] = useSearchParams();
   const getRequest = useGetRequest();
   const setBackToggle = useSetRecoilState(backToggle);
-  setBackToggle(false)
+  setBackToggle(false);
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -58,10 +58,10 @@ export default function Pokemon() {
     const handleGetEvolutions = async () => {
       try {
         const response = await getRequest(
-          `/pokedex?filter=complex&filterName=${pokemonData.name}&evolutions=true`
+          `/pokedex?filter=evolutions&filterName=${pokemonData.name}`
         );
-        setEvolutions(response.evolutions);
-        setForms(response.forms);
+        setEvolutions(response[0].evolutionNames);
+        setForms(response[0].formNames);
       } catch {
         return;
       }
