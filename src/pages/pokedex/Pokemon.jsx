@@ -58,7 +58,7 @@ export default function Pokemon() {
     const handleGetEvolutions = async () => {
       try {
         const response = await getRequest(
-          `/pokedex?name=${pokemonData.name}&evolutions=true`
+          `/pokedex?filter=complex&filterName=${pokemonData.name}&evolutions=true`
         );
         setEvolutions(response.evolutions);
         setForms(response.forms);

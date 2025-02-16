@@ -57,7 +57,7 @@ export default function Checklist() {
     medalImages["adventure-1-b.png"],
   ];
 
-  const { data: pokedex } = usePokedex(`filter=${cookie.checklistGenFilter}`);
+  const { data: pokedex } = usePokedex(`filter=${cookie.checklistGenFilter}&preview=checklist`);
 
   const { data: shinyListData } = useShiny(
     `list=names&filter=${cookie.checklistGenFilter}`

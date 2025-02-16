@@ -28,7 +28,9 @@ export default function DataManipulation() {
       let genderDifference = false;
 
       try {
-        const response = await getRequest(`/pokedex?name=${element.name}`);
+        const response = await getRequest(
+          `/pokedex?filter=complex&filterName=${element.name}`
+        );
         const pokemonData = response[0];
 
         if (pokemonData.genderDifference && element.gender === "female") {
@@ -55,7 +57,9 @@ export default function DataManipulation() {
         let genderDifference = false;
 
         try {
-          const response = await getRequest(`/pokedex?name=${element2.name}`);
+          const response = await getRequest(
+            `/pokedex?filter=complex&filterName=${element2.name}`
+          );
           const pokemonData = response[0];
 
           if (pokemonData.genderDifference && element.gender === "female") {

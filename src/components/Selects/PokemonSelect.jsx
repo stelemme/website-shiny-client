@@ -11,7 +11,7 @@ export default function PokemonSelect({
   const [value, setValue] = useState(null);
 
   const { data: pokemons } =
-    usePokedex("spritesList=true");
+    usePokedex("preview=sprites");
 
   const pokemonList = pokemons?.data.pokemonList;
 

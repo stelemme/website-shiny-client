@@ -52,7 +52,9 @@ export default function PokemonForm({
           }
 
           try {
-            const response = await getRequest(`/pokedex?name=${value}`);
+            const response = await getRequest(
+              `/pokedex?filter=complex&filterName=${value}`
+            );
             const pokemonData = response[0];
             let gender = undefined;
 
@@ -112,7 +114,9 @@ export default function PokemonForm({
           }
 
           try {
-            const response = await getRequest(`/pokedex?name=${value}`);
+            const response = await getRequest(
+              `/pokedex?filter=complex&filterName=${value}`
+            );
             const pokemonData = response[0];
             let gender = undefined;
 

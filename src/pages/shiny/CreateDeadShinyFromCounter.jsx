@@ -85,7 +85,7 @@ export default function CreateDeadShinyFromCounter() {
           };
         });
 
-        const response2 = await getRequest(`/pokedex?name=${response.name}`);
+        const response2 = await getRequest(`/pokedex?filter=complex&filterName=${response.name}`);
 
         let gender = undefined;
         if (response2.gender === "100:0") {
@@ -107,7 +107,7 @@ export default function CreateDeadShinyFromCounter() {
           };
         });
 
-        const response3 = await getRequest(`/game?name=${response.game}`);
+        const response3 = await getRequest(`/game?filter=complex&filterName=${response.game}`);
 
         setPokemonsList(response3[0].pokemons);
         setLocationsList(response3[0].locations);

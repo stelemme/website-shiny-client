@@ -85,7 +85,7 @@ export default function IconsDisplay({
   const handleOpenEdit = async () => {
     try {
       const response = await getRequest(
-        `/game?name=${data.game}&action=${type}`
+        `/game?filter=complex&filterName=${data.game}&preview=${type}`
       );
       const allIcons = response[0][type];
       const filteredIcons = allIcons.filter(

@@ -101,7 +101,9 @@ export default function InfoDisplay({
 
     if (e.target.value === "Gender") {
       try {
-        const response = await getRequest(`/pokedex?name=${data.name}`);
+        const response = await getRequest(
+          `/pokedex?filter=complex&filterName=${data.name}`
+        );
         const pokemonData = response[0];
 
         if (
@@ -118,21 +120,27 @@ export default function InfoDisplay({
       }
     } else if (e.target.value === "Location") {
       try {
-        const response = await getRequest(`/game?name=${data.game}`);
+        const response = await getRequest(
+          `/game?filter=complex&filterName=${data.game}`
+        );
         setLocationsList(response[0].locations);
       } catch {
         return;
       }
     } else if (e.target.value === "Ball") {
       try {
-        const response = await getRequest(`/game?name=${data.game}`);
+        const response = await getRequest(
+          `/game?filter=complex&filterName=${data.game}`
+        );
         setBallList(response[0].balls);
       } catch {
         return;
       }
     } else if (e.target.value === "Method Category") {
       try {
-        const response = await getRequest(`/game?name=${data.game}`);
+        const response = await getRequest(
+          `/game?filter=complex&filterName=${data.game}`
+        );
         const method = response[0].methods.find(
           (method) => method.name === data.method.name
         );
