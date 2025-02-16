@@ -16,11 +16,11 @@ export default function GenMultipleSelect({
 }) {
   const [genList, setGenList] = useState([]);
 
-  const { isLoading: genLoading, data: genData } = useGame("genList=true");
+  const { isLoading: genLoading, data: genData } = useGame("list=gen");
 
   useEffect(() => {
     if (!genLoading) {
-      setGenList(genData.data);
+      setGenList(genData.data[0].gens);
     }
   }, [genData, genLoading]);
 

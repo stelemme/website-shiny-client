@@ -17,11 +17,11 @@ export default function GenSelect({
 }) {
   const [genList, setGenList] = useState(["All"]);
 
-  const { isLoading: genLoading, data: genData } = useGame("genList=true");
+  const { isLoading: genLoading, data: genData } = useGame("list=gen");
 
   useEffect(() => {
     if (!genLoading) {
-      setGenList(["All", ...genData.data]);
+      setGenList(["All", ...genData.data[0].gens]);
     }
   }, [genLoading, genData]);
 

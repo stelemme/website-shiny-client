@@ -35,7 +35,7 @@ const dirMapping = {
 };
 
 export default function AllSpritesDisplay({ pokemon, sprite, id }) {
-  const { data: games } = useGame(`pokemonFilter=${pokemon}`);
+  const { data: games } = useGame(`filter=complex&filterPokemon=${pokemon}`);
   const gamesList = games?.data;
   const setBackToggle = useSetRecoilState(backToggle);
   setBackToggle(false)
