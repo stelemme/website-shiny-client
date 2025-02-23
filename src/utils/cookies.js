@@ -15,6 +15,7 @@ const defaultCookies = {
   filterCounterPokedexNrLower: "",
   filterCounterPokedexNrUpper: "",
   filterCounterTrainer: [],
+  filterEvolutions: false,
   filterGroups: false,
   filterShinyDate: [],
   filterShinyGame: [],

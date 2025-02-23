@@ -8,7 +8,7 @@ import { useShiny } from "../../hooks/useData";
 
 export default function EvolutionList({ trainer }) {
   const { isLoading: pokemonLoading, data: pokemonData } = useShiny(
-    `trainer=${trainer}&list=evolution`
+    `filterTrainer=${trainer}&list=evolution`
   );
 
   const evolutions = pokemonData?.data;
