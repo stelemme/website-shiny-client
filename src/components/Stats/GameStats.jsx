@@ -29,7 +29,7 @@ export default function GameStats() {
   const colors = tokens(theme.palette.mode);
   const [game, setGame] = useState("");
 
-  const { data: games } = useGame("action=select");
+  const { data: games } = useGame("preview=select");
 
   const { isLoading: gameStatsLoading, data: gameStatsData } = useShiny(
     `stats=gameUser&gameFilter=${game?.name}`
@@ -275,7 +275,7 @@ export default function GameStats() {
                         >
                           {gameStatsLoading
                             ? 0
-                            : gameStats && gameStats[trainer]
+                            : gameStats && gameStats[trainer]?.shinyAmount
                             ? gameStats[trainer].shinyAmount
                             : 0}
                         </Typography>
@@ -296,7 +296,7 @@ export default function GameStats() {
                         >
                           {gameStatsLoading
                             ? 0
-                            : gameStats && gameStats[trainer]
+                            : gameStats && gameStats[trainer]?.countedShinyAmount
                             ? gameStats[trainer].countedShinyAmount
                             : 0}
                         </Typography>
@@ -317,7 +317,7 @@ export default function GameStats() {
                         >
                           {gameStatsLoading
                             ? 0
-                            : gameStats && gameStats[trainer]
+                            : gameStats && gameStats[trainer]?.overOdds
                             ? gameStats[trainer].overOdds
                             : 0}
                         </Typography>
@@ -338,7 +338,7 @@ export default function GameStats() {
                         >
                           {gameStatsLoading
                             ? 0
-                            : gameStats && gameStats[trainer]
+                            : gameStats && gameStats[trainer]?.underOdds
                             ? gameStats[trainer].underOdds
                             : 0}
                         </Typography>
@@ -359,7 +359,7 @@ export default function GameStats() {
                         >
                           {gameStatsLoading
                             ? 0
-                            : gameStats && gameStats[trainer]
+                            : gameStats && gameStats[trainer]?.totalEncountersAvg
                             ? gameStats[trainer].totalEncountersAvg
                             : 0}
                         </Typography>
@@ -380,7 +380,7 @@ export default function GameStats() {
                         >
                           {gameStatsLoading
                             ? 0
-                            : gameStats && gameStats[trainer]
+                            : gameStats && gameStats[trainer]?.totalEncountersSum
                             ? gameStats[trainer].totalEncountersSum
                             : 0}
                         </Typography>
@@ -401,7 +401,7 @@ export default function GameStats() {
                         >
                           {gameStatsLoading
                             ? formatTime(0, false)
-                            : gameStats && gameStats[trainer]
+                            : gameStats && gameStats[trainer]?.totalTimeSum
                             ? formatTime(gameStats[trainer].totalTimeSum, false)
                             : formatTime(0, false)}
                         </Typography>
@@ -457,7 +457,7 @@ export default function GameStats() {
                   >
                     {gameStatsTotalLoading
                       ? 0
-                      : gameStatsTotal
+                      : gameStatsTotal?.shinyAmount
                       ? gameStatsTotal.shinyAmount
                       : 0}
                   </Typography>
@@ -478,7 +478,7 @@ export default function GameStats() {
                   >
                     {gameStatsTotalLoading
                       ? 0
-                      : gameStatsTotal
+                      : gameStatsTotal?.countedShinyAmount
                       ? gameStatsTotal.countedShinyAmount
                       : 0}
                   </Typography>
@@ -499,7 +499,7 @@ export default function GameStats() {
                   >
                     {gameStatsTotalLoading
                       ? 0
-                      : gameStatsTotal
+                      : gameStatsTotal?.overOdds
                       ? gameStatsTotal.overOdds
                       : 0}
                   </Typography>
@@ -520,7 +520,7 @@ export default function GameStats() {
                   >
                     {gameStatsTotalLoading
                       ? 0
-                      : gameStatsTotal
+                      : gameStatsTotal?.underOdds
                       ? gameStatsTotal.underOdds
                       : 0}
                   </Typography>
@@ -541,7 +541,7 @@ export default function GameStats() {
                   >
                     {gameStatsTotalLoading
                       ? 0
-                      : gameStatsTotal
+                      : gameStatsTotal?.totalEncountersAvg
                       ? gameStatsTotal.totalEncountersAvg
                       : 0}
                   </Typography>
@@ -562,7 +562,7 @@ export default function GameStats() {
                   >
                     {gameStatsTotalLoading
                       ? 0
-                      : gameStatsTotal
+                      : gameStatsTotal?.totalEncountersSum
                       ? gameStatsTotal.totalEncountersSum
                       : 0}
                   </Typography>
@@ -583,7 +583,7 @@ export default function GameStats() {
                   >
                     {gameStatsTotalLoading
                       ? formatTime(0, false)
-                      : gameStatsTotal
+                      : gameStatsTotal?.totalTimeSum
                       ? formatTime(gameStatsTotal.totalTimeSum, false)
                       : formatTime(0, false)}
                   </Typography>

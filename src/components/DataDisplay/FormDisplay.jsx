@@ -26,7 +26,7 @@ export default function FormDisplay({ forms, directory, gameSort }) {
       <Grid item xs={12} container>
         {forms.map((item) => {
           return (
-            <Grid item xs={6} key={item?._id} container>
+            <Grid item xs={6} key={item?.sprite} container>
               <Grid item xs={6}>
                 <PokemonImage
                   directory={directory}

@@ -14,7 +14,7 @@ export default function GameSelect({
   const [gamesList, setGamesList] = useState([]);
   const [value, setValue] = useState(null);
 
-  const { isLoading: gamesLoading, data: games } = useGame("action=select");
+  const { isLoading: gamesLoading, data: games } = useGame("preview=select");
 
   useEffect(() => {
     if (!gamesLoading) {

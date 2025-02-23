@@ -21,10 +21,16 @@ export default function Shinies() {
   const [anchorElSort, setAnchorElSort] = useState(null);
   const openSort = Boolean(anchorElSort);
   const [openFilter, setOpenFilter] = useState(false);
-  const [cookie] = useCookies(["displayEvolutionSprites", "sortShiny"]);
+  const [cookie] = useCookies([
+    "displayEvolutionSprites",
+    "sortShiny",
+    "filterEvolutions",
+  ]);
 
   const { isLoading: shinyLoading, data: shinyData } = useShiny(
-    `preview=shiny&sort=${cookie.sortShiny}`,
+    `sort=${cookie.sortShiny}${
+      cookie.filterEvolutions ? "&list=evolution" : "&preview=shiny"
+    }`,
     true
   );
 

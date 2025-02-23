@@ -20,7 +20,9 @@ export default function BoxComponent({
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  let sx = {};
+  let sx = {
+    overflow: "auto",
+  };
 
   if (onClick) {
     sx = {

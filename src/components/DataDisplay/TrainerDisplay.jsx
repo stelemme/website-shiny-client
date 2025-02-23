@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 
 // mui imports
-import { Grid } from "@mui/material";
+import { Grid, Skeleton, useTheme } from "@mui/material";
+import { tokens } from "../../theme";
 
 // Components imports
 import BoxComponent from "../../components/General/BoxComponent";
+import LoadingComponent from "../General/LoadingComponent";
 import PokemonSelect from "../Selects/PokemonSelect";
 
 // Images
@@ -20,8 +22,15 @@ function getFavoritePokemon(people, targetName) {
 }
 
 export default function TrainerDisplay({ trainerChoice, trainer }) {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   const makeRequest = useMakeRequest();
+
+  const boxHeight = Math.min(window.innerWidth * 0.35, 220)
+
   const [sprite, setSprite] = useState("");
+  const [spriteLoading, setSpriteLoading] = useState(true);
+
   const imageCheck = {
     Joaquin: "kwakquin",
     Korneel: "chorneef",
@@ -35,20 +44,21 @@ export default function TrainerDisplay({ trainerChoice, trainer }) {
 
   useEffect(() => {
     setSprite(getFavoritePokemon(users, trainerChoice));
+    setSpriteLoading(true);
   }, [users, trainerChoice]);
 
   const handleValueChange = async (value) => {
-    console.log(value)
-    if (!value) return
+    console.log(value);
+    if (!value) return;
     try {
       await makeRequest(
         "patch",
         `/user/${trainer}?action=updatePokemon`,
-        { newPokemon: value },
+        { newPokemon: value.sprite },
         null,
         true
       );
-      setSprite(value);
+      setSprite(value.sprite);
     } catch {
       return;
     }
@@ -68,63 +78,83 @@ export default function TrainerDisplay({ trainerChoice, trainer }) {
       }
     >
       <BoxComponent p="10px" noContrastColor height={null}>
-        <Grid container>
-          {Object.keys(trainerImages).map((item) => {
-            if (
-              item.includes(imageCheck[trainerChoice]) &&
-              item.includes("Avatar") &&
-              !userLoading
-            ) {
-              return (
-                <Grid
-                  item
-                  xs={12}
-                  key={item}
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    position: "relative",
-                  }}
-                >
-                  <div
+        <LoadingComponent
+          loadingCondition={userLoading}
+          skeleton={
+            <Skeleton
+              sx={{
+                bgcolor: colors.primary[500],
+                height: {
+                  xs: `${boxHeight}px`,
+                },
+              }}
+              variant="rounded"
+              width={"100%"}
+            />
+          }
+        >
+          <Grid container>
+            {Object.keys(trainerImages).map((item) => {
+              if (
+                item.includes(imageCheck[trainerChoice]) &&
+                item.includes("Avatar")
+              ) {
+                return (
+                  <Grid
+                    item
+                    xs={12}
+                    key={item}
                     style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
                       position: "relative",
-                      width: "100%",
-                      textAlign: "center",
                     }}
                   >
-                    <img
-                      alt=""
-                      src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-5/animated/${sprite}.png`}
+                    <div
                       style={{
-                        height: "auto",
-                        width: "50%",
-                        imageRendering: "pixelated",
-                        marginLeft: "-20%",
+                        position: "relative",
+                        width: "100%",
+                        textAlign: "center",
+                        minHeight: `${boxHeight}px`
                       }}
-                    />
-                    <img
-                      alt="Trainer"
-                      src={trainerImages[item]}
-                      style={{
-                        position: "absolute",
-                        zIndex: 1,
-                        left: "40%",
-                        bottom: "0px",
-                        height: "auto",
-                        width: "50%",
-                        imageRendering: "pixelated",
-                      }}
-                    />
-                  </div>
-                </Grid>
-              );
-            } else {
-              return null;
-            }
-          })}
-        </Grid>
+                    >
+                      <img
+                        alt=""
+                        src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-5/animated/${sprite}.png`}
+                        onLoad={() => setSpriteLoading(false)}
+                        style={{
+                          height: "auto",
+                          width: "60%",
+                          imageRendering: "pixelated",
+                          marginLeft: "-20%",
+                        }}
+                      />
+                      {!spriteLoading && (
+                        <img
+                          alt="Trainer"
+                          src={trainerImages[item]}
+                          style={{
+                            position: "absolute",
+                            zIndex: 1,
+                            left: "45%",
+                            height: "auto",
+                            width: "50%",
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                            imageRendering: "pixelated",
+                          }}
+                        />
+                      )}
+                    </div>
+                  </Grid>
+                );
+              } else {
+                return null;
+              }
+            })}
+          </Grid>
+        </LoadingComponent>
       </BoxComponent>
     </BoxComponent>
   );

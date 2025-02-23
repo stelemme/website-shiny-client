@@ -11,6 +11,9 @@ import {
   useMediaQuery,
   Typography,
   Button,
+  FormGroup,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 
@@ -30,6 +33,7 @@ export default function FilterMenu({ open, setOpen, type = "Shiny" }) {
     `filter${type}Date`,
     `filter${type}PokedexNrLower`,
     `filter${type}PokedexNrUpper`,
+    `filterEvolutions`,
   ]);
   const isSmallScreen = useMediaQuery("(max-width:500px)");
 
@@ -43,6 +47,7 @@ export default function FilterMenu({ open, setOpen, type = "Shiny" }) {
     setDates([]);
     setCookies(`filter${type}PokedexNrLower`, "", { expires: foreverDate });
     setCookies(`filter${type}PokedexNrUpper`, "", { expires: foreverDate });
+    setCookies(`filterEvolutions`, false, { expires: foreverDate });
   };
   const handleTrainerChange = (e, newValue) => {
     setCookies(`filter${type}Trainer`, newValue, { expires: foreverDate });
@@ -62,6 +67,9 @@ export default function FilterMenu({ open, setOpen, type = "Shiny" }) {
     setCookies(`filter${type}PokedexNrUpper`, newValue, {
       expires: foreverDate,
     });
+  };
+  const handleEvolutionChange = (e) => {
+    setCookies(`filterEvolutions`, e.target.checked, { expires: foreverDate });
   };
 
   const [dates, setDates] = useState({
@@ -181,6 +189,34 @@ export default function FilterMenu({ open, setOpen, type = "Shiny" }) {
                 onChange={handlePokedexNrUpperChange}
               />
             </Grid>
+            {type === "Shiny" && (
+              <>
+                <Grid item xs={12}>
+                  <Typography variant="h6" fontWeight="bold">
+                    Evolutions
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          color="secondary"
+                          checked={cookies[`filterEvolutions`]}
+                          onChange={handleEvolutionChange}
+                          inputProps={{ "aria-label": "controlled" }}
+                        />
+                      }
+                      label={
+                        <Typography variant="h6">
+                          Show only shinies that can evolve
+                        </Typography>
+                      }
+                    />
+                  </FormGroup>
+                </Grid>
+              </>
+            )}
           </Grid>
         </Box>
       </DialogContent>

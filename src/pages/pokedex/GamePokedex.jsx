@@ -15,7 +15,7 @@ export default function GamePokedex() {
   const { gameId } = useParams();
 
   const { isLoading: pokedexLoading, data: pokedex } = usePokedex(
-    `game=${gameId}`
+    `filter=complex&filterGameId=${gameId}`
   );
 
   const { isLoading: gameLoading, data: game } = useGameId(

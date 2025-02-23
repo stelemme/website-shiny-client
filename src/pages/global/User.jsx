@@ -15,7 +15,6 @@ import {
 import PageComponent from "../../components/General/PageComponent";
 import BoxComponent from "../../components/General/BoxComponent";
 import UserSelect from "../../components/Selects/UserSelect";
-import TrainerSmallDisplay from "../../components/DataDisplay/TrainerSmallDisplay";
 import TrainerDisplay from "../../components/DataDisplay/TrainerDisplay";
 
 // Hooks
@@ -118,9 +117,6 @@ export default function User() {
       <Grid container spacing={"20px"}>
         <Grid item xs={12}>
           <TrainerDisplay trainerChoice={trainerChoice} trainer={username} />
-        </Grid>
-        <Grid item xs={12}>
-          <TrainerSmallDisplay trainerChoice={trainerChoice} />
         </Grid>
         {!trainerCheck && (
           <Grid item xs={12}>
