@@ -10,6 +10,13 @@
 **Trainer Sprite:**
 - Toch iets cleaner gemaakt al
 
+**Pokedex:**
+- Unowns worden alfabetisch gestorteerd
+
+**Bug Fixes:**
+- Game stats totaal is nu ook gefixt
+- Als er geen data is gaat game stats niemeer fuckt
+
 ---
 
 ### Version 1.27.0 (09.02.2024)
