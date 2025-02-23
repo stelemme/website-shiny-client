@@ -2,6 +2,16 @@
 
 ## Changelogs
 
+### Version 1.28.0 (23.02.2024)
+
+**Filter:**
+- Shinies kunnen nu gefilterd worden op "shinies die nog kunnen evolven" (laad wel traag omda hij al die data moet checken)
+
+**Trainer Sprite:**
+- Toch iets cleaner gemaakt al
+
+---
+
 ### Version 1.27.0 (09.02.2024)
 
 **Map:**
