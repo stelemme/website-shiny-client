@@ -112,7 +112,7 @@ export default function Counter() {
         try {
           const response = await getRequest(`/shiny/${counterId}`);
           setData(response);
-          setHasData(false)
+          setHasData(false);
         } catch (error) {
           console.error(error);
         }
@@ -123,7 +123,7 @@ export default function Counter() {
         try {
           const response = await getRequest(`/counters/${counterId}`);
           setData(response);
-          setHasData(false)
+          setHasData(false);
         } catch (error) {
           console.error(error);
         }
@@ -205,7 +205,7 @@ export default function Counter() {
             data.method?.searchLevel
           )
         );
-      }      
+      }
       setTimeDifference(
         data.stats.manualMeanEncounterTime
           ? data.stats.meanEncounterTime
@@ -1020,13 +1020,14 @@ export default function Counter() {
                             : "Undefined"}
                         </Typography>
                         <Typography fontWeight={"bold"} textAlign={"right"}>
-                          Mean Encounter Time
+                          Time to reach Odds
                         </Typography>
                         <Typography textAlign={"right"}>
                           {timeDifference
-                            ? new Date(timeDifference * 1000)
-                                .toISOString()
-                                .slice(11, 19)
+                            ? formatTime(
+                                Math.round(timeDifference * odds),
+                                false
+                              )
                             : "Undefined"}
                         </Typography>
                         <Typography fontWeight={"bold"} textAlign={"right"}>

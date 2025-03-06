@@ -24,6 +24,7 @@ import GameMultipleSelect from "../Selects/GameMultipleSelect";
 import EndDateForm from "../Forms/EndDateForm";
 import StartDateForm from "../Forms/StartDateForm";
 import PokedexNrForm from "../Forms/PokedexNrForm";
+import MethodMultipleSelect from "../Selects/MethodMultipleSelect";
 
 export default function FilterMenu({ open, setOpen, type = "Shiny" }) {
   const [cookies, setCookies] = useCookies([
@@ -33,6 +34,7 @@ export default function FilterMenu({ open, setOpen, type = "Shiny" }) {
     `filter${type}Date`,
     `filter${type}PokedexNrLower`,
     `filter${type}PokedexNrUpper`,
+    `filter${type}Method`,
     `filterEvolutions`,
   ]);
   const isSmallScreen = useMediaQuery("(max-width:500px)");
@@ -43,6 +45,7 @@ export default function FilterMenu({ open, setOpen, type = "Shiny" }) {
     setCookies(`filter${type}Trainer`, [], { expires: foreverDate });
     setCookies(`filter${type}Gen`, [], { expires: foreverDate });
     setCookies(`filter${type}Game`, [], { expires: foreverDate });
+    setCookies(`filter${type}Method`, [], { expires: foreverDate });
     setCookies(`filter${type}Date`, [], { expires: foreverDate });
     setDates([]);
     setCookies(`filter${type}PokedexNrLower`, "", { expires: foreverDate });
@@ -65,6 +68,11 @@ export default function FilterMenu({ open, setOpen, type = "Shiny" }) {
   };
   const handlePokedexNrUpperChange = (newValue) => {
     setCookies(`filter${type}PokedexNrUpper`, newValue, {
+      expires: foreverDate,
+    });
+  };
+  const handleMethodChange = (e, newValue) => {
+    setCookies(`filter${type}Method`, newValue, {
       expires: foreverDate,
     });
   };
@@ -124,7 +132,7 @@ export default function FilterMenu({ open, setOpen, type = "Shiny" }) {
             </Grid>
             <Grid item xs={12}>
               <Typography variant="h6" fontWeight="bold">
-                Gen or Game Filter
+                Gen or Game Filters
               </Typography>
             </Grid>
             <Grid item xs={12}>
@@ -148,8 +156,17 @@ export default function FilterMenu({ open, setOpen, type = "Shiny" }) {
               />
             </Grid>
             <Grid item xs={12}>
+              <MethodMultipleSelect
+                size="normal"
+                label="Method"
+                handleChange={handleMethodChange}
+                fullwidth
+                value={cookies[`filter${type}Method`]}
+              />
+            </Grid>
+            <Grid item xs={12}>
               <Typography variant="h6" fontWeight="bold">
-                Date Filter
+                Date Filters
               </Typography>
             </Grid>
             <Grid item sm={6} xs={12}>
@@ -172,7 +189,7 @@ export default function FilterMenu({ open, setOpen, type = "Shiny" }) {
             </Grid>
             <Grid item xs={12}>
               <Typography variant="h6" fontWeight="bold">
-                Pokedex Filter
+                Pokedex Filters
               </Typography>
             </Grid>
             <Grid item sm={6} xs={12}>

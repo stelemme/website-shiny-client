@@ -14,12 +14,13 @@ import { formatDateToString } from "../../functions/statFunctions";
 
 export default function EncounterTimeLeaderboard() {
   const today = formatDateToString(new Date());
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const [period, setPeriod] = useState("Today");
   const [dateQuery, setDateQuery] = useState(today);
   const [periodQuery, setPeriodQuery] = useState(1);
 
   const { isLoading: counterStatsLoading, data: counterStatsData } = useCounter(
-    `stats=encTimeDuringPeriodTotal&date=${dateQuery}&period=${periodQuery}`
+    `stats=encTimeDuringPeriodTotal&date=${dateQuery}&period=${periodQuery}&timezone=${timezone}`
   );
 
   const counterStats = counterStatsData?.data;
