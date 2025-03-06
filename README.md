@@ -10,6 +10,9 @@
 **Sprites:**
 - Chorneefke heeft goe gewerkt aan de gold en silver sprites
 
+**Counter:**
+- Time to reach odds toegevoegd aan counter
+
 **Bug Fixes:**
 - Tijd shit is eindelijk keer gefixt
 
