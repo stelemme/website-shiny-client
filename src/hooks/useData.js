@@ -24,6 +24,7 @@ export const useApiQuery = (
     `filter${type}Trainer`,
     `filter${type}Gen`,
     `filter${type}Game`,
+    `filter${type}Method`,
     `filter${type}Date`,
     `filter${type}PokedexNrLower`,
     `filter${type}PokedexNrUpper`,
@@ -36,6 +37,7 @@ export const useApiQuery = (
       `&filterTrainer=${cookies[`filter${type}Trainer`]}` +
       `&filterGen=${cookies[`filter${type}Gen`]}` +
       `&filterGame=${cookies[`filter${type}Game`]}` +
+      `&filterMethod=${cookies[`filter${type}Method`]}` +
       `&filterDate=${cookies[`filter${type}Date`]}` +
       `&filterPokedexNrLower=${cookies[`filter${type}PokedexNrLower`]}` +
       `&filterPokedexNrUpper=${cookies[`filter${type}PokedexNrUpper`]}`;

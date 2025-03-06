@@ -2,7 +2,17 @@
 
 ## Changelogs
 
-### Version 1.28.0 (23.02.2024)
+### Version 1.29.0 (06.03.2025)
+
+**Filter:**
+- Er kan nu gefilterd worden op method
+
+**Bug Fixes:**
+- Tijd shit is eindelijk keer gefixt
+
+---
+
+### Version 1.28.0 (23.02.2025)
 
 **Filter:**
 - Shinies kunnen nu gefilterd worden op "shinies die nog kunnen evolven" (laad wel traag omda hij al die data moet checken)
@@ -19,7 +29,7 @@
 
 ---
 
-### Version 1.27.0 (09.02.2024)
+### Version 1.27.0 (09.02.2025)
 
 **Map:**
 - Scale bar toegevoegd
@@ -39,7 +49,7 @@
 
 ---
 
-### Version 1.26.0 (26.01.2024)
+### Version 1.26.0 (26.01.2025)
 
 **Collection:**
 - Opsplitsing tussen obtainable en unobtainable collection items
