@@ -7,6 +7,9 @@
 **Filter:**
 - Er kan nu gefilterd worden op method
 
+**Sprites:**
+- Chorneefke heeft goe gewerkt aan de gold en silver sprites
+
 **Bug Fixes:**
 - Tijd shit is eindelijk keer gefixt
 
