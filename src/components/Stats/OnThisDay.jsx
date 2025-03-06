@@ -11,13 +11,13 @@ import ShinyCard from "../Cards/ShinyCard";
 import { useShiny } from "../../hooks/useData";
 
 // Functions
-import { formatDateToString } from "../../functions/statFunctions";
+import { formatDateToStringNotUTC } from "../../functions/statFunctions";
 
 export default function OnThisDay() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  const today = formatDateToString(new Date());
+  const today = formatDateToStringNotUTC(new Date());
 
   const { isLoading: dataLoading, data: shinyStats } = useShiny(
     `list=yearsAgo&timezone=${timezone}&date=${today}`
