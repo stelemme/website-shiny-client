@@ -80,19 +80,19 @@ const createClusterCustomIcon = function (cluster) {
 };
 
 export default function MainMap() {
-  const [cookies] = useCookies(["travelFilter", "displayMapOnGent"]);
+  const [cookies] = useCookies(["travelFilter", "planeFilter", "displayMapOnGent"]);
 
   const { data: joaquinLocationsData, isLoading: loadingJoaquin } = useShiny(
-    `geoLocation=map&trainer=Joaquin&filter=${cookies.travelFilter}`
+    `geoLocation=map&trainer=Joaquin&filter=${cookies.travelFilter}&filter=${cookies.planeFilter}`
   );
   const { data: korneelLocationsData, isLoading: loadingKorneel } = useShiny(
-    `geoLocation=map&trainer=Korneel&filter=${cookies.travelFilter}`
+    `geoLocation=map&trainer=Korneel&filter=${cookies.travelFilter}&filter=${cookies.planeFilter}`
   );
   const { data: simonLocationsData, isLoading: loadingSimon } = useShiny(
-    `geoLocation=map&trainer=Simon&filter=${cookies.travelFilter}`
+    `geoLocation=map&trainer=Simon&filter=${cookies.travelFilter}&filter=${cookies.planeFilter}`
   );
   const { data: stefLocationsData, isLoading: loadingStef } = useShiny(
-    `geoLocation=map&trainer=Stef&filter=${cookies.travelFilter}`
+    `geoLocation=map&trainer=Stef&filter=${cookies.travelFilter}&filter=${cookies.planeFilter}`
   );
 
   const joaquinLocations = joaquinLocationsData?.data;

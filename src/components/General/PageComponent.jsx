@@ -15,8 +15,10 @@ const PageComponent = ({
   widthSnaps = 0,
   icon1 = null,
   onClickIcon1 = null,
+  disableIcon1 = false,
   icon2 = null,
   onClickIcon2 = null,
+  disableIcon2 = false,
   dev = false,
   select = null,
   tabs = false,
@@ -110,10 +112,10 @@ const PageComponent = ({
               <Box display="flex" flexDirection="column" alignItems="center">
                 <Box display="flex" justifyContent="flex-end" width="100%">
                   {icon1 && (
-                    <IconButton onClick={onClickIcon1}>{icon1}</IconButton>
+                    <IconButton onClick={onClickIcon1} disabled={disableIcon1} >{icon1}</IconButton>
                   )}
                   {icon2 && (
-                    <IconButton onClick={onClickIcon2}>{icon2}</IconButton>
+                    <IconButton onClick={onClickIcon2} disabled={disableIcon2} >{icon2}</IconButton>
                   )}
                 </Box>
                 {select && (
