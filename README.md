@@ -2,6 +2,16 @@
 
 ## Changelogs
 
+### Version 1.30.0 (10.03.2025)
+
+**Map:**
+- Joaquin zijn geliefde vliegtuigknop is toegevoegd
+
+**Bug Fixes:**
+- LGPE sprites zijn niet meer uitgerokken
+
+---
+
 ### Version 1.29.0 (06.03.2025)
 
 **Filter:**
