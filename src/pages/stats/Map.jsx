@@ -46,7 +46,7 @@ export default function Map() {
   return (
     <PageComponent
       title="GEO LOCATION MAP"
-      subtitle="On the map you can find all the location where shinies have been caught."
+      subtitle="On the map you can see all geographical catch locations."
       icon1={
         cookies.travelFilter === "transport" ? (
           <NoTransferIcon />
