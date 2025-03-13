@@ -13,7 +13,6 @@ import {
   DialogContent,
   TextField,
   Tooltip,
-  Button,
 } from "@mui/material";
 import { tokens } from "../../theme";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
@@ -24,18 +23,17 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
 import ListAltRoundedIcon from "@mui/icons-material/ListAltRounded";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
-import AutorenewIcon from "@mui/icons-material/Autorenew";
-import CatchingPokemonTwoToneIcon from '@mui/icons-material/CatchingPokemonTwoTone';
+import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone";
 
 // Components
 import CustomDialog from "../../components/Dialogs/CustomDialog";
 import CounterEncounterGraph from "../../components/Graphs/CounterEncounterGraph";
 import IncrementForm from "../../components/Forms/IncrementForm";
-import ThresholdForm from "../../components/Forms/ThresholdForm";
-import MeanEncForm from "../../components/Forms/MeanEncForm";
 import CounterRanking from "../../components/Stats/CounterRanking";
 import CounterInfoDialog from "../../components/Dialogs/CounterInfoDialog";
 import EncTableDialog from "../../components/Dialogs/EncTableDialog";
+import MeanEncTimeEditDialog from "../../components/Dialogs/MeanEncTimeEditDialog";
+import SearchLevelEditDialog from "../../components/Dialogs/SearchLevelEditDialog";
 
 // Functions
 import {
@@ -85,8 +83,6 @@ export default function Counter() {
   const [timeDifference, setTimeDifference] = useState(undefined);
   const [increment, setIncrement] = useState(undefined);
   const [incrementEdit, setIncrementEdit] = useState(undefined);
-  const [thresholdEdit, setThresholdEdit] = useState(undefined);
-  const [meanEncTimeEdit, setMeanEncTimeEdit] = useState(undefined);
 
   const [searchLevel, setSearchLevel] = useState(0);
   const [searchLevelEdit, setSearchLevelEdit] = useState(0);
@@ -207,13 +203,6 @@ export default function Counter() {
       );
       setIncrement(data.increment);
       setIncrementEdit({ increment: data.increment });
-      setThresholdEdit({
-        lowerTimeThreshold: data.lowerTimeThreshold,
-        upperTimeThreshold: data.upperTimeThreshold,
-      });
-      setMeanEncTimeEdit({
-        meanEncounterTime: timeDifference,
-      });
     }
   }, [data, hasData]);
 
@@ -380,78 +369,6 @@ export default function Counter() {
     }
   };
 
-  const handleThresholdEdit = async () => {
-    let data = {
-      lowerTimeThreshold: thresholdEdit.lowerTimeThreshold,
-      upperTimeThreshold: thresholdEdit.upperTimeThreshold,
-      meanEncounterTime: timeDifference,
-      manualMeanEncounterTime: false,
-      totalHuntTime: Math.round(timeDifference * count),
-    };
-
-    if (meanEncTimeEdit.meanEncounterTime !== timeDifference) {
-      data.meanEncounterTime = meanEncTimeEdit.meanEncounterTime;
-      data.manualMeanEncounterTime = true;
-      data.totalHuntTime = Math.round(
-        meanEncTimeEdit.meanEncounterTime * count
-      );
-    }
-
-    let database = "counters";
-    if (searchParams.get("completed") === "true") {
-      database = "shiny";
-    }
-
-    try {
-      const response = await makeRequest(
-        "patch",
-        `/${database}/${counterId}?action=thresholdEdit`,
-        data,
-        "edit"
-      );
-
-      setData(response);
-      setOpenThresholdEdit(false);
-    } catch {
-      return;
-    }
-  };
-
-  const handleResetManualEncTime = async () => {
-    const resetValue = calculateMeanEncounterTime(
-      data.encounters,
-      data.upperTimeThreshold,
-      data.lowerTimeThreshold,
-      data.increment
-    );
-    setTimeDifference(resetValue);
-    setMeanEncTimeEdit(resetValue);
-
-    let database = "counters";
-    if (searchParams.get("completed") === "true") {
-      database = "shiny";
-    }
-
-    let editData = {
-      meanEncounterTime: resetValue,
-      manualMeanEncounterTime: false,
-      totalHuntTime: Math.round(resetValue * count),
-    };
-
-    try {
-      const response = await makeRequest(
-        "patch",
-        `/${database}/${counterId}?action=resetMeanEncTime`,
-        editData,
-        "edit"
-      );
-      setData(response);
-      setOpenThresholdEdit(false);
-    } catch {
-      return;
-    }
-  };
-
   /* SEARCH LEVEL CLICK */
   const handleSearchLevelClick = async () => {
     setBackgroundColorSearchLevel(colors.primary[900]);
@@ -475,23 +392,6 @@ export default function Counter() {
         true
       );
       setData(response);
-    } catch {
-      return;
-    }
-  };
-
-  const handleSearchLevelEditClick = async () => {
-    let data = { searchLevel: searchLevelEdit };
-
-    try {
-      await makeRequest(
-        "patch",
-        `/counters/${counterId}?action=searchLevelEdit`,
-        data,
-        "edit"
-      );
-      setSearchLevel(searchLevelEdit);
-      setOpenSearchLevelEdit(false);
     } catch {
       return;
     }
@@ -556,29 +456,12 @@ export default function Counter() {
           <IconButton onClick={() => setOpenSearchLevelEdit(true)}>
             <EditRoundedIcon></EditRoundedIcon>
           </IconButton>
-          <CustomDialog
+          <SearchLevelEditDialog
             open={openSearchLevelEdit}
-            handleClick={handleSearchLevelEditClick}
-            handleClose={() => {
-              setOpenSearchLevelEdit(false);
-            }}
-            title={"Edit Search Level"}
-            content={
-              <Box>
-                <Typography mb="15px">
-                  Edit the Search Level in the field below.
-                </Typography>
-                <TextField
-                  color="secondary"
-                  fullWidth
-                  label="Search Level"
-                  type="number"
-                  value={searchLevelEdit}
-                  onChange={(e) => setSearchLevelEdit(parseInt(e.target.value))}
-                />
-              </Box>
-            }
-            action={"Edit"}
+            setOpen={setOpenSearchLevelEdit}
+            setSearchLevel={setSearchLevel}
+            searchLevelEdit={searchLevelEdit}
+            setSearchLevelEdit={setSearchLevelEdit}
           />
         </Box>
       );
@@ -905,51 +788,14 @@ export default function Counter() {
                 <Typography fontWeight={"bold"} textAlign={"right"}>
                   Mean Encounter Time
                 </Typography>
-                <CustomDialog
+                <MeanEncTimeEditDialog
+                  data={data}
+                  setData={setData}
                   open={openThresholdEdit}
-                  handleClick={handleThresholdEdit}
-                  handleClose={() => {
-                    setOpenThresholdEdit(false);
-                  }}
-                  title={"Edit the Thresholds"}
-                  content={
-                    <Grid container mt={1} spacing={2}>
-                      {data.stats.manualMeanEncounterTime && (
-                        <Grid item xs={12} mb={"10px"}>
-                          <Button
-                            fullWidth
-                            onClick={handleResetManualEncTime}
-                            variant="outlined"
-                            color="secondary"
-                            startIcon={<AutorenewIcon />}
-                          >
-                            Reset Mean Encounter Time
-                          </Button>
-                        </Grid>
-                      )}
-                      <Grid item xs={12}>
-                        <MeanEncForm
-                          data={meanEncTimeEdit}
-                          setData={setMeanEncTimeEdit}
-                        />
-                      </Grid>
-                      <Grid item md={6} xs={12}>
-                        <ThresholdForm
-                          data={thresholdEdit}
-                          setData={setThresholdEdit}
-                          type="lower"
-                        />
-                      </Grid>
-                      <Grid item md={6} xs={12}>
-                        <ThresholdForm
-                          data={thresholdEdit}
-                          setData={setThresholdEdit}
-                          type="upper"
-                        />
-                      </Grid>
-                    </Grid>
-                  }
-                  action={"Edit"}
+                  setOpen={setOpenThresholdEdit}
+                  count={count}
+                  timeDifference={timeDifference}
+                  setTimeDifference={setTimeDifference}
                 />
               </Box>
               <Box
