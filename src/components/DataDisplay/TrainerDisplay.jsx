@@ -7,7 +7,7 @@ import { tokens } from "../../theme";
 // Components imports
 import BoxComponent from "../../components/General/BoxComponent";
 import LoadingComponent from "../General/LoadingComponent";
-import PokemonSelect from "../Selects/PokemonSelect";
+import PokemonSelect from "../Selects/PokemonSpriteSelect";
 
 // Images
 import { trainerImages } from "../../assets/imgExporter";

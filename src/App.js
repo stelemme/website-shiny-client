@@ -25,6 +25,9 @@ import { auth } from "./utils/firebase";
 import { ColorModeContext, useMode } from "./theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 
+// rsuite imports
+import { CustomProvider } from "rsuite";
+
 // PAGE IMPORTS
 // Counter Pages
 import Counter from "./pages/counter/Counter";
@@ -248,46 +251,48 @@ function Layout() {
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
-        <QueryClientProvider client={queryClient}>
-          <CookiesProvider defaultSetOptions={{ path: "/" }}>
-            <CssBaseline />
-            <div
-              style={{
-                display: "flex",
-              }}
-            >
+        <CustomProvider theme={theme.palette.mode}>
+          <QueryClientProvider client={queryClient}>
+            <CookiesProvider defaultSetOptions={{ path: "/" }}>
+              <CssBaseline />
               <div
                 style={{
-                  zIndex: 1001,
-                }}
-              >
-                <CustomSidebar />
-              </div>
-              <main
-                style={{
-                  width: width,
-                  position: "relative",
-                  left: left,
+                  display: "flex",
                 }}
               >
                 <div
                   style={{
-                    position: "relative", // Changed from "fixed" to "relative"
-                    top: 0,
-                    zIndex: 1000,
+                    zIndex: 1001,
                   }}
                 >
-                  <Topbar />
-                  <CustomAlert />
+                  <CustomSidebar />
                 </div>
-                <ScrollRestoration />
-                <ErrorBoundary FallbackComponent={ErrorPage}>
-                  <Outlet />
-                </ErrorBoundary>
-              </main>
-            </div>
-          </CookiesProvider>
-        </QueryClientProvider>
+                <main
+                  style={{
+                    width: width,
+                    position: "relative",
+                    left: left,
+                  }}
+                >
+                  <div
+                    style={{
+                      position: "relative", // Changed from "fixed" to "relative"
+                      top: 0,
+                      zIndex: 1000,
+                    }}
+                  >
+                    <Topbar />
+                    <CustomAlert />
+                  </div>
+                  <ScrollRestoration />
+                  <ErrorBoundary FallbackComponent={ErrorPage}>
+                    <Outlet />
+                  </ErrorBoundary>
+                </main>
+              </div>
+            </CookiesProvider>
+          </QueryClientProvider>
+        </CustomProvider>
       </ThemeProvider>
     </ColorModeContext.Provider>
   );

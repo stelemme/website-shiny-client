@@ -25,7 +25,7 @@ import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
 import ListAltRoundedIcon from "@mui/icons-material/ListAltRounded";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
-import CatchingPokemonTwoToneIcon from '@mui/icons-material/CatchingPokemonTwoTone';
+import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone";
 
 // Components
 import CustomDialog from "../../components/Dialogs/CustomDialog";
@@ -813,11 +813,6 @@ export default function Counter() {
                   data={data}
                   completed={completed}
                 />
-
-                <IconButton size="small" onClick={() => setOpenEncTable(true)}>
-                  <CatchingPokemonTwoToneIcon fontSize="inherit" />
-                </IconButton>
-                <EncTableDialog open={openEncTable} setOpen={setOpenEncTable} />
               </Box>
               <Typography fontStyle={"italic"}>
                 {data.method.category}
@@ -875,6 +870,20 @@ export default function Counter() {
                     />
                   </DialogContent>
                 </Dialog>
+              </Box>
+              <Box display="flex" alignItems="center" height="21px">
+                <Typography fontWeight={"bold"}>Encounter Table</Typography>
+                <IconButton size="small" onClick={() => setOpenEncTable(true)}>
+                  <CatchingPokemonTwoToneIcon fontSize="inherit" />
+                </IconButton>
+                <EncTableDialog
+                  open={openEncTable}
+                  setOpen={setOpenEncTable}
+                  game={data.game}
+                  encounterTable={data.encounterTable}
+                  completed={completed}
+                  counterId={counterId}
+                />
               </Box>
             </Grid>
 
