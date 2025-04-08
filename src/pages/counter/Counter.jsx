@@ -23,7 +23,7 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
 import ListAltRoundedIcon from "@mui/icons-material/ListAltRounded";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
-import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone";
+import TableChartOutlinedIcon from '@mui/icons-material/TableChartOutlined';
 
 // Components
 import CustomDialog from "../../components/Dialogs/CustomDialog";
@@ -757,7 +757,7 @@ export default function Counter() {
               <Box display="flex" alignItems="center" height="21px">
                 <Typography fontWeight={"bold"}>Encounter Table</Typography>
                 <IconButton size="small" onClick={() => setOpenEncTable(true)}>
-                  <CatchingPokemonTwoToneIcon fontSize="inherit" />
+                  <TableChartOutlinedIcon fontSize="inherit" />
                 </IconButton>
                 <EncTableDialog
                   open={openEncTable}
