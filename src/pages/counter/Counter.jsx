@@ -23,7 +23,6 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
 import ListAltRoundedIcon from "@mui/icons-material/ListAltRounded";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
-import AutorenewIcon from "@mui/icons-material/Autorenew";
 import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone";
 
 // Components
