@@ -1,6 +1,7 @@
 const defaultCookies = {
   checklistGenFilter: "All",
   travelFilter: "transport",
+  planeFilter: "plane",
   collectionSelect: "Pokéballs",
   collectionUserSelect: "All",
   displayAnimatedSpritesPreGen8: true,

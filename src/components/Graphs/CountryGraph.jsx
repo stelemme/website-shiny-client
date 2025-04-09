@@ -24,10 +24,10 @@ export default function CountryGraph() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const [cookies] = useCookies(["travelFilter", "displayMapOnGent"]);
+  const [cookies] = useCookies(["travelFilter", "planeFilter", "displayMapOnGent"]);
 
   const { data: shinyData } = useShiny(
-    `geoLocation=differentCountries&filter=${cookies.travelFilter}`
+    `geoLocation=differentCountries&filter=${cookies.travelFilter}&filter=${cookies.planeFilter}`
   );
 
   return (

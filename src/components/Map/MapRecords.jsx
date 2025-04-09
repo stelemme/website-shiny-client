@@ -15,15 +15,15 @@ import { useShiny } from "../../hooks/useData";
 export default function MapRecords() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [cookies] = useCookies(["travelFilter"]);
+  const [cookies] = useCookies(["travelFilter", "planeFilter"]);
 
   const { isLoading: userStatsLoading, data: userStatsData } = useShiny(
-    `geoLocation=leaderboard&filter=${cookies.travelFilter}`
+    `geoLocation=leaderboard&filter=${cookies.travelFilter}&filter=${cookies.planeFilter}`
   );
   const userStats = userStatsData?.data[0];
 
   const { isLoading: columbusLoading, data: columbusData } =
-    useShiny(`geoLocation=columbus&filter=${cookies.travelFilter}`);
+    useShiny(`geoLocation=columbus&filter=${cookies.travelFilter}&filter=${cookies.planeFilter}`);
   const columbus = columbusData?.data[0];
 
   const stats = [

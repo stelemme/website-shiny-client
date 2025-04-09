@@ -2,11 +2,16 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 
 // mui imports
-import { Box, IconButton, Tab, Tabs, useTheme, styled } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  Tab,
+  Tabs,
+  useTheme,
+  styled,
+  Typography,
+} from "@mui/material";
 import { tokens } from "../../theme";
-
-// Components
-import Header from "./Header";
 
 const PageComponent = ({
   title,
@@ -15,8 +20,10 @@ const PageComponent = ({
   widthSnaps = 0,
   icon1 = null,
   onClickIcon1 = null,
+  disableIcon1 = false,
   icon2 = null,
   onClickIcon2 = null,
+  disableIcon2 = false,
   dev = false,
   select = null,
   tabs = false,
@@ -104,24 +111,80 @@ const PageComponent = ({
               justifyContent="space-between"
               alignItems="center"
             >
-              {/* HEADER */}
-              <Header title={title} subtitle={subtitle} />
-
-              <Box display="flex" flexDirection="column" alignItems="center">
-                <Box display="flex" justifyContent="flex-end" width="100%">
-                  {icon1 && (
-                    <IconButton onClick={onClickIcon1}>{icon1}</IconButton>
-                  )}
-                  {icon2 && (
-                    <IconButton onClick={onClickIcon2}>{icon2}</IconButton>
+              <Typography
+                variant="h1"
+                color={colors.grey[100]}
+                fontWeight="bold"
+              >
+                {title}
+              </Typography>
+              {window.innerWidth > 500 && (
+                <Box display="flex" flexDirection="column" alignItems="center">
+                  <Box display="flex" justifyContent="flex-end" width="100%">
+                    {icon1 && (
+                      <IconButton
+                        onClick={onClickIcon1}
+                        disabled={disableIcon1}
+                      >
+                        {icon1}
+                      </IconButton>
+                    )}
+                    {icon2 && (
+                      <IconButton
+                        onClick={onClickIcon2}
+                        disabled={disableIcon2}
+                      >
+                        {icon2}
+                      </IconButton>
+                    )}
+                  </Box>
+                  {select && (
+                    <Box sx={{ display: { xs: "none", sm: "flex" } }}>
+                      {select}
+                    </Box>
                   )}
                 </Box>
-                {select && (
-                  <Box sx={{ display: { xs: "none", sm: "flex" } }}>
-                    {select}
-                  </Box>
-                )}
+              )}
+            </Box>
+            <Box
+              width="100%"
+              display="flex"
+              flexDirection="row"
+              justifyContent="space-between"
+              alignItems="start"
+            >
+              <Box mb="15px">
+                <Typography variant="h5" color={colors.grey[300]}>
+                  {subtitle}
+                </Typography>
               </Box>
+              {window.innerWidth < 500 && (
+                <Box display="flex" flexDirection="column" alignItems="center">
+                  <Box display="flex" justifyContent="flex-end" width="100%">
+                    {icon1 && (
+                      <IconButton
+                        onClick={onClickIcon1}
+                        disabled={disableIcon1}
+                      >
+                        {icon1}
+                      </IconButton>
+                    )}
+                    {icon2 && (
+                      <IconButton
+                        onClick={onClickIcon2}
+                        disabled={disableIcon2}
+                      >
+                        {icon2}
+                      </IconButton>
+                    )}
+                  </Box>
+                  {select && (
+                    <Box sx={{ display: { xs: "none", sm: "flex" } }}>
+                      {select}
+                    </Box>
+                  )}
+                </Box>
+              )}
             </Box>
 
             {select && (

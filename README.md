@@ -2,6 +2,19 @@
 
 ## Changelogs
 
+### Version 1.30.0 (09.04.2025)
+
+**Counter:**
+- Encounter table kan nu worden toegevoegd aan een counter. Dubbel klik op een cel om te editten.
+
+**Map:**
+- Joaquin zijn geliefde vliegtuigknop is toegevoegd
+
+**Bug Fixes:**
+- LGPE sprites zijn niet meer uitgerokken
+
+---
+
 ### Version 1.29.0 (06.03.2025)
 
 **Filter:**

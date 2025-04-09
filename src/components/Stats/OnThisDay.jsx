@@ -1,5 +1,5 @@
 // mui imports
-import { Grid, useTheme, Typography, Skeleton } from "@mui/material";
+import { Grid, useTheme, Typography, Skeleton, Box } from "@mui/material";
 import { tokens } from "../../theme";
 
 // Components
@@ -40,53 +40,60 @@ export default function OnThisDay() {
           />
         }
       >
-        <Grid container spacing={2}>
-          {data?.map((item) => {
-            return (
-              <Grid item xs={12} key={item?.year}>
-                <Typography variant="h6" fontWeight={"bold"} mb={"10px"}>
-                  {item.year}
-                </Typography>
-                <Grid container spacing={2}>
-                  {item?.mons
-                    .reduce((acc, item) => {
-                      if (!item.group) {
-                        acc.push(item);
-                      } else if (!acc.some((el) => el.group === item.group)) {
-                        acc.push(item);
-                      }
-                      return acc;
-                    }, [])
-                    .map((item2) => {
-                      return (
-                        <Grid item xs={12} key={item2?._id}>
-                          <ShinyCard
-                            id={item2?._id}
-                            name={item2?.name}
-                            gameSprite={item2?.sprite.game}
-                            dir={item2?.sprite.dir}
-                            monSprite={item2?.sprite.pokemon}
-                            trainer={item2?.trainer}
-                            bgColor={500}
-                            imgSize={52}
-                          />
-                        </Grid>
-                      );
-                    })}
+        <Box
+          sx={{
+            height: window.innerWidth > 1536 ? "400px" : null,
+            overflowY: "auto",
+          }}
+        >
+          <Grid container spacing={2}>
+            {data?.map((item) => {
+              return (
+                <Grid item xs={12} key={item?.year}>
+                  <Typography variant="h6" fontWeight={"bold"} mb={"10px"}>
+                    {item.year}
+                  </Typography>
+                  <Grid container spacing={2}>
+                    {item?.mons
+                      .reduce((acc, item) => {
+                        if (!item.group) {
+                          acc.push(item);
+                        } else if (!acc.some((el) => el.group === item.group)) {
+                          acc.push(item);
+                        }
+                        return acc;
+                      }, [])
+                      .map((item2) => {
+                        return (
+                          <Grid item xs={12} key={item2?._id}>
+                            <ShinyCard
+                              id={item2?._id}
+                              name={item2?.name}
+                              gameSprite={item2?.sprite.game}
+                              dir={item2?.sprite.dir}
+                              monSprite={item2?.sprite.pokemon}
+                              trainer={item2?.trainer}
+                              bgColor={500}
+                              imgSize={52}
+                            />
+                          </Grid>
+                        );
+                      })}
+                  </Grid>
                 </Grid>
+              );
+            })}
+            {data?.length === 0 && (
+              <Grid item xs={12}>
+                <BoxComponent noContrastColor>
+                  <Typography variant="h6" fontWeight={"bold"}>
+                    There are no shinies caught yet on this day...
+                  </Typography>
+                </BoxComponent>
               </Grid>
-            );
-          })}
-          {data?.length === 0 && (
-            <Grid item xs={12}>
-              <BoxComponent noContrastColor>
-                <Typography variant="h6" fontWeight={"bold"}>
-                  There are no shinies caught yet on this day...
-                </Typography>
-              </BoxComponent>
-            </Grid>
-          )}
-        </Grid>
+            )}
+          </Grid>
+        </Box>
       </LoadingComponent>
     </BoxComponent>
   );

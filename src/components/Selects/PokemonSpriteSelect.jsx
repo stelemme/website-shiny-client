@@ -1,40 +1,38 @@
+import { useState } from "react";
 import { Autocomplete, TextField } from "@mui/material";
 import { usePokedex } from "../../hooks/useData";
 
 export default function PokemonSelect({
   label,
   handleChange,
-  game,
-  defaultValue,
-  onKeyPress,
-  onBlur,
   size = "small",
   width = "150px",
   disabled = false,
 }) {
+  const [value, setValue] = useState(null);
+
   const { data: pokemons } = usePokedex(
-    `list=names&filter=complex&filterGame=${game}`
+    "preview=sprites&filter=complex&filterGame=Pokémon Black 2"
   );
 
-  const pokemonList = pokemons?.data[0].pokemonList;
+  const pokemonList = pokemons?.data;
 
   const handleValueChange = (event, newValue) => {
-    handleChange(newValue);
+    setValue(newValue);
+    if (handleChange) {
+      handleChange(newValue);
+    }
   };
 
   return (
     <Autocomplete
       size={size}
       autoHighlight
-      value={defaultValue}
+      value={value}
       disabled={disabled}
       onChange={handleValueChange}
-      onKeyUp={onKeyPress}
-      onBlur={onBlur}
-      blurOnSelect
-      disableClearable
       options={pokemonList ? pokemonList : []}
-      getOptionLabel={(option) => option}
+      getOptionLabel={(option) => option.name}
       renderInput={(params) => (
         <TextField
           sx={{ width: width }}
