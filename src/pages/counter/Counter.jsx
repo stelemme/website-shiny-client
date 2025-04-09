@@ -763,6 +763,9 @@ export default function Counter() {
                   open={openEncTable}
                   setOpen={setOpenEncTable}
                   game={data.game}
+                  name={data.name}
+                  totalEncounters={count}
+                  editCondition={username === data.trainer}
                   encounterTable={data.encounterTable}
                   completed={completed}
                   counterId={counterId}

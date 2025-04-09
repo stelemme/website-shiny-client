@@ -8,7 +8,9 @@ import {
   DialogContent,
   DialogActions,
   Button,
+  useTheme,
 } from "@mui/material";
+import { tokens } from "../../theme";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 // Components
@@ -21,25 +23,6 @@ import { useMakeRequest } from "../../hooks/useAxios";
 // Rsuite
 import { Table, IconButton } from "rsuite";
 const { Column, HeaderCell, Cell } = Table;
-
-const styles = `
-.table-cell-editing .rs-table-cell-content {
-  padding: 4px;
-}
-.table-cell-editing .rs-input {
-  width: 100%;
-}
-.rs-table,
-.rs-table-cell,
-.rs-table-header-cell,
-.rs-table-row-header {
-  background: transparent !important;
-}
-.rs-table .rs-table-cell-content {
-  background: transparent !important;
-}
-
-`;
 
 function toValueString(value, dataType) {
   return dataType === "date" ? value?.toLocaleDateString() : value;
@@ -64,14 +47,41 @@ export default function EncTableDialog({
   open,
   setOpen,
   counterId,
+  name,
   game,
+  editCondition,
+  totalEncounters,
   encounterTable,
   completed,
 }) {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   const makeRequest = useMakeRequest();
   const [data, setData] = useState(encounterTable);
   const [editingId, setEditingId] = useState(null);
   const [editingKey, setEditingKey] = useState(null);
+
+  const styles = `
+  .table-cell-editing .rs-table-cell-content {
+    padding: 4px;
+  }
+  .table-cell-editing .rs-input {
+    width: 100%;
+  }
+  .rs-table,
+  .rs-table-cell,
+  .rs-table-header-cell,
+  .rs-table-row-header {
+    background: transparent !important;
+  }
+  .rs-table .rs-table-cell-content {
+    background: transparent !important;
+  }
+
+  .karya-table-row, .karya-table-row .rs-table-cell {
+    background: ${colors.grey[500]} !important;
+}
+`;
 
   const type = completed ? "shiny" : "counters";
 
@@ -91,16 +101,18 @@ export default function EncTableDialog({
     setEditingId(null);
     setEditingKey(null);
 
-    try {
-      await makeRequest(
-        "patch",
-        `/${type}/${counterId}?action=encounterTableEdit`,
-        removeIds(data),
-        null,
-        true
-      );
-    } catch {
-      return;
+    if (JSON.stringify(encounterTable) !== JSON.stringify(data)) {
+      try {
+        await makeRequest(
+          "patch",
+          `/${type}/${counterId}?action=encounterTableEdit`,
+          removeIds(data),
+          null,
+          true
+        );
+      } catch {
+        return;
+      }
     }
   };
 
@@ -148,9 +160,10 @@ export default function EncTableDialog({
       <Cell
         {...props}
         tabIndex={0}
-        className={editing ? "table-cell-editing" : "table-cell"}
+        className={
+          editing && editCondition ? "table-cell-editing" : "table-cell"
+        }
         onDoubleClick={(e) => {
-          e.preventDefault();
           handleEdit();
         }}
         {...bind}
@@ -160,7 +173,7 @@ export default function EncTableDialog({
           }
         }}
       >
-        {editing ? (
+        {editing && editCondition ? (
           <Field
             width="100%"
             game={game}
@@ -176,7 +189,10 @@ export default function EncTableDialog({
             }}
           />
         ) : (
-          text
+          <>
+            {text}
+            {dataType === "percentage" ? "%" : ""}
+          </>
         )}
       </Cell>
     );
@@ -214,8 +230,11 @@ export default function EncTableDialog({
         <DialogContent>
           <Table
             data={[...data].sort((a, b) => b.percentage - a.percentage)}
-            height={40 + data.length * 40}
-            rowHeight={40}
+            height={40 + data.length * 44}
+            rowHeight={44}
+            rowClassName={(rowData) =>
+              rowData?.name === name ? "karya-table-row" : ""
+            }
           >
             <Column flexGrow={1}>
               <HeaderCell>Name</HeaderCell>
@@ -226,39 +245,51 @@ export default function EncTableDialog({
               />
             </Column>
 
-            <Column width={70}>
-              <HeaderCell>%</HeaderCell>
+            <Column width={52}>
+              <HeaderCell>Pct.</HeaderCell>
               <EditableCell
                 dataKey="percentage"
                 dataType="percentage"
                 onChange={handleChange}
               />
             </Column>
-
-            <Column width={40}>
-              <HeaderCell></HeaderCell>
-              <ActionCell dataKey="_id" onRemove={handleRemove} />
+            <Column width={55}>
+              <HeaderCell>Enc.</HeaderCell>
+              <Cell>
+                {(rowData) =>
+                  Math.round((rowData.percentage * totalEncounters) / 100)
+                }
+              </Cell>
             </Column>
+
+            {editCondition && (
+              <Column width={30}>
+                <HeaderCell></HeaderCell>
+                <ActionCell dataKey="_id" onRemove={handleRemove} />
+              </Column>
+            )}
           </Table>
-          <DialogActions>
-            <Button
-              variant="contained"
-              color="neutral"
-              style={{ color: "white" }}
-              onClick={() => {
-                setData([
-                  ...data,
-                  {
-                    _id: data.length + 1,
-                    name: "Bulbasaur",
-                    percentage: 100,
-                  },
-                ]);
-              }}
-            >
-              Add Pokémon
-            </Button>
-          </DialogActions>
+          {editCondition && (
+            <DialogActions>
+              <Button
+                variant="contained"
+                color="neutral"
+                style={{ color: "white" }}
+                onClick={() => {
+                  setData([
+                    ...data,
+                    {
+                      _id: data.length + 1,
+                      name: name,
+                      percentage: 0,
+                    },
+                  ]);
+                }}
+              >
+                Add Pokémon
+              </Button>
+            </DialogActions>
+          )}
         </DialogContent>
       </Dialog>
     </>
