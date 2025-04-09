@@ -61,6 +61,16 @@ export default function EncTableDialog({
   const [editingId, setEditingId] = useState(null);
   const [editingKey, setEditingKey] = useState(null);
 
+  if (Array.isArray(data) && data.length === 0) {
+    setData([
+      {
+        _id: 1,
+        name: name,
+        percentage: 100,
+      },
+    ]);
+  }
+
   const styles = `
   .table-cell-editing .rs-table-cell-content {
     padding: 4px;
