@@ -19,6 +19,14 @@ import {
   UltraBeastsStats,
 } from "../../components/Collections/UltraBeasts";
 import {
+  Starters,
+  StarterStats,
+} from "../../components/Collections/Starters";
+import {
+  Fossils,
+  FossilStats,
+} from "../../components/Collections/Fossils";
+import {
   PastParadoxes,
   PastParadoxesStats,
 } from "../../components/Collections/PastParadoxes";
@@ -91,7 +99,9 @@ export default function Collections() {
     _Natures: [Natures, NaturesStats],
     Legends: [Legends, LegendsStats],
     Mythicals: [Mythicals, MythicalsStats],
-    "Ultra Beasts": [UltraBeasts, UltraBeastsStats],
+    "_Ultra Beasts": [UltraBeasts, UltraBeastsStats],
+    Starters: [Starters, StarterStats],
+    Fossils: [Fossils, FossilStats],
     "Past Paradox Pokémon": [PastParadoxes, PastParadoxesStats],
     "_Future Paradox Pokémon": [FutureParadoxes, FutureParadoxesStats],
     "Mega Evolutions": [Megas, MegasStats],
