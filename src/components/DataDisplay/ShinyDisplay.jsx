@@ -203,7 +203,11 @@ export default function CompleteShinyCard({
                 sprite={data.sprite.pokemon}
                 gameSort={data.gameSort}
                 ball={data.sprite.ball}
-                genderDifference={data.genderDifference}
+                genderDifference={
+                  !["Gen 1", "Gen 2", "Gen 3"].includes(data.gen)
+                    ? data.genderDifference
+                    : false
+                }
               />
             </Grid>
 
@@ -227,6 +231,7 @@ export default function CompleteShinyCard({
                 evolutions={data.evolutions}
                 directory={data.sprite.dir}
                 gameSort={data.gameSort}
+                gen={data.gen}
               />
             </Grid>
 
