@@ -212,6 +212,14 @@ const legends = [
     sprite: "necrozma",
   },
   {
+    name: "Zacian",
+    sprite: "zacian",
+  },
+  {
+    name: "Zamazenta",
+    sprite: "zamazenta",
+  },
+  {
     name: "Eternatus",
     sprite: "eternatus",
   },

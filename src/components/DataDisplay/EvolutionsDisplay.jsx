@@ -4,7 +4,7 @@ import { Box, Typography, Grid } from "@mui/material";
 // Components
 import PokemonImage from "../General/PokemonImage";
 
-export default function EvolutionsDisplay({ evolutions, directory, gameSort }) {
+export default function EvolutionsDisplay({ evolutions, directory, gameSort, gen }) {
   if (evolutions.length === 0) {
     return null;
   }
@@ -32,7 +32,11 @@ export default function EvolutionsDisplay({ evolutions, directory, gameSort }) {
                   directory={directory}
                   initSprite={item.sprite}
                   gameSort={gameSort}
-                  genderDifference={item.genderDifference}
+                  genderDifference={
+                    !["Gen 1", "Gen 2", "Gen 3"].includes(gen)
+                      ? item.genderDifference
+                      : false
+                  }
                   shiny
                 />
               </Grid>
@@ -41,7 +45,11 @@ export default function EvolutionsDisplay({ evolutions, directory, gameSort }) {
                   directory={directory}
                   initSprite={item.sprite}
                   gameSort={gameSort}
-                  genderDifference={item.genderDifference}
+                  genderDifference={
+                    !["Gen 1", "Gen 2", "Gen 3"].includes(gen)
+                      ? item.genderDifference
+                      : false
+                  }
                 />
               </Grid>
             </Grid>
