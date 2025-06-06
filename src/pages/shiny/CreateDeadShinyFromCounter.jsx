@@ -85,14 +85,15 @@ export default function CreateDeadShinyFromCounter() {
           };
         });
 
-        const response2 = await getRequest(`/pokedex?filter=complex&filterName=${response.name}`);
-
+        const response2 = await getRequest(
+          `/pokedex?filter=complex&filterName=${response.name}`
+        );
         let gender = undefined;
-        if (response2.gender === "100:0") {
+        if (response2[0].gender === "100:0") {
           gender = "male";
-        } else if (response2.gender === "0:100") {
+        } else if (response2[0].gender === "0:100") {
           gender = "female";
-        } else if (response2.gender === "Genderless") {
+        } else if (response2[0].gender === "Genderless") {
           gender = "genderless";
         } else {
           setGenderCheck(true);
@@ -107,7 +108,9 @@ export default function CreateDeadShinyFromCounter() {
           };
         });
 
-        const response3 = await getRequest(`/game?filter=complex&filterName=${response.game}`);
+        const response3 = await getRequest(
+          `/game?filter=complex&filterName=${response.game}`
+        );
 
         setPokemonsList(response3[0].pokemons);
         setLocationsList(response3[0].locations);

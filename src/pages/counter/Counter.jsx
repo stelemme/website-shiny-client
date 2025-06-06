@@ -88,6 +88,8 @@ export default function Counter() {
   const [searchLevelEdit, setSearchLevelEdit] = useState(0);
   const [encountersToday, setEncountersToday] = useState(0);
 
+  console.log(data)
+
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     const completedValue = searchParams.get("completed");
