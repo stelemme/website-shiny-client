@@ -2,6 +2,19 @@
 
 ## Changelogs
 
+### Version 1.31.0 (07.06.2025)
+
+**Counter Graph:**
+- Grafiek kan nu op cumulatief worden gezet.
+
+**Search:**
+- Zoeken op Alola enal werk
+
+**Bug Fixes:**
+- Tijdens avondsessie 06/06
+
+---
+
 ### Version 1.30.0 (09.04.2025)
 
 **Counter:**

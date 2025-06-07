@@ -235,6 +235,33 @@ export function formatEncounterData(encounterArray) {
   return formattedData;
 }
 
+export function getCumulativeCounts(dates) {
+  const dateFrequencyMap = new Map();
+
+  // First and only pass: count occurrences
+  for (const dateString of dates) {
+    dateFrequencyMap.set(
+      new Date(dateString).toDateString(),
+      (dateFrequencyMap.get(new Date(dateString).toDateString()) || 0) + 1
+    );
+  }
+
+  // Sort unique dates once (inevitable if chronological order is required)
+  const sortedDates = Array.from(dateFrequencyMap.keys()).sort(
+    (a, b) => new Date(a) - new Date(b)
+  );
+
+  // Build cumulative count
+  let cumulative = 0;
+  return sortedDates.map((date) => {
+    cumulative += dateFrequencyMap.get(date);
+    return {
+      date: new Date(date).getTime(),
+      value: cumulative,
+    };
+  });
+}
+
 export function getMaxEncounters(encounterArray) {
   let maxObject = null;
   let maxValue = -Infinity;
