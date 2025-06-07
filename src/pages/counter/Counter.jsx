@@ -9,7 +9,6 @@ import {
   IconButton,
   Grid,
   Dialog,
-  DialogTitle,
   DialogContent,
   TextField,
   Tooltip,
@@ -23,7 +22,7 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
 import ListAltRoundedIcon from "@mui/icons-material/ListAltRounded";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
-import TableChartOutlinedIcon from '@mui/icons-material/TableChartOutlined';
+import TableChartOutlinedIcon from "@mui/icons-material/TableChartOutlined";
 
 // Components
 import CustomDialog from "../../components/Dialogs/CustomDialog";
@@ -88,7 +87,7 @@ export default function Counter() {
   const [searchLevelEdit, setSearchLevelEdit] = useState(0);
   const [encountersToday, setEncountersToday] = useState(0);
 
-  console.log(data)
+  console.log(data);
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
@@ -710,23 +709,14 @@ export default function Counter() {
                   <AssessmentOutlinedIcon fontSize="inherit" />
                 </IconButton>
 
-                {/* DIALOG */}
-                <Dialog
+                {/* Counter Graph */}
+                <CounterEncounterGraph
                   open={openGraph}
-                  onClose={() => setOpenGraph(false)}
-                  fullWidth
-                >
-                  <DialogTitle fontWeight={"bold"} variant="h4">
-                    Encounter Graph
-                  </DialogTitle>
-                  <DialogContent width="100%">
-                    <CounterEncounterGraph
-                      data={data}
-                      trainer={data.trainer}
-                      timeDifference={timeDifference}
-                    />
-                  </DialogContent>
-                </Dialog>
+                  setOpen={setOpenGraph}
+                  data={data}
+                  trainer={data.trainer}
+                  timeDifference={timeDifference}
+                />
               </Box>
               <Box display="flex" alignItems="center" height="21px">
                 <Typography fontWeight={"bold"}>Counter Ranking</Typography>
