@@ -2,17 +2,18 @@ import { useState, useMemo, useCallback } from "react";
 import { useCookies } from "react-cookie";
 
 // mui imports
-import { Typography, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import ZoomInMapIcon from "@mui/icons-material/ZoomInMap";
 import ZoomOutMapIcon from "@mui/icons-material/ZoomOutMap";
 
 // leaflet imports
 import L from "leaflet";
-import { MapContainer, TileLayer, Marker, Popup, ScaleControl } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, ScaleControl } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 
 // Components imports
 import BoxComponent from "../General/BoxComponent";
+import MapPopup from "./MapPopup";
 
 // Hooks
 import { useShiny } from "../../hooks/useData";
@@ -80,7 +81,11 @@ const createClusterCustomIcon = function (cluster) {
 };
 
 export default function MainMap() {
-  const [cookies] = useCookies(["travelFilter", "planeFilter", "displayMapOnGent"]);
+  const [cookies] = useCookies([
+    "travelFilter",
+    "planeFilter",
+    "displayMapOnGent",
+  ]);
 
   const { data: joaquinLocationsData, isLoading: loadingJoaquin } = useShiny(
     `geoLocation=map&trainer=Joaquin&filter=${cookies.travelFilter}&filter=${cookies.planeFilter}`
@@ -123,7 +128,7 @@ export default function MainMap() {
         style={{ height: "calc(100vh - 275px)", width: "100%" }}
         ref={setMap}
       >
-        <ScaleControl position="bottomright" imperial={false}/>
+        <ScaleControl position="bottomright" imperial={false} />
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           detectRetina={true}
@@ -148,14 +153,7 @@ export default function MainMap() {
                     iconSize: L.point(20, 20, true),
                   })}
                 >
-                  <Popup>
-                    <Typography fontWeight="bold" style={{ marginBottom: 0 }}>
-                      {location.geoLocation.name}
-                    </Typography>
-                    <Typography gutterBottom style={{ marginTop: 0 }}>
-                      {location.trainer + " - " + location.name}
-                    </Typography>
-                  </Popup>
+                  <MapPopup data={location} />
                 </Marker>
               );
             })}
@@ -174,14 +172,7 @@ export default function MainMap() {
                     iconSize: L.point(20, 20, true),
                   })}
                 >
-                  <Popup>
-                    <Typography fontWeight="bold" style={{ marginBottom: 0 }}>
-                      {location.geoLocation.name}
-                    </Typography>
-                    <Typography gutterBottom style={{ marginTop: 0 }}>
-                      {location.trainer + " - " + location.name}
-                    </Typography>
-                  </Popup>
+                  <MapPopup data={location} />
                 </Marker>
               );
             })}
@@ -200,14 +191,7 @@ export default function MainMap() {
                     iconSize: L.point(20, 20, true),
                   })}
                 >
-                  <Popup>
-                    <Typography fontWeight="bold" style={{ marginBottom: 0 }}>
-                      {location.geoLocation.name}
-                    </Typography>
-                    <Typography gutterBottom style={{ marginTop: 0 }}>
-                      {location.trainer + " - " + location.name}
-                    </Typography>
-                  </Popup>
+                  <MapPopup data={location} />
                 </Marker>
               );
             })}
@@ -226,14 +210,7 @@ export default function MainMap() {
                     iconSize: L.point(20, 20, true),
                   })}
                 >
-                  <Popup>
-                    <Typography fontWeight="bold" style={{ marginBottom: 0 }}>
-                      {location.geoLocation.name}
-                    </Typography>
-                    <Typography gutterBottom style={{ marginTop: 0 }}>
-                      {location.trainer + " - " + location.name}
-                    </Typography>
-                  </Popup>
+                  <MapPopup data={location} />
                 </Marker>
               );
             })}
