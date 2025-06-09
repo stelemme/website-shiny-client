@@ -56,10 +56,11 @@ export default function CounterEncounterGraph({
     color = colors.blueAccent[500];
   }
 
+  const encounterDataDay = formatEncounterData(data?.encounters);
   const encounterData = !cumulative
-    ? formatEncounterData(data?.encounters)
+    ? encounterDataDay
     : getCumulativeCounts(data?.encounters);
-  const maxEncounters = getMaxEncounters(encounterData)?.value;
+  const maxEncounters = getMaxEncounters(encounterDataDay)?.value;
 
   const CustomToolTip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {

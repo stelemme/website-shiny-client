@@ -2,13 +2,26 @@
 
 ## Changelogs
 
+### Version 1.32.0 (09.06.2025)
+
+**Shiny Map:**
+- Op de poppup ziet ge nu ook de sprite van elke shiny en door er op te klikken navigeert ge naar de shiny pagina.
+
+**Shiny Page:**
+- Er kan nu naar de volgende en vorige shiny worden genavigeerd met een "previous" en "next" knop. Dit is op basis van u op dat moment gefilterde en gesorteerde shinies. (Alternatief op Korneel zijn "swipen", swipen is onmogelijk omdat die funtionaliteit al door de browser wordt gebruikt om vooruit en terug te gaan en ge kunt hier dus geen custom functies aan hangen)
+
+**Counter Ranking:**
+- Ranking kan nu bekeken worden voor enkel dezelfde soort hunt
+
+---
+
 ### Version 1.31.0 (07.06.2025)
 
 **Counter Graph:**
 - Grafiek kan nu op cumulatief worden gezet.
 
 **Search:**
-- Zoeken op Alola enal werk
+- Zoeken op Alola enal werkt
 
 **Bug Fixes:**
 - Tijdens avondsessie 06/06
