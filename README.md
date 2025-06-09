@@ -7,6 +7,9 @@
 **Shiny Map:**
 - Op de poppup ziet ge nu ook de sprite van elke shiny en door er op te klikken navigeert ge naar de shiny pagina.
 
+**Shiny Page:**
+- Er kan nu naar de volgende en vorige shiny worden genavigeerd met een "previous" en "next" knop. Dit is op basis van u op dat moment gefilterde en gesorteerde shinies. (Alternatief op Korneel zijn "swipen", swipen is onmogelijk omdat die funtionaliteit al door de browser wordt gebruikt om vooruit en terug te gaan en ge kunt hier dus geen custom functies aan hangen)
+
 ---
 
 ### Version 1.31.0 (07.06.2025)

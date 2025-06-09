@@ -312,3 +312,17 @@ export function formatDateToStringNotUTC(date) {
   const formattedDate = `${day}-${month}-${year}`;
   return formattedDate;
 }
+
+export function findPrevNextById(array, targetId) {
+    const index = array.findIndex((obj) => obj._id === targetId);
+
+    if (index === -1) {
+      return { prev: null, current: null, next: null };
+    }
+
+    return {
+      prev: index > 0 ? array[index - 1] : null,
+      current: array[index],
+      next: index < array.length - 1 ? array[index + 1] : null,
+    };
+  }
