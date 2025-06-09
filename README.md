@@ -2,7 +2,7 @@
 
 ## Changelogs
 
-### Version 1.2.0 (08.06.2025)
+### Version 1.32.0 (09.06.2025)
 
 **Shiny Map:**
 - Op de poppup ziet ge nu ook de sprite van elke shiny en door er op te klikken navigeert ge naar de shiny pagina.
@@ -18,7 +18,7 @@
 - Grafiek kan nu op cumulatief worden gezet.
 
 **Search:**
-- Zoeken op Alola enal werk
+- Zoeken op Alola enal werkt
 
 **Bug Fixes:**
 - Tijdens avondsessie 06/06

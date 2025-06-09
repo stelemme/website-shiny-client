@@ -742,6 +742,7 @@ export default function Counter() {
                       name={data.name}
                       trainer={data.trainer}
                       completed={completed}
+                      method={data.method}
                     />
                   </DialogContent>
                 </Dialog>

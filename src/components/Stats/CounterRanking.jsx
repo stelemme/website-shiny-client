@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useCookies } from "react-cookie";
 
 // mui
-import { Grid } from "@mui/material";
+import { Grid, FormGroup, FormControlLabel, Switch } from "@mui/material";
 
 // Components
 import BoxComponent from "../General/BoxComponent";
@@ -27,9 +27,11 @@ export default function CounterRanking({
   name,
   trainer,
   completed,
+  method,
 }) {
   const [cookies, setCookies] = useCookies(["displayCounterRanking"]);
   const [statString, setStatString] = useState(cookies.displayCounterRanking);
+  const [onlyMethod, setOnlyMethod] = useState(false);
 
   const foreverDate = new Date("9999-12-31T23:59:59");
 
@@ -38,7 +40,7 @@ export default function CounterRanking({
   const { isLoading: countersLoading, data: countersData } = useCounter(
     `id=${id}&stats=${statString}&checkValue=${
       data[statString] ? data[statString] : 0
-    }`
+    }${onlyMethod ? `&filter=complex&filterMethod=${method.name}` : ""}`
   );
 
   const stats = countersData?.data[0];
@@ -77,6 +79,21 @@ export default function CounterRanking({
     >
       <LoadingComponent loadingCondition={countersLoading}>
         <Grid container spacing={1}>
+          <Grid item xs={12} mx={1}>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Switch
+                    size="small"
+                    color="default"
+                    checked={onlyMethod}
+                    onChange={() => setOnlyMethod((prevState) => !prevState)}
+                  />
+                }
+                label={`Only "${method.name}" Hunts`}
+              />
+            </FormGroup>
+          </Grid>
           {!countersLoading &&
             stats?.valuesAbove.map((item) => {
               return (
