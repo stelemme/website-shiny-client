@@ -91,6 +91,73 @@ export default function DataManipulation() {
     );
   };
 
+  const handleStarterEdit = async (e) => {
+    let completedManipulations = 0;
+
+    await shinyData.data.forEach(async (element) => {
+      let starter = false;
+
+      try {
+        const response = await getRequest(
+          `/pokedex?filter=complex&filterName=${element.name}`
+        );
+        const pokemonData = response[0];
+
+        if (pokemonData.starter) {
+          starter = true;
+        }
+      } catch {
+        return;
+      }
+
+      const url = `/shiny/${element._id}?action=starterEdit`;
+
+      try {
+        await makeRequest("patch", url, { starter: starter }, "edit");
+      } catch (error) {
+        return;
+      }
+
+      completedManipulations += 1;
+    });
+
+    console.log(
+      `data manipulation done: (${completedManipulations}/${shinyData.data.length} completed)`
+    );
+  };
+
+  const handleFossilEdit = async (e) => {
+    let completedManipulations = 0;
+
+    await shinyData.data.forEach(async (element) => {
+      try {
+        const response = await getRequest(
+          `/pokedex?filter=complex&filterName=${element.name}`
+        );
+        const pokemonData = response[0];
+
+        if (pokemonData.fossil) {
+          console.log(pokemonData.name, pokemonData.fossil);
+          const url = `/shiny/${element._id}?action=fossilEdit`;
+
+          try {
+            await makeRequest("patch", url, { fossil: true }, "edit");
+          } catch (error) {
+            return;
+          }
+        }
+      } catch {
+        return;
+      }
+
+      completedManipulations += 1;
+    });
+
+    console.log(
+      `data manipulation done: (${completedManipulations}/${shinyData.data.length} completed)`
+    );
+  };
+
   const handleMeanEncTimeClick = async (e) => {
     await counterData.data.forEach(async (element) => {
       const meanEncounterTime = calculateMeanEncounterTime(
@@ -184,6 +251,26 @@ export default function DataManipulation() {
         onClick={handleGenderDifferenceClick}
       >
         Add Gender Difference
+      </Button>
+      <Button
+        type="submit"
+        variant="contained"
+        color="neutral"
+        sx={{ mb: "10px" }}
+        style={{ color: "white" }}
+        onClick={handleStarterEdit}
+      >
+        Add Starter bool
+      </Button>
+      <Button
+        type="submit"
+        variant="contained"
+        color="neutral"
+        sx={{ mb: "10px" }}
+        style={{ color: "white" }}
+        onClick={handleFossilEdit}
+      >
+        Add Fossil bool
       </Button>
       <Button
         type="submit"

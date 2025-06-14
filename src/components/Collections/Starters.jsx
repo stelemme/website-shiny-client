@@ -28,6 +28,18 @@ const starters = [
     sprite: "charizard",
   },
   {
+    name: "Squirtle",
+    sprite: "squirtle",
+  },
+  {
+    name: "Wartortle",
+    sprite: "wartortle",
+  },
+  {
+    name: "Blastoise",
+    sprite: "blastoise",
+  },
+  {
     name: "Chikorita",
     sprite: "chikorita",
   },
@@ -35,7 +47,7 @@ const starters = [
     name: "Bayleef",
     sprite: "bayleef",
   },
-    {
+  {
     name: "Meganium",
     sprite: "meganium",
   },
@@ -323,7 +335,7 @@ export function Starters() {
       placeholdList={starters}
       dir={"pokemon-shiny/gen-all-home"}
       title={"Starters"}
-      collectionStr={"starters"}
+      collectionStr={"starter"}
       lg={3}
       sm={3}
       xs={4}
@@ -337,7 +349,7 @@ export function StarterStats() {
     <CollectionStatsCard
       placeholdList={starters}
       title={"Starters"}
-      collectionStr={"starters"}
+      collectionStr={"starter"}
     />
   );
 }

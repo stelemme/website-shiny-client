@@ -64,6 +64,10 @@ const fossils = [
     sprite: "archen",
   },
   {
+    name: "Archeops",
+    sprite: "archeops",
+  },
+  {
     name: "Tyrunt",
     sprite: "tyrunt",
   },
@@ -103,7 +107,7 @@ export function Fossils() {
       placeholdList={fossils}
       dir={"pokemon-shiny/gen-all-home"}
       title={"Fossil Pokémon"}
-      collectionStr={"fossils"}
+      collectionStr={"fossil"}
       lg={2}
       sm={3}
       xs={4}
@@ -117,7 +121,7 @@ export function FossilStats() {
     <CollectionStatsCard
       placeholdList={fossils}
       title={"Fossil Pokémon"}
-      collectionStr={"fossils"}
+      collectionStr={"fossil"}
     />
   );
 }

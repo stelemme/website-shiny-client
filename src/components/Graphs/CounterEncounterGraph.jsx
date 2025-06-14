@@ -23,6 +23,8 @@ import {
   Tooltip,
   BarChart,
   ResponsiveContainer,
+  AreaChart,
+  Area,
 } from "recharts";
 
 // Functions
@@ -114,49 +116,100 @@ export default function CounterEncounterGraph({
             width="100%"
             height={window.innerWidth < 500 ? 300 : 400}
           >
-            <BarChart
-              data={encounterData ? encounterData : []}
-              margin={{
-                top: 0,
-                right: 0,
-                bottom: -15,
-                left: !cumulative ? 10 : 20,
-              }}
-            >
-              <XAxis
-                dataKey="date"
-                scale="time"
-                type="number"
-                domain={[
-                  (dataMin) => {
-                    const previousDay = new Date(dataMin);
-                    previousDay.setDate(previousDay.getDate() - 1);
-                    return previousDay;
-                  },
-                  () => new Date(data.endDate).getTime(),
-                ]}
-                tick={false}
-                axisLine={{ stroke: colors.primary[200] }}
-                tickLine={{ stroke: colors.primary[200] }}
-              />
-              <YAxis
-                dataKey="value"
-                width={25}
-                tick={{ fill: colors.grey[100] }}
-                axisLine={{ stroke: colors.primary[200] }}
-                tickLine={{ stroke: colors.primary[200] }}
-              />
-              <CartesianGrid stroke={colors.primary[200]} />
-              <Tooltip
-                labelStyle={{ color: "black" }}
-                labelFormatter={(value) => {
-                  return `${new Date(value).toLocaleDateString()}`;
+            {!cumulative ? (
+              <BarChart
+                data={encounterData ? encounterData : []}
+                margin={{
+                  top: 0,
+                  right: 0,
+                  bottom: -15,
+                  left: !cumulative ? 10 : 20,
                 }}
-                payload={[{ time: "test" }]}
-                content={<CustomToolTip />}
-              />
-              <Bar dataKey="value" fill={color} maxBarSize={200} />
-            </BarChart>
+              >
+                <XAxis
+                  dataKey="date"
+                  scale="time"
+                  type="number"
+                  domain={[
+                    (dataMin) => {
+                      const previousDay = new Date(dataMin);
+                      previousDay.setDate(previousDay.getDate() - 1);
+                      return previousDay;
+                    },
+                    () => new Date(data.endDate).getTime(),
+                  ]}
+                  tick={false}
+                  axisLine={{ stroke: colors.primary[200] }}
+                  tickLine={{ stroke: colors.primary[200] }}
+                />
+                <YAxis
+                  dataKey="value"
+                  width={25}
+                  tick={{ fill: colors.grey[100] }}
+                  axisLine={{ stroke: colors.primary[200] }}
+                  tickLine={{ stroke: colors.primary[200] }}
+                />
+                <CartesianGrid stroke={colors.primary[200]} />
+                <Tooltip
+                  labelStyle={{ color: "black" }}
+                  labelFormatter={(value) => {
+                    return `${new Date(value).toLocaleDateString()}`;
+                  }}
+                  payload={[{ time: "test" }]}
+                  content={<CustomToolTip />}
+                />
+                <Bar dataKey="value" fill={color} maxBarSize={200} />
+              </BarChart>
+            ) : (
+              <AreaChart
+                data={encounterData ? encounterData : []}
+                margin={{
+                  top: 0,
+                  right: 0,
+                  bottom: -15,
+                  left: !cumulative ? 10 : 20,
+                }}
+              >
+                <XAxis
+                  dataKey="date"
+                  scale="time"
+                  type="number"
+                  domain={[
+                    (dataMin) => {
+                      const previousDay = new Date(dataMin);
+                      previousDay.setDate(previousDay.getDate() - 1);
+                      return previousDay;
+                    },
+                    () => new Date(data.endDate).getTime(),
+                  ]}
+                  tick={false}
+                  axisLine={{ stroke: colors.primary[200] }}
+                  tickLine={{ stroke: colors.primary[200] }}
+                />
+                <YAxis
+                  dataKey="value"
+                  width={25}
+                  tick={{ fill: colors.grey[100] }}
+                  axisLine={{ stroke: colors.primary[200] }}
+                  tickLine={{ stroke: colors.primary[200] }}
+                />
+                <CartesianGrid stroke={colors.primary[200]} />
+                <Tooltip
+                  labelStyle={{ color: "black" }}
+                  labelFormatter={(value) => {
+                    return `${new Date(value).toLocaleDateString()}`;
+                  }}
+                  payload={[{ time: "test" }]}
+                  content={<CustomToolTip />}
+                />
+                <Area
+                  type={"stepAfter"}
+                  dataKey="value"
+                  strokeWidth={3}
+                  animationDuration={500}
+                />
+              </AreaChart>
+            )}
           </ResponsiveContainer>
           {data.encounters.length > 0 && (
             <>
@@ -164,7 +217,7 @@ export default function CounterEncounterGraph({
               <Typography>
                 {maxEncounters} on{" "}
                 {new Date(
-                  getMaxEncounters(encounterData)?.date
+                  getMaxEncounters(encounterDataDay)?.date
                 ).toLocaleDateString("en-BE", {
                   weekday: "long",
                   year: "numeric",

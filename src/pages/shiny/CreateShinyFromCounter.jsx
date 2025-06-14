@@ -112,6 +112,8 @@ export default function CreateShinyFromCounter() {
               legendary: pokemonData.legendary,
               mythical: pokemonData.mythical,
               ultraBeast: pokemonData.ultraBeast,
+              starter: pokemonData.starter,
+              fossil: pokemonData.fossil,
               pastParadox: pokemonData.pastParadox,
               futureParadox: pokemonData.futureParadox,
             },
