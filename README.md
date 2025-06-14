@@ -8,6 +8,12 @@
 **Collections:**
 - Starters & fossils zijn toegevoegd.
 
+**Counter graph:**
+- Cumulatieve grafiek is nu een line graph ipv een bar chart
+
+**Methods:**
+- Odd Egg toegevoegd
+
 ---
 
 ### Version 1.32.0 (09.06.2025)
