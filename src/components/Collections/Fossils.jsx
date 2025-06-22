@@ -36,6 +36,10 @@ const fossils = [
     sprite: "anorith",
   },
   {
+    name: "Armaldo",
+    sprite: "armaldo",
+  },
+  {
     name: "Cranidos",
     sprite: "cranidos",
   },

@@ -37,8 +37,8 @@ export default function Shiny() {
 
   const { isLoading: shinyIdsLoading, data: shinyIdData } = useShiny(
     `sort=${cookie.sortShiny}${
-      cookie.filterEvolutions ? "&list=evolution" : "&preview=onlyId"
-    }`,
+      cookie.filterEvolutions ? "&list=evolution" : ""
+    }${"&preview=onlyId"}`,
     true
   );
 
@@ -103,7 +103,7 @@ export default function Shiny() {
             ))}
           </>
         ) : (
-          <CompleteShinyCard data={data} refetch={refetch2} />
+          <CompleteShinyCard key={data?._id} data={data} refetch={refetch2} />
         )}
       </LoadingComponent>
     </>
