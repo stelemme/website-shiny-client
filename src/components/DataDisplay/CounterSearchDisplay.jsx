@@ -9,12 +9,12 @@ import CounterCard from "../Cards/CounterCard";
 // Hooks
 import { useShiny, useCounter } from "../../hooks/useData";
 
-export default function CounterSearchDisplay({ pokemon }) {
+export default function CounterSearchDisplay({ pokemon, searchType = "" }) {
   const { isLoading: shinyLoading, data: shinyData } = useShiny(
-    `search=${pokemon}`
+    `search=${pokemon}&searchType=${searchType}`
   );
   const { isLoading: counterLoading, data: counterData } = useCounter(
-    `search=${pokemon}`
+    `search=${pokemon}&searchType=${searchType}`
   );
 
   const data = shinyData?.data.concat(counterData?.data);

@@ -64,6 +64,10 @@ const starters = [
     sprite: "typhlosion",
   },
   {
+    name: "Hisuian Typhlosion",
+    sprite: "typhlosion-hisui",
+  },
+  {
     name: "Totodile",
     sprite: "totodile",
   },
@@ -184,6 +188,10 @@ const starters = [
     sprite: "samurott",
   },
   {
+    name: "Hisuian Samurott",
+    sprite: "samurott-hisui",
+  },
+  {
     name: "Chespin",
     sprite: "chespin",
   },
@@ -230,6 +238,10 @@ const starters = [
   {
     name: "Decidueye",
     sprite: "decidueye",
+  },
+  {
+    name: "Hisuian Decidueye",
+    sprite: "decidueye-hisui",
   },
   {
     name: "Litten",
@@ -336,7 +348,7 @@ export function Starters() {
       dir={"pokemon-shiny/gen-all-home"}
       title={"Starters"}
       collectionStr={"starter"}
-      lg={3}
+      lg={2}
       sm={3}
       xs={4}
       numbers={false}

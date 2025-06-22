@@ -2,6 +2,16 @@
 
 ## Changelogs
 
+### Version 1.34.0 (22.06.2025)
+
+**Bug Fixes:**
+- aramaldo toegevoegd aan fossil collection
+- hisuian forms toegevoegd aan starter collection
+- cumulatieve counter graph gefixt (tijd & kleur)
+- search werkt terug voor pokedex
+- pokedex pagina van bv alolans geeft nu enkel de relevante shinies
+
+---
 
 ### Version 1.33.0 (14.06.2025)
 

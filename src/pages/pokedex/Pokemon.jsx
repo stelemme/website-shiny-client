@@ -114,7 +114,7 @@ export default function Pokemon() {
 
             {/* SEARCH DISPLAY */}
             <Grid item xs={12}>
-              <ShinySearchDisplay pokemon={pokemonData.name} />
+              <ShinySearchDisplay pokemon={pokemonData.name} searchType={"pokedex"} />
             </Grid>
 
             <Grid item xs={12}>
@@ -122,7 +122,7 @@ export default function Pokemon() {
             </Grid>
 
             <Grid item xs={12}>
-              <CounterSearchDisplay pokemon={pokemonData.name} />
+              <CounterSearchDisplay pokemon={pokemonData.name} searchType={"pokedex"}/>
             </Grid>
 
             {evolutions.length !== 0 && (

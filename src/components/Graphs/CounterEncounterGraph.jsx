@@ -32,6 +32,7 @@ import {
   formatEncounterData,
   getMaxEncounters,
   getCumulativeCounts,
+  formatTime
 } from "../../functions/statFunctions";
 
 export default function CounterEncounterGraph({
@@ -74,9 +75,7 @@ export default function CounterEncounterGraph({
           >{`Encounters: ${payload[0].value}`}</p>
           <p style={{ margin: 0, color: payload[0].color }}>{`Time: ${
             timeDifference
-              ? new Date(timeDifference * 1000 * payload[0].value)
-                  .toISOString()
-                  .slice(11, 19)
+              ? formatTime(timeDifference * payload[0].value, false)
               : "Undefined"
           }`}</p>
         </div>
@@ -207,6 +206,8 @@ export default function CounterEncounterGraph({
                   dataKey="value"
                   strokeWidth={3}
                   animationDuration={500}
+                  stroke={color}
+                  fill={color}
                 />
               </AreaChart>
             )}

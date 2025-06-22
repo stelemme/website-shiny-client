@@ -9,9 +9,9 @@ import ShinyCardEvolutions from "../Cards/ShinyCardEvolutions";
 // Hooks
 import { useShiny } from "../../hooks/useData";
 
-export default function ShinySearchDisplay({ pokemon }) {
+export default function ShinySearchDisplay({ pokemon, searchType="" }) {
   const { isLoading: shinyLoading, data: shinyData } = useShiny(
-    `search=${pokemon}`
+    `search=${pokemon}&searchType=${searchType}`,
   );
 
   const data = shinyData?.data;
