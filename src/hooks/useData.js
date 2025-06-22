@@ -59,7 +59,7 @@ export const useDeadShiny = (query) =>
   useApiQuery("deadshinies", "deadshiny", query);
 
 export const useShinyId = (shinyId) =>
-  useApiQuery("shiny", `shiny/${shinyId}`, "action=noEncounters");
+  useApiQuery("shiny", `shiny/${shinyId}`, "action=noEncounters", false, "Shiny", shinyId);
 
 export const useDeadShinyId = (shinyId) =>
   useApiQuery("deadshiny", `deadshiny/${shinyId}`, "action=noEncounters");

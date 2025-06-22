@@ -103,7 +103,7 @@ export default function Shiny() {
             ))}
           </>
         ) : (
-          <CompleteShinyCard data={data} refetch={refetch2} />
+          <CompleteShinyCard key={data?._id} data={data} refetch={refetch2} />
         )}
       </LoadingComponent>
     </>
