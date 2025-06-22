@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 
 // Recoil
 import { useSetRecoilState } from "recoil";
@@ -13,9 +13,12 @@ import {
   Grid,
   Divider,
   IconButton,
+  Button,
 } from "@mui/material";
 import { tokens } from "../../theme";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 // Components
 import PokemonImageDisplay from "../../components/DataDisplay/PokemonImageDisplay";
@@ -26,11 +29,15 @@ import EvolutionsDisplay from "../../components/DataDisplay/EvolutionsDisplay";
 import FormDisplay from "../../components/DataDisplay/FormDisplay";
 
 // Hooks
-import { usePokemonId } from "../../hooks/useData";
+import { usePokemonId, usePokedex } from "../../hooks/useData";
 import { useGetRequest } from "../../hooks/useAxios";
+
+// Functions
+import { findPrevNextById } from "../../functions/statFunctions";
 
 export default function Pokemon() {
   const { pokemonId } = useParams();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const getRequest = useGetRequest();
   const setBackToggle = useSetRecoilState(backToggle);
@@ -42,11 +49,24 @@ export default function Pokemon() {
   const { data: pokemon } = usePokemonId(pokemonId);
   const pokemonData = pokemon?.data;
 
+  const { isLoading: pokemonIdsLoading, data: pokemonIdData } = usePokedex("&preview=onlyId");
+
   const [imageDir, setImageDir] = useState("gan-all-home");
   const [gameSort, setGameSort] = useState(100);
 
   const [evolutions, setEvolutions] = useState([]);
   const [forms, setForms] = useState([]);
+
+  const [previousId, setPreviousId] = useState(null);
+  const [nextId, setNextId] = useState(null);
+
+  useEffect(() => {
+      if (!pokemonIdsLoading && pokemonIdData?.data) {
+        const IdResult = findPrevNextById(pokemonIdData.data, pokemonId);
+        setPreviousId(IdResult.prev);
+        setNextId(IdResult.next);
+      }
+    }, [pokemonIdsLoading, pokemonIdData, pokemonId]);
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
@@ -72,6 +92,32 @@ export default function Pokemon() {
 
   return (
     <Box maxWidth={{ sm: "420px" }} mx="auto" my="20px">
+      <Box mx="20px" display="flex" justifyContent="space-between">
+          <Button
+            variant="secondary"
+            startIcon={<ArrowBackIosIcon />}
+            disabled={!previousId}
+            onClick={() => {
+              if (previousId) {
+                navigate(`/pokedex/${previousId._id}?dir=${imageDir}&sort=${gameSort}`);
+              }
+            }}
+          >
+            Previous
+          </Button>
+          <Button
+            variant="secondary"
+            endIcon={<ArrowForwardIosIcon />}
+            disabled={!nextId}
+            onClick={() => {
+              if (nextId) {
+                navigate(`/pokedex/${nextId._id}?dir=${imageDir}&sort=${gameSort}`);
+              }
+            }}
+          >
+            Next
+          </Button>
+        </Box>
       {pokemonData && (
         <Box display="flex" flexDirection="column" mx="20px">
           {/* HEADER */}

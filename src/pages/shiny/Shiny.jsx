@@ -37,8 +37,8 @@ export default function Shiny() {
 
   const { isLoading: shinyIdsLoading, data: shinyIdData } = useShiny(
     `sort=${cookie.sortShiny}${
-      cookie.filterEvolutions ? "&list=evolution" : "&preview=onlyId"
-    }`,
+      cookie.filterEvolutions ? "&list=evolution" : ""
+    }${"&preview=onlyId"}`,
     true
   );
 

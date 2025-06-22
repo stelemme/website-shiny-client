@@ -4,6 +4,9 @@
 
 ### Version 1.34.0 (22.06.2025)
 
+**Pokedex:**
+- Previous en Next knoppen zijn ook toegevoegd voor de pokedex.
+
 **Bug Fixes:**
 - Aramaldo toegevoegd aan fossil collection
 - Hisuian forms toegevoegd aan starter collection
