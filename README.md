@@ -2,6 +2,19 @@
 
 ## Changelogs
 
+### Version 1.35.0 (04.10.2025)
+
+**Users:**
+-- Zoete naat heeft een guest account waarmee hij de site kan bekijken
+
+**Counter:**
+- encounter time van uu:min:sec verandert naar min:sec:hondersten
+
+**Sprites:**
+- arcanine, cottonee en gen 5 starter en evolution sprites zijn aangepast 
+
+---
+
 ### Version 1.34.0 (22.06.2025)
 
 **Pokedex:**

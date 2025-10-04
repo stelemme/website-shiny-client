@@ -814,11 +814,19 @@ export default function Counter() {
                     <WarningAmberRoundedIcon />
                   </Tooltip>
                 )}
-                <Typography textAlign={"right"}>
+                <Typography textAlign="right">
                   {timeDifference
-                    ? new Date(timeDifference * 1000)
-                        .toISOString()
-                        .slice(11, 19)
+                    ? (() => {
+                        const totalMs = timeDifference * 1000; // timeDifference is in seconds
+                        const minutes = Math.round(totalMs / 60000);
+                        const seconds = Math.round((totalMs % 60000) / 1000);
+                        const hundredths = Math.round((totalMs % 1000) / 10);
+                        return `${minutes.toString().padStart(2, "0")}:${seconds
+                          .toString()
+                          .padStart(2, "0")}:${hundredths
+                          .toString()
+                          .padStart(2, "0")}`;
+                      })()
                     : "Undefined"}
                 </Typography>
               </Box>
