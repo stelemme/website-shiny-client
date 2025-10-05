@@ -73,12 +73,12 @@ export default function StatsCard({
           <Box display="flex" alignItems="center" height={trainerHeight}>
             <Typography
               fontWeight={"bold"}
-              variant="s2"
+              variant="s3"
               align="left"
               sx={{
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
+              whiteSpace: "normal",
+              overflow: "visible",
+              wordWrap: "break-word",
               }}
             >
               {name}

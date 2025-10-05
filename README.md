@@ -11,7 +11,10 @@
 - encounter time van uu:min:sec verandert naar min:sec:hondersten
 
 **Sprites:**
-- arcanine, cottonee en gen 5 starter en evolution sprites zijn aangepast 
+- arcanine, cottonee en gen 5 starter + evolution sprites zijn aangepast 
+
+**Stats:**
+- encounter graph aangepast zodat Simon zijn Totodile erop past
 
 ---
 

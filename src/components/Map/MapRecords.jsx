@@ -31,31 +31,37 @@ export default function MapRecords() {
       data: columbus?.trainer,
       dataStat: (columbus?.distance / 1000).toFixed(0) + " km",
       statName: "Columbus",
+      nav: "columbus",
     },
     {
       data: userStats?.toerist.name,
       dataStat: userStats?.toerist.data,
       statName: "Toerist",
+      nav: "toerist",
     },
     {
       data: userStats?.kolonist.name,
       dataStat: userStats?.kolonist.data,
       statName: "Kolonist",
+      nav: "kolonist",
     },
     {
       data: userStats?.seekerHunter.name,
       dataStat: userStats?.seekerHunter.data,
       statName: "Seeker-Hunter",
+      nav: "seekerHunter",
     },
     {
       data: userStats?.couchPotato.name,
       dataStat: userStats?.couchPotato.data,
       statName: "Couch Potato",
+      nav: "couchPotato",
     },
     {
       data: userStats?.danaidesBarrel.name,
       dataStat: userStats?.danaidesBarrel.data,
       statName: "Danaïd’s barrel",
+      nav: "danaidesBarrel",
     },
     {
       data: userStats?.passengerPrincess?.name
@@ -65,6 +71,7 @@ export default function MapRecords() {
         ? userStats?.passengerPrincess.data
         : "-",
       statName: "Passenger Princess",
+      nav: "passengerPrincess",
     },
     {
       data: userStats?.polarBear.name,
@@ -75,6 +82,7 @@ export default function MapRecords() {
           maximumFractionDigits: 2,
         }),
       statName: "Polar Bear",
+      nav: "polarBear",
     },
     {
       data: userStats?.penguin.name,
@@ -85,11 +93,12 @@ export default function MapRecords() {
           maximumFractionDigits: 2,
         }),
       statName: "Penguin",
+      nav: "penguin",
     },
   ];
 
   return (
-    <BoxComponent noContrastColor title={"MAP RECORDS"}>
+    <BoxComponent p="12px" noContrastColor title={"MAP RECORDS"}>
       <Grid container spacing={"8px"}>
         {/* Left side grid - first half */}
         <Grid item xs={12} container spacing={"8px"}>
