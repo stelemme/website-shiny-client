@@ -121,7 +121,7 @@ export default function TrainerDisplay({ trainerChoice, trainer }) {
                     >
                       <img
                         alt=""
-                        src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-5/animated/${sprite}.png`}
+                        src={`https://raw.githubusercontent.com/stelemme/database-pokemon/main/pokemon-shiny/gen-5-b2w2/animated/${sprite}.png`}
                         onLoad={() => setSpriteLoading(false)}
                         style={{
                           height: "auto",
