@@ -2,6 +2,12 @@
 
 ## Changelogs
 
+### Version 1.35.1 (09.11.2025)
+
+**Bug Fixes**
+
+---
+
 ### Version 1.35.0 (04.10.2025)
 
 **Users:**
