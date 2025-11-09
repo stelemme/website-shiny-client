@@ -77,9 +77,10 @@ export default function CompleteShinyCard({
 
   /* EDIT THE SHINY */
   const handleEvolutionsEdit = async () => {
+    let formsEditCleaned = formsEdit.map(({ _id, ...rest }) => rest);
     let evolutionData = {
       evolutions: evolutionsEdit,
-      forms: formsEdit,
+      forms: formsEditCleaned,
     };
 
     try {
@@ -105,6 +106,7 @@ export default function CompleteShinyCard({
       const response = await getRequest(
         `/pokedex?filter=evolutions&filterName=${data.name}&filterGame=${data.game}`
       );
+      console.log(response);
       setEvolutions(response[0].evolutionNames);
       setForms(response[0].formNames);
       setOpenEvolutionEdit(true);
