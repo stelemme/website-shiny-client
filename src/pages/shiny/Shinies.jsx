@@ -3,6 +3,8 @@ import { useCookies } from "react-cookie";
 import LazyLoad from "react-lazyload";
 
 // Mui
+import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import { tokens } from "../../theme";
 import SortIcon from "@mui/icons-material/Sort";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 
@@ -18,9 +20,13 @@ import FilterMenu from "../../components/Menus/FilterMenu";
 import { useShiny } from "../../hooks/useData";
 
 export default function Shinies() {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   const [anchorElSort, setAnchorElSort] = useState(null);
   const openSort = Boolean(anchorElSort);
   const [openFilter, setOpenFilter] = useState(false);
+  const [filterActive, setFilterActive] = useState(false);
+
   const [cookie] = useCookies([
     "displayEvolutionSprites",
     "sortShiny",
@@ -49,12 +55,39 @@ export default function Shinies() {
       title="SHINY POKEMON"
       subtitle="Here you can find all shinies."
       widthSnaps={cookie.displayEvolutionSprites === "false" ? 2 : 4}
-      icon1={<FilterAltOutlinedIcon />}
-      onClickIcon1={handleFilterClick}
+      item1={
+        !filterActive ? (
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              backgroundColor: colors.primary[400],
+              borderRadius: "20px",
+              padding: "0px 10px",
+            }}
+          >
+            <Typography variant="h6">{data?.length}</Typography>
+
+            <IconButton size="small" onClick={handleFilterClick}>
+              <FilterAltOutlinedIcon />
+            </IconButton>
+          </Box>
+        ) : (
+          <IconButton size="small" onClick={handleFilterClick}>
+            <FilterAltOutlinedIcon />
+          </IconButton>
+        )
+      }
+      onClickItem1={handleFilterClick}
       icon2={<SortIcon style={{ transform: "scaleX(-1)" }} />}
       onClickIcon2={handleSortClick}
     >
-      <FilterMenu open={openFilter} setOpen={setOpenFilter} />
+      <FilterMenu
+        open={openFilter}
+        setOpen={setOpenFilter}
+        setFilterActive={setFilterActive}
+      />
       <SortMenu
         open={openSort}
         anchorEl={anchorElSort}
