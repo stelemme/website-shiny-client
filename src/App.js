@@ -36,6 +36,7 @@ import CreateCounter from "./pages/counter/CreateCounter";
 // Development Pages
 import DataManipulation from "./pages/dev/DataManipulation";
 import LayoutPage from "./pages/dev/LayoutPage";
+import PinMap from "./pages/dev/PinMap";
 // Global Pages
 import ErrorPage from "./pages/global/ErrorPage";
 import Home from "./pages/global/Home";
@@ -175,6 +176,13 @@ const routes = [
         path: "/changelogs",
         loader: loader,
         children: [{ index: true, Component: ChangeLog }],
+      },
+      {
+        path: "/devMonkey",
+        loader: loader,
+        children: [
+          { index: true, Component: PinMap },
+        ],
       },
       { path: "*", Component: NotFoundPage },
     ],

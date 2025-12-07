@@ -285,6 +285,20 @@ export default function CustomSidebar() {
           color={colors.grey[300]}
           sx={{ m: "15px 0 5px 20px" }}
         >
+          {isCollapsed ? "Dev" : "Development"}
+        </Typography>
+        <Item
+          title="Monkey Job"
+          to="/devMonkey"
+          icon={<ConstructionIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Typography
+          variant="h6"
+          color={colors.grey[300]}
+          sx={{ m: "15px 0 5px 20px" }}
+        >
           {isCollapsed ? "Info" : "Information"}
         </Typography>
         <Item
