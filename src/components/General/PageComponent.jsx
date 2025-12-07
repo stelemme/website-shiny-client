@@ -24,6 +24,8 @@ const PageComponent = ({
   icon2 = null,
   onClickIcon2 = null,
   disableIcon2 = false,
+  item1 = null,
+  onClickItem1 = null,
   dev = false,
   select = null,
   tabs = false,
@@ -121,6 +123,7 @@ const PageComponent = ({
               {window.innerWidth > 500 && (
                 <Box display="flex" flexDirection="column" alignItems="center">
                   <Box display="flex" justifyContent="flex-end" width="100%">
+                    {item1}
                     {icon1 && (
                       <IconButton
                         onClick={onClickIcon1}
@@ -161,6 +164,7 @@ const PageComponent = ({
               {window.innerWidth < 500 && (
                 <Box display="flex" flexDirection="column" alignItems="center">
                   <Box display="flex" justifyContent="flex-end" width="100%">
+                    {item1}
                     {icon1 && (
                       <IconButton
                         onClick={onClickIcon1}

@@ -2,6 +2,13 @@
 
 ## Changelogs
 
+### Version 1.36.0 (07.12.2025)
+
+**Filter:**
+-- Naast de filters komt er nu het aantal shinies te staan
+
+---
+
 ### Version 1.35.1 (09.11.2025)
 
 **Bug Fixes**

@@ -26,7 +26,7 @@ import StartDateForm from "../Forms/StartDateForm";
 import PokedexNrForm from "../Forms/PokedexNrForm";
 import MethodMultipleSelect from "../Selects/MethodMultipleSelect";
 
-export default function FilterMenu({ open, setOpen, type = "Shiny" }) {
+export default function FilterMenu({ open, setOpen, type = "Shiny", setFilterActive }) {
   const [cookies, setCookies] = useCookies([
     `filter${type}Trainer`,
     `filter${type}Gen`,
@@ -40,6 +40,27 @@ export default function FilterMenu({ open, setOpen, type = "Shiny" }) {
   const isSmallScreen = useMediaQuery("(max-width:500px)");
 
   const foreverDate = new Date("9999-12-31T23:59:59");
+
+  const isEmptyArray = (arr) => Array.isArray(arr) && arr.length === 0;
+  const isNullArray = (arr) =>
+    Array.isArray(arr) &&
+    arr.length === 2 &&
+    arr[0] === null &&
+    arr[1] === null;
+
+  const check =
+    isEmptyArray(cookies[`filter${type}Trainer`]) &&
+    isEmptyArray(cookies[`filter${type}Gen`]) &&
+    isEmptyArray(cookies[`filter${type}Game`]) &&
+    isEmptyArray(cookies[`filter${type}Method`]) &&
+    isNullArray(cookies[`filter${type}Date`]) &&
+    cookies[`filter${type}PokedexNrLower`] === "" &&
+    cookies[`filter${type}PokedexNrUpper`] === "" &&
+    cookies[`filterEvolutions`] === false;
+
+  useEffect(() => {
+    setFilterActive(check);
+  }, [cookies, check, setFilterActive]);
 
   const handleClearAll = () => {
     setCookies(`filter${type}Trainer`, [], { expires: foreverDate });
