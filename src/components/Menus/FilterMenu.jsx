@@ -26,7 +26,12 @@ import StartDateForm from "../Forms/StartDateForm";
 import PokedexNrForm from "../Forms/PokedexNrForm";
 import MethodMultipleSelect from "../Selects/MethodMultipleSelect";
 
-export default function FilterMenu({ open, setOpen, type = "Shiny", setFilterActive }) {
+export default function FilterMenu({
+  open,
+  setOpen,
+  type = "Shiny",
+  setFilterActive,
+}) {
   const [cookies, setCookies] = useCookies([
     `filter${type}Trainer`,
     `filter${type}Gen`,
@@ -59,8 +64,10 @@ export default function FilterMenu({ open, setOpen, type = "Shiny", setFilterAct
     cookies[`filterEvolutions`] === false;
 
   useEffect(() => {
-    setFilterActive(check);
-  }, [cookies, check, setFilterActive]);
+    if (type === "Shiny") {
+      setFilterActive(check);
+    }
+  }, [cookies, check, setFilterActive, type]);
 
   const handleClearAll = () => {
     setCookies(`filter${type}Trainer`, [], { expires: foreverDate });
