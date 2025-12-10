@@ -288,12 +288,49 @@ export default function CustomSidebar() {
           {isCollapsed ? "Dev" : "Development"}
         </Typography>
         <Item
-          title="Monkey Job"
+          title="RSE Map"
+          to="/devMonkey/rse"
+          icon={<ConstructionIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Item
+          title="FRLG Map"
+          to="/devMonkey/frlg"
+          icon={<ConstructionIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Item
+          title="DPPT Map"
           to="/devMonkey"
           icon={<ConstructionIcon />}
           selected={selected}
           setSelected={setSelected}
         />
+        <Item
+          title="HGSS Map"
+          to="/devMonkey/hgss"
+          icon={<ConstructionIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Item
+          title="BW Map"
+          to="/devMonkey/bw"
+          icon={<ConstructionIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Item
+          title="B2W2 Map"
+          to="/devMonkey/b2w2"
+          icon={<ConstructionIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+
+        {/* INFO SECTION */}
         <Typography
           variant="h6"
           color={colors.grey[300]}

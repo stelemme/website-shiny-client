@@ -36,7 +36,12 @@ import CreateCounter from "./pages/counter/CreateCounter";
 // Development Pages
 import DataManipulation from "./pages/dev/DataManipulation";
 import LayoutPage from "./pages/dev/LayoutPage";
-import PinMap from "./pages/dev/PinMap";
+import RSEMap from "./pages/dev/RSEMap";
+import BWMap from "./pages/dev/BWMap";
+import B2W2Map from "./pages/dev/B2W2Map";
+import FRLGMap from "./pages/dev/FRLGMap";
+import DPPTMap from "./pages/dev/DPPTMap";
+import HGSSMap from "./pages/dev/HGSSMap";
 // Global Pages
 import ErrorPage from "./pages/global/ErrorPage";
 import Home from "./pages/global/Home";
@@ -181,7 +186,12 @@ const routes = [
         path: "/devMonkey",
         loader: loader,
         children: [
-          { index: true, Component: PinMap },
+          { index: true, Component: DPPTMap },
+          { path: "hgss", Component: HGSSMap },
+          { path: "rse", Component: RSEMap },
+          { path: "bw", Component: BWMap },
+          { path: "b2w2", Component: B2W2Map },
+          { path: "frlg", Component: FRLGMap },
         ],
       },
       { path: "*", Component: NotFoundPage },
