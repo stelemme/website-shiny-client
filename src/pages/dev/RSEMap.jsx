@@ -79,7 +79,7 @@ export default function PinMap() {
       {/* Image */}
       <div style={{ position: "relative", marginTop: 10 }}>
         <img
-          src={mapImages["platinum.png"]}
+          src={mapImages["rse.png"]}
           alt="Map"
           onClick={handleClick}
           style={{
