@@ -9,6 +9,7 @@ import PageComponent from "../../components/General/PageComponent";
 export default function PinMap() {
   const [pins, setPins] = useState({});
   const [label, setLabel] = useState("");
+  const [jsonInput, setJsonInput] = useState("");
 
   function handleClick(e) {
     const rect = e.target.getBoundingClientRect();
@@ -34,6 +35,33 @@ export default function PinMap() {
     });
   }
 
+  function loadFromJson() {
+    try {
+      const obj = JSON.parse(jsonInput);
+
+      if (typeof obj !== "object" || Array.isArray(obj)) {
+        alert("JSON must be an object of pins.");
+        return;
+      }
+
+      // Validate formatted pins
+      for (const key in obj) {
+        if (
+          typeof obj[key]?.x !== "number" ||
+          typeof obj[key]?.y !== "number"
+        ) {
+          alert("Invalid pin format: " + key);
+          return;
+        }
+      }
+
+      setPins(obj);
+      alert("Pins loaded!");
+    } catch (err) {
+      alert("Invalid JSON:\n" + err.message);
+    }
+  }
+
   return (
     <PageComponent>
       {/* Controls */}
@@ -42,8 +70,9 @@ export default function PinMap() {
         value={label}
         onChange={(e) => setLabel(e.target.value)}
         style={{
-          color: "black", // ✅ text color
-          backgroundColor: "white", // ✅ makes sure it’s visible
+          color: "black",
+          backgroundColor: "white",
+          marginBottom: 8,
         }}
       />
 
@@ -58,7 +87,7 @@ export default function PinMap() {
             height: "auto",
             maxWidth: "100vw",
             cursor: "crosshair",
-            imageRendering: "pixelated", // ✅ keeps pixelated look
+            imageRendering: "pixelated",
           }}
         />
 
@@ -93,13 +122,30 @@ export default function PinMap() {
             style={{ display: "flex", gap: 10, alignItems: "center" }}
           >
             <code>{name}</code>
-            <span>
-              ({pos.x}, {pos.y})
-            </span>
+            <span>({pos.x}, {pos.y})</span>
             <button onClick={() => deletePin(name)}>❌ Delete</button>
           </div>
         ))}
       </div>
+
+      {/* JSON Import */}
+      <h3 style={{ marginTop: 20 }}>Load Pins from JSON</h3>
+      <textarea
+        value={jsonInput}
+        onChange={(e) => setJsonInput(e.target.value)}
+        placeholder="Paste pins JSON here..."
+        style={{
+          width: "100%",
+          height: 120,
+          background: "#222",
+          color: "#0f0",
+          padding: 8,
+          fontFamily: "monospace",
+        }}
+      />
+      <button onClick={loadFromJson} style={{ marginTop: 8 }}>
+        Load JSON
+      </button>
 
       {/* JSON Output */}
       <pre
