@@ -36,7 +36,8 @@ import CreateCounter from "./pages/counter/CreateCounter";
 // Development Pages
 import DataManipulation from "./pages/dev/DataManipulation";
 import LayoutPage from "./pages/dev/LayoutPage";
-import PinMap from "./pages/dev/PinMap";
+import PlatinumMap from "./pages/dev/PlatinumMap";
+import HGSSMap from "./pages/dev/HGSSMap";
 // Global Pages
 import ErrorPage from "./pages/global/ErrorPage";
 import Home from "./pages/global/Home";
@@ -181,7 +182,8 @@ const routes = [
         path: "/devMonkey",
         loader: loader,
         children: [
-          { index: true, Component: PinMap },
+          { index: true, Component: PlatinumMap },
+          { path: "hgss", Component: HGSSMap },
         ],
       },
       { path: "*", Component: NotFoundPage },

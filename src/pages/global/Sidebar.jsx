@@ -288,8 +288,15 @@ export default function CustomSidebar() {
           {isCollapsed ? "Dev" : "Development"}
         </Typography>
         <Item
-          title="Monkey Job"
+          title="Platinum Map"
           to="/devMonkey"
+          icon={<ConstructionIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Item
+          title="HGSS Map"
+          to="/devMonkey/hgss"
           icon={<ConstructionIcon />}
           selected={selected}
           setSelected={setSelected}
