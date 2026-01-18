@@ -19,6 +19,7 @@ import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import CalculateOutlinedIcon from "@mui/icons-material/CalculateOutlined";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
+import CakeIcon from "@mui/icons-material/Cake";
 
 // Components
 import CustomDialog from "../../components/Dialogs/CustomDialog";
@@ -34,6 +35,15 @@ import CheckboxDisplay from "../General/CheckboxDisplay";
 // Hooks
 import { useAuth } from "../../hooks/useAuth";
 import { useMakeRequest, useGetRequest } from "../../hooks/useAxios";
+
+function isBirthday(birthday) {
+  const today = new Date();
+  const bday = new Date(birthday);
+
+  return (
+    today.getMonth() === bday.getMonth() && today.getDate() === bday.getDate()
+  );
+}
 
 export default function CompleteShinyCard({
   data: initialData,
@@ -126,9 +136,21 @@ export default function CompleteShinyCard({
             justifyContent="space-between"
             alignItems="center"
           >
-            <Typography variant="h3" color={colors.grey[100]} fontWeight="bold">
-              {data.name.toUpperCase()} {count ? `(${index + 1}/${count})` : ""}
-            </Typography>
+            <Box display="flex" gap="10px" alignItems="center">
+              <Typography
+                variant="h3"
+                color={colors.grey[100]}
+                fontWeight="bold"
+              >
+                {data.name.toUpperCase()}{" "}
+                {count ? `(${index + 1}/${count})` : ""}
+              </Typography>
+              {isBirthday(data.endDate) && (
+                <IconButton size="small">
+                  <CakeIcon />
+                </IconButton>
+              )}
+            </Box>
             <Box ml="10px" display="flex">
               {data.gameSort <= 20 && (
                 <IconButton
