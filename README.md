@@ -7,6 +7,9 @@
 **Counter Stats:**
 -- Total encounter time wordt nu ook weergegeven.
 
+**Shiny:**
+-- Als ze jarig zijn staat er een cakeske bij
+
 ---
 
 ### Version 1.36.0 (07.12.2025)
