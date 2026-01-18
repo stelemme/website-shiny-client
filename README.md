@@ -2,6 +2,13 @@
 
 ## Changelogs
 
+### Version 1.37.0 (18.01.2026)
+
+**Counter Stats:**
+-- Total encounter time wordt nu ook weergegeven.
+
+---
+
 ### Version 1.36.0 (07.12.2025)
 
 **Filter:**

@@ -34,11 +34,13 @@ export default function Leaderboard({
   medalList,
   total = null,
   timeValue = false,
+  timeValueTotal = false,
   timeToolTip = "",
   onlineIcons = false,
 }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  let timeValueCalculated = 0;
 
   data =
     data?.length > 0
@@ -86,6 +88,7 @@ export default function Leaderboard({
           >
             <BoxComponent py="10px" px="20px" noContrastColor>
               {data?.map((item, index) => {
+                timeValueCalculated += item?.dataTime || 0;
                 return (
                   <Box key={index}>
                     <Box display={"flex"} justifyContent={"space-between"}>
@@ -189,18 +192,43 @@ export default function Leaderboard({
                     TOTAL
                   </Typography>
                 </Box>
-                <Typography
-                  fontWeight={"bold"}
-                  variant="h6"
-                  align="left"
-                  sx={{
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                  }}
+                <Box
+                  display="flex"
+                  justifyContent={"space-between"}
+                  alignItems="center"
                 >
-                  {total}
-                </Typography>
+                  {timeValueTotal && (
+                    <Tooltip title={timeToolTip}>
+                      <Typography
+                        fontWeight={"bold"}
+                        variant="h6"
+                        align="left"
+                        sx={{
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {formatTime(timeValueCalculated, false)}
+                      </Typography>
+                    </Tooltip>
+                  )}
+                  <Box width="70px">
+                    <Typography
+                    textAlign={"right"}
+                      fontWeight={"bold"}
+                      variant="h6"
+                      align="left"
+                      sx={{
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {total}
+                    </Typography>
+                  </Box>
+                </Box>
               </Box>
             </BoxComponent>
           </LoadingComponent>
