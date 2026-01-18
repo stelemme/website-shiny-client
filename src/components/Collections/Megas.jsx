@@ -28,8 +28,24 @@ const megas = [
     sprite: "pidgeot-mega",
   },
   {
+    name: "Mega Raichu X",
+    sprite: "raichu-mega-x",
+  },
+    {
+    name: "Mega Raichu Y",
+    sprite: "raichu-mega-y",
+  },
+    {
+    name: "Mega Clefable",
+    sprite: "clefable-mega",
+  },
+  {
     name: "Mega Alakazam",
     sprite: "alakazam-mega",
+  },
+  {
+    name: "Mega Victreebel",
+    sprite: "victreebel-mega",
   },
   {
     name: "Mega Slowbro",
@@ -44,6 +60,10 @@ const megas = [
     sprite: "kangaskhan-mega",
   },
   {
+    name: "Mega Starmie",
+    sprite: "starmie-mega",
+  },
+  {
     name: "Mega Pinsir",
     sprite: "pinsir-mega",
   },
@@ -56,12 +76,24 @@ const megas = [
     sprite: "aerodactyl-mega",
   },
   {
+    name: "Mega Dragonite",
+    sprite: "dragonite-mega",
+  },
+  {
     name: "Mega Mewtwo X",
     sprite: "mewtwo-mega-x",
   },
   {
     name: "Mega Mewtwo Y",
     sprite: "mewtwo-mega-y",
+  },
+  {
+    name: "Mega Meganium",
+    sprite: "meganium-mega",
+  },
+   {
+    name: "Mega Feraligatr",
+    sprite: "feraligatr-mega",
   },
   {
     name: "Mega Ampharos",
@@ -78,6 +110,10 @@ const megas = [
   {
     name: "Mega Heracross",
     sprite: "heracross-mega",
+  },
+  {
+    name: "Mega Skarmory",
+    sprite: "skarmory-mega",
   },
   {
     name: "Mega Houndoom",
@@ -139,9 +175,17 @@ const megas = [
     name: "Mega Banette",
     sprite: "banette-mega",
   },
+    {
+    name: "Mega Chimeco",
+    sprite: "chimeco-mega",
+  },
   {
     name: "Mega Absol",
     sprite: "absol-mega",
+  },
+  {
+    name: "Mega Absol Z",
+    sprite: "absol-mega-z",
   },
   {
     name: "Mega Glalie",
@@ -176,6 +220,10 @@ const megas = [
     sprite: "rayquaza-mega",
   },
   {
+    name: "Mega Staraptor",
+    sprite: "staraptor-mega",
+  },
+  {
     name: "Mega Lopunny",
     sprite: "lopunny-mega",
   },
@@ -184,8 +232,16 @@ const megas = [
     sprite: "garchomp-mega",
   },
   {
+    name: "Mega Garchomp Z",
+    sprite: "garchomp-mega-z",
+  },
+  {
     name: "Mega Lucario",
     sprite: "lucario-mega",
+  },
+  {
+    name: "Mega Lucario Z",
+    sprite: "lucario-mega-z",
   },
   {
     name: "Mega Abomasnow",
@@ -196,12 +252,144 @@ const megas = [
     sprite: "gallade-mega",
   },
   {
+    name: "Mega Froslass",
+    sprite: "froslass-mega",
+  },
+  {
+    name: "Mega Heatran",
+    sprite: "heatran-mega",
+  },
+  {
+    name: "Mega Darkrai",
+    sprite: "darkrai-mega",
+  },
+  {
+    name: "Mega Emboar",
+    sprite: "emboar-mega",
+  },
+  {
+    name: "Mega Excadrill",
+    sprite: "excadrill-mega",
+  },
+  {
     name: "Mega Audino",
     sprite: "audino-mega",
   },
   {
+    name: "Mega Scolipede",
+    sprite: "scolipede-mega",
+  },
+  {
+    name: "Mega Scrafty",
+    sprite: "scrafty-mega",
+  },
+  {
+    name: "Mega Eelektross",
+    sprite: "eelektross-mega",
+  },
+  {
+    name: "Mega Chandelure",
+    sprite: "chandelure-mega",
+  },
+  {
+    name: "Mega Golurk",
+    sprite: "golurk-mega",
+  },
+  {
+    name: "Mega Chesnaught",
+    sprite: "chesnaught-mega",
+  },
+  {
+    name: "Mega Delphox",
+    sprite: "delphox-mega",
+  },
+  {
+    name: "Mega Greninja",
+    sprite: "greninja-mega",
+  },
+  {
+    name: "Mega Pyroar",
+    sprite: "pyroar-mega",
+  },
+  {
+    name: "Mega Floette",
+    sprite: "floette-mega",
+  },
+  {
+    name: "Mega Meowstic",
+    sprite: "meowstic-mega",
+  },
+  {
+    name: "Mega Malamar",
+    sprite: "malamar-mega",
+  },
+  {
+    name: "Mega Barbaracle",
+    sprite: "barbaracle-mega",
+  },
+  {
+    name: "Mega Dragalge",
+    sprite: "dragalge-mega",
+  },
+  {
+    name: "Mega Hawlucha",
+    sprite: "hawlucha-mega",
+  },
+  {
+    name: "Mega Zygarde",
+    sprite: "zygarde-mega",
+  },
+  {
     name: "Mega Diancie",
     sprite: "diancie-mega",
+  },
+  {
+    name: "Mega Crabominable",
+    sprite: "crabominable-mega",
+  },
+  {
+    name: "Mega Golisopod",
+    sprite: "golisopod-mega",
+  },
+  {
+    name: "Mega Drampa",
+    sprite: "drampa-mega",
+  },
+  {
+    name: "Mega Magearna",
+    sprite: "magearna-mega",
+  },
+  {
+    name: "Mega Zeraora",
+    sprite: "zeraora-mega",
+  },
+  {
+    name: "Mega Falinks",
+    sprite: "falinks-mega",
+  },
+  {
+    name: "Mega Scovillain",
+    sprite: "scovillain-mega",
+  },
+  {
+    name: "Mega Glimmora",
+    sprite: "glimmora-mega",
+  },
+  {
+    name: "Mega Tatsugiri Curly Form",
+    sprite: "tatsugiri-mega-curly",
+  },
+  {
+    name: "Mega Tatsugiri Droopy Form",
+    sprite: "tatsugiri-mega-droopy",
+  },
+  {
+    name: "Mega Tatsugiri Stretchy Form",
+    sprite: "tatsugiri-mega-stretchy",
+  },
+  {
+    name: "Mega Baxcalibur",
+    sprite: "baxcalibur-mega",
   },
 ];
 
