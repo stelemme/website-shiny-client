@@ -360,6 +360,10 @@ const megas = [
     sprite: "magearna-mega",
   },
   {
+    name: "Mega Magearna Original Form",
+    sprite: "magearna-mega-original",
+  },
+  {
     name: "Mega Zeraora",
     sprite: "zeraora-mega",
   },
