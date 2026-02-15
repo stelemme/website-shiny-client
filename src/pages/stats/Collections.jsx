@@ -4,11 +4,13 @@ import { useCookies } from "react-cookie";
 // Components imports
 import PageComponent from "../../components/General/PageComponent";
 import GeneralSelect from "../../components/Selects/GeneralSelect";
+import { Games, GamesStats } from "../../components/Collections/Games";
 import {
   Pokeballs,
   PokeballsStats,
 } from "../../components/Collections/Pokeballs";
 import { Natures, NaturesStats } from "../../components/Collections/Natures";
+import { Types, TypesStats } from "../../components/Collections/Types";
 import { Legends, LegendsStats } from "../../components/Collections/Legends";
 import {
   Mythicals,
@@ -95,8 +97,10 @@ export default function Collections() {
   };
 
   const collectionComponents = {
+    Games: [Games, GamesStats],
     Pokéballs: [Pokeballs, PokeballsStats],
-    _Natures: [Natures, NaturesStats],
+    Natures: [Natures, NaturesStats],
+    _Types: [Types, TypesStats],
     Legends: [Legends, LegendsStats],
     Mythicals: [Mythicals, MythicalsStats],
     "_Ultra Beasts": [UltraBeasts, UltraBeastsStats],

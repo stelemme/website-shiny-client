@@ -82,6 +82,7 @@ export default function EncountersLeaderboard() {
         return accumulator + currentValue.data;
       }, 0)}
       timeValue
+      timeValueTotal
       timeToolTip="Total time hunted."
     />
   );
