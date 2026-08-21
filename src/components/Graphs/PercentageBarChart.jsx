@@ -20,6 +20,7 @@ export default function PercentageBarChart({ graphData }) {
 
   const graphColors = [
     colors.redAccent[400],
+    colors.orangeAccent[400],
     colors.yellowAccent[400],
     colors.greenAccent[400],
     colors.blueAccent[400],

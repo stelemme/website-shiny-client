@@ -24,6 +24,7 @@ export default function LatestEncounter() {
         medalImages["battle-2-g.png"],
         medalImages["battle-2-s.png"],
         medalImages["battle-2-b.png"],
+        medalImages["nothing.png"],
       ]}
       timeValue
       onlineIcons

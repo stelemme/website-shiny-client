@@ -25,6 +25,7 @@ export default function CountersAmountLeaderboard() {
         medalImages["battle-1-g.png"],
         medalImages["battle-1-s.png"],
         medalImages["battle-1-b.png"],
+        medalImages["nothing.png"],
       ]}
       total={counterStats?.reduce((accumulator, currentValue) => {
         return accumulator + currentValue.data;

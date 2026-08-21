@@ -71,7 +71,7 @@ export default function GenderStats() {
         <Grid item xs={12}>
           <BoxComponent py="10px" px="20px" noContrastColor>
             <Grid container>
-              <Grid item md={1.98} xs={5.9} container spacing={"12px"}>
+              <Grid item md={1.7} xs={5.9} container spacing={"12px"}>
                 <Grid item xs={12}>
                   <Box
                     display={"flex"}
@@ -180,7 +180,7 @@ export default function GenderStats() {
                 }
                 return (
                   <Fragment key={trainer}>
-                    <Grid item md={1.98} xs={5.9} container spacing={"12px"}>
+                    <Grid item md={1.7} xs={5.9} container spacing={"12px"}>
                       <Grid item xs={12}>
                         <Box
                           display={"flex"}
@@ -273,7 +273,7 @@ export default function GenderStats() {
                   </Fragment>
                 );
               })}
-              <Grid item md={1.98} xs={5.9} container spacing={"12px"}>
+              <Grid item md={1.7} xs={5.9} container spacing={"12px"}>
                 <Grid item xs={12}>
                   <Box
                     display={"flex"}

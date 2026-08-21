@@ -56,6 +56,7 @@ export default function ConvertedEncLeaderBoard() {
         medalImages["battle-4-g.png"],
         medalImages["battle-4-s.png"],
         medalImages["battle-4-b.png"],
+        medalImages["nothing.png"],
       ]}
       total={totalTotalEncounters}
     />
