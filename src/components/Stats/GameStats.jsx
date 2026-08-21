@@ -40,7 +40,7 @@ export default function GameStats() {
     useShiny(`stats=gameTotal&gameFilter=${game?.name}`);
   const gameStatsTotal = gameStatsTotalData?.data[0];
 
-  const data = ["Joaquin", "Korneel", "Simon", "Stef"];
+  const data = ["Joaquin", "Korneel", "Nathan", "Simon", "Stef"];
 
   return (
     <BoxComponent
@@ -229,10 +229,13 @@ export default function GameStats() {
                 let bgColor = "";
                 if (trainer === "Korneel") {
                   trainerSprite = "chorneef";
-                  bgColor = colors.yellowAccent[200];
+                  bgColor = colors.orangeAccent[200];
                 } else if (trainer === "Joaquin") {
                   trainerSprite = "kwakquin";
                   bgColor = colors.redAccent[200];
+                } else if (trainer === "Nathan") {
+                  trainerSprite = "zoetennaat";
+                  bgColor = colors.yellowAccent[200];
                 } else if (trainer === "Simon") {
                   trainerSprite = "siwob";
                   bgColor = colors.greenAccent[200];

@@ -63,6 +63,9 @@ body {
   background: #f44336;
 }
 .marker_korneel {
+  background: #FFA500;
+}
+.marker_nathan {
   background: #e5de00;
 }
 .marker_simon {
@@ -82,9 +85,10 @@ body {
   border-radius: 50%;
   background: conic-gradient(
     #f44336 0% var(--percentage1),
-    #e5de00 0% var(--percentage2),
-    #4caf50 0% var(--percentage3),
-    #2196f3 0% var(--percentage4),
+    #ff9800 0% var(--percentage2),
+    #e5de00 0% var(--percentage3),
+    #4caf50 0% var(--percentage4),
+    #2196f3 0% var(--percentage5),
     #fff 0% 100%
   );
   border: 2px solid #fff;
@@ -105,9 +109,10 @@ body {
   clip-path: circle(50% at center);
   background: conic-gradient(
     #f44336 0% var(--percentage1),
-    #e5de00 0% var(--percentage2),
-    #4caf50 0% var(--percentage3),
-    #2196f3 0% var(--percentage4),
+    #ff9800 0% var(--percentage2),
+    #e5de00 0% var(--percentage3),
+    #4caf50 0% var(--percentage4),
+    #2196f3 0% var(--percentage5),
     #fff 0% 100%
   );
 }

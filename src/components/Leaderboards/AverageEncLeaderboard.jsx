@@ -53,6 +53,7 @@ export default function AverageEncLeaderboard() {
         medalImages["adventure-4-g.png"],
         medalImages["adventure-4-s.png"],
         medalImages["adventure-4-b.png"],
+        medalImages["nothing.png"],
       ]}
       total={shinyTotalStats ? shinyTotalStats : "-"}
     />

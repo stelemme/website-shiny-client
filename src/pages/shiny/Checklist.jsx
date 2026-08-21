@@ -68,6 +68,9 @@ export default function Checklist() {
   const { data: shinyListKorneelData } = useShiny(
     `list=names&trainer=Korneel&filter=${cookie.checklistGenFilter}`
   );
+  const { data: shinyListNathanData } = useShiny(
+    `list=names&trainer=Nathan&filter=${cookie.checklistGenFilter}`
+  );
   const { data: shinyListSimonData } = useShiny(
     `list=names&trainer=Simon&filter=${cookie.checklistGenFilter}`
   );
@@ -78,6 +81,7 @@ export default function Checklist() {
   const shinyList = shinyListData?.data[0].names;
   const shinyListJoaquin = shinyListJoaquinData?.data[0]?.names;
   const shinyListKorneel = shinyListKorneelData?.data[0]?.names;
+  const shinyListNathan = shinyListNathanData?.data[0]?.names;
   const shinyListSimon = shinyListSimonData?.data[0]?.names;
   const shinyListStef = shinyListStefData?.data[0]?.names;
 
@@ -93,6 +97,13 @@ export default function Checklist() {
       name: "Korneel",
       percentage: calculateOverlapPercentage(
         shinyListKorneel,
+        pokedex?.data.map((pokemon) => pokemon.name)
+      ),
+    },
+    {
+      name: "Nathan",
+      percentage: calculateOverlapPercentage(
+        shinyListNathan,
         pokedex?.data.map((pokemon) => pokemon.name)
       ),
     },
@@ -272,12 +283,14 @@ export default function Checklist() {
         {pokedex?.data.map((pokemon) => {
           const joaquinCheck = shinyListJoaquin?.includes(pokemon.name);
           const korneelCheck = shinyListKorneel?.includes(pokemon.name);
+          const nathanCheck = shinyListNathan?.includes(pokemon.name);
           const simonCheck = shinyListSimon?.includes(pokemon.name);
           const stefCheck = shinyListStef?.includes(pokemon.name);
 
           const trueCount = [
             joaquinCheck,
             korneelCheck,
+            nathanCheck,
             simonCheck,
             stefCheck,
           ].filter(Boolean).length;
@@ -338,6 +351,17 @@ export default function Checklist() {
                         />
                       )}
                       {korneelCheck ? (
+                        <CheckBoxIcon
+                          size="small"
+                          style={{ color: colors.orangeAccent[500] }}
+                        />
+                      ) : (
+                        <CheckBoxOutlineBlankIcon
+                          size="small"
+                          style={{ color: colors.orangeAccent[500] }}
+                        />
+                      )}
+                      {nathanCheck ? (
                         <CheckBoxIcon
                           size="small"
                           style={{ color: colors.yellowAccent[500] }}

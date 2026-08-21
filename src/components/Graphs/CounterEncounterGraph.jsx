@@ -52,6 +52,8 @@ export default function CounterEncounterGraph({
   if (trainer === "Joaquin") {
     color = colors.redAccent[500];
   } else if (trainer === "Korneel") {
+    color = colors.orangeAccent[500];
+  } else if (trainer === "Nathan") {
     color = colors.yellowAccent[500];
   } else if (trainer === "Simon") {
     color = colors.greenAccent[500];

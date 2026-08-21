@@ -24,7 +24,7 @@ import UserSelect from "../Selects/UserSelect";
 // Hooks
 import { useShiny } from "../../hooks/useData";
 
-export default function EncountersGraph() {
+export default function EncountersGraph({height}) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [graphColor, setGraphColor] = useState(colors.purpleAccent[500]);
@@ -44,6 +44,8 @@ export default function EncountersGraph() {
       if (e.target.value === "Joaquin") {
         setGraphColor(colors.redAccent[500]);
       } else if (e.target.value === "Korneel") {
+        setGraphColor(colors.orangeAccent[500]);
+      } else if (e.target.value === "Nathan") {
         setGraphColor(colors.yellowAccent[500]);
       } else if (e.target.value === "Simon") {
         setGraphColor(colors.greenAccent[500]);
@@ -66,7 +68,7 @@ export default function EncountersGraph() {
     >
       <ResponsiveContainer
         width="100%"
-        height={window.innerWidth < 500 ? 300 : 400}
+        height={height}
       >
         <ComposedChart
           data={shinyData?.data[0]?.ranges}

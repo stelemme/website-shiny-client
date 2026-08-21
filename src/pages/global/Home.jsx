@@ -22,7 +22,7 @@ export default function Home() {
           <OnThisDay />
         </Grid>
         <Grid item xs={12}>
-          <EncountersGraph />
+          <EncountersGraph height={window.innerWidth < 500 ? 300 : 400} />
         </Grid>
       </Grid>
     </PageComponent>

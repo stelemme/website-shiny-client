@@ -27,6 +27,8 @@ export default function ExtremesMons() {
   );
   const userStats = userStatsData?.data[0];
 
+  console.log(userStatsData)
+
   const handleChange = (e) => {
     if (e.target.value === "All") {
       setQuery("");
