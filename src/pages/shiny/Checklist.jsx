@@ -132,6 +132,7 @@ export default function Checklist() {
 
   const graphColors = [
     colors.redAccent[400],
+    colors.orangeAccent[400],
     colors.yellowAccent[400],
     colors.greenAccent[400],
     colors.blueAccent[400],
@@ -260,6 +261,12 @@ export default function Checklist() {
                   height={"30px"}
                   alt=""
                   src={trainerImages["Gen 6 - chorneef.png"]}
+                  style={{ imageRendering: "pixelated" }}
+                />
+                <img
+                  height={"30px"}
+                  alt=""
+                  src={trainerImages["Gen 6 - zoetennaat.png"]}
                   style={{ imageRendering: "pixelated" }}
                 />
                 <img
