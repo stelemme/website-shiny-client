@@ -2,6 +2,12 @@
 
 ## Changelogs
 
+### Version 1.38.0 (21.08.2026)
+
+-- Extra info (zoals chainlength, shiny charm, ...) is toegevoegd aan shiny info
+
+---
+
 ### Version 1.37.0 (15.02.2026)
 
 **Collections:**
