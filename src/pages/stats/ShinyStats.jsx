@@ -24,7 +24,7 @@ export default function ShinyStats() {
           <ExtremesMons />
         </Grid>
         <Grid item xl={8} xs={12}>
-          <EncountersGraph />
+          <EncountersGraph height={window.innerWidth < 500 ? 300 : 500}/>
         </Grid>
         <Grid item xl={4} xs={12}>
           <ShiniesAmountLeaderboard />

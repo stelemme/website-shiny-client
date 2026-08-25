@@ -38,7 +38,7 @@ export default function GenderStats() {
 
   const gameStatsTotal = gameStatsTotalData?.data[0]?.genders;
 
-  const data = ["Joaquin", "Korneel", "Simon", "Stef"];
+  const data = ["Joaquin", "Korneel", "Nathan", "Simon", "Stef"];
 
   return (
     <BoxComponent
@@ -71,7 +71,7 @@ export default function GenderStats() {
         <Grid item xs={12}>
           <BoxComponent py="10px" px="20px" noContrastColor>
             <Grid container>
-              <Grid item md={1.98} xs={5.9} container spacing={"12px"}>
+              <Grid item md={1.7} xs={5.9} container spacing={"12px"}>
                 <Grid item xs={12}>
                   <Box
                     display={"flex"}
@@ -164,10 +164,13 @@ export default function GenderStats() {
                 let bgColor = "";
                 if (trainer === "Korneel") {
                   trainerSprite = "chorneef";
-                  bgColor = colors.yellowAccent[200];
+                  bgColor = colors.orangeAccent[200];
                 } else if (trainer === "Joaquin") {
                   trainerSprite = "kwakquin";
                   bgColor = colors.redAccent[200];
+                } else if (trainer === "Nathan") {
+                  trainerSprite = "zoetennaat";
+                  bgColor = colors.yellowAccent[200];
                 } else if (trainer === "Simon") {
                   trainerSprite = "siwob";
                   bgColor = colors.greenAccent[200];
@@ -177,7 +180,7 @@ export default function GenderStats() {
                 }
                 return (
                   <Fragment key={trainer}>
-                    <Grid item md={1.98} xs={5.9} container spacing={"12px"}>
+                    <Grid item md={1.7} xs={5.9} container spacing={"12px"}>
                       <Grid item xs={12}>
                         <Box
                           display={"flex"}
@@ -270,7 +273,7 @@ export default function GenderStats() {
                   </Fragment>
                 );
               })}
-              <Grid item md={1.98} xs={5.9} container spacing={"12px"}>
+              <Grid item md={1.7} xs={5.9} container spacing={"12px"}>
                 <Grid item xs={12}>
                   <Box
                     display={"flex"}

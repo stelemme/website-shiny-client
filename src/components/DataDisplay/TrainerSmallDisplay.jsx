@@ -13,6 +13,7 @@ export default function TrainerSmallDisplay({trainerChoice}) {
   const imageCheck = {
     Joaquin: "kwakquin",
     Korneel: "chorneef",
+    Nathan: "zoetennaat",
     Simon: "siwob",
     Stef: "t-loc",
   };

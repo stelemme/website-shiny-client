@@ -8,6 +8,7 @@ export default function GameImageDisplay({ data }) {
   const imageCheck = {
     Joaquin: "kwakquin",
     Korneel: "chorneef",
+    Nathan: "zoetennaat",
     Simon: "siwob",
     Stef: "t-loc",
   };

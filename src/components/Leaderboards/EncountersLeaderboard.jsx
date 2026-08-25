@@ -77,6 +77,7 @@ export default function EncountersLeaderboard() {
         medalImages["battle-5-g.png"],
         medalImages["battle-5-s.png"],
         medalImages["battle-5-b.png"],
+        medalImages["nothing.png"],
       ]}
       total={counterStats?.reduce((accumulator, currentValue) => {
         return accumulator + currentValue.data;

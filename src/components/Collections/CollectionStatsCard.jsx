@@ -41,6 +41,13 @@ export default function CollectionStatsCard({
         : ""
     }`
   );
+  const { data: nathanShinyData } = useShiny(
+    `trainer=Nathan&collection=${collectionStr}${
+      additionalCollectionStr
+        ? `&collectionFilter=${additionalCollectionStr}`
+        : ""
+    }`
+  );
   const { data: simonShinyData } = useShiny(
     `trainer=Simon&collection=${collectionStr}${
       additionalCollectionStr
@@ -69,6 +76,13 @@ export default function CollectionStatsCard({
       percentage: calculateCollectionPercentage(
         totalNumber,
         korneelShinyData?.data[0]?.collectionData
+      ),
+    },
+    {
+      name: "Nathan",
+      percentage: calculateCollectionPercentage(
+        totalNumber,
+        nathanShinyData?.data[0]?.collectionData
       ),
     },
     {

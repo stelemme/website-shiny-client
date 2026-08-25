@@ -34,6 +34,7 @@ export default function TrainerDisplay({ trainerChoice, trainer }) {
   const imageCheck = {
     Joaquin: "kwakquin",
     Korneel: "chorneef",
+    Nathan: "zoetennaat",
     Simon: "siwob",
     Stef: "t-loc",
   };

@@ -104,7 +104,8 @@ export default function DateGraph() {
             }}
           />
           <Bar dataKey="Joaquin" fill={colors.redAccent[500]} />
-          <Bar dataKey="Korneel" fill={colors.yellowAccent[500]} />
+          <Bar dataKey="Korneel" fill={colors.orangeAccent[500]} />
+          <Bar dataKey="Nathan" fill={colors.yellowAccent[500]} />
           <Bar dataKey="Simon" fill={colors.greenAccent[500]} />
           <Bar dataKey="Stef" fill={colors.blueAccent[500]} />
           <Line

@@ -39,6 +39,17 @@ export const tokens = (mode) => ({
           800: "#c62828",
           900: "#b71c1c",
         },
+        orangeAccent: {
+          100: "#ffe0b2",
+          200: "#ffcc80",
+          300: "#ffb74d",
+          400: "#ffa726",
+          500: "#ff9800",
+          600: "#fb8c00",
+          700: "#f57c00",
+          800: "#ef6c00",
+          900: "#e65100",
+        },
         yellowAccent: {
           100: "#f7f5bc",
           200: "#f1ee8e",
@@ -323,7 +334,7 @@ export const useMode = () => {
         setCookies("theme", themeCookie === "light" ? "dark" : "light");
       },
     }),
-    []
+    [],
   );
 
   const theme = useMemo(
@@ -336,7 +347,7 @@ export const useMode = () => {
           },
         },
       }),
-    [mode]
+    [mode],
   );
   return [theme, colorMode];
 };

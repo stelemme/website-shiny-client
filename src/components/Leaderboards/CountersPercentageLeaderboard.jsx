@@ -93,6 +93,7 @@ export default function CountersPercentageLeaderboard() {
         medalImages["battle-3-g.png"],
         medalImages["battle-3-s.png"],
         medalImages["battle-3-b.png"],
+        medalImages["nothing.png"],
       ]}
       total={`${calculateMultiplePercentage(totalCounterStats)} %`}
     />

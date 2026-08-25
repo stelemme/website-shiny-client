@@ -47,11 +47,9 @@ export default function Leaderboard({
       ? data
       : [
           { data: 0, dataTime: 0, trainer: "Joaquin" },
-
           { data: 0, dataTime: 0, trainer: "Korneel" },
-
+          { data: 0, dataTime: 0, trainer: "Nathan" },
           { data: 0, dataTime: 0, trainer: "Simon" },
-
           { data: 0, dataTime: 0, trainer: "Stef" },
         ];
 
@@ -215,7 +213,7 @@ export default function Leaderboard({
                   )}
                   <Box width="70px">
                     <Typography
-                    textAlign={"right"}
+                      textAlign={"right"}
                       fontWeight={"bold"}
                       variant="h6"
                       align="left"

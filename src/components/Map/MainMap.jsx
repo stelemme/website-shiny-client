@@ -29,7 +29,7 @@ const createClusterCustomIcon = function (cluster) {
 
   const totalMarkers = cluster.getChildCount();
 
-  const trainerlist = ["joaquin", "korneel", "simon", "stef"];
+  const trainerlist = ["joaquin", "korneel", "nathan", "simon", "stef"];
 
   const altData = {};
   trainerlist.forEach((trainer) => {
@@ -47,9 +47,12 @@ const createClusterCustomIcon = function (cluster) {
   const korneelPercentage = altData?.korneel?.percentage
     ? joaquinPercentage + altData?.korneel?.percentage
     : joaquinPercentage;
-  const simonPercentage = altData?.simon?.percentage
-    ? korneelPercentage + altData?.simon?.percentage
+  const nathanPercentage = altData?.nathan?.percentage
+    ? korneelPercentage + altData?.nathan?.percentage
     : korneelPercentage;
+  const simonPercentage = altData?.simon?.percentage
+    ? nathanPercentage + altData?.simon?.percentage
+    : nathanPercentage;
   const stefPercentage = altData?.stef?.percentage
     ? simonPercentage + altData?.stef?.percentage
     : simonPercentage;
@@ -65,14 +68,14 @@ const createClusterCustomIcon = function (cluster) {
   return L.divIcon({
     html: ` <div title="Joaquin: ${altData?.joaquin?.count}, Korneel: ${
       altData?.korneel?.count
-    }, Simon: ${altData?.simon?.count}, Stef: ${
+    }, Nathan: ${altData?.nathan?.count}, Simon: ${altData?.simon?.count}, Stef: ${
       altData?.stef?.count
     }" class="donut-chart-container">
               <div class="donut-chart" style="--percentage1: ${
                 joaquinPercentage + "%"
               }; --percentage2: ${korneelPercentage + "%"}; --percentage3: ${
-      simonPercentage + "%"
-    }; --percentage4: ${stefPercentage + "%"};"></div>
+                nathanPercentage + "%"
+              }; --percentage4: ${simonPercentage + "%"}; --percentage5: ${stefPercentage + "%"};"></div>
               <div class="donut-chart-center"></div>
             <div class="marker-text">${totalMarkers}</div>`,
     className: "marker_cluster_wrapper",
@@ -88,25 +91,29 @@ export default function MainMap() {
   ]);
 
   const { data: joaquinLocationsData, isLoading: loadingJoaquin } = useShiny(
-    `geoLocation=map&trainer=Joaquin&filter=${cookies.travelFilter}&filter=${cookies.planeFilter}`
+    `geoLocation=map&trainer=Joaquin&filter=${cookies.travelFilter}&filter=${cookies.planeFilter}`,
   );
   const { data: korneelLocationsData, isLoading: loadingKorneel } = useShiny(
-    `geoLocation=map&trainer=Korneel&filter=${cookies.travelFilter}&filter=${cookies.planeFilter}`
+    `geoLocation=map&trainer=Korneel&filter=${cookies.travelFilter}&filter=${cookies.planeFilter}`,
+  );
+  const { data: nathanLocationsData, isLoading: loadingNathan } = useShiny(
+    `geoLocation=map&trainer=Nathan&filter=${cookies.travelFilter}&filter=${cookies.planeFilter}`,
   );
   const { data: simonLocationsData, isLoading: loadingSimon } = useShiny(
-    `geoLocation=map&trainer=Simon&filter=${cookies.travelFilter}&filter=${cookies.planeFilter}`
+    `geoLocation=map&trainer=Simon&filter=${cookies.travelFilter}&filter=${cookies.planeFilter}`,
   );
   const { data: stefLocationsData, isLoading: loadingStef } = useShiny(
-    `geoLocation=map&trainer=Stef&filter=${cookies.travelFilter}&filter=${cookies.planeFilter}`
+    `geoLocation=map&trainer=Stef&filter=${cookies.travelFilter}&filter=${cookies.planeFilter}`,
   );
 
   const joaquinLocations = joaquinLocationsData?.data;
   const korneelLocations = korneelLocationsData?.data;
+  const nathanLocations = nathanLocationsData?.data;
   const simonLocations = simonLocationsData?.data;
   const stefLocations = stefLocationsData?.data;
 
   const loadingMarkers =
-    !loadingJoaquin && !loadingKorneel && !loadingSimon && !loadingStef;
+    !loadingJoaquin && !loadingKorneel && !loadingNathan && !loadingSimon && !loadingStef;
 
   const [map, setMap] = useState(null);
   const center = [51.080158037454105, 3.7204157561604343];
@@ -146,7 +153,7 @@ export default function MainMap() {
                   position={location.geoLocation.position}
                   icon={L.divIcon({
                     html: `<div  class="donut-chart-container">
-                                  <div class="donut-chart" style="--percentage1: 100%; --percentage2: 0%; --percentage3: 0%; --percentage4: 0%;"></div>
+                                  <div class="donut-chart" style="--percentage1: 100%; --percentage2: 0%; --percentage3: 0%; --percentage4: 0%; --percentage5: 0%;"></div>
                                   <div class="donut-chart-center"></div>
                                 <div class="marker-text">1</div>`,
                     className: "marker_1",
@@ -165,7 +172,26 @@ export default function MainMap() {
                   position={location.geoLocation.position}
                   icon={L.divIcon({
                     html: `<div  class="donut-chart-container">
-                                  <div class="donut-chart" style="--percentage1: 0%; --percentage2: 100%; --percentage3: 0%; --percentage4: 0%;"></div>
+                                  <div class="donut-chart" style="--percentage1: 0%; --percentage2: 100%; --percentage3: 0%; --percentage4: 0%; --percentage5: 0%;"></div>
+                                  <div class="donut-chart-center"></div>
+                                <div class="marker-text">1</div>`,
+                    className: "marker_1",
+                    iconSize: L.point(20, 20, true),
+                  })}
+                >
+                  <MapPopup data={location} />
+                </Marker>
+              );
+            })}
+            {nathanLocations?.map((location) => {
+              return (
+                <Marker
+                  key={location._id}
+                  alt="nathan"
+                  position={location.geoLocation.position}
+                  icon={L.divIcon({
+                    html: `<div  class="donut-chart-container">
+                                  <div class="donut-chart" style="--percentage1: 0%; --percentage2: 0%; --percentage3: 100%; --percentage4: 0%; --percentage5: 0%;"></div>
                                   <div class="donut-chart-center"></div>
                                 <div class="marker-text">1</div>`,
                     className: "marker_1",
@@ -184,7 +210,7 @@ export default function MainMap() {
                   position={location.geoLocation.position}
                   icon={L.divIcon({
                     html: `<div  class="donut-chart-container">
-                                  <div class="donut-chart" style="--percentage1: 0%; --percentage2: 0%; --percentage3: 100%; --percentage4: 0%;"></div>
+                                  <div class="donut-chart" style="--percentage1: 0%; --percentage2: 0%; --percentage3: 0%; --percentage4: 100%; --percentage5: 0%;"></div>
                                   <div class="donut-chart-center"></div>
                                 <div class="marker-text">1</div>`,
                     className: "marker_1",
@@ -203,7 +229,7 @@ export default function MainMap() {
                   position={location.geoLocation.position}
                   icon={L.divIcon({
                     html: `<div  class="donut-chart-container">
-                                  <div class="donut-chart" style="--percentage1: 0%; --percentage2: 0%; --percentage3: 0%; --percentage4: 100%;"></div>
+                                  <div class="donut-chart" style="--percentage1: 0%; --percentage2: 0%; --percentage3: 0%; --percentage4: 0%; --percentage5: 100%;"></div>
                                   <div class="donut-chart-center"></div>
                                 <div class="marker-text">1</div>`,
                     className: "marker_1",
@@ -238,7 +264,7 @@ export default function MainMap() {
         </div>
       </MapContainer>
     ),
-    [loadingMarkers, cookies, joaquinLocations]
+    [loadingMarkers, cookies, joaquinLocations],
   );
 
   return (

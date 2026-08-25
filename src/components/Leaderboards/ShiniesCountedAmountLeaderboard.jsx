@@ -48,6 +48,7 @@ export default function ShiniesCountedAmountLeaderboard() {
         medalImages["special-6-g.png"],
         medalImages["special-6-s.png"],
         medalImages["special-6-b.png"],
+        medalImages["nothing.png"],
       ]}
       total={shinyStats?.reduce((accumulator, currentValue) => {
         return accumulator + currentValue.data;

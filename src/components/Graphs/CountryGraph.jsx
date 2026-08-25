@@ -85,6 +85,11 @@ export default function CountryGraph() {
           />
           <Bar
             dataKey="Korneel"
+            fill={colors.orangeAccent[500]}
+            background={{ fill: colors.primary[400] }}
+          />
+          <Bar
+            dataKey="Nathan"
             fill={colors.yellowAccent[500]}
             background={{ fill: colors.primary[400] }}
           />

@@ -102,7 +102,7 @@ export default function InfoDisplay({
     if (e.target.value === "Gender") {
       try {
         const response = await getRequest(
-          `/pokedex?filter=complex&filterName=${data.name}`
+          `/pokedex?filter=complex&filterName=${data.name}`,
         );
         const pokemonData = response[0];
 
@@ -121,7 +121,7 @@ export default function InfoDisplay({
     } else if (e.target.value === "Location") {
       try {
         const response = await getRequest(
-          `/game?filter=complex&filterName=${data.game}`
+          `/game?filter=complex&filterName=${data.game}`,
         );
         setLocationsList(response[0].locations);
       } catch {
@@ -130,7 +130,7 @@ export default function InfoDisplay({
     } else if (e.target.value === "Ball") {
       try {
         const response = await getRequest(
-          `/game?filter=complex&filterName=${data.game}`
+          `/game?filter=complex&filterName=${data.game}`,
         );
         setBallList(response[0].balls);
       } catch {
@@ -139,10 +139,10 @@ export default function InfoDisplay({
     } else if (e.target.value === "Method Category") {
       try {
         const response = await getRequest(
-          `/game?filter=complex&filterName=${data.game}`
+          `/game?filter=complex&filterName=${data.game}`,
         );
         const method = response[0].methods.find(
-          (method) => method.name === data.method.name
+          (method) => method.name === data.method.name,
         );
         setMethodCatList(method.categories);
       } catch {
@@ -260,8 +260,8 @@ export default function InfoDisplay({
             data?.gender === "male"
               ? "♂"
               : data?.gender === "female"
-              ? "♀"
-              : "-"
+                ? "♀"
+                : "-"
           }
         />
         <InfoDict
@@ -338,6 +338,60 @@ export default function InfoDisplay({
           infoCat={"Location"}
           infoName={data?.location}
         />
+      </Grid>
+
+      <Grid item xs={12}>
+        {data?.gameSort > 18 && (
+          <InfoDict
+            xs1={4}
+            xs2={8}
+            infoCat={"Shiny Charm"}
+            infoName={data?.method.shinyCharm ? "Obtained" : "Not Obtained"}
+          />
+        )}
+        {data?.method.name === "Overworld Spawn" &&
+          (data?.gameSort === 29 || data?.gameSort === 30) && (
+            <>
+              <InfoDict
+                xs1={4}
+                xs2={8}
+                infoCat={"Lure"}
+                infoName={data?.method.lure ? "Active" : "Inactive"}
+              />
+              <InfoDict
+                xs1={4}
+                xs2={8}
+                infoCat={"Chain Matters"}
+                infoName={data?.method.chainMatters ? "Yes" : "No"}
+              />
+              <InfoDict
+                xs1={4}
+                xs2={8}
+                infoCat={"Chain Length"}
+                infoName={data?.method.letsGoChain}
+              />
+            </>
+          )}
+        {data?.method.name === "SOS Chain" && (
+          <InfoDict
+            xs1={4}
+            xs2={8}
+            infoCat={"Chain Length"}
+            infoName={
+              data?.method.sosChain !== 0
+                ? data?.method.sosChain
+                : data?.totalEncounters
+            }
+          />
+        )}
+        {data?.method.name === "Poké Radar" && (
+          <InfoDict
+            xs1={4}
+            xs2={8}
+            infoCat={"Chain Length"}
+            infoName={data?.method.radarChain}
+          />
+        )}
       </Grid>
     </Grid>
   );
