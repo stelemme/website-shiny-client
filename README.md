@@ -6,6 +6,10 @@
 
 -- Chains met variabele odds worden nu correct ingerekend in het percentage. Er wordt ook geschiedenis bijgehouden van hoeveel encounters er bij welke odds zijn gedaan.
 
+Volgende zaken werken nog niet: 
+-- Undo knop, chain & chain history blijft behouden
+-- Oude chains moeten nog worden aangevuld
+
 ---
 
 ### Version 1.38.0 (21.08.2026)
