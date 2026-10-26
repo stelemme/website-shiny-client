@@ -12,6 +12,14 @@ import {
   DialogContent,
   TextField,
   Tooltip,
+  DialogTitle,
+  TableContainer,
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
 } from "@mui/material";
 import { tokens } from "../../theme";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
@@ -23,6 +31,7 @@ import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
 import ListAltRoundedIcon from "@mui/icons-material/ListAltRounded";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import TableChartOutlinedIcon from "@mui/icons-material/TableChartOutlined";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 
 // Components
 import CustomDialog from "../../components/Dialogs/CustomDialog";
@@ -33,6 +42,8 @@ import CounterInfoDialog from "../../components/Dialogs/CounterInfoDialog";
 import EncTableDialog from "../../components/Dialogs/EncTableDialog";
 import MeanEncTimeEditDialog from "../../components/Dialogs/MeanEncTimeEditDialog";
 import SearchLevelEditDialog from "../../components/Dialogs/SearchLevelEditDialog";
+import ChainEditDialog from "../../components/Dialogs/ChainEditDialog";
+import ChainResetDialog from "../../components/Dialogs/ChainResetDialog";
 
 // Functions
 import {
@@ -59,7 +70,10 @@ export default function Counter() {
 
   const [backgroundColor, setBackgroundColor] = useState(colors.primary[400]);
   const [backgroundColorSearchLevel, setBackgroundColorSearchLevel] = useState(
-    colors.primary[400]
+    colors.primary[400],
+  );
+  const [backgroundColorChain, setBackgroundColorChain] = useState(
+    colors.primary[400],
   );
   const [openDelete, setOpenDelete] = useState(false);
   const [openShiny, setOpenShiny] = useState(false);
@@ -69,8 +83,11 @@ export default function Counter() {
   const [openRanking, setOpenRanking] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openSearchLevelEdit, setOpenSearchLevelEdit] = useState(false);
+  const [openChainEdit, setOpenChainEdit] = useState(false);
+  const [openChainReset, setOpenChainReset] = useState(false);
   const [openIncrementEdit, setOpenIncrementEdit] = useState(false);
   const [openThresholdEdit, setOpenThresholdEdit] = useState(false);
+  const [openChainHistory, setOpenChainHistory] = useState(false);
 
   const [data, setData] = useState(undefined);
   const [hasData, setHasData] = useState(false);
@@ -85,7 +102,14 @@ export default function Counter() {
 
   const [searchLevel, setSearchLevel] = useState(0);
   const [searchLevelEdit, setSearchLevelEdit] = useState(0);
+  const [chain, setChain] = useState(0);
+  const [chainEdit, setChainEdit] = useState(0);
   const [encountersToday, setEncountersToday] = useState(0);
+
+  const chainHistory = data?.method?.chainHistory ?? [];
+  const isChain = ["chainfishing", "sos-chain", "sos-chain-sm"].includes(
+    data?.method?.function,
+  );
 
   console.log(data);
 
@@ -129,8 +153,12 @@ export default function Counter() {
         if (data.method.function === "dexnav") {
           setSearchLevel(data.method.searchLevel ? data.method.searchLevel : 0);
           setSearchLevelEdit(
-            data.method.searchLevel ? data.method.searchLevel : 0
+            data.method.searchLevel ? data.method.searchLevel : 0,
           );
+        }
+        if (isChain) {
+          setChain(data.method.chain ? data.method.chain : 0);
+          setChainEdit(data.method.chain ? data.method.chain : 0);
         }
       }
       setOdds(
@@ -141,57 +169,23 @@ export default function Counter() {
           data.method?.charmRolls,
           data.totalEncounters,
           data.method?.function,
-          data.method?.searchLevel
-        )
+          data.method?.searchLevel,
+          data.method?.chain,
+        ),
       );
-      let chainLimit = 0;
-      switch (data.method.function) {
-        case "pokeradar-gen4":
-          chainLimit = 40;
-          break;
-        case "pokeradar-gen6":
-          chainLimit = 40;
-          break;
-        case "pokeradar-gen8":
-          chainLimit = 40;
-          break;
-        case "chainfishing":
-          chainLimit = 20;
-          break;
-        case "sos-chain-sm":
-          chainLimit = 30;
-          break;
-        case "sos-chain":
-          chainLimit = 30;
-          break;
-        default:
-          chainLimit = 0;
-      }
-      if (data.totalEncounters >= chainLimit) {
-        setPercentage(
-          calculatePercentage(
-            data.totalEncounters - chainLimit,
-            data.method.odds,
-            data.method.rolls,
-            data.method.shinyCharm,
-            data.method?.charmRolls,
-            data.method?.function,
-            data.method?.searchLevel
-          )
-        );
-      } else {
-        setPercentage(
-          calculatePercentage(
-            data.totalEncounters,
-            data.method.odds,
-            data.method.rolls,
-            data.method.shinyCharm,
-            data.method?.charmRolls,
-            data.method?.function,
-            data.method?.searchLevel
-          )
-        );
-      }
+
+      setPercentage(
+        calculatePercentage(
+          data.totalEncounters,
+          data.method.odds,
+          data.method.rolls,
+          data.method.shinyCharm,
+          data.method?.charmRolls,
+          data.method?.function,
+          data.method?.searchLevel,
+          data.method?.chainHistory,
+        ),
+      );
       setTimeDifference(
         data.stats.manualMeanEncounterTime
           ? data.stats.meanEncounterTime
@@ -199,8 +193,8 @@ export default function Counter() {
               data.encounters,
               data.upperTimeThreshold,
               data.lowerTimeThreshold,
-              data.increment
-            )
+              data.increment,
+            ),
       );
       setIncrement(data.increment);
       setIncrementEdit({ increment: data.increment });
@@ -234,7 +228,29 @@ export default function Counter() {
           `/counters/${counterId}?action=addSearchLevel`,
           null,
           null,
-          true
+          true,
+        );
+        setData(response);
+      } catch {
+        return;
+      }
+    }
+
+    if (isChain) {
+      setChain((prevState) => {
+        return prevState + 1;
+      });
+      setChainEdit((prevState) => {
+        return prevState + 1;
+      });
+
+      try {
+        const response = await makeRequest(
+          "patch",
+          `/counters/${counterId}?action=addChain`,
+          { odd: odds, encounters: data.increment },
+          null,
+          true,
         );
         setData(response);
       } catch {
@@ -256,7 +272,7 @@ export default function Counter() {
           totalHuntTime: Math.round(timeDifference * (count + data.increment)),
         },
         null,
-        true
+        true,
       );
       setData(response);
     } catch {
@@ -281,7 +297,7 @@ export default function Counter() {
         "patch",
         `/counters/${counterId}?action=undo`,
         null,
-        "undo"
+        "undo",
       );
       setData(response);
     } catch {
@@ -327,7 +343,7 @@ export default function Counter() {
           "patch",
           `/counters/${counterId}?action=encounterEdit`,
           data,
-          "edit"
+          "edit",
         );
         setCount(countEdit);
         setOpenEdit(false);
@@ -342,7 +358,7 @@ export default function Counter() {
           "patch",
           `/counters/${counterId}?action=encounterAdd`,
           data,
-          "edit"
+          "edit",
         );
         setCount(count + countAdd);
         setOpenEdit(false);
@@ -361,7 +377,7 @@ export default function Counter() {
         "patch",
         `/counters/${counterId}?action=incrementEdit`,
         data,
-        "edit"
+        "edit",
       );
       setIncrement(response.increment);
       setOpenIncrementEdit(false);
@@ -390,7 +406,35 @@ export default function Counter() {
         `/counters/${counterId}?action=addSearchLevel`,
         null,
         null,
-        true
+        true,
+      );
+      setData(response);
+    } catch {
+      return;
+    }
+  };
+
+  /* CHAIN CLICK */
+  const handleChainClick = async () => {
+    setBackgroundColorChain(colors.primary[900]);
+    setChain((prevState) => {
+      return prevState + 1;
+    });
+    setChainEdit((prevState) => {
+      return prevState + 1;
+    });
+
+    setTimeout(() => {
+      setBackgroundColorChain(colors.primary[400]);
+    }, 200);
+
+    try {
+      const response = await makeRequest(
+        "patch",
+        `/counters/${counterId}?action=addChain`,
+        { odd: odds, encounters: data.increment },
+        null,
+        true,
       );
       setData(response);
     } catch {
@@ -464,6 +508,76 @@ export default function Counter() {
             searchLevelEdit={searchLevelEdit}
             setSearchLevelEdit={setSearchLevelEdit}
           />
+        </Box>
+      );
+    } else {
+      return null;
+    }
+  };
+
+  const chainDisplay = () => {
+    if (isChain) {
+      return (
+        <Box
+          display="flex"
+          gap="10px"
+          alignContent="center"
+          height="40px"
+          mb={"20px"}
+        >
+          <Box
+            width="100%"
+            minHeight="40px"
+            borderRadius="10px"
+            backgroundColor={backgroundColorChain}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            onClick={
+              username === data.trainer && !completed
+                ? handleChainClick
+                : undefined
+            }
+            sx={{
+              "@media (min-width: 768px)": {
+                ...(username === data.trainer &&
+                  !completed && {
+                    "&:hover": {
+                      cursor: "pointer",
+                      backgroundColor: colors.primary[900],
+                    },
+                  }),
+              },
+            }}
+          >
+            <Typography fontSize={20} fontWeight={"bold"}>
+              {`Chain: ${chain}`}
+            </Typography>
+          </Box>
+          {!completed && (
+            <>
+              <IconButton onClick={() => setOpenChainReset(true)}>
+                <RestartAltIcon />
+              </IconButton>
+              <IconButton onClick={() => setOpenChainEdit(true)}>
+                <EditRoundedIcon />
+              </IconButton>
+              <ChainEditDialog
+                open={openChainEdit}
+                setOpen={setOpenChainEdit}
+                setChain={setChain}
+                chainEdit={chainEdit}
+                setChainEdit={setChainEdit}
+                setData={setData}
+              />
+              <ChainResetDialog
+                open={openChainReset}
+                setOpen={setOpenChainReset}
+                setChain={setChain}
+                setData={setData}
+              />
+            </>
+          )}
         </Box>
       );
     } else {
@@ -676,6 +790,7 @@ export default function Counter() {
             </Typography>
           </Box>
           {dexnavDisplay()}
+          {chainDisplay()}
 
           {/* STATS */}
           <Grid container>
@@ -770,7 +885,79 @@ export default function Counter() {
               <Typography fontWeight={"bold"} textAlign={"right"}>
                 Shiny Probability
               </Typography>
-              <Typography textAlign={"right"}>1/{odds}</Typography>
+              <Box
+                display="flex"
+                justifyContent="flex-end"
+                alignItems="center"
+                height="21px"
+              >
+                {isChain && (
+                  <>
+                    <IconButton
+                      size="small"
+                      onClick={() => setOpenChainHistory(true)}
+                    >
+                      <InfoOutlinedIcon fontSize="inherit" />
+                    </IconButton>
+
+                    <Dialog
+                      open={openChainHistory}
+                      onClose={() => setOpenChainHistory(false)}
+                      fullWidth
+                      sx={{
+                        "& .MuiDialog-paper": {
+                          width: "300px",
+                          maxWidth: "90%",
+                        },
+                      }}
+                    >
+                      <DialogTitle>Encounters per Probability</DialogTitle>
+
+                      <DialogContent>
+                        {chainHistory.length === 0 ? (
+                          <Typography>No chain history available.</Typography>
+                        ) : (
+                          <TableContainer
+                            component={Paper}
+                            sx={{
+                              width: "100%",
+                              maxHeight: 400,
+                              overflowX: "auto",
+                            }}
+                          >
+                            <Table stickyHeader size="small">
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell align="right">Odds</TableCell>
+                                  <TableCell align="right">
+                                    Encounters
+                                  </TableCell>
+                                </TableRow>
+                              </TableHead>
+
+                              <TableBody>
+                                {chainHistory.map(
+                                  ({ odd, encounters }, index) => (
+                                    <TableRow key={`${odd}-${index}`} hover>
+                                      <TableCell align="right">
+                                        1/{odd}
+                                      </TableCell>
+                                      <TableCell align="right">
+                                        {encounters}
+                                      </TableCell>
+                                    </TableRow>
+                                  ),
+                                )}
+                              </TableBody>
+                            </Table>
+                          </TableContainer>
+                        )}
+                      </DialogContent>
+                    </Dialog>
+                  </>
+                )}
+                <Typography textAlign="right">1/{odds}</Typography>
+              </Box>
               <Typography textAlign={"right"}>{percentage}%</Typography>
               {odds !== 8192 && (
                 <Typography textAlign={"right"}>

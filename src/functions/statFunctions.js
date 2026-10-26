@@ -37,7 +37,8 @@ export function calculateProb(
   charmRolls,
   totalEncounters,
   methodFunction = null,
-  searchLevel = null
+  searchLevel = null,
+  chain = null
 ) {
   if (methodFunction) {
     return methodHunts(
@@ -52,7 +53,8 @@ export function calculateProb(
       null,
       null,
       null,
-      searchLevel
+      searchLevel,
+      chain
     );
   } else {
     return Math.round(
@@ -68,7 +70,8 @@ export function calculatePercentage(
   shinyCharm,
   charmRolls,
   methodFunction,
-  searchLevel = null
+  searchLevel = null,
+  chainHistory = null
 ) {
   if (searchLevel) {
     let init_percentage = 1;
@@ -94,6 +97,13 @@ export function calculatePercentage(
     });
   }
 
+  if ((chainHistory?.length > 0)) {
+    return calculateChainPercentage(chainHistory).toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  }
+
   const newProb = calculateProb(
     odds,
     rolls,
@@ -109,6 +119,23 @@ export function calculatePercentage(
     maximumFractionDigits: 2,
   });
 }
+
+const calculateChainPercentage = (chainHistory) => {
+  // Start at 100% probability of having found no shiny yet
+  const probabilityNoShiny = chainHistory.reduce(
+    (probability, { odd, encounters }) => {
+      // Probability of no shiny across this entry's encounters
+      const noShinyThisEntry = (1 - 1 / odd) ** encounters;
+
+      // Combine it with the probability from previous entries
+      return probability * noShinyThisEntry;
+    },
+    1
+  );
+
+  // The chance of at least one shiny is the opposite
+  return (1 - probabilityNoShiny) * 100;
+};
 
 export function calculateMultiplePercentage(encounterData) {
   if (encounterData.length < 1) {

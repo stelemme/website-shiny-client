@@ -90,7 +90,7 @@ export default function CreateShinyFromCounter() {
         });
 
         const response2 = await getRequest(
-          `/pokedex?filter=complex&filterName=${response.name}`
+          `/pokedex?filter=complex&filterName=${response.name}`,
         );
         const pokemonData = response2[0];
         let gender = undefined;
@@ -121,7 +121,7 @@ export default function CreateShinyFromCounter() {
         });
 
         const response3 = await getRequest(
-          `/game?filter=complex&filterName=${response.game}`
+          `/game?filter=complex&filterName=${response.game}`,
         );
 
         setPokemonsList(response3[0].pokemons);
@@ -162,7 +162,7 @@ export default function CreateShinyFromCounter() {
     ) {
       setAlertSeverity("warning");
       setAlertMessage(
-        "You forgot to fill in the geo location or it is filled in incorrectly"
+        "You forgot to fill in the geo location or it is filled in incorrectly",
       );
       setAlertOpen(true);
 
@@ -183,7 +183,8 @@ export default function CreateShinyFromCounter() {
         data.method?.charmRolls,
         data.totalEncounters,
         data.method?.function,
-        data.method?.searchLevel
+        data.method?.searchLevel,
+        data.method?.chain,
       ),
       percentage: calculatePercentage(
         data.totalEncounters,
@@ -192,88 +193,21 @@ export default function CreateShinyFromCounter() {
         data.method.shinyCharm,
         data.method?.charmRolls,
         data.method?.function,
-        data.method?.searchLevel
+        data.method?.searchLevel,
+        data.method?.chainHistory,
       ),
       meanEncounterTime: data.stats.meanEncounterTime,
       daysHunting: calculateDateDifference(data.endDate, data.startDate),
       totalHuntTime: Math.round(
-        data.stats.meanEncounterTime * data.totalEncounters
+        data.stats.meanEncounterTime * data.totalEncounters,
       ),
       manualMeanEncounterTime: data.stats.manualMeanEncounterTime,
     };
 
-    if (data.method.function) {
-      let chainLimit = 0;
-      switch (data.method.function) {
-        case "pokeradar-gen4":
-          chainLimit = 40;
-          break;
-        case "pokeradar-gen6":
-          chainLimit = 40;
-          break;
-        case "pokeradar-gen8":
-          chainLimit = 40;
-          break;
-        case "chainfishing":
-          chainLimit = 20;
-          break;
-        case "sos-chain-sm":
-          chainLimit = 30;
-          break;
-        case "sos-chain":
-          chainLimit = 30;
-          break;
-        default:
-          console.log(chainLimit);
-      }
-
-      if (data.totalEncounters >= chainLimit) {
-        setData((prevState) => {
-          return {
-            ...prevState,
-            ...{
-              method: {
-                ...prevState.method,
-                correctedEncounters: data.totalEncounters - chainLimit,
-              },
-              stats: {
-                ...newStats,
-                percentage: calculatePercentage(
-                  data.totalEncounters - chainLimit,
-                  data.method.odds,
-                  data.method.rolls,
-                  data.method.shinyCharm,
-                  data.method?.charmRolls,
-                  data.method?.function,
-                  data.method?.searchLevel
-                ),
-              },
-            },
-          };
-        });
-      } else {
-        setData((prevState) => {
-          return {
-            ...prevState,
-            ...{
-              method: {
-                ...prevState.method,
-                correctedEncounters: 0,
-              },
-              stats: {
-                ...newStats,
-                percentage: 0,
-              },
-            },
-          };
-        });
-      }
-    } else {
-      setData((prevState) => ({
-        ...prevState,
-        stats: newStats,
-      }));
-    }
+    setData((prevState) => ({
+      ...prevState,
+      stats: newStats,
+    }));
   };
 
   return (
