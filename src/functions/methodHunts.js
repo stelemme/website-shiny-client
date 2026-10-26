@@ -10,7 +10,8 @@ export default function methodHunts(
   svSparklingPower = null,
   wormholeType = null,
   wormholeDistance = null,
-  searchLevel = null
+  searchLevel = null,
+  chain = null
 ) {
   let rolls = 1
   switch (methodFunction) {
@@ -123,8 +124,8 @@ export default function methodHunts(
         return oddsCollection[totalEncounters]
       }
     case "chainfishing":
-      if (totalEncounters <= 20) {
-        rolls = 1 + 2 * totalEncounters
+      if (chain <= 20) {
+        rolls = 1 + 2 * chain
       } else { rolls = 41 }
       if (shinyCharm) {
         rolls += 2
@@ -180,7 +181,7 @@ export default function methodHunts(
       }
       return Math.round((1 - (4095 / 4096) ** rolls) ** -1)
     case "sos-chain-sm":
-      let chainSosSm = (totalEncounters % 256)
+      let chainSosSm = (chain % 256)
 
       if (shinyCharm) {
         rolls += 2
@@ -198,11 +199,11 @@ export default function methodHunts(
       if (shinyCharm) {
         rolls += 2
       }
-      if (totalEncounters > 30) {
+      if (chain > 30) {
         rolls += 12
-      } else if (totalEncounters > 20) {
+      } else if (chain > 20) {
         rolls += 8
-      } else if (totalEncounters > 10) {
+      } else if (chain > 10) {
         rolls += 4
       }
       return Math.round((1 - (4095 / 4096) ** rolls) ** -1)
