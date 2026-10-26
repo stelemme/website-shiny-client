@@ -9,6 +9,7 @@
 Volgende zaken werken nog niet: 
 -- Undo knop, chain & chain history blijft behouden
 -- Oude chains moeten nog worden aangevuld
+-- Dexnav!
 
 ---
 
