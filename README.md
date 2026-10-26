@@ -2,6 +2,12 @@
 
 ## Changelogs
 
+### Version 1.39.0 (26.10.2026)
+
+-- Chains met variabele odds worden nu correct ingerekend in het percentage. Er wordt ook geschiedenis bijgehouden van hoeveel encounters er bij welke odds zijn gedaan.
+
+---
+
 ### Version 1.38.0 (21.08.2026)
 
 -- Zoetennaat is toegevoegd aan de site
