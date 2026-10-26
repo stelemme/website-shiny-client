@@ -4,39 +4,39 @@
 
 ### Version 1.39.0 (26.10.2026)
 
--- Chains met variabele odds worden nu correct ingerekend in het percentage. Er wordt ook geschiedenis bijgehouden van hoeveel encounters er bij welke odds zijn gedaan.
+- Chains met variabele odds worden nu correct ingerekend in het percentage. Er wordt ook geschiedenis bijgehouden van hoeveel encounters er bij welke odds zijn gedaan.
 
 Volgende zaken werken nog niet: 
--- Undo knop, chain & chain history blijft behouden
--- Oude chains moeten nog worden aangevuld
--- Dexnav!
+- Undo knop, chain & chain history blijft behouden
+- Oude chains moeten nog worden aangevuld
+- Dexnav!
 
 ---
 
 ### Version 1.38.0 (21.08.2026)
 
--- Zoetennaat is toegevoegd aan de site
--- Extra info (zoals chainlength, shiny charm, ...) is toegevoegd aan shiny info
+- Zoetennaat is toegevoegd aan de site
+- Extra info (zoals chainlength, shiny charm, ...) is toegevoegd aan shiny info
 
 ---
 
 ### Version 1.37.0 (15.02.2026)
 
 **Collections:**
--- Games en types zijn toegevoegd aan de collections.
+- Games en types zijn toegevoegd aan de collections.
 
 **Counter Stats:**
--- Total encounter time wordt nu ook weergegeven.
+- Total encounter time wordt nu ook weergegeven.
 
 **Shiny:**
--- Als ze jarig zijn staat er een cakeske bij
+- Als ze jarig zijn staat er een cakeske bij
 
 ---
 
 ### Version 1.36.0 (07.12.2025)
 
 **Filter:**
--- Naast de filters komt er nu het aantal shinies te staan
+- Naast de filters komt er nu het aantal shinies te staan
 
 ---
 
@@ -49,7 +49,7 @@ Volgende zaken werken nog niet:
 ### Version 1.35.0 (04.10.2025)
 
 **Users:**
--- Zoete naat heeft een guest account waarmee hij de site kan bekijken
+- Zoete naat heeft een guest account waarmee hij de site kan bekijken
 
 **Counter:**
 - encounter time van uu:min:sec verandert naar min:sec:hondersten
