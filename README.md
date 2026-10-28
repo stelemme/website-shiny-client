@@ -2,7 +2,7 @@
 
 ## Changelogs
 
-### Version 1.39.0 (26.10.2026)
+### Version 1.39.1 (28.10.2026)
 
 - Chains met variabele odds worden nu correct ingerekend in het percentage. Er wordt ook geschiedenis bijgehouden van hoeveel encounters er bij welke odds zijn gedaan.
 
@@ -10,6 +10,7 @@ Volgende zaken werken nog niet:
 - Undo knop, chain & chain history blijft behouden
 - Oude chains moeten nog worden aangevuld
 - Dexnav!
+- Omgerekende encounters fixen in de stats (bv. encountergrafiek)
 
 ---
 

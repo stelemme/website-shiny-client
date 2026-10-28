@@ -959,11 +959,19 @@ export default function Counter() {
                 <Typography textAlign="right">1/{odds}</Typography>
               </Box>
               <Typography textAlign={"right"}>{percentage}%</Typography>
-              {odds !== 8192 && (
-                <Typography textAlign={"right"}>
-                  {Math.round((8192 / odds) * count)} : 8192
-                </Typography>
-              )}
+              {odds !== 8192 &&
+                (isChain ? (
+                  <Typography textAlign="right">
+                    {chainHistory.reduce((sum, item) => {
+                      return sum + Math.round((8192 / item.odd) * item.encounters);
+                    }, 0)}{" "}
+                    : 8192
+                  </Typography>
+                ) : (
+                  <Typography textAlign="right">
+                    {Math.round((8192 / odds) * count)} : 8192
+                  </Typography>
+                ))}
               <Box display="flex" alignItems="center" justifyContent="flex-end">
                 {username === data.trainer && (
                   <Box>
