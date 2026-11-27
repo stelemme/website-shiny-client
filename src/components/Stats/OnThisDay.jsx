@@ -36,13 +36,13 @@ export default function OnThisDay() {
             }}
             variant="rounded"
             width={"100%"}
-            height={"400px"}
+            height={"490px"}
           />
         }
       >
         <Box
           sx={{
-            height: window.innerWidth > 1536 ? "400px" : null,
+            height: window.innerWidth > 1536 ? "490px" : null,
             overflowY: "auto",
           }}
         >

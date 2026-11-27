@@ -7,6 +7,7 @@
 **Bug fixes:**
 - Bij de "existing location" list worden de opties nu correct weergegeven ipv 100X bank.
 - Chains van andere personen kunnen niet meer worden aangepast.
+- Verjaardagen kader staat ingesteld op de juiste hoogte nu Nathan erbij is.
 
 ---
 
