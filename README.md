@@ -8,9 +8,10 @@
 - Bij de "existing location" list worden de opties nu correct weergegeven ipv 100X bank.
 - Chains van andere personen kunnen niet meer worden aangepast.
 - Verjaardagen kader staat ingesteld op de juiste hoogte nu Nathan erbij is.
-- MeanEncounterTime wordt nu afgerond naar beneden dus geen XX:XX:100 meer
-- Locations SV zijn gefixt
-- Run Away Encounters zijn toegevoegd onder optie 'encounters' bij de gen 3 games
+- MeanEncounterTime wordt nu afgerond naar beneden dus geen XX:XX:100 meer.
+- Locations SV zijn gefixt.
+- Run Away Encounters zijn toegevoegd onder optie 'encounters' bij de gen 3 games.
+- Pokéradars worden nu enkel de eerste keer weergegeven bij verjaardagen als grouping aan staat.
 
 ---
 
