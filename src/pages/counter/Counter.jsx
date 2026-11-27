@@ -554,7 +554,7 @@ export default function Counter() {
               {`Chain: ${chain}`}
             </Typography>
           </Box>
-          {!completed && (
+          {!completed && username === data.trainer && (
             <>
               <IconButton onClick={() => setOpenChainReset(true)}>
                 <RestartAltIcon />
