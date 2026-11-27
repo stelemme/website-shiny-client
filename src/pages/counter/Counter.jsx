@@ -214,6 +214,10 @@ export default function Counter() {
       return prevState + increment;
     });
 
+    setTimeout(() => {
+      setBackgroundColor(colors.primary[400]);
+    }, 200);
+
     if (data.method.function === "dexnav") {
       setSearchLevel((prevState) => {
         return prevState + 1;
@@ -248,7 +252,15 @@ export default function Counter() {
         const response = await makeRequest(
           "patch",
           `/counters/${counterId}?action=addChain`,
-          { odd: odds, encounters: data.increment },
+          {
+            odd: odds,
+            encounters: data.increment,
+            meanEncounterTime: timeDifference,
+            percentage: percentage,
+            totalHuntTime: Math.round(
+              timeDifference * (count + data.increment),
+            ),
+          },
           null,
           true,
         );
@@ -256,27 +268,25 @@ export default function Counter() {
       } catch {
         return;
       }
-    }
-
-    setTimeout(() => {
-      setBackgroundColor(colors.primary[400]);
-    }, 200);
-
-    try {
-      const response = await makeRequest(
-        "patch",
-        `/counters/${counterId}?action=add`,
-        {
-          meanEncounterTime: timeDifference,
-          percentage: percentage,
-          totalHuntTime: Math.round(timeDifference * (count + data.increment)),
-        },
-        null,
-        true,
-      );
-      setData(response);
-    } catch {
-      return;
+    } else {
+      try {
+        const response = await makeRequest(
+          "patch",
+          `/counters/${counterId}?action=add`,
+          {
+            meanEncounterTime: timeDifference,
+            percentage: percentage,
+            totalHuntTime: Math.round(
+              timeDifference * (count + data.increment),
+            ),
+          },
+          null,
+          true,
+        );
+        setData(response);
+      } catch {
+        return;
+      }
     }
   };
 
@@ -554,7 +564,7 @@ export default function Counter() {
               {`Chain: ${chain}`}
             </Typography>
           </Box>
-          {!completed && (
+          {!completed && username === data.trainer && (
             <>
               <IconButton onClick={() => setOpenChainReset(true)}>
                 <RestartAltIcon />
@@ -963,7 +973,9 @@ export default function Counter() {
                 (isChain ? (
                   <Typography textAlign="right">
                     {chainHistory.reduce((sum, item) => {
-                      return sum + Math.round((8192 / item.odd) * item.encounters);
+                      return (
+                        sum + Math.round((8192 / item.odd) * item.encounters)
+                      );
                     }, 0)}{" "}
                     : 8192
                   </Typography>

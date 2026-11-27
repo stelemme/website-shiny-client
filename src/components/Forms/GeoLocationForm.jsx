@@ -84,6 +84,8 @@ export default function GeoLocationForm({ data, setData }) {
     }
   };
 
+  console.log(geoLocationsList)
+
   return (
     <Grid container>
       <Grid item xs={12}>
@@ -133,6 +135,7 @@ export default function GeoLocationForm({ data, setData }) {
               });
             }}
             options={geoLocationsList ? geoLocationsList : []}
+            getOptionKey={(option) => option.position}
             getOptionLabel={(option) => option.name}
             renderInput={(params) => (
               <TextField
