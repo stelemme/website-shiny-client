@@ -4,7 +4,7 @@ export function calculateMeanEncounterTime(
   dateList,
   upperThreshold,
   lowerThreshold,
-  increment
+  increment,
 ) {
   const uniqueDates = Array.from(new Set(dateList));
 
@@ -25,7 +25,7 @@ export function calculateMeanEncounterTime(
 
   const sum = timeDifferences.reduce((total, diff) => total + diff, 0);
 
-  const meanDifference = sum / timeDifferences.length / increment;
+  const meanDifference = Math.floor(sum / timeDifferences.length / increment);
 
   return meanDifference;
 }
@@ -38,7 +38,7 @@ export function calculateProb(
   totalEncounters,
   methodFunction = null,
   searchLevel = null,
-  chain = null
+  chain = null,
 ) {
   if (methodFunction) {
     return methodHunts(
@@ -54,11 +54,12 @@ export function calculateProb(
       null,
       null,
       searchLevel,
-      chain
+      chain,
     );
   } else {
     return Math.round(
-      (1 - ((odds - 1) / odds) ** (rolls + (shinyCharm ? charmRolls : 0))) ** -1
+      (1 - ((odds - 1) / odds) ** (rolls + (shinyCharm ? charmRolls : 0))) **
+        -1,
     );
   }
 }
@@ -71,7 +72,7 @@ export function calculatePercentage(
   charmRolls,
   methodFunction,
   searchLevel = null,
-  chainHistory = null
+  chainHistory = null,
 ) {
   if (searchLevel) {
     let init_percentage = 1;
@@ -85,7 +86,7 @@ export function calculatePercentage(
         charmRolls,
         1,
         methodFunction,
-        current_searchLevel
+        current_searchLevel,
       );
       init_percentage *= (newProb - 1) / newProb;
     }
@@ -97,7 +98,7 @@ export function calculatePercentage(
     });
   }
 
-  if ((chainHistory?.length > 0)) {
+  if (chainHistory?.length > 0) {
     return calculateChainPercentage(chainHistory).toLocaleString("en-US", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
@@ -110,7 +111,7 @@ export function calculatePercentage(
     shinyCharm,
     charmRolls,
     encounters,
-    methodFunction
+    methodFunction,
   );
 
   const percentage = (1 - ((newProb - 1) / newProb) ** encounters) * 100;
@@ -130,7 +131,7 @@ const calculateChainPercentage = (chainHistory) => {
       // Combine it with the probability from previous entries
       return probability * noShinyThisEntry;
     },
-    1
+    1,
   );
 
   // The chance of at least one shiny is the opposite
@@ -149,7 +150,7 @@ export function calculateMultiplePercentage(encounterData) {
       item.rolls,
       item.shinyCharm,
       item?.charmRolls,
-      item.totalEncounters
+      item.totalEncounters,
     );
 
     totalRecalcValues += (8192 / newProb) * item.totalEncounters;
@@ -174,7 +175,7 @@ export function calculateDateDifference(endDate, startDate) {
 
 export function calculateEncountersPerDay(dateList, day = new Date()) {
   const datesFromToday = dateList.filter((date) =>
-    isSameDate(new Date(date), day)
+    isSameDate(new Date(date), day),
   );
 
   function isSameDate(date1, date2) {
@@ -205,16 +206,16 @@ export function formatTime(totalSeconds, showDays = true) {
     const formattedTime =
       days === 1
         ? `${String(days)} day ${String(hours).padStart(2, "0")}:${String(
-            minutes
+            minutes,
           ).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`
         : `${String(days)} days ${String(hours).padStart(2, "0")}:${String(
-            minutes
+            minutes,
           ).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
     return formattedTime;
   } else {
     return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
       2,
-      "0"
+      "0",
     )}:${String(seconds).padStart(2, "0")}`;
   }
 }
@@ -269,13 +270,13 @@ export function getCumulativeCounts(dates) {
   for (const dateString of dates) {
     dateFrequencyMap.set(
       new Date(dateString).toDateString(),
-      (dateFrequencyMap.get(new Date(dateString).toDateString()) || 0) + 1
+      (dateFrequencyMap.get(new Date(dateString).toDateString()) || 0) + 1,
     );
   }
 
   // Sort unique dates once (inevitable if chronological order is required)
   const sortedDates = Array.from(dateFrequencyMap.keys()).sort(
-    (a, b) => new Date(a) - new Date(b)
+    (a, b) => new Date(a) - new Date(b),
   );
 
   // Build cumulative count
@@ -341,15 +342,15 @@ export function formatDateToStringNotUTC(date) {
 }
 
 export function findPrevNextById(array, targetId) {
-    const index = array.findIndex((obj) => obj._id === targetId);
+  const index = array.findIndex((obj) => obj._id === targetId);
 
-    if (index === -1) {
-      return { prev: null, current: null, next: null };
-    }
-
-    return {
-      prev: index > 0 ? array[index - 1] : null,
-      current: array[index],
-      next: index < array.length - 1 ? array[index + 1] : null,
-    };
+  if (index === -1) {
+    return { prev: null, current: null, next: null };
   }
+
+  return {
+    prev: index > 0 ? array[index - 1] : null,
+    current: array[index],
+    next: index < array.length - 1 ? array[index + 1] : null,
+  };
+}
